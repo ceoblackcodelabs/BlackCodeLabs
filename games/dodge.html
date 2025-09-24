@@ -777,7 +777,7 @@
       }
     }
     
-    // Move joystick with improved responsiveness and reduced sensitivity on mobile
+    // Move joystick with improved responsiveness
     function moveJoystick(e) {
       if (!joystickActive || !gameRunning) return;
       
@@ -811,17 +811,10 @@
       // Update joystick handle position
       joystickHandle.style.transform = `translate(${joystickX}px, ${joystickY}px)`;
       
-      // Set player velocity based on joystick position
-      // Reduced sensitivity on mobile for better control
-      const sensitivity = isMobile ? 0.6 : 1.0; // Reduced sensitivity on mobile
-      const baseSpeed = speedBoostActive ? 4 : 2.5; // Reduced base speed
-      playerVelocity.x = (joystickX / joystickRadius) * baseSpeed * sensitivity;
-      playerVelocity.y = (joystickY / joystickRadius) * baseSpeed * sensitivity;
-      
-      // Apply a deadzone to prevent jittery movement
-      const deadzone = 0.1;
-      if (Math.abs(playerVelocity.x) < deadzone) playerVelocity.x = 0;
-      if (Math.abs(playerVelocity.y) < deadzone) playerVelocity.y = 0;
+      // Set player velocity based on joystick position (improved sensitivity)
+      const sensitivity = isMobile ? 1.2 : 1.0; // Slightly higher sensitivity on mobile
+      playerVelocity.x = (joystickX / joystickRadius) * (speedBoostActive ? 5 : 3) * sensitivity;
+      playerVelocity.y = (joystickY / joystickRadius) * (speedBoostActive ? 5 : 3) * sensitivity;
     }
     
     // Release joystick
@@ -846,10 +839,9 @@
       const deltaTime = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
       
-      // Apply friction to slow down movement (slightly less friction on mobile)
-      const frictionFactor = isMobile ? 0.88 : 0.85;
-      playerVelocity.x *= Math.pow(frictionFactor, deltaTime / 16);
-      playerVelocity.y *= Math.pow(frictionFactor, deltaTime / 16);
+      // Apply friction to slow down movement
+      playerVelocity.x *= Math.pow(friction, deltaTime / 16);
+      playerVelocity.y *= Math.pow(friction, deltaTime / 16);
       
       // If velocity is very small, stop completely
       if (Math.abs(playerVelocity.x) < 0.05) playerVelocity.x = 0;
