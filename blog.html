@@ -6,7 +6,6 @@
     <title>Blog | BlackCodeLabs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 </head>
 <body>
     <!-- Header & Navigation -->
@@ -75,7 +74,8 @@
             </div>
             
             <div class="blog-grid">
-                <div class="blog-card">
+                <!-- Blog Card 1 -->
+                <div class="blog-card" data-blog-id="1">
                     <div class="blog-image">
                         <i class="fas fa-newspaper"></i>
                     </div>
@@ -90,7 +90,8 @@
                     </div>
                 </div>
                 
-                <div class="blog-card">
+                <!-- Blog Card 2 -->
+                <div class="blog-card" data-blog-id="2">
                     <div class="blog-image">
                         <i class="fas fa-chart-bar"></i>
                     </div>
@@ -105,7 +106,8 @@
                     </div>
                 </div>
                 
-                <div class="blog-card">
+                <!-- Blog Card 3 -->
+                <div class="blog-card" data-blog-id="3">
                     <div class="blog-image">
                         <i class="fas fa-robot"></i>
                     </div>
@@ -119,54 +121,114 @@
                         <a href="#" class="read-more">Read More</a>
                     </div>
                 </div>
-                
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> May 28, 2023</span>
-                            <span><i class="far fa-clock"></i> 8 min read</span>
-                        </div>
-                        <h3>Advances in Natural Language Processing</h3>
-                        <p>How recent breakthroughs in NLP are enabling more human-like interactions between computers and people.</p>
-                        <a href="#" class="read-more">Read More</a>
-                    </div>
-                </div>
-                
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> May 20, 2023</span>
-                            <span><i class="far fa-clock"></i> 5 min read</span>
-                        </div>
-                        <h3>Computer Vision in Manufacturing</h3>
-                        <p>Exploring how computer vision technologies are revolutionizing quality control and automation in manufacturing.</p>
-                        <a href="#" class="read-more">Read More</a>
-                    </div>
-                </div>
-                
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <i class="fas fa-industry"></i>
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> May 12, 2023</span>
-                            <span><i class="far fa-clock"></i> 9 min read</span>
-                        </div>
-                        <h3>AI Transforming Supply Chain Management</h3>
-                        <p>How artificial intelligence is optimizing logistics, forecasting, and inventory management across industries.</p>
-                        <a href="#" class="read-more">Read More</a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
+
+    <!-- Blog Modal -->
+    <div class="blog-modal" id="blogModal">
+        <div class="blog-modal-content">
+            <div class="blog-modal-header">
+                <button class="blog-modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="blog-modal-title" id="modalTitle">The Future of AI in Healthcare</h2>
+                <div class="blog-modal-meta">
+                    <span><i class="far fa-calendar"></i> <span id="modalDate">June 15, 2023</span></span>
+                    <span><i class="far fa-clock"></i> <span id="modalReadTime">5 min read</span></span>
+                    <span class="blog-modal-category" id="modalCategory">AI Applications</span>
+                </div>
+            </div>
+            <div class="blog-modal-image" id="modalImage">
+                <i class="fas fa-newspaper"></i>
+            </div>
+            <div class="blog-modal-body">
+                <p class="blog-modal-intro" id="modalIntro">Exploring how AI is transforming diagnosis, treatment, and patient care in the medical field with groundbreaking innovations.</p>
+                <div class="blog-modal-text" id="modalContent">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+
+                <!-- Interactive Elements -->
+                <div class="interactive-elements">
+                    <div class="reactions">
+                        <div class="reaction-btn" data-reaction="like">
+                            <i class="far fa-thumbs-up"></i>
+                            <span class="reaction-count">12</span>
+                        </div>
+                        <div class="reaction-btn" data-reaction="love">
+                            <i class="far fa-heart"></i>
+                            <span class="reaction-count">8</span>
+                        </div>
+                        <div class="reaction-btn" data-reaction="insightful">
+                            <i class="far fa-lightbulb"></i>
+                            <span class="reaction-count">5</span>
+                        </div>
+                    </div>
+                    <div class="save-share">
+                        <div class="save-btn" title="Save for later">
+                            <i class="far fa-bookmark"></i>
+                        </div>
+                        <div class="share-btn" title="Share this article">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <h3 class="comments-title">Comments</h3>
+                        <span class="comments-count">3 comments</span>
+                    </div>
+
+                    <div class="comment-form">
+                        <h4>Leave a Comment</h4>
+                        <form id="commentForm">
+                            <div class="form-group">
+                                <label for="commentName">Name</label>
+                                <input type="text" id="commentName" class="form-control" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="commentEmail">Email (optional)</label>
+                                <input type="email" id="commentEmail" class="form-control" placeholder="Your email">
+                            </div>
+                            <div class="form-group">
+                                <label for="commentText">Comment</label>
+                                <textarea id="commentText" class="form-control" placeholder="Share your thoughts..." required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Post Comment</button>
+                        </form>
+                    </div>
+
+                    <div class="comments-list" id="commentsList">
+                        <!-- Comments will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <!-- Related Posts -->
+                <div class="related-posts">
+                    <h3>Related Articles</h3>
+                    <div class="related-grid" id="relatedPosts">
+                        <!-- Related posts will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-modal-footer">
+                <div class="blog-modal-tags" id="modalTags">
+                    <!-- Tags will be dynamically inserted here -->
+                </div>
+                <div class="blog-modal-share">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
     <!-- Footer -->
     <footer>
@@ -215,5 +277,634 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Blog data
+        const blogPosts = {
+            1: {
+                title: "The Future of AI in Healthcare",
+                date: "June 15, 2023",
+                readTime: "5 min read",
+                category: "AI Applications",
+                icon: "fas fa-newspaper",
+                intro: "Exploring how AI is transforming diagnosis, treatment, and patient care in the medical field with groundbreaking innovations.",
+                content: `
+                    <p>Artificial Intelligence is revolutionizing healthcare by enabling more accurate diagnoses, personalized treatments, and improved patient outcomes. With the ability to analyze vast amounts of medical data, AI systems can identify patterns and insights that might be missed by human practitioners.</p>
+                    
+                    <h4>Diagnostic Advancements</h4>
+                    <p>AI-powered diagnostic tools are enhancing medical imaging analysis, allowing for earlier detection of diseases like cancer, Alzheimer's, and cardiovascular conditions. These systems can process medical images with remarkable accuracy, often surpassing human capabilities in identifying subtle anomalies.</p>
+                    
+                    <h4>Personalized Treatment Plans</h4>
+                    <p>Machine learning algorithms can analyze patient data, genetic information, and treatment outcomes to recommend personalized treatment plans. This approach considers individual variations in genetics, lifestyle, and environmental factors to optimize therapeutic interventions.</p>
+                    
+                    <h4>Remote Patient Monitoring</h4>
+                    <p>AI-enabled wearable devices and remote monitoring systems are transforming how we track patient health outside clinical settings. These technologies can detect early warning signs of health deterioration and alert healthcare providers before conditions become critical.</p>
+                    
+                    <p>As AI continues to evolve, we can expect even more sophisticated applications in healthcare, from drug discovery to robotic surgery, ultimately improving accessibility and quality of care worldwide.</p>
+                `,
+                tags: ["Healthcare", "AI Diagnosis", "Medical Technology", "Patient Care"],
+                reactions: {
+                    like: 12,
+                    love: 8,
+                    insightful: 5
+                },
+                saved: false,
+                comments: [
+                    {
+                        id: 1,
+                        author: "Sarah Johnson",
+                        avatar: "SJ",
+                        date: "June 16, 2023",
+                        text: "This article perfectly captures the transformative potential of AI in healthcare. I'm particularly excited about the possibilities for personalized medicine.",
+                        likes: 3,
+                        replies: [
+                            {
+                                id: 2,
+                                author: "Dr. Michael Chen",
+                                avatar: "MC",
+                                date: "June 17, 2023",
+                                text: "I agree, Sarah. The potential for AI to enhance diagnostic accuracy while reducing human error is remarkable.",
+                                likes: 1
+                            }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        author: "Alex Rodriguez",
+                        avatar: "AR",
+                        date: "June 18, 2023",
+                        text: "While the potential is exciting, we need to ensure these technologies remain accessible to all communities, not just wealthy healthcare systems.",
+                        likes: 5,
+                        replies: []
+                    }
+                ],
+                related: [2, 3]
+            },
+            2: {
+                title: "Ethical Considerations in AI Development",
+                date: "June 10, 2023",
+                readTime: "7 min read",
+                category: "AI Ethics",
+                icon: "fas fa-chart-bar",
+                intro: "Understanding the importance of ethics and responsibility in creating AI systems that are fair, transparent, and accountable.",
+                content: `
+                    <p>As artificial intelligence becomes increasingly integrated into our daily lives, ethical considerations have moved to the forefront of AI development. Creating responsible AI requires addressing issues of bias, transparency, privacy, and accountability.</p>
+                    
+                    <h4>Addressing Algorithmic Bias</h4>
+                    <p>AI systems can inadvertently perpetuate and amplify existing societal biases present in their training data. Developers must implement rigorous testing and validation processes to identify and mitigate bias, ensuring fair treatment across diverse populations.</p>
+                    
+                    <h4>Transparency and Explainability</h4>
+                    <p>The "black box" nature of some AI models presents challenges for accountability. Developing explainable AI (XAI) that can provide understandable rationales for its decisions is crucial for building trust and enabling human oversight.</p>
+                    
+                    <h4>Privacy and Data Protection</h4>
+                    <p>AI systems often require large amounts of data, raising significant privacy concerns. Implementing robust data protection measures, anonymization techniques, and clear data governance policies is essential for maintaining user trust and complying with regulations.</p>
+                    
+                    <h4>Accountability Frameworks</h4>
+                    <p>Establishing clear lines of responsibility for AI system outcomes is critical. This includes defining who is accountable when AI systems make errors or cause harm, and creating mechanisms for recourse and remediation.</p>
+                    
+                    <p>By prioritizing ethical considerations throughout the AI development lifecycle, we can create technologies that not only advance capabilities but also align with human values and societal well-being.</p>
+                `,
+                tags: ["AI Ethics", "Responsible AI", "Algorithmic Bias", "Transparency"],
+                reactions: {
+                    like: 15,
+                    love: 6,
+                    insightful: 9
+                },
+                saved: false,
+                comments: [
+                    {
+                        id: 1,
+                        author: "Dr. Elena Martinez",
+                        avatar: "EM",
+                        date: "June 11, 2023",
+                        text: "This is a crucial discussion. We need more frameworks for ethical AI development, especially as these systems become more autonomous.",
+                        likes: 7,
+                        replies: []
+                    }
+                ],
+                related: [1, 3]
+            },
+            3: {
+                title: "Machine Learning Trends for 2023",
+                date: "June 5, 2023",
+                readTime: "6 min read",
+                category: "Machine Learning",
+                icon: "fas fa-robot",
+                intro: "A look at the emerging trends and technologies shaping the future of machine learning and artificial intelligence.",
+                content: `
+                    <p>The field of machine learning continues to evolve at a rapid pace, with several key trends emerging in 2023 that are reshaping how we develop and deploy AI systems.</p>
+                    
+                    <h4>Foundation Models and Large Language Models</h4>
+                    <p>Foundation models, particularly large language models (LLMs), are becoming increasingly sophisticated and versatile. These models can be adapted to a wide range of tasks with minimal fine-tuning, reducing development time and resources while expanding application possibilities.</p>
+                    
+                    <h4>Multimodal AI Systems</h4>
+                    <p>AI systems that can process and understand multiple types of data (text, images, audio, etc.) simultaneously are gaining prominence. These multimodal approaches enable more comprehensive understanding and richer interactions, moving us closer to human-like AI capabilities.</p>
+                    
+                    <h4>AI Democratization</h4>
+                    <p>Tools and platforms that make AI more accessible to non-experts are proliferating. Low-code and no-code AI solutions are empowering domain experts to build and deploy machine learning models without extensive programming knowledge.</p>
+                    
+                    <h4>Edge AI and TinyML</h4>
+                    <p>The deployment of AI models on edge devices continues to grow, enabling real-time processing without constant cloud connectivity. TinyML, which focuses on running machine learning models on resource-constrained devices, is opening new possibilities for IoT applications.</p>
+                    
+                    <h4>Generative AI Advancements</h4>
+                    <p>Generative models for creating text, images, code, and other content are becoming more sophisticated and accessible. These technologies are transforming creative workflows and enabling new forms of content generation across industries.</p>
+                    
+                    <p>As these trends continue to develop, they promise to make AI more powerful, accessible, and integrated into our daily lives and business operations.</p>
+                `,
+                tags: ["Machine Learning", "AI Trends", "Foundation Models", "Generative AI"],
+                reactions: {
+                    like: 22,
+                    love: 12,
+                    insightful: 15
+                },
+                saved: false,
+                comments: [
+                    {
+                        id: 1,
+                        author: "James Wilson",
+                        avatar: "JW",
+                        date: "June 6, 2023",
+                        text: "The democratization of AI is particularly exciting. It's amazing to see how accessible these powerful tools are becoming.",
+                        likes: 4,
+                        replies: [
+                            {
+                                id: 2,
+                                author: "Lisa Park",
+                                avatar: "LP",
+                                date: "June 7, 2023",
+                                text: "I agree, James. The no-code AI platforms are revolutionizing how small businesses can leverage AI without needing dedicated data science teams.",
+                                likes: 2
+                            }
+                        ]
+                    }
+                ],
+                related: [1, 2]
+            }
+        };
+
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('blogModal');
+            const closeModal = document.getElementById('closeModal');
+            const blogCards = document.querySelectorAll('.blog-card');
+            const readMoreLinks = document.querySelectorAll('.read-more');
+            const commentForm = document.getElementById('commentForm');
+            const commentsList = document.getElementById('commentsList');
+            const relatedPosts = document.getElementById('relatedPosts');
+            const toast = document.getElementById('toast');
+            
+            let currentBlogId = null;
+            
+            // Function to show toast notification
+            function showToast(message, type = 'success') {
+                toast.textContent = message;
+                toast.className = `toast ${type} show`;
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Function to open modal with blog content
+            function openBlogModal(blogId) {
+                const blogData = blogPosts[blogId];
+                currentBlogId = blogId;
+                
+                if (blogData) {
+                    // Update modal content
+                    document.getElementById('modalTitle').textContent = blogData.title;
+                    document.getElementById('modalDate').textContent = blogData.date;
+                    document.getElementById('modalReadTime').textContent = blogData.readTime;
+                    document.getElementById('modalCategory').textContent = blogData.category;
+                    document.getElementById('modalIntro').textContent = blogData.intro;
+                    
+                    // Update modal image icon
+                    const modalImage = document.getElementById('modalImage');
+                    modalImage.innerHTML = `<i class="${blogData.icon}"></i>`;
+                    
+                    // Update modal content
+                    document.getElementById('modalContent').innerHTML = blogData.content;
+                    
+                    // Update tags
+                    const tagsContainer = document.getElementById('modalTags');
+                    tagsContainer.innerHTML = '';
+                    blogData.tags.forEach(tag => {
+                        const tagElement = document.createElement('span');
+                        tagElement.className = 'blog-modal-tag';
+                        tagElement.textContent = tag;
+                        tagsContainer.appendChild(tagElement);
+                    });
+                    
+                    // Update reactions
+                    updateReactions(blogData.reactions);
+                    
+                    // Update save button
+                    updateSaveButton(blogData.saved);
+                    
+                    // Update comments
+                    renderComments(blogData.comments);
+                    
+                    // Update related posts
+                    renderRelatedPosts(blogData.related);
+                    
+                    // Show modal
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
+            // Function to update reaction buttons
+            function updateReactions(reactions) {
+                const reactionButtons = document.querySelectorAll('.reaction-btn');
+                
+                reactionButtons.forEach(button => {
+                    const reactionType = button.getAttribute('data-reaction');
+                    const countElement = button.querySelector('.reaction-count');
+                    
+                    if (reactions[reactionType]) {
+                        countElement.textContent = reactions[reactionType];
+                    }
+                    
+                    // Remove active class from all buttons
+                    button.classList.remove('active');
+                });
+            }
+            
+            // Function to update save button
+            function updateSaveButton(saved) {
+                const saveButton = document.querySelector('.save-btn');
+                const icon = saveButton.querySelector('i');
+                
+                if (saved) {
+                    saveButton.classList.add('active');
+                    icon.className = 'fas fa-bookmark';
+                } else {
+                    saveButton.classList.remove('active');
+                    icon.className = 'far fa-bookmark';
+                }
+            }
+            
+            // Function to render comments
+            function renderComments(comments) {
+                commentsList.innerHTML = '';
+                
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<p style="text-align: center; color: var(--gray);">No comments yet. Be the first to comment!</p>';
+                    return;
+                }
+                
+                // Update comments count
+                const totalComments = comments.reduce((total, comment) => {
+                    return total + 1 + comment.replies.length;
+                }, 0);
+                
+                document.querySelector('.comments-count').textContent = `${totalComments} comment${totalComments !== 1 ? 's' : ''}`;
+                
+                comments.forEach(comment => {
+                    renderComment(comment, commentsList);
+                    
+                    // Render replies
+                    if (comment.replies && comment.replies.length > 0) {
+                        comment.replies.forEach(reply => {
+                            renderComment(reply, commentsList, true);
+                        });
+                    }
+                });
+            }
+            
+            // Function to render a single comment
+            function renderComment(comment, container, isReply = false) {
+                const commentElement = document.createElement('div');
+                commentElement.className = `comment ${isReply ? 'comment-reply' : ''}`;
+                commentElement.setAttribute('data-comment-id', comment.id);
+                
+                commentElement.innerHTML = `
+                    <div class="comment-header">
+                        <div class="comment-author">
+                            <div class="author-avatar">${comment.avatar}</div>
+                            <div class="author-info">
+                                <h5>${comment.author}</h5>
+                                <span class="comment-date">${comment.date}</span>
+                            </div>
+                        </div>
+                        <div class="comment-actions">
+                            <button class="comment-action like-comment" title="Like comment">
+                                <i class="far fa-thumbs-up"></i> <span>${comment.likes || 0}</span>
+                            </button>
+                            ${!isReply ? '<button class="comment-action reply-comment" title="Reply to comment"><i class="far fa-comment"></i> Reply</button>' : ''}
+                        </div>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                    ${!isReply ? '<div class="reply-form"></div>' : ''}
+                `;
+                
+                container.appendChild(commentElement);
+                
+                // Add event listeners for comment actions
+                const likeButton = commentElement.querySelector('.like-comment');
+                if (likeButton) {
+                    likeButton.addEventListener('click', function() {
+                        likeComment(comment.id);
+                    });
+                }
+                
+                const replyButton = commentElement.querySelector('.reply-comment');
+                if (replyButton) {
+                    replyButton.addEventListener('click', function() {
+                        toggleReplyForm(commentElement, comment.id);
+                    });
+                }
+            }
+            
+            // Function to like a comment
+            function likeComment(commentId) {
+                // Find the comment in the current blog post
+                const blogData = blogPosts[currentBlogId];
+                const comment = findCommentById(blogData.comments, commentId);
+                
+                if (comment) {
+                    comment.likes = (comment.likes || 0) + 1;
+                    renderComments(blogData.comments);
+                    showToast('Comment liked!', 'success');
+                }
+            }
+            
+            // Helper function to find comment by ID (including replies)
+            function findCommentById(comments, id) {
+                for (const comment of comments) {
+                    if (comment.id === id) return comment;
+                    
+                    if (comment.replies && comment.replies.length > 0) {
+                        for (const reply of comment.replies) {
+                            if (reply.id === id) return reply;
+                        }
+                    }
+                }
+                return null;
+            }
+            
+            // Function to toggle reply form
+            function toggleReplyForm(commentElement, parentId) {
+                const replyFormContainer = commentElement.querySelector('.reply-form');
+                
+                if (replyFormContainer.innerHTML) {
+                    replyFormContainer.innerHTML = '';
+                } else {
+                    replyFormContainer.innerHTML = `
+                        <form class="reply-form-inner">
+                            <div class="form-group">
+                                <label for="replyName${parentId}">Name</label>
+                                <input type="text" id="replyName${parentId}" class="form-control" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="replyEmail${parentId}">Email (optional)</label>
+                                <input type="email" id="replyEmail${parentId}" class="form-control" placeholder="Your email">
+                            </div>
+                            <div class="form-group">
+                                <label for="replyText${parentId}">Reply</label>
+                                <textarea id="replyText${parentId}" class="form-control" placeholder="Write your reply..." required></textarea>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="submit-btn">Post Reply</button>
+                                <button type="button" class="submit-btn" style="background: var(--gray);">Cancel</button>
+                            </div>
+                        </form>
+                    `;
+                    
+                    const replyForm = replyFormContainer.querySelector('.reply-form-inner');
+                    const cancelButton = replyForm.querySelector('button[type="button"]');
+                    
+                    replyForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        submitReply(parentId, replyForm);
+                    });
+                    
+                    cancelButton.addEventListener('click', function() {
+                        replyFormContainer.innerHTML = '';
+                    });
+                }
+            }
+            
+            // Function to submit a reply
+            function submitReply(parentId, form) {
+                const name = form.querySelector('input[type="text"]').value;
+                const email = form.querySelector('input[type="email"]').value;
+                const text = form.querySelector('textarea').value;
+                
+                if (!name || !text) {
+                    showToast('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                const blogData = blogPosts[currentBlogId];
+                const parentComment = findCommentById(blogData.comments, parentId);
+                
+                if (parentComment) {
+                    // Generate a unique ID for the reply
+                    const replyId = Date.now();
+                    
+                    // Create the reply object
+                    const reply = {
+                        id: replyId,
+                        author: name,
+                        avatar: name.split(' ').map(n => n[0]).join('').toUpperCase(),
+                        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                        text: text,
+                        likes: 0
+                    };
+                    
+                    // Add the reply to the parent comment
+                    if (!parentComment.replies) {
+                        parentComment.replies = [];
+                    }
+                    parentComment.replies.push(reply);
+                    
+                    // Re-render comments
+                    renderComments(blogData.comments);
+                    
+                    // Show success message
+                    showToast('Reply posted successfully!', 'success');
+                    
+                    // Clear the form
+                    form.reset();
+                }
+            }
+            
+            // Function to render related posts
+            function renderRelatedPosts(relatedIds) {
+                relatedPosts.innerHTML = '';
+                
+                relatedIds.forEach(id => {
+                    const post = blogPosts[id];
+                    if (post) {
+                        const relatedPostElement = document.createElement('div');
+                        relatedPostElement.className = 'related-post';
+                        relatedPostElement.setAttribute('data-blog-id', id);
+                        
+                        relatedPostElement.innerHTML = `
+                            <div class="related-image">
+                                <i class="${post.icon}"></i>
+                            </div>
+                            <div class="related-content">
+                                <h4>${post.title}</h4>
+                                <div class="related-meta">
+                                    <span><i class="far fa-calendar"></i> ${post.date}</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        relatedPostElement.addEventListener('click', function() {
+                            openBlogModal(id);
+                        });
+                        
+                        relatedPosts.appendChild(relatedPostElement);
+                    }
+                });
+            }
+            
+            // Add click event to blog cards
+            blogCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't trigger if clicking the read more link
+                    if (!e.target.classList.contains('read-more')) {
+                        const blogId = this.getAttribute('data-blog-id');
+                        openBlogModal(blogId);
+                    }
+                });
+            });
+            
+            // Add click event to read more links
+            readMoreLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const blogCard = this.closest('.blog-card');
+                    const blogId = blogCard.getAttribute('data-blog-id');
+                    openBlogModal(blogId);
+                });
+            });
+            
+            // Close modal when clicking close button
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Close modal when clicking outside content
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Handle comment form submission
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('commentName').value;
+                const email = document.getElementById('commentEmail').value;
+                const text = document.getElementById('commentText').value;
+                
+                if (!name || !text) {
+                    showToast('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                const blogData = blogPosts[currentBlogId];
+                
+                // Generate a unique ID for the comment
+                const commentId = Date.now();
+                
+                // Create the comment object
+                const comment = {
+                    id: commentId,
+                    author: name,
+                    avatar: name.split(' ').map(n => n[0]).join('').toUpperCase(),
+                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    text: text,
+                    likes: 0,
+                    replies: []
+                };
+                
+                // Add the comment to the blog post
+                blogData.comments.push(comment);
+                
+                // Re-render comments
+                renderComments(blogData.comments);
+                
+                // Show success message
+                showToast('Comment posted successfully!', 'success');
+                
+                // Clear the form
+                commentForm.reset();
+            });
+            
+            // Handle reaction buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.reaction-btn')) {
+                    const reactionBtn = e.target.closest('.reaction-btn');
+                    const reactionType = reactionBtn.getAttribute('data-reaction');
+                    const blogData = blogPosts[currentBlogId];
+                    
+                    // Toggle active state
+                    reactionBtn.classList.toggle('active');
+                    
+                    // Update reaction count
+                    const countElement = reactionBtn.querySelector('.reaction-count');
+                    let count = parseInt(countElement.textContent);
+                    
+                    if (reactionBtn.classList.contains('active')) {
+                        count++;
+                        showToast(`You reacted with ${reactionType}`, 'success');
+                    } else {
+                        count--;
+                    }
+                    
+                    countElement.textContent = count;
+                    
+                    // Update the data in our blogPosts object
+                    blogData.reactions[reactionType] = count;
+                }
+            });
+            
+            // Handle save button
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.save-btn')) {
+                    const saveBtn = e.target.closest('.save-btn');
+                    const blogData = blogPosts[currentBlogId];
+                    
+                    // Toggle saved state
+                    blogData.saved = !blogData.saved;
+                    
+                    // Update button appearance
+                    updateSaveButton(blogData.saved);
+                    
+                    // Show notification
+                    if (blogData.saved) {
+                        showToast('Article saved for later!', 'success');
+                    } else {
+                        showToast('Article removed from saved list', 'warning');
+                    }
+                }
+            });
+            
+            // Handle share button
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.share-btn')) {
+                    // In a real implementation, this would open a share dialog
+                    showToast('Share options would appear here', 'success');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
