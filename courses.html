@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses | BlackCodeLabs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <style>
+        /* Additional styles for courses page */
+        .courses-hero {
+            padding: 150px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--space-blue), var(--darker));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .courses-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(110, 59, 206, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 40%);
+            z-index: 0;
+        }
+
+        .courses-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--light);
+            position: relative;
+            z-index: 2;
+        }
+
+        .courses-hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            position: relative;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, var(--light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .courses-section {
+            padding: 80px 0;
+            background-color: var(--darker);
+        }
+
+        .courses-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--light);
+            color: var(--dark);
+            border-color: var(--light);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .course-card {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.1);
+        }
+
+        .course-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .course-badge.popular {
+            background: linear-gradient(45deg, var(--star-yellow), #ff9800);
+            color: var(--dark);
+        }
+
+        .course-badge.new {
+            background: linear-gradient(45deg, var(--success), #4CAF50);
+            color: white;
+        }
+
+        .course-badge.advanced {
+            background: linear-gradient(45deg, var(--error), #f44336);
+            color: white;
+        }
+
+        .course-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--nebula-purple), var(--space-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 40%);
+        }
+
+        .course-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-category {
+            display: inline-block;
+            background: rgba(110, 59, 206, 0.2);
+            color: var(--nebula-purple);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .course-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+            line-height: 1.4;
+        }
+
+        .course-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .course-meta-item i {
+            color: var(--accent);
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .course-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+        }
+
+        .course-price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+            text-decoration: line-through;
+            margin-left: 5px;
+        }
+
+        .course-button {
+            padding: 10px 25px;
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--light);
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .course-button:hover {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .learning-platform {
+            padding: 80px 0;
+            background-color: var(--dark);
+        }
+
+        .platform-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .platform-feature {
+            text-align: center;
+            padding: 30px;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .platform-feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .platform-feature i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .platform-feature h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+
+        .platform-feature p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Course Modal Styles */
+        .course-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .course-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .course-modal-content {
+            background-color: var(--dark);
+            border-radius: 15px;
+            width: 100%;
+            max-width: 900px;
+            margin: 40px auto;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: modalFadeIn 0.5s ease;
+        }
+
+        .course-modal-header {
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .course-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+
+        .course-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .course-modal-title {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--light);
+            line-height: 1.3;
+        }
+
+        .course-modal-meta {
+            display: flex;
+            align-items: center;
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .course-modal-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .course-modal-image {
+            height: 300px;
+            background: linear-gradient(45deg, var(--nebula-purple), var(--space-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-modal-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 40%);
+        }
+
+        .course-modal-body {
+            padding: 30px;
+        }
+
+        .course-modal-intro {
+            font-size: 1.2rem;
+            color: var(--light);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-weight: 300;
+            border-left: 3px solid var(--nebula-purple);
+            padding-left: 15px;
+        }
+
+        .course-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .detail-item i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .detail-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: var(--light);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .curriculum-section {
+            margin: 40px 0;
+        }
+
+        .curriculum-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .curriculum-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .curriculum-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .curriculum-header:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .curriculum-header h4 {
+            color: var(--light);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .curriculum-icon {
+            color: var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .curriculum-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+
+        .curriculum-item.active .curriculum-content {
+            max-height: 500px;
+            padding: 20px;
+        }
+
+        .curriculum-item.active .curriculum-icon {
+            transform: rotate(180deg);
+        }
+
+        .curriculum-lessons {
+            list-style: none;
+        }
+
+        .curriculum-lessons li {
+            padding: 10px 0;
+            color: var(--gray);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+        }
+
+        .curriculum-lessons li:last-child {
+            border-bottom: none;
+        }
+
+        .curriculum-lessons li i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        .instructor-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 40px 0;
+        }
+
+        .instructor-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .instructor-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .instructor-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--nebula-purple), var(--space-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .instructor-details h4 {
+            color: var(--light);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .instructor-details p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .enrollment-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .enrollment-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 10px;
+        }
+
+        .enrollment-price span {
+            font-size: 1.2rem;
+            color: var(--gray);
+            font-weight: 400;
+            text-decoration: line-through;
+            margin-left: 5px;
+        }
+
+        .enrollment-details {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .enrollment-button {
+            padding: 15px 40px;
+            background: var(--nebula-purple);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .enrollment-button:hover {
+            background: var(--space-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(110, 59, 206, 0.3);
+        }
+
+        /* Registration Modal Styles */
+        .registration-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .registration-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .registration-modal-content {
+            background-color: var(--dark);
+            border-radius: 15px;
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: modalFadeIn 0.5s ease;
+        }
+
+        .registration-modal-header {
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .registration-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+
+        .registration-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .registration-modal-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--light);
+            line-height: 1.3;
+        }
+
+        .registration-modal-subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .registration-modal-body {
+            padding: 30px;
+        }
+
+        .registration-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .registration-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .registration-form input,
+        .registration-form select,
+        .registration-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .registration-form input:focus,
+        .registration-form select:focus,
+        .registration-form textarea:focus {
+            outline: none;
+            border-color: var(--nebula-purple);
+            box-shadow: 0 0 0 2px rgba(110, 59, 206, 0.2);
+        }
+
+        .registration-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .payment-summary {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .payment-summary h4 {
+            color: var(--light);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+
+        .payment-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .submit-registration {
+            width: 100%;
+            padding: 15px;
+            background: var(--nebula-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-registration:hover {
+            background: var(--space-blue);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .courses-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                gap: 20px;
+            }
+            
+            .hero-stat-number {
+                font-size: 2rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-modal-content,
+            .registration-modal-content {
+                margin: 20px auto;
+            }
+            
+            .course-modal-header,
+            .registration-modal-header {
+                padding: 20px 20px 15px;
+            }
+            
+            .course-modal-title,
+            .registration-modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .course-modal-image {
+                height: 200px;
+            }
+            
+            .course-modal-body,
+            .registration-modal-body {
+                padding: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .instructor-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">BlackCode<span>AI</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="technology.html">Technology</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="games.html">Games</a></li>
+                </ul>
+                <button class="cta-button">Get Started</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Courses Hero -->
+    <section class="courses-hero">
+        <div class="container">
+            <h1>Master the Future of Technology</h1>
+            <p>Learn from industry experts with hands-on projects, live sessions, and career support. Start your journey today with our comprehensive coding courses.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">50+</div>
+                    <div class="hero-stat-label">Courses Available</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">10K+</div>
+                    <div class="hero-stat-label">Students Enrolled</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">98%</div>
+                    <div class="hero-stat-label">Satisfaction Rate</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">500+</div>
+                    <div class="hero-stat-label">Expert Instructors</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Explore Our Courses</h2>
+                <p>Choose from a wide range of cutting-edge technology courses designed for all skill levels</p>
+            </div>
+            
+            <div class="courses-filter">
+                <button class="filter-btn active" data-filter="all">All Courses</button>
+                <button class="filter-btn" data-filter="beginner">Beginner</button>
+                <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+                <button class="filter-btn" data-filter="advanced">Advanced</button>
+                <button class="filter-btn" data-filter="python">Python</button>
+                <button class="filter-btn" data-filter="javascript">JavaScript</button>
+                <button class="filter-btn" data-filter="iot">IoT</button>
+                <button class="filter-btn" data-filter="ai">AI & ML</button>
+            </div>
+            
+            <div class="courses-grid" id="courses-container">
+                <!-- Course cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Platform -->
+    <section class="learning-platform">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Learn With BlackCodeLabs?</h2>
+                <p>Our platform is designed to give you the best learning experience with cutting-edge features</p>
+            </div>
+            
+            <div class="platform-features">
+                <div class="platform-feature">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Live Online Classes</h3>
+                    <p>Interactive sessions with industry experts and real-time Q&A opportunities.</p>
+                </div>
+                
+                <div class="platform-feature">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>Hands-on Projects</h3>
+                    <p>Build real-world applications and add them to your professional portfolio.</p>
+                </div>
+                
+                <div class="platform-feature">
+                    <i class="fas fa-certificate"></i>
+                    <h3>Industry Certifications</h3>
+                    <p>Earn recognized certificates that boost your resume and career prospects.</p>
+                </div>
+                
+                <div class="platform-feature">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Career Support</h3>
+                    <p>Get career guidance, interview preparation, and job placement assistance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Details Modal -->
+    <div class="course-modal" id="courseModal">
+        <div class="course-modal-content">
+            <div class="course-modal-header">
+                <button class="course-modal-close" id="closeCourseModal">&times;</button>
+                <h1 class="course-modal-title" id="modalCourseTitle">Python Masterclass</h1>
+                <div class="course-modal-meta" id="modalCourseMeta">
+                    <span><i class="fas fa-clock"></i> <span id="modalDuration">12 Weeks</span></span>
+                    <span><i class="fas fa-signal"></i> <span id="modalLevel">Beginner to Advanced</span></span>
+                    <span><i class="fas fa-users"></i> <span id="modalStudents">2450 students</span></span>
+                    <span><i class="fas fa-star"></i> <span id="modalRating">4.9 (1200 reviews)</span></span>
+                </div>
+            </div>
+            
+            <div class="course-modal-image">
+                <i class="fab fa-python" id="modalCourseIcon"></i>
+            </div>
+            
+            <div class="course-modal-body">
+                <div class="course-modal-intro" id="modalCourseIntro">
+                    Master Python programming from basics to advanced concepts with hands-on projects.
+                </div>
+                
+                <div class="course-details-grid" id="modalCourseDetails">
+                    <!-- Filled by JavaScript -->
+                </div>
+                
+                <div class="curriculum-section">
+                    <h3>Course Curriculum</h3>
+                    <div class="curriculum-item active">
+                        <div class="curriculum-header">
+                            <h4>Module 1: Python Fundamentals</h4>
+                            <i class="fas fa-chevron-down curriculum-icon"></i>
+                        </div>
+                        <div class="curriculum-content">
+                            <ul class="curriculum-lessons">
+                                <li><i class="fas fa-play-circle"></i> Introduction to Python</li>
+                                <li><i class="fas fa-play-circle"></i> Variables and Data Types</li>
+                                <li><i class="fas fa-play-circle"></i> Control Structures</li>
+                                <li><i class="fas fa-play-circle"></i> Functions and Modules</li>
+                                <li><i class="fas fa-play-circle"></i> File Handling</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="curriculum-item">
+                        <div class="curriculum-header">
+                            <h4>Module 2: Object-Oriented Programming</h4>
+                            <i class="fas fa-chevron-down curriculum-icon"></i>
+                        </div>
+                        <div class="curriculum-content">
+                            <ul class="curriculum-lessons">
+                                <li><i class="fas fa-play-circle"></i> Classes and Objects</li>
+                                <li><i class="fas fa-play-circle"></i> Inheritance and Polymorphism</li>
+                                <li><i class="fas fa-play-circle"></i> Encapsulation and Abstraction</li>
+                                <li><i class="fas fa-play-circle"></i> Advanced OOP Concepts</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="curriculum-item">
+                        <div class="curriculum-header">
+                            <h4>Module 3: Advanced Python</h4>
+                            <i class="fas fa-chevron-down curriculum-icon"></i>
+                        </div>
+                        <div class="curriculum-content">
+                            <ul class="curriculum-lessons">
+                                <li><i class="fas fa-play-circle"></i> Decorators and Generators</li>
+                                <li><i class="fas fa-play-circle"></i> Context Managers</li>
+                                <li><i class="fas fa-play-circle"></i> Multithreading and Multiprocessing</li>
+                                <li><i class="fas fa-play-circle"></i> Network Programming</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructor-section">
+                    <h3>About the Instructor</h3>
+                    <div class="instructor-info">
+                        <div class="instructor-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="instructor-details">
+                            <h4 id="modalInstructorName">Dr. Alex Johnson</h4>
+                            <p id="modalInstructorBio">Senior AI Engineer with 10+ years of experience in Python development and machine learning. Former lead developer at TechGiant Inc. and author of "Python for AI Professionals".</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="enrollment-section">
+                    <div class="enrollment-price" id="modalCoursePrice">$199 <span>$299</span></div>
+                    <div class="enrollment-details" id="modalEnrollmentDetails">
+                        Includes lifetime access, certificate of completion, and all future updates
+                    </div>
+                    <button class="enrollment-button" id="enrollButton">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="registration-modal" id="registrationModal">
+        <div class="registration-modal-content">
+            <div class="registration-modal-header">
+                <button class="registration-modal-close" id="closeRegistrationModal">&times;</button>
+                <h1 class="registration-modal-title">Enroll in <span id="registrationCourseTitle">Course</span></h1>
+                <div class="registration-modal-subtitle" id="registrationCourseSubtitle">Complete the form below to register for this course</div>
+            </div>
+            
+            <div class="registration-modal-body">
+                <form class="registration-form" id="registrationForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                            <option value="IN">India</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="JP">Japan</option>
+                            <option value="SG">Singapore</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience">Programming Experience</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Select Experience Level</option>
+                            <option value="beginner">Beginner (0-1 years)</option>
+                            <option value="intermediate">Intermediate (1-3 years)</option>
+                            <option value="advanced">Advanced (3+ years)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="goals">What are your learning goals?</label>
+                        <textarea id="goals" name="goals" placeholder="Tell us what you hope to achieve with this course..."></textarea>
+                    </div>
+                    
+                    <div class="payment-summary">
+                        <h4>Order Summary</h4>
+                        <div class="payment-item">
+                            <span>Course Fee:</span>
+                            <span id="courseFee">$199.00</span>
+                        </div>
+                        <div class="payment-item">
+                            <span>Platform Fee:</span>
+                            <span>$10.00</span>
+                        </div>
+                        <div class="payment-item">
+                            <span>Tax:</span>
+                            <span id="taxAmount">$20.89</span>
+                        </div>
+                        <div class="payment-total">
+                            <span>Total:</span>
+                            <span id="totalAmount">$229.89</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-registration">Complete Enrollment & Pay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>BlackCodeLabs</h3>
+                    <p>Intelligent solutions for the future</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="#">Python Programming</a></li>
+                        <li><a href="#">JavaScript & React</a></li>
+                        <li><a href="#">IoT Development</a></li>
+                        <li><a href="#">AI & Machine Learning</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Learning Paths</a></li>
+                        <li><a href="#">Course Catalog</a></li>
+                        <li><a href="#">Instructors</a></li>
+                        <li><a href="#">Certifications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 BlackCodeLabs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Course data
+        const courses = [
+            {
+                id: 1,
+                title: "Python Masterclass",
+                category: "python",
+                level: "beginner",
+                badge: "popular",
+                icon: "fab fa-python",
+                description: "Master Python programming from basics to advanced concepts with hands-on projects and real-world applications.",
+                duration: "12 Weeks",
+                lessons: "48 Lessons",
+                students: "2450",
+                rating: "4.9",
+                instructor: "Dr. Alex Johnson",
+                price: 199,
+                originalPrice: 299,
+                color: "#3776AB",
+                details: {
+                    "Mode": "Online Live Classes",
+                    "Schedule": "Mon & Wed, 7-9 PM EST",
+                    "Projects": "5 Real-world Projects",
+                    "Support": "24/7 Mentor Support"
+                }
+            },
+            {
+                id: 2,
+                title: "JavaScript & React Bootcamp",
+                category: "javascript",
+                level: "intermediate",
+                badge: "new",
+                icon: "fab fa-js-square",
+                description: "Become a frontend developer by mastering JavaScript, React, and modern web development tools.",
+                duration: "10 Weeks",
+                lessons: "40 Lessons",
+                students: "1890",
+                rating: "4.8",
+                instructor: "Sarah Chen",
+                price: 249,
+                originalPrice: 349,
+                color: "#F7DF1E",
+                details: {
+                    "Mode": "Hybrid (Online + Recorded)",
+                    "Schedule": "Tue & Thu, 6-8 PM EST",
+                    "Projects": "8 Portfolio Projects",
+                    "Support": "Code Review Sessions"
+                }
+            },
+            {
+                id: 3,
+                title: "IoT Development with Arduino",
+                category: "iot",
+                level: "beginner",
+                badge: "",
+                icon: "fas fa-microchip",
+                description: "Learn to build Internet of Things devices with Arduino, sensors, and cloud integration.",
+                duration: "8 Weeks",
+                lessons: "32 Lessons",
+                students: "1250",
+                rating: "4.7",
+                instructor: "Michael Rodriguez",
+                price: 179,
+                originalPrice: 249,
+                color: "#00979C",
+                details: {
+                    "Mode": "Online with Kit",
+                    "Schedule": "Weekend Workshops",
+                    "Projects": "3 Hardware Projects",
+                    "Support": "Hardware Troubleshooting"
+                }
+            },
+            {
+                id: 4,
+                title: "Advanced React & Node.js",
+                category: "javascript",
+                level: "advanced",
+                badge: "advanced",
+                icon: "fab fa-node-js",
+                description: "Build full-stack applications with React, Node.js, Express, and MongoDB.",
+                duration: "14 Weeks",
+                lessons: "56 Lessons",
+                students: "980",
+                rating: "4.9",
+                instructor: "David Wilson",
+                price: 299,
+                originalPrice: 399,
+                color: "#68A063",
+                details: {
+                    "Mode": "Online Live Classes",
+                    "Schedule": "Mon, Wed, Fri 8-10 PM EST",
+                    "Projects": "Full-stack Applications",
+                    "Support": "Career Guidance"
+                }
+            },
+            {
+                id: 5,
+                title: "AI & Machine Learning Fundamentals",
+                category: "ai",
+                level: "intermediate",
+                badge: "popular",
+                icon: "fas fa-robot",
+                description: "Introduction to AI and ML concepts with Python, TensorFlow, and real-world datasets.",
+                duration: "16 Weeks",
+                lessons: "64 Lessons",
+                students: "2100",
+                rating: "4.8",
+                instructor: "Dr. Priya Sharma",
+                price: 349,
+                originalPrice: 449,
+                color: "#FF6B6B",
+                details: {
+                    "Mode": "Online with Labs",
+                    "Schedule": "Weekend Intensive",
+                    "Projects": "ML Models & Deployments",
+                    "Support": "Research Paper Guidance"
+                }
+            },
+            {
+                id: 6,
+                title: "IoT with Raspberry Pi & Python",
+                category: "iot",
+                level: "intermediate",
+                badge: "",
+                icon: "fas fa-server",
+                description: "Advanced IoT course focusing on Raspberry Pi, Python, and home automation projects.",
+                duration: "10 Weeks",
+                lessons: "40 Lessons",
+                students: "870",
+                rating: "4.6",
+                instructor: "Robert Kim",
+                price: 229,
+                originalPrice: 299,
+                color: "#C51A4A",
+                details: {
+                    "Mode": "Online with Kit",
+                    "Schedule": "Flexible with Recordings",
+                    "Projects": "Smart Home System",
+                    "Support": "Community Forum Access"
+                }
+            },
+            {
+                id: 7,
+                title: "Data Science with Python",
+                category: "python",
+                level: "intermediate",
+                badge: "new",
+                icon: "fas fa-chart-line",
+                description: "Master data analysis, visualization, and statistical modeling with Python libraries.",
+                duration: "12 Weeks",
+                lessons: "48 Lessons",
+                students: "1650",
+                rating: "4.7",
+                instructor: "Jennifer Lee",
+                price: 279,
+                originalPrice: 349,
+                color: "#4B8BBE",
+                details: {
+                    "Mode": "Online Live Classes",
+                    "Schedule": "Tue & Thu, 7-9 PM EST",
+                    "Projects": "Data Analysis Projects",
+                    "Support": "Dataset Access"
+                }
+            },
+            {
+                id: 8,
+                title: "IoT Security & Ethical Hacking",
+                category: "iot",
+                level: "advanced",
+                badge: "advanced",
+                icon: "fas fa-shield-alt",
+                description: "Learn to secure IoT devices and networks against cyber threats and vulnerabilities.",
+                duration: "8 Weeks",
+                lessons: "32 Lessons",
+                students: "540",
+                rating: "4.9",
+                instructor: "Kevin O'Brien",
+                price: 319,
+                originalPrice: 399,
+                color: "#2E8B57",
+                details: {
+                    "Mode": "Online with Virtual Labs",
+                    "Schedule": "Weekend Intensive",
+                    "Projects": "Security Audits",
+                    "Support": "Certification Prep"
+                }
+            }
+        ];
+
+        // DOM Elements
+        const coursesContainer = document.getElementById('courses-container');
+        const courseModal = document.getElementById('courseModal');
+        const registrationModal = document.getElementById('registrationModal');
+        const closeCourseModal = document.getElementById('closeCourseModal');
+        const closeRegistrationModal = document.getElementById('closeRegistrationModal');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const enrollButton = document.getElementById('enrollButton');
+        const registrationForm = document.getElementById('registrationForm');
+        const courseFeeElement = document.getElementById('courseFee');
+        const taxAmountElement = document.getElementById('taxAmount');
+        const totalAmountElement = document.getElementById('totalAmount');
+        const registrationCourseTitle = document.getElementById('registrationCourseTitle');
+        const registrationCourseSubtitle = document.getElementById('registrationCourseSubtitle');
+
+        // Current selected course
+        let currentCourse = null;
+
+        // Initialize courses
+        function initCourses() {
+            renderCourses(courses);
+            setupEventListeners();
+        }
+
+        // Render courses to the DOM
+        function renderCourses(coursesToRender) {
+            coursesContainer.innerHTML = '';
+            
+            coursesToRender.forEach(course => {
+                const courseCard = document.createElement('div');
+                courseCard.className = `course-card ${course.category} ${course.level}`;
+                courseCard.setAttribute('data-id', course.id);
+                
+                let badgeHTML = '';
+                if (course.badge) {
+                    badgeHTML = `<div class="course-badge ${course.badge}">${course.badge === 'popular' ? 'Most Popular' : course.badge === 'new' ? 'New' : 'Advanced'}</div>`;
+                }
+                
+                courseCard.innerHTML = `
+                    ${badgeHTML}
+                    <div class="course-image" style="background: linear-gradient(45deg, ${course.color}, var(--space-blue))">
+                        <i class="${course.icon}"></i>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">${course.category.toUpperCase()}</div>
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-description">${course.description}</p>
+                        <div class="course-meta">
+                            <div class="course-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>${course.duration}</span>
+                            </div>
+                            <div class="course-meta-item">
+                                <i class="fas fa-book"></i>
+                                <span>${course.lessons}</span>
+                            </div>
+                            <div class="course-meta-item">
+                                <i class="fas fa-signal"></i>
+                                <span>${course.level}</span>
+                            </div>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-price">$${course.price} <span>$${course.originalPrice}</span></div>
+                            <button class="course-button view-course" data-id="${course.id}">View Course</button>
+                        </div>
+                    </div>
+                `;
+                
+                coursesContainer.appendChild(courseCard);
+            });
+            
+            // Add event listeners to view buttons
+            document.querySelectorAll('.view-course').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const courseId = parseInt(e.target.getAttribute('data-id'));
+                    openCourseModal(courseId);
+                });
+            });
+        }
+
+        // Open course modal
+        function openCourseModal(courseId) {
+            currentCourse = courses.find(course => course.id === courseId);
+            
+            if (currentCourse) {
+                // Update modal content
+                document.getElementById('modalCourseTitle').textContent = currentCourse.title;
+                document.getElementById('modalCourseIcon').className = currentCourse.icon;
+                document.getElementById('modalCourseIntro').textContent = currentCourse.description;
+                document.getElementById('modalDuration').textContent = currentCourse.duration;
+                document.getElementById('modalLevel').textContent = currentCourse.level.charAt(0).toUpperCase() + currentCourse.level.slice(1);
+                document.getElementById('modalStudents').textContent = `${currentCourse.students} students`;
+                document.getElementById('modalRating').textContent = `${currentCourse.rating} (${Math.floor(currentCourse.students / 2)} reviews)`;
+                document.getElementById('modalInstructorName').textContent = currentCourse.instructor;
+                document.getElementById('modalCoursePrice').innerHTML = `$${currentCourse.price} <span>$${currentCourse.originalPrice}</span>`;
+                
+                // Update course details grid
+                const detailsGrid = document.getElementById('modalCourseDetails');
+                detailsGrid.innerHTML = '';
+                
+                for (const [key, value] of Object.entries(currentCourse.details)) {
+                    detailsGrid.innerHTML += `
+                        <div class="detail-item">
+                            <i class="fas fa-info-circle"></i>
+                            <div class="detail-label">${key}</div>
+                            <div class="detail-value">${value}</div>
+                        </div>
+                    `;
+                }
+                
+                // Set modal image background
+                document.querySelector('.course-modal-image').style.background = `linear-gradient(45deg, ${currentCourse.color}, var(--space-blue))`;
+                
+                // Show modal
+                courseModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Open registration modal
+        function openRegistrationModal() {
+            if (currentCourse) {
+                registrationCourseTitle.textContent = currentCourse.title;
+                registrationCourseSubtitle.textContent = `Complete the form below to register for ${currentCourse.title}`;
+                
+                // Calculate fees
+                const platformFee = 10;
+                const taxRate = 0.1;
+                const taxAmount = (currentCourse.price + platformFee) * taxRate;
+                const totalAmount = currentCourse.price + platformFee + taxAmount;
+                
+                courseFeeElement.textContent = `$${currentCourse.price.toFixed(2)}`;
+                taxAmountElement.textContent = `$${taxAmount.toFixed(2)}`;
+                totalAmountElement.textContent = `$${totalAmount.toFixed(2)}`;
+                
+                registrationModal.classList.add('active');
+            }
+        }
+
+        // Close modals
+        function closeModals() {
+            courseModal.classList.remove('active');
+            registrationModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Filter courses
+        function filterCourses(filter) {
+            filterButtons.forEach(btn => {
+                if (btn.getAttribute('data-filter') === filter) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            let filteredCourses = courses;
+            
+            if (filter !== 'all') {
+                filteredCourses = courses.filter(course => 
+                    course.category === filter || 
+                    course.level === filter
+                );
+            }
+            
+            renderCourses(filteredCourses);
+        }
+
+        // Setup curriculum accordion
+        function setupCurriculumAccordion() {
+            document.querySelectorAll('.curriculum-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const item = header.parentElement;
+                    item.classList.toggle('active');
+                });
+            });
+        }
+
+        // Handle form submission
+        function handleRegistrationSubmit(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(registrationForm);
+            const data = Object.fromEntries(formData.entries());
+            
+            // In a real application, you would send this data to a server
+            // For now, we'll show a success message
+            alert(`Thank you for registering, ${data.firstName}! Your enrollment in "${currentCourse.title}" has been submitted. Our team will contact you shortly with payment details and course access information.`);
+            
+            // Reset form and close modal
+            registrationForm.reset();
+            closeModals();
+            
+            // Show success toast
+            showToast('Registration successful! Check your email for confirmation.');
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.getAttribute('data-filter');
+                    filterCourses(filter);
+                });
+            });
+            
+            // Close modals
+            closeCourseModal.addEventListener('click', closeModals);
+            closeRegistrationModal.addEventListener('click', closeModals);
+            
+            // Close modals when clicking outside
+            courseModal.addEventListener('click', (e) => {
+                if (e.target === courseModal) {
+                    closeModals();
+                }
+            });
+            
+            registrationModal.addEventListener('click', (e) => {
+                if (e.target === registrationModal) {
+                    closeModals();
+                }
+            });
+            
+            // Enroll button
+            enrollButton.addEventListener('click', openRegistrationModal);
+            
+            // Form submission
+            registrationForm.addEventListener('submit', handleRegistrationSubmit);
+            
+            // Curriculum accordion
+            setupCurriculumAccordion();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initCourses);
+    </script>
+</body>
+</html>

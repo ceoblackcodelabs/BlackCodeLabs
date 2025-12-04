@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate | BlackCodeLabs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <style>
+        /* Certificate Styles */
+        .certificate-hero {
+            padding: 150px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a237e, #0a0a0a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(25, 118, 210, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(245, 124, 0, 0.2) 0%, transparent 40%);
+            z-index: 0;
+        }
+
+        .certificate-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--light);
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-container {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .certificate-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Certificate Design */
+        .certificate {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 60px;
+            position: relative;
+            border: 20px solid transparent;
+            border-image: linear-gradient(45deg, #1a237e, #0d47a1, #1565c0);
+            border-image-slice: 1;
+            min-height: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Certificate Border Decoration */
+        .certificate-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .border-corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+        }
+
+        .corner-tl {
+            top: 20px;
+            left: 20px;
+            border-top: 3px solid #1a237e;
+            border-left: 3px solid #1a237e;
+        }
+
+        .corner-tr {
+            top: 20px;
+            right: 20px;
+            border-top: 3px solid #1a237e;
+            border-right: 3px solid #1a237e;
+        }
+
+        .corner-bl {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: 3px solid #1a237e;
+            border-left: 3px solid #1a237e;
+        }
+
+        .corner-br {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 3px solid #1a237e;
+            border-right: 3px solid #1a237e;
+        }
+
+        /* Certificate Header */
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-logo {
+            font-size: 3rem;
+            color: #1a237e;
+            margin-bottom: 20px;
+        }
+
+        .certificate-title {
+            font-size: 3rem;
+            color: #1a237e;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .certificate-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 30px;
+        }
+
+        /* Certificate Body */
+        .certificate-body {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-awarded {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .recipient-name {
+            font-size: 4rem;
+            color: #1a237e;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 20px 0;
+            border-top: 2px solid #1a237e;
+            border-bottom: 2px solid #1a237e;
+            display: inline-block;
+            min-width: 70%;
+            letter-spacing: 2px;
+        }
+
+        .certificate-text {
+            font-size: 1.5rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .course-details {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-size: 1.8rem;
+            color: #1a237e;
+            font-weight: 600;
+        }
+
+        /* Certificate Footer */
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid #e0e0e0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .signature-block {
+            text-align: center;
+            flex: 1;
+        }
+
+        .signature-line {
+            width: 200px;
+            height: 1px;
+            background: #333;
+            margin: 20px auto;
+        }
+
+        .signature-name {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .signature-title {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Certificate Seal */
+        .certificate-seal {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .seal-inner {
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .seal-icon {
+            font-size: 2.5rem;
+            color: #1a237e;
+            margin-bottom: 5px;
+        }
+
+        .seal-text {
+            font-size: 0.8rem;
+            color: #1a237e;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Certificate Actions */
+        .certificate-actions {
+            background: rgba(20, 20, 20, 0.9);
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            border: none;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #1a237e, #0d47a1);
+            color: white;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(45deg, #0d47a1, #1a237e);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(13, 71, 161, 0.3);
+        }
+
+        .print-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .print-btn:hover {
+            background: white;
+            color: black;
+            transform: translateY(-3px);
+        }
+
+        .share-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .share-btn:hover {
+            background: white;
+            color: black;
+            transform: translateY(-3px);
+        }
+
+        .verify-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+
+        .verify-btn:hover {
+            background: linear-gradient(45deg, #2E7D32, #4CAF50);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3);
+        }
+
+        /* Certificate Verification */
+        .verification-section {
+            padding: 80px 0;
+            background-color: var(--dark);
+        }
+
+        .verification-container {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .verification-title {
+            font-size: 2rem;
+            color: var(--light);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .verification-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .verify-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .verify-button:hover {
+            background: linear-gradient(45deg, #2E7D32, #4CAF50);
+            transform: translateY(-2px);
+        }
+
+        .verification-result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .verification-result.valid {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            display: block;
+        }
+
+        .verification-result.invalid {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            display: block;
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-title.valid {
+            color: #4CAF50;
+        }
+
+        .result-title.invalid {
+            color: #f44336;
+        }
+
+        .result-details {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Certificate Gallery */
+        .certificate-gallery {
+            padding: 80px 0;
+            background-color: var(--darker);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .gallery-item {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .gallery-image {
+            height: 200px;
+            background: linear-gradient(45deg, #1a237e, #0d47a1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .gallery-content {
+            padding: 20px;
+        }
+
+        .gallery-content h3 {
+            color: var(--light);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .gallery-content p {
+            color: var(--gray);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        /* Modal for Certificate Preview */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 4000;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .certificate-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .certificate-modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            animation: modalFadeIn 0.5s ease;
+        }
+
+        .modal-certificate {
+            padding: 40px;
+            min-height: 600px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: rotate(90deg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .certificate {
+                padding: 40px;
+                min-height: 700px;
+            }
+            
+            .recipient-name {
+                font-size: 3rem;
+            }
+            
+            .certificate-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .certificate-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .certificate {
+                padding: 30px;
+                min-height: auto;
+            }
+            
+            .certificate-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+            
+            .recipient-name {
+                font-size: 2.5rem;
+                min-width: 90%;
+            }
+            
+            .certificate-text {
+                font-size: 1.2rem;
+            }
+            
+            .certificate-footer {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .certificate-seal {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin: 30px auto 0;
+            }
+            
+            .course-details {
+                gap: 20px;
+            }
+            
+            .detail-value {
+                font-size: 1.5rem;
+            }
+            
+            .certificate-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-button {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        @media print {
+            .certificate-actions,
+            .verification-section,
+            .certificate-gallery,
+            header,
+            footer {
+                display: none !important;
+            }
+            
+            .certificate {
+                border: none;
+                box-shadow: none;
+                min-height: auto;
+            }
+            
+            .certificate-container {
+                padding: 0;
+                background: white;
+            }
+            
+            .certificate-card {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">BlackCode<span>AI</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="technology.html">Technology</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="games.html">Games</a></li>
+                </ul>
+                <button class="cta-button">Get Started</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Certificate Hero -->
+    <section class="certificate-hero">
+        <div class="container">
+            <h1>Certificate of Completion</h1>
+            <p>Recognizing your achievement and mastery of cutting-edge technology skills. Verify and share your certificate with employers worldwide.</p>
+        </div>
+    </section>
+
+    <!-- Certificate Display -->
+    <section class="certificate-container">
+        <div class="container">
+            <div class="certificate-card">
+                <!-- Certificate Design -->
+                <div class="certificate" id="certificate">
+                    <!-- Decorative Border -->
+                    <div class="certificate-border">
+                        <div class="border-corner corner-tl"></div>
+                        <div class="border-corner corner-tr"></div>
+                        <div class="border-corner corner-bl"></div>
+                        <div class="border-corner corner-br"></div>
+                    </div>
+
+                    <!-- Certificate Header -->
+                    <div class="certificate-header">
+                        <div class="certificate-logo">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h1 class="certificate-title">Certificate of Completion</h1>
+                        <div class="certificate-subtitle">This Certificate is Proudly Presented to</div>
+                    </div>
+
+                    <!-- Certificate Body -->
+                    <div class="certificate-body">
+                        <div class="certificate-awarded">For successfully completing the course</div>
+                        <div class="recipient-name" id="recipientName">John Alexander Doe</div>
+                        
+                        <div class="certificate-text">
+                            has demonstrated exceptional proficiency and dedication in mastering the principles and applications of
+                            <strong id="courseName">Python Masterclass</strong>, completing all required coursework and assessments with distinction.
+                        </div>
+
+                        <div class="course-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Course</div>
+                                <div class="detail-value" id="detailCourse">Python Masterclass</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Duration</div>
+                                <div class="detail-value" id="detailDuration">12 Weeks</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Completion Date</div>
+                                <div class="detail-value" id="detailDate">December 15, 2023</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Certificate ID</div>
+                                <div class="detail-value" id="detailId">BCL-PYTH-2023-001245</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Footer -->
+                    <div class="certificate-footer">
+                        <div class="signature-block">
+                            <div class="signature-line"></div>
+                            <div class="signature-name">Dr. Alex Johnson</div>
+                            <div class="signature-title">Lead Instructor & AI Research Director</div>
+                        </div>
+                        
+                        <div class="signature-block">
+                            <div class="signature-line"></div>
+                            <div class="signature-name">Sarah Chen</div>
+                            <div class="signature-title">CEO, BlackCodeLabs</div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Seal -->
+                    <div class="certificate-seal">
+                        <div class="seal-inner">
+                            <i class="fas fa-award seal-icon"></i>
+                            <div class="seal-text">BLACKCODE<br>LABS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate Actions -->
+                <div class="certificate-actions">
+                    <button class="action-button download-btn" id="downloadBtn">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                    <button class="action-button print-btn" id="printBtn">
+                        <i class="fas fa-print"></i> Print Certificate
+                    </button>
+                    <button class="action-button share-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <button class="action-button verify-btn" id="verifyBtn">
+                        <i class="fas fa-check-circle"></i> Verify Certificate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Verification -->
+    <section class="verification-section">
+        <div class="container">
+            <div class="verification-container">
+                <h2 class="verification-title">Verify Certificate Authenticity</h2>
+                <div class="verification-form">
+                    <div class="form-group">
+                        <label for="certificateId">Certificate ID</label>
+                        <input type="text" id="certificateId" placeholder="Enter Certificate ID (e.g., BCL-PYTH-2023-001245)">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipientEmail">Recipient Email</label>
+                        <input type="email" id="recipientEmail" placeholder="Enter recipient's email address">
+                    </div>
+                    <button class="verify-button" id="verifyCertificateBtn">
+                        <i class="fas fa-search"></i> Verify Certificate
+                    </button>
+                </div>
+                
+                <div class="verification-result" id="verificationResult">
+                    <!-- Result will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Gallery -->
+    <section class="certificate-gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Recent Graduates</h2>
+                <p>Join our community of successful learners who have earned their certificates</p>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #1a237e, #0d47a1)">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Python Masterclass</h3>
+                        <p>Sarah Johnson completed the Python Masterclass with distinction. Now working as a Python Developer at TechCorp.</p>
+                        <div class="certificate-id">BCL-PYTH-2023-001245</div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #f7df1e, #f0db4f)">
+                        <i class="fab fa-js-square"></i>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>JavaScript & React Bootcamp</h3>
+                        <p>Michael Chen earned his certificate and landed a frontend developer role at StartupX immediately after completion.</p>
+                        <div class="certificate-id">BCL-JS-2023-002189</div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #00979c, #00bcd4)">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>IoT Development</h3>
+                        <p>Priya Sharma built a smart home system for her final project and now leads IoT initiatives at HomeTech Solutions.</p>
+                        <div class="certificate-id">BCL-IOT-2023-003456</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Modal for Preview -->
+    <div class="certificate-modal" id="certificateModal">
+        <div class="certificate-modal-content">
+            <button class="modal-close" id="closeCertificateModal">&times;</button>
+            <div class="modal-certificate" id="modalCertificate">
+                <!-- Certificate content will be copied here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>BlackCodeLabs</h3>
+                    <p>Intelligent solutions for the future</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Certificates</h3>
+                    <ul>
+                        <li><a href="#">Verify Certificate</a></li>
+                        <li><a href="#">Certificate Gallery</a></li>
+                        <li><a href="#">Recognition</a></li>
+                        <li><a href="#">Badges</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="courses.html">All Courses</a></li>
+                        <li><a href="#">Python Programming</a></li>
+                        <li><a href="#">JavaScript & React</a></li>
+                        <li><a href="#">IoT Development</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Certificate Issues</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">Verification Help</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 BlackCodeLabs. All rights reserved. | Certificate verification system powered by blockchain technology.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- HTML2Canvas for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        // Certificate data
+        const certificateData = {
+            recipientName: "John Alexander Doe",
+            courseName: "Python Masterclass",
+            courseDuration: "12 Weeks",
+            completionDate: "December 15, 2023",
+            certificateId: "BCL-PYTH-2023-001245",
+            instructor: "Dr. Alex Johnson",
+            ceo: "Sarah Chen",
+            grade: "Distinction",
+            hours: "96 Hours",
+            level: "Advanced"
+        };
+
+        // Verification database (simulated)
+        const certificateDatabase = [
+            {
+                id: "BCL-PYTH-2023-001245",
+                recipient: "John Alexander Doe",
+                email: "john.doe@example.com",
+                course: "Python Masterclass",
+                date: "December 15, 2023",
+                status: "valid",
+                grade: "Distinction"
+            },
+            {
+                id: "BCL-JS-2023-002189",
+                recipient: "Michael Chen",
+                email: "michael.chen@example.com",
+                course: "JavaScript & React Bootcamp",
+                date: "November 28, 2023",
+                status: "valid",
+                grade: "Excellent"
+            },
+            {
+                id: "BCL-IOT-2023-003456",
+                recipient: "Priya Sharma",
+                email: "priya.sharma@example.com",
+                course: "IoT Development",
+                date: "December 5, 2023",
+                status: "valid",
+                grade: "Outstanding"
+            }
+        ];
+
+        // DOM Elements
+        const downloadBtn = document.getElementById('downloadBtn');
+        const printBtn = document.getElementById('printBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const verifyCertificateBtn = document.getElementById('verifyCertificateBtn');
+        const certificateModal = document.getElementById('certificateModal');
+        const closeCertificateModal = document.getElementById('closeCertificateModal');
+        const modalCertificate = document.getElementById('modalCertificate');
+        const verificationResult = document.getElementById('verificationResult');
+
+        // Initialize certificate
+        function initCertificate() {
+            // Set certificate data
+            document.getElementById('recipientName').textContent = certificateData.recipientName;
+            document.getElementById('courseName').textContent = certificateData.courseName;
+            document.getElementById('detailCourse').textContent = certificateData.courseName;
+            document.getElementById('detailDuration').textContent = certificateData.courseDuration;
+            document.getElementById('detailDate').textContent = certificateData.completionDate;
+            document.getElementById('detailId').textContent = certificateData.certificateId;
+            
+            setupEventListeners();
+        }
+
+        // Download certificate as PDF
+        function downloadCertificate() {
+            const certificateElement = document.getElementById('certificate');
+            
+            // Show loading state
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+            downloadBtn.disabled = true;
+            
+            html2canvas(certificateElement, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF('landscape', 'mm', 'a4');
+                const imgWidth = 297; // A4 width in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save(`BlackCodeLabs_Certificate_${certificateData.certificateId}.pdf`);
+                
+                // Reset button state
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                downloadBtn.disabled = false;
+                
+                // Show success message
+                showToast('Certificate downloaded successfully!', 'success');
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                downloadBtn.disabled = false;
+                showToast('Error generating PDF. Please try again.', 'error');
+            });
+        }
+
+        // Print certificate
+        function printCertificate() {
+            // Store current display
+            const originalDisplay = document.body.style.display;
+            
+            // Show only the certificate
+            document.body.style.display = 'block';
+            const certificateContent = document.getElementById('certificate').innerHTML;
+            document.body.innerHTML = certificateContent;
+            
+            // Add print styles
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @media print {
+                    body { margin: 0; padding: 0; }
+                    .certificate { border: none; box-shadow: none; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Print
+            window.print();
+            
+            // Reload the page to restore original content
+            location.reload();
+        }
+
+        // Share certificate
+        async function shareCertificate() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `My ${certificateData.courseName} Certificate`,
+                        text: `I successfully completed the ${certificateData.courseName} from BlackCodeLabs! Check out my certificate.`,
+                        url: window.location.href,
+                    });
+                    showToast('Certificate shared successfully!', 'success');
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                    copyCertificateLink();
+                }
+            } else {
+                copyCertificateLink();
+            }
+        }
+
+        // Copy certificate link to clipboard
+        function copyCertificateLink() {
+            const certificateUrl = `${window.location.origin}${window.location.pathname}?certificate=${certificateData.certificateId}`;
+            
+            navigator.clipboard.writeText(certificateUrl).then(() => {
+                showToast('Certificate link copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showToast('Failed to copy link. Please try again.', 'error');
+            });
+        }
+
+        // Verify certificate
+        function verifyCertificate() {
+            // Scroll to verification section
+            document.querySelector('.verification-section').scrollIntoView({ behavior: 'smooth' });
+            
+            // Auto-fill the verification form
+            document.getElementById('certificateId').value = certificateData.certificateId
