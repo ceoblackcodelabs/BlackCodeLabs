@@ -156,6 +156,11 @@
             color: white;
         }
 
+        .course-badge.kids {
+            background: linear-gradient(45deg, #FF8C42, #FFB347);
+            color: var(--dark);
+        }
+
         .course-image {
             height: 200px;
             background: linear-gradient(45deg, var(--nebula-purple), var(--space-blue));
@@ -941,6 +946,7 @@
                 <button class="filter-btn" data-filter="javascript">JavaScript</button>
                 <button class="filter-btn" data-filter="iot">IoT</button>
                 <button class="filter-btn" data-filter="ai">AI & ML</button>
+                <button class="filter-btn" data-filter="scratch">Scratch for Kids</button>
             </div>
             
             <div class="courses-grid" id="courses-container">
@@ -1029,34 +1035,6 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="curriculum-item">
-                        <div class="curriculum-header">
-                            <h4>Module 2: Object-Oriented Programming</h4>
-                            <i class="fas fa-chevron-down curriculum-icon"></i>
-                        </div>
-                        <div class="curriculum-content">
-                            <ul class="curriculum-lessons">
-                                <li><i class="fas fa-play-circle"></i> Classes and Objects</li>
-                                <li><i class="fas fa-play-circle"></i> Inheritance and Polymorphism</li>
-                                <li><i class="fas fa-play-circle"></i> Encapsulation and Abstraction</li>
-                                <li><i class="fas fa-play-circle"></i> Advanced OOP Concepts</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="curriculum-item">
-                        <div class="curriculum-header">
-                            <h4>Module 3: Advanced Python</h4>
-                            <i class="fas fa-chevron-down curriculum-icon"></i>
-                        </div>
-                        <div class="curriculum-content">
-                            <ul class="curriculum-lessons">
-                                <li><i class="fas fa-play-circle"></i> Decorators and Generators</li>
-                                <li><i class="fas fa-play-circle"></i> Context Managers</li>
-                                <li><i class="fas fa-play-circle"></i> Multithreading and Multiprocessing</li>
-                                <li><i class="fas fa-play-circle"></i> Network Programming</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="instructor-section">
@@ -1067,7 +1045,7 @@
                         </div>
                         <div class="instructor-details">
                             <h4 id="modalInstructorName">Dr. Alex Johnson</h4>
-                            <p id="modalInstructorBio">Senior AI Engineer with 10+ years of experience in Python development and machine learning. Former lead developer at TechGiant Inc. and author of "Python for AI Professionals".</p>
+                            <p id="modalInstructorBio">Senior AI Engineer with 10+ years of experience in Python development and machine learning. Former lead developer at TechGiant Inc.</p>
                         </div>
                     </div>
                 </div>
@@ -1194,6 +1172,7 @@
                         <li><a href="#">JavaScript & React</a></li>
                         <li><a href="#">IoT Development</a></li>
                         <li><a href="#">AI & Machine Learning</a></li>
+                        <li><a href="#">Scratch for Kids</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -1222,7 +1201,7 @@
     </footer>
 
     <script>
-        // Course data
+        // Course data with Scratch course included
         const courses = [
             {
                 id: 1,
@@ -1245,7 +1224,47 @@
                     "Schedule": "Mon & Wed, 7-9 PM EST",
                     "Projects": "5 Real-world Projects",
                     "Support": "24/7 Mentor Support"
-                }
+                },
+                curriculum: [
+                    {
+                        title: "Week 1-3: Python Fundamentals",
+                        lessons: [
+                            "Introduction to Python",
+                            "Variables and Data Types",
+                            "Control Structures",
+                            "Functions and Modules",
+                            "File Handling"
+                        ]
+                    },
+                    {
+                        title: "Week 4-6: Object-Oriented Programming",
+                        lessons: [
+                            "Classes and Objects",
+                            "Inheritance and Polymorphism",
+                            "Encapsulation and Abstraction",
+                            "Advanced OOP Concepts"
+                        ]
+                    },
+                    {
+                        title: "Week 7-10: Advanced Python",
+                        lessons: [
+                            "Decorators and Generators",
+                            "Context Managers",
+                            "Multithreading and Multiprocessing",
+                            "Network Programming"
+                        ]
+                    },
+                    {
+                        title: "Week 11-12: Final Project",
+                        lessons: [
+                            "Project Planning",
+                            "Building a Complete Application",
+                            "Testing and Debugging",
+                            "Deployment",
+                            "Presentation"
+                        ]
+                    }
+                ]
             },
             {
                 id: 2,
@@ -1407,6 +1426,91 @@
                     "Projects": "Security Audits",
                     "Support": "Certification Prep"
                 }
+            },
+            {
+                id: 9,
+                title: "Scratch Programming for Kids",
+                category: "scratch",
+                level: "beginner",
+                badge: "kids",
+                icon: "fas fa-gamepad",
+                description: "Introduce children to coding through fun, visual programming with Scratch. Create games, animations, and interactive stories.",
+                duration: "6 Weeks",
+                lessons: "24 Lessons",
+                students: "3200",
+                rating: "4.9",
+                instructor: "Ms. Emily Carter",
+                price: 99,
+                originalPrice: 149,
+                color: "#FF8C42",
+                details: {
+                    "Age Group": "8-12 Years",
+                    "Format": "Game-based Learning",
+                    "Projects": "10+ Fun Projects",
+                    "Support": "Weekly Progress Reports"
+                },
+                curriculum: [
+                    {
+                        title: "Week 1: Scratch Basics & First Project",
+                        lessons: [
+                            "Introduction to Scratch Interface",
+                            "Meet the Sprite Characters",
+                            "Creating Your First Animation",
+                            "Adding Sounds and Music",
+                            "Save and Share Your Project"
+                        ]
+                    },
+                    {
+                        title: "Week 2: Animation & Storytelling",
+                        lessons: [
+                            "Creating Animated Stories",
+                            "Character Movement & Dialogues",
+                            "Scene Transitions",
+                            "Adding Background Music",
+                            "Interactive Story Project"
+                        ]
+                    },
+                    {
+                        title: "Week 3: Game Development Basics",
+                        lessons: [
+                            "Design Your First Game",
+                            "Score Keeping & Variables",
+                            "Game Controls (Keyboard/Mouse)",
+                            "Win/Lose Conditions",
+                            "Maze Runner Game Project"
+                        ]
+                    },
+                    {
+                        title: "Week 4: Advanced Games",
+                        lessons: [
+                            "Creating Multiple Levels",
+                            "Power-ups and Bonuses",
+                            "Enemy AI Basics",
+                            "Game Physics (Gravity, Bouncing)",
+                            "Space Adventure Game"
+                        ]
+                    },
+                    {
+                        title: "Week 5: Art & Music Projects",
+                        lessons: [
+                            "Digital Drawing with Scratch",
+                            "Creating Music Beats",
+                            "Dance Party Animation",
+                            "Interactive Art Gallery",
+                            "Virtual Band Project"
+                        ]
+                    },
+                    {
+                        title: "Week 6: Final Project & Showcase",
+                        lessons: [
+                            "Planning Your Own Game",
+                            "Combining All Skills",
+                            "Debugging & Testing",
+                            "Polishing Your Project",
+                            "Virtual Showcase Day"
+                        ]
+                    }
+                ]
             }
         ];
 
@@ -1445,7 +1549,13 @@
                 
                 let badgeHTML = '';
                 if (course.badge) {
-                    badgeHTML = `<div class="course-badge ${course.badge}">${course.badge === 'popular' ? 'Most Popular' : course.badge === 'new' ? 'New' : 'Advanced'}</div>`;
+                    let badgeText = '';
+                    if (course.badge === 'popular') badgeText = 'Most Popular';
+                    else if (course.badge === 'new') badgeText = 'New';
+                    else if (course.badge === 'advanced') badgeText = 'Advanced';
+                    else if (course.badge === 'kids') badgeText = 'For Kids';
+                    
+                    badgeHTML = `<div class="course-badge ${course.badge}">${badgeText}</div>`;
                 }
                 
                 courseCard.innerHTML = `
@@ -1518,6 +1628,70 @@
                             <div class="detail-value">${value}</div>
                         </div>
                     `;
+                }
+                
+                // Add special features for Scratch course
+                if (currentCourse.id === 9) {
+                    detailsGrid.innerHTML += `
+                        <div class="detail-item">
+                            <i class="fas fa-child"></i>
+                            <div class="detail-label">Kid-Friendly</div>
+                            <div class="detail-value">Visual Coding</div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-trophy"></i>
+                            <div class="detail-label">Certificates</div>
+                            <div class="detail-value">Digital Badges</div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <div class="detail-label">Class Size</div>
+                            <div class="detail-value">Max 8 Students</div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-comments"></i>
+                            <div class="detail-label">Parent Updates</div>
+                            <div class="detail-value">Weekly Reports</div>
+                        </div>
+                    `;
+                    
+                    // Update instructor bio for Scratch
+                    document.getElementById('modalInstructorBio').textContent = 
+                        "Certified STEM educator with 8+ years experience teaching coding to children. Creator of 'CodeKids' program, recognized for making programming fun and accessible for young learners.";
+                } else {
+                    // Default instructor bio
+                    document.getElementById('modalInstructorBio').textContent = 
+                        "Senior AI Engineer with 10+ years of experience in Python development and machine learning. Former lead developer at TechGiant Inc.";
+                }
+                
+                // Update curriculum section
+                const curriculumSection = document.querySelector('.curriculum-section');
+                if (currentCourse.curriculum) {
+                    curriculumSection.innerHTML = '<h3>Course Curriculum</h3>';
+                    
+                    currentCourse.curriculum.forEach((module, index) => {
+                        const isActive = index === 0 ? 'active' : '';
+                        const lessonsHTML = module.lessons.map(lesson => 
+                            `<li><i class="fas fa-play-circle"></i> ${lesson}</li>`
+                        ).join('');
+                        
+                        curriculumSection.innerHTML += `
+                            <div class="curriculum-item ${isActive}">
+                                <div class="curriculum-header">
+                                    <h4>${module.title}</h4>
+                                    <i class="fas fa-chevron-down curriculum-icon"></i>
+                                </div>
+                                <div class="curriculum-content">
+                                    <ul class="curriculum-lessons">
+                                        ${lessonsHTML}
+                                    </ul>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    // Re-initialize curriculum accordion
+                    setupCurriculumAccordion();
                 }
                 
                 // Set modal image background
@@ -1613,14 +1787,31 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--success);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                z-index: 9999;
+                transform: translateX(100%);
+                transition: transform 0.3s;
+            `;
+            
+            if (type === 'error') {
+                toast.style.background = 'var(--error)';
+            }
+            
             document.body.appendChild(toast);
             
             setTimeout(() => {
-                toast.classList.add('show');
+                toast.style.transform = 'translateX(0)';
             }, 100);
             
             setTimeout(() => {
-                toast.classList.remove('show');
+                toast.style.transform = 'translateX(100%)';
                 setTimeout(() => {
                     document.body.removeChild(toast);
                 }, 300);
