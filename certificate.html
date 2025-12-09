@@ -1112,3 +1112,512 @@
             
             // Auto-fill the verification form
             document.getElementById('certificateId').value = certificateData.certificateId
+                        // Focus on the first input
+            document.getElementById('certificateId').focus();
+        }
+
+        // Verify certificate from form
+        function verifyCertificateFromForm() {
+            const certificateId = document.getElementById('certificateId').value.trim();
+            const recipientEmail = document.getElementById('recipientEmail').value.trim();
+            
+            if (!certificateId || !recipientEmail) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Show loading state
+            verifyCertificateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+            verifyCertificateBtn.disabled = true;
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                const certificate = certificateDatabase.find(cert => 
+                    cert.id === certificateId && cert.email === recipientEmail
+                );
+                
+                let resultHtml = '';
+                if (certificate) {
+                    resultHtml = `
+                        <div class="result-title valid">
+                            <i class="fas fa-check-circle"></i> Certificate Verified Successfully!
+                        </div>
+                        <div class="result-details">
+                            <p><strong>Certificate ID:</strong> ${certificate.id}</p>
+                            <p><strong>Recipient:</strong> ${certificate.recipient}</p>
+                            <p><strong>Course:</strong> ${certificate.course}</p>
+                            <p><strong>Completion Date:</strong> ${certificate.date}</p>
+                            <p><strong>Grade:</strong> ${certificate.grade}</p>
+                            <p><strong>Status:</strong> <span style="color: #4CAF50;">Valid ✓</span></p>
+                            <p><em>This certificate has been verified and authenticated by BlackCodeLabs.</em></p>
+                        </div>
+                    `;
+                    verificationResult.className = 'verification-result valid';
+                    showToast('Certificate verified successfully!', 'success');
+                } else {
+                    resultHtml = `
+                        <div class="result-title invalid">
+                            <i class="fas fa-times-circle"></i> Certificate Not Found
+                        </div>
+                        <div class="result-details">
+                            <p>The certificate could not be verified. Please check:</p>
+                            <ul>
+                                <li>The Certificate ID is correct</li>
+                                <li>The recipient email matches the certificate record</li>
+                                <li>The certificate hasn't been revoked</li>
+                            </ul>
+                            <p>If you believe this is an error, please contact support.</p>
+                        </div>
+                    `;
+                    verificationResult.className = 'verification-result invalid';
+                    showToast('Certificate not found or invalid', 'error');
+                }
+                
+                verificationResult.innerHTML = resultHtml;
+                verificationResult.style.display = 'block';
+                
+                // Reset button state
+                verifyCertificateBtn.innerHTML = '<i class="fas fa-search"></i> Verify Certificate';
+                verifyCertificateBtn.disabled = false;
+            }, 1500);
+        }
+
+        // Open certificate preview modal
+        function openCertificatePreview() {
+            const certificateContent = document.getElementById('certificate').cloneNode(true);
+            modalCertificate.innerHTML = '';
+            modalCertificate.appendChild(certificateContent);
+            certificateModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close certificate preview modal
+        function closeCertificatePreview() {
+            certificateModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            downloadBtn.addEventListener('click', downloadCertificate);
+            printBtn.addEventListener('click', printCertificate);
+            shareBtn.addEventListener('click', shareCertificate);
+            verifyBtn.addEventListener('click', verifyCertificate);
+            verifyCertificateBtn.addEventListener('click', verifyCertificateFromForm);
+            closeCertificateModal.addEventListener('click', closeCertificatePreview);
+            
+            // Close modal on outside click
+            certificateModal.addEventListener('click', (e) => {
+                if (e.target === certificateModal) {
+                    closeCertificatePreview();
+                }
+            });
+            
+            // Close modal on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && certificateModal.classList.contains('active')) {
+                    closeCertificatePreview();
+                }
+            });
+            
+            // Enter key on verification form
+            document.getElementById('recipientEmail').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verifyCertificateFromForm();
+                }
+            });
+            
+            // Preview certificate on click
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', openCertificatePreview);
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            // Remove existing toast
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            // Add toast styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast-notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--dark);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    min-width: 300px;
+                    max-width: 400px;
+                    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+                    z-index: 5000;
+                    animation: slideIn 0.3s ease;
+                    border-left: 4px solid ${type === 'success' ? '#4CAF50' : '#f44336'};
+                }
+                
+                .toast-notification.success {
+                    border-left-color: #4CAF50;
+                }
+                
+                .toast-notification.error {
+                    border-left-color: #f44336;
+                }
+                
+                .toast-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                
+                .toast-content i {
+                    font-size: 1.2rem;
+                }
+                
+                .toast-close {
+                    background: transparent;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 25px;
+                    height: 25px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0.7;
+                    transition: opacity 0.3s;
+                }
+                
+                .toast-close:hover {
+                    opacity: 1;
+                }
+                
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            
+            document.head.appendChild(style);
+            document.body.appendChild(toast);
+            
+            // Close toast on button click
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.remove();
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideOut 0.3s ease forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 5000);
+            
+            // Add slideOut animation
+            const slideOutStyle = document.createElement('style');
+            slideOutStyle.textContent = `
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(slideOutStyle);
+        }
+
+        // Load certificate from URL parameters
+        function loadCertificateFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const certificateId = urlParams.get('certificate');
+            const preview = urlParams.get('preview');
+            
+            if (certificateId) {
+                // In a real application, you would fetch certificate data from API
+                // For now, we'll simulate loading a specific certificate
+                const foundCertificate = certificateDatabase.find(cert => cert.id === certificateId);
+                if (foundCertificate) {
+                    // Update certificate data
+                    certificateData.recipientName = foundCertificate.recipient;
+                    certificateData.courseName = foundCertificate.course;
+                    certificateData.completionDate = foundCertificate.date;
+                    certificateData.certificateId = foundCertificate.id;
+                    
+                    // Update display
+                    initCertificate();
+                    
+                    // Auto-open preview if preview parameter is present
+                    if (preview === 'true') {
+                        setTimeout(openCertificatePreview, 1000);
+                    }
+                }
+            }
+        }
+
+        // Add hover effects to gallery items
+        function setupGalleryHoverEffects() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    const icon = item.querySelector('.gallery-image i');
+                    if (icon) {
+                        icon.style.transform = 'scale(1.2) rotate(10deg)';
+                        icon.style.transition = 'transform 0.3s ease';
+                    }
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    const icon = item.querySelector('.gallery-image i');
+                    if (icon) {
+                        icon.style.transform = 'scale(1) rotate(0deg)';
+                    }
+                });
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initCertificate();
+            loadCertificateFromURL();
+            setupGalleryHoverEffects();
+            
+            // Add animations
+            animateCertificateElements();
+            
+            // Check if browser supports Web Share API
+            if (!navigator.share) {
+                shareBtn.title = "Copy link to clipboard";
+            }
+        });
+
+        // Animate certificate elements on load
+        function animateCertificateElements() {
+            const certificate = document.getElementById('certificate');
+            if (!certificate) return;
+            
+            // Add animation styles
+            const animationStyle = document.createElement('style');
+            animationStyle.textContent = `
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+                
+                .certificate-header {
+                    animation: fadeInUp 0.8s ease 0.2s both;
+                }
+                
+                .recipient-name {
+                    animation: fadeInUp 0.8s ease 0.4s both;
+                }
+                
+                .certificate-text {
+                    animation: fadeInUp 0.8s ease 0.6s both;
+                }
+                
+                .course-details {
+                    animation: fadeInUp 0.8s ease 0.8s both;
+                }
+                
+                .certificate-footer {
+                    animation: fadeInUp 0.8s ease 1s both;
+                }
+                
+                .certificate-seal {
+                    animation: pulse 2s ease-in-out infinite 1.5s;
+                }
+            `;
+            document.head.appendChild(animationStyle);
+        }
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add certificate ID to URL when verify button is clicked
+        document.getElementById('certificateId').addEventListener('focus', function() {
+            if (!this.value && certificateData.certificateId) {
+                this.value = certificateData.certificateId;
+            }
+        });
+
+        // Initialize tooltips
+        function initTooltips() {
+            const buttons = document.querySelectorAll('.action-button');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = this.getAttribute('data-tooltip') || '';
+                    if (tooltip.textContent) {
+                        this.appendChild(tooltip);
+                    }
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    const tooltip = this.querySelector('.tooltip');
+                    if (tooltip) {
+                        tooltip.remove();
+                    }
+                });
+            });
+        }
+
+        // Call tooltip initialization
+        initTooltips();
+
+    </script>
+
+    <!-- Additional CSS for tooltips -->
+    <style>
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            z-index: 1000;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 10px;
+            pointer-events: none;
+        }
+        
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+        }
+        
+        /* Add responsive design for mobile */
+        @media (max-width: 480px) {
+            .certificate-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .certificate {
+                padding: 20px;
+            }
+            
+            .certificate-title {
+                font-size: 1.8rem;
+            }
+            
+            .recipient-name {
+                font-size: 2rem;
+                padding: 15px 10px;
+            }
+            
+            .certificate-text {
+                font-size: 1rem;
+            }
+            
+            .course-details {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .detail-value {
+                font-size: 1.2rem;
+            }
+            
+            .verification-container {
+                padding: 20px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .toast-notification {
+                min-width: 250px;
+                max-width: 300px;
+                padding: 12px 15px;
+            }
+        }
+        
+        /* Add dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .certificate {
+                background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+                color: #e0e0e0;
+            }
+            
+            .certificate-text {
+                color: #b0b0b0;
+            }
+            
+            .detail-value {
+                color: #4fc3f7;
+            }
+        }
+    </style>
+
+</body>
+</html>
