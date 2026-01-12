@@ -11,59 +11,171 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
 });
 
-// Space Scene Initialization (UNCHANGED - preserving your algorithm)
+// Space Scene Initialization (Three.js)
 let scene, camera, renderer, stars;
+let isMobile = false;
 
 function initSpace() {
-    if (document.getElementById('space-container')) {
-        // Scene setup
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('space-container').appendChild(renderer.domElement);
-        
-        // Create stars
-        const starGeometry = new THREE.BufferGeometry();
-        const starVertices = [];
-        for (let i = 0; i < 10000; i++) {
-            const x = (Math.random() - 0.5) * 2000;
-            const y = (Math.random() - 0.5) * 2000;
-            const z = (Math.random() - 0.5) * 2000;
-            starVertices.push(x, y, z);
-        }
-        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-        const starMaterial = new THREE.PointsMaterial({ 
-            color: 0xffffff, 
-            size: 1.2,
-            sizeAttenuation: true
-        });
-        stars = new THREE.Points(starGeometry, starMaterial);
-        scene.add(stars);
-        
-        // Set camera position
-        camera.position.z = 100;
-        
-        // Animation loop
-        animateSpace();
-        
-        // Handle window resize
-        window.addEventListener('resize', onWindowResize);
+    if (!document.getElementById('space-container')) return;
+
+    // Check if device can handle WebGL
+    if (!isWebGLAvailable() || isLowPerformanceDevice()) {
+        createStaticSpaceFallback();
+        return;
     }
+    
+    // Check if mobile device
+    isMobile = window.innerWidth <= 768;
+    
+    // Scene setup
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    
+    // Optimize renderer for mobile
+    renderer = new THREE.WebGLRenderer({ 
+        alpha: true, 
+        antialias: !isMobile, // Disable antialias on mobile for performance
+        powerPreference: 'low-power' // Save battery on mobile
+    });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(isMobile ? 1 : window.devicePixelRatio); // Limit pixel ratio on mobile
+    
+    const spaceContainer = document.getElementById('space-container');
+    spaceContainer.appendChild(renderer.domElement);
+    
+    // Adjust star count based on device
+    const starCount = isMobile ? 2000 : 10000; // Fewer stars on mobile
+    
+    // Create stars with optimized settings
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
+    
+    for (let i = 0; i < starCount; i++) {
+        const distance = isMobile ? 1000 : 2000; // Smaller space on mobile
+        const x = (Math.random() - 0.5) * distance;
+        const y = (Math.random() - 0.5) * distance;
+        const z = (Math.random() - 0.5) * distance;
+        starVertices.push(x, y, z);
+    }
+    
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    
+    const starMaterial = new THREE.PointsMaterial({ 
+        color: 0xffffff, 
+        size: isMobile ? 1 : 1.2, // Smaller stars on mobile
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: isMobile ? 0.6 : 0.8 // Adjust opacity
+    });
+    
+    stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+    
+    // Set camera position
+    camera.position.z = isMobile ? 50 : 100;
+    
+    // Start animation
+    animateSpace();
+    
+    // Handle window resize with debouncing
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(onWindowResize, 250);
+    });
 }
 
 function animateSpace() {
+    if (!renderer || !scene || !camera) return;
+    
     requestAnimationFrame(animateSpace);
-    stars.rotation.x += 0.0005;
-    stars.rotation.y += 0.0005;
+    
+    // Slower rotation on mobile
+    const rotationSpeed = isMobile ? 0.0002 : 0.0005;
+    stars.rotation.x += rotationSpeed;
+    stars.rotation.y += rotationSpeed;
+    
     renderer.render(scene, camera);
 }
 
 function onWindowResize() {
-    if (camera && renderer) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+    if (!camera || !renderer) return;
+    
+    // Update isMobile check
+    isMobile = window.innerWidth <= 768;
+    
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(isMobile ? 1 : window.devicePixelRatio);
+    
+    // Recreate stars with new count if device type changed
+    if (scene && stars) {
+        scene.remove(stars);
+        
+        const starCount = isMobile ? 2000 : 10000;
+        const starGeometry = new THREE.BufferGeometry();
+        const starVertices = [];
+        
+        for (let i = 0; i < starCount; i++) {
+            const distance = isMobile ? 1000 : 2000;
+            const x = (Math.random() - 0.5) * distance;
+            const y = (Math.random() - 0.5) * distance;
+            const z = (Math.random() - 0.5) * distance;
+            starVertices.push(x, y, z);
+        }
+        
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const starMaterial = new THREE.PointsMaterial({ 
+            color: 0xffffff, 
+            size: isMobile ? 1 : 1.2,
+            sizeAttenuation: true,
+            transparent: true,
+            opacity: isMobile ? 0.6 : 0.8
+        });
+        
+        stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+    }
+}
+
+// Check for device capabilities
+function isLowPerformanceDevice() {
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const memory = navigator.deviceMemory || 4; // Device memory in GB
+    const cores = navigator.hardwareConcurrency || 4;
+    
+    return isMobileDevice && (memory <= 2 || cores <= 2);
+}
+
+function isWebGLAvailable() {
+    try {
+        const canvas = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && 
+                 (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+    } catch (e) {
+        return false;
+    }
+}
+
+function createStaticSpaceFallback() {
+    const spaceContainer = document.getElementById('space-container');
+    spaceContainer.innerHTML = '';
+    spaceContainer.style.background = 'radial-gradient(circle at center, #0a1128 0%, #050505 100%)';
+    
+    // Add some static stars with CSS
+    for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.style.position = 'absolute';
+        star.style.width = Math.random() * 2 + 'px';
+        star.style.height = star.style.width;
+        star.style.background = 'white';
+        star.style.borderRadius = '50%';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.opacity = Math.random() * 0.5 + 0.3;
+        spaceContainer.appendChild(star);
     }
 }
 
@@ -143,6 +255,18 @@ function initMobileMenu() {
                     ctaButton.style.visibility = 'visible';
                 }
                 document.body.classList.remove('menu-open');
+                
+                // Reinitialize space with desktop settings
+                if (renderer && camera) {
+                    isMobile = false;
+                    onWindowResize();
+                }
+            } else {
+                // Update space for mobile if needed
+                if (renderer && camera) {
+                    isMobile = true;
+                    onWindowResize();
+                }
             }
         }, 250);
     });
@@ -390,4 +514,33 @@ document.querySelectorAll('.cta-button').forEach(button => {
             window.location.href = 'contact.html';
         }
     });
+});
+
+// Clean up Three.js resources when page is hidden (for mobile)
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden && renderer) {
+        // Pause animation when page is not visible
+        // This saves battery on mobile
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+    } else if (!document.hidden && renderer && !animationFrameId) {
+        // Resume animation when page becomes visible
+        animateSpace();
+    }
+});
+
+// Clean up on page unload
+window.addEventListener('beforeunload', function() {
+    if (renderer) {
+        renderer.dispose();
+    }
+    if (scene) {
+        scene.clear();
+    }
+    if (stars && stars.geometry) {
+        stars.geometry.dispose();
+        stars.material.dispose();
+    }
 });
