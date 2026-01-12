@@ -5385,3 +5385,1251 @@ body.menu-open {
     }
 }
 
+/* ============================================
+   SUPER RESPONSIVE DESIGN - ULTIMATE BREAKPOINTS
+   ============================================ */
+
+/* Base Responsive Typography */
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* 1. EXTRA LARGE DESKTOPS (1600px and above) */
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1400px;
+  }
+  
+  .hero h1 {
+    font-size: 4.5rem;
+    line-height: 1.1;
+  }
+  
+  .section-title h2 {
+    font-size: 3.5rem;
+  }
+  
+  .features-grid,
+  .team-grid,
+  .testimonial-slider,
+  .demo-grid,
+  .tech-grid,
+  .solutions-grid,
+  .jobs-grid,
+  .blog-grid {
+    gap: 40px;
+  }
+}
+
+/* 2. LARGE DESKTOPS (1200px - 1599px) */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .container {
+    max-width: 1140px;
+  }
+  
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .testimonial {
+    flex: 0 0 calc(33.333% - 30px);
+  }
+}
+
+/* 3. STANDARD DESKTOPS (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    max-width: 960px;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+  }
+  
+  .nav-links li {
+    margin-left: 20px;
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .testimonial {
+    flex: 0 0 calc(50% - 30px);
+  }
+  
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 4. TABLETS (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    max-width: 720px;
+    padding: 0 25px;
+  }
+  
+  /* Typography for tablets */
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+  }
+  
+  .section-title h2 {
+    font-size: 2.4rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  /* Navigation adjustments */
+  .nav-links {
+    display: none;
+  }
+  
+  .hamburger {
+    display: flex;
+  }
+  
+  /* Grid layouts */
+  .features-grid,
+  .team-grid,
+  .demo-grid,
+  .tech-grid,
+  .solutions-grid,
+  .jobs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+  
+  .testimonial {
+    flex: 0 0 calc(50% - 20px);
+    min-width: 280px;
+  }
+  
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  /* Spacing adjustments */
+  .hero {
+    padding: 150px 0 80px;
+  }
+  
+  .features,
+  .statistics,
+  .about,
+  .team,
+  .testimonials,
+  .demos,
+  .newsletter,
+  .cta,
+  .technology,
+  .solutions,
+  .careers,
+  .blog {
+    padding: 70px 0;
+  }
+  
+  /* Form adjustments */
+  .newsletter-form {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .newsletter-input {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .newsletter-button {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  /* Hide space elements on tablets */
+  .space-nav,
+  #space-container {
+    display: none;
+  }
+  
+  /* Card adjustments */
+  .feature-card,
+  .team-member,
+  .demo-card,
+  .testimonial,
+  .tech-card,
+  .solution-card,
+  .job-card,
+  .blog-card {
+    padding: 25px;
+    text-align: center;
+  }
+  
+  /* Blog modal adjustments */
+  .blog-modal-content {
+    margin: 30px auto;
+  }
+  
+  .blog-modal-image {
+    height: 250px;
+  }
+}
+
+/* 5. LARGE PHONES (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .container {
+    max-width: 540px;
+    padding: 0 20px;
+  }
+  
+  /* Typography for large phones */
+  .hero h1 {
+    font-size: 2.4rem;
+    line-height: 1.2;
+  }
+  
+  .hero p {
+    font-size: 1.1rem;
+    padding: 0 15px;
+  }
+  
+  .section-title h2 {
+    font-size: 2rem;
+  }
+  
+  .section-title p {
+    font-size: 1rem;
+  }
+  
+  /* Single column layouts */
+  .features-grid,
+  .team-grid,
+  .demo-grid,
+  .tech-grid,
+  .solutions-grid,
+  .jobs-grid,
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .testimonial {
+    flex: 0 0 calc(100% - 20px);
+  }
+  
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+  
+  /* Button adjustments */
+  .cta-button,
+  .apply-button,
+  .read-more,
+  .demo-button {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+  
+  .hero .cta-button {
+    padding: 15px 40px;
+    font-size: 18px;
+  }
+  
+  /* Spacing adjustments */
+  .hero {
+    padding: 140px 0 70px;
+  }
+  
+  .features,
+  .statistics,
+  .about,
+  .team,
+  .testimonials,
+  .demos,
+  .newsletter,
+  .cta,
+  .technology,
+  .solutions,
+  .careers,
+  .blog {
+    padding: 60px 0;
+  }
+  
+  /* Mobile menu */
+  .nav-links {
+    width: 280px;
+  }
+  
+  /* Statistics adjustments */
+  .stat-number {
+    font-size: 2.5rem;
+  }
+  
+  .stat-label {
+    font-size: 1rem;
+  }
+  
+  /* Newsletter form */
+  .newsletter-form {
+    width: 100%;
+  }
+  
+  /* Certificate responsive */
+  .certificate {
+    padding: 30px;
+  }
+  
+  .recipient-name {
+    font-size: 2.5rem;
+  }
+  
+  .certificate-title {
+    font-size: 2rem;
+  }
+}
+
+/* 6. SMALL PHONES (480px - 575px) */
+@media (min-width: 480px) and (max-width: 575px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  /* Typography */
+  .hero h1 {
+    font-size: 2rem;
+    padding: 0 10px;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+  
+  .section-title h2 {
+    font-size: 1.8rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  /* Single column layouts */
+  .features-grid,
+  .team-grid,
+  .stats-grid,
+  .demo-grid,
+  .tech-grid,
+  .solutions-grid,
+  .jobs-grid,
+  .blog-grid,
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .testimonial {
+    flex: 0 0 calc(100% - 10px);
+    margin: 0 5px;
+  }
+  
+  /* Card padding */
+  .feature-card,
+  .team-member,
+  .demo-card,
+  .testimonial,
+  .tech-card,
+  .solution-card,
+  .job-card,
+  .blog-card {
+    padding: 20px;
+  }
+  
+  /* Icon sizes */
+  .feature-icon,
+  .tech-icon,
+  .solution-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+  
+  .team-member-image {
+    width: 120px;
+    height: 120px;
+    font-size: 48px;
+  }
+  
+  /* Spacing */
+  .hero {
+    padding: 120px 0 60px;
+  }
+  
+  .features,
+  .statistics,
+  .about,
+  .team,
+  .testimonials,
+  .demos,
+  .newsletter,
+  .cta,
+  .technology,
+  .solutions,
+  .careers,
+  .blog {
+    padding: 50px 0;
+  }
+  
+  /* Button sizes */
+  .cta-button,
+  .apply-button,
+  .read-more,
+  .demo-button {
+    padding: 10px 25px;
+    font-size: 14px;
+  }
+  
+  /* Mobile menu */
+  .nav-links {
+    width: 100%;
+  }
+  
+  .nav-links a {
+    padding: 18px 25px;
+    font-size: 17px;
+  }
+  
+  /* Blog modal */
+  .blog-modal-content {
+    margin: 20px auto;
+  }
+  
+  .blog-modal-title {
+    font-size: 1.6rem;
+  }
+  
+  .blog-modal-image {
+    height: 200px;
+  }
+  
+  .blog-modal-body {
+    padding: 15px;
+  }
+}
+
+/* 7. EXTRA SMALL PHONES (below 480px) */
+@media (max-width: 479px) {
+  .container {
+    padding: 0 12px;
+  }
+  
+  /* Typography for extra small screens */
+  .hero h1 {
+    font-size: 1.8rem;
+    padding: 0 5px;
+  }
+  
+  .hero p {
+    font-size: 0.95rem;
+    padding: 0 5px;
+  }
+  
+  .section-title h2 {
+    font-size: 1.6rem;
+  }
+  
+  .section-title p {
+    font-size: 0.9rem;
+  }
+  
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+  }
+  
+  /* Everything in single column */
+  .features-grid,
+  .team-grid,
+  .stats-grid,
+  .demo-grid,
+  .tech-grid,
+  .solutions-grid,
+  .jobs-grid,
+  .blog-grid,
+  .footer-content,
+  .about-content,
+  .values-grid,
+  .platform-features,
+  .process-steps,
+  .course-details,
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Remove flex layouts */
+  .contact-form,
+  .newsletter-form,
+  .certificate-footer {
+    flex-direction: column;
+  }
+  
+  /* Card adjustments */
+  .feature-card,
+  .team-member,
+  .demo-card,
+  .testimonial,
+  .tech-card,
+  .solution-card,
+  .job-card,
+  .blog-card {
+    padding: 18px;
+  }
+  
+  .feature-card h3,
+  .team-member h3,
+  .demo-content h3,
+  .tech-card h3,
+  .solution-card h3,
+  .job-card h3,
+  .blog-content h3 {
+    font-size: 1.3rem;
+  }
+  
+  /* Icon and image sizes */
+  .feature-icon,
+  .tech-icon,
+  .solution-icon,
+  .value-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    margin: 0 auto 15px;
+  }
+  
+  .team-member-image {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+  
+  .job-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    margin: 0 auto 15px;
+  }
+  
+  .benefit-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  /* Button sizes */
+  .cta-button,
+  .apply-button,
+  .read-more,
+  .demo-button,
+  .newsletter-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .hero .cta-button {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+  
+  /* Spacing */
+  .hero {
+    padding: 110px 0 50px;
+  }
+  
+  .page-header {
+    padding: 120px 0 60px;
+  }
+  
+  .features,
+  .statistics,
+  .about,
+  .team,
+  .testimonials,
+  .demos,
+  .newsletter,
+  .cta,
+  .technology,
+  .solutions,
+  .careers,
+  .blog {
+    padding: 40px 0;
+  }
+  
+  .section-title {
+    margin-bottom: 40px;
+  }
+  
+  /* Statistics */
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+  }
+  
+  /* Forms */
+  .form-group input,
+  .form-group select,
+  .form-group textarea,
+  .newsletter-input {
+    padding: 12px;
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+  
+  /* Mobile menu */
+  .nav-links {
+    width: 100%;
+  }
+  
+  .nav-links a {
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+  
+  /* Toast notifications */
+  .toast {
+    min-width: 250px;
+    max-width: 280px;
+    padding: 12px 15px;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    margin: 0 auto;
+  }
+  
+  /* Certificate responsive */
+  .certificate {
+    padding: 20px;
+  }
+  
+  .certificate-title {
+    font-size: 1.6rem;
+  }
+  
+  .recipient-name {
+    font-size: 1.8rem;
+    padding: 12px 8px;
+  }
+  
+  .certificate-text {
+    font-size: 1rem;
+  }
+  
+  /* Blog modal */
+  .blog-modal-content {
+    margin: 10px auto;
+  }
+  
+  .blog-modal-title {
+    font-size: 1.4rem;
+  }
+  
+  .blog-modal-image {
+    height: 180px;
+  }
+  
+  .blog-modal-body {
+    padding: 12px;
+  }
+  
+  .interactive-elements,
+  .blog-modal-footer,
+  .comments-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Contact page adjustments */
+  .contact-form-container,
+  .info-card,
+  .office-card {
+    padding: 18px;
+  }
+  
+  .map-placeholder {
+    height: 150px;
+  }
+  
+  .map-content i {
+    font-size: 2rem;
+  }
+  
+  .map-content h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* 8. LANDSCAPE MODE SPECIAL HANDLING */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding: 100px 0 60px;
+  }
+  
+  .nav-links {
+    padding-top: 80px;
+  }
+  
+  .nav-links a {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+  
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  
+  .feature-card,
+  .team-member,
+  .demo-card {
+    min-height: auto;
+  }
+  
+  .blog-modal-content,
+  .course-modal-content,
+  .registration-modal-content {
+    margin: 10px auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* 9. HIGH-DPI/Retina DISPLAYS */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .hero::before,
+  .page-header::before,
+  .testimonials::before,
+  .newsletter::before,
+  .cta::before {
+    background-size: 200px 200px;
+  }
+  
+  .feature-card,
+  .team-member,
+  .testimonial,
+  .demo-card,
+  .tech-card,
+  .solution-card,
+  .job-card,
+  .blog-card {
+    border-width: 0.5px;
+  }
+}
+
+/* 10. TOUCH DEVICE OPTIMIZATIONS */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase tap target sizes */
+  .nav-links a,
+  .cta-button,
+  .apply-button,
+  .read-more,
+  .demo-button,
+  .course-button,
+  .action-button,
+  .reaction-btn,
+  .save-btn,
+  .share-btn,
+  .comment-action {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Remove hover effects for touch */
+  .feature-card:hover,
+  .team-member:hover,
+  .demo-card:hover,
+  .testimonial:hover,
+  .tech-card:hover,
+  .solution-card:hover,
+  .job-card:hover,
+  .blog-card:hover {
+    transform: none;
+  }
+  
+  /* Keep active states for touch feedback */
+  .feature-card:active,
+  .team-member:active,
+  .demo-card:active,
+  .testimonial:active,
+  .tech-card:active,
+  .solution-card:active,
+  .job-card:active,
+  .blog-card:active {
+    transform: scale(0.98);
+  }
+  
+  /* Add touch-friendly scroll */
+  .testimonial-slider {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 20px 10px;
+  }
+  
+  .testimonial-slider::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Space navigation for touch */
+  .nav-dot {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* 11. PRINT STYLES */
+@media print {
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+  
+  /* Hide unnecessary elements */
+  .space-nav,
+  #space-container,
+  .hamburger,
+  .mobile-menu-overlay,
+  .cta-button,
+  .loading,
+  .newsletter-form,
+  .social-icons,
+  .comments-section,
+  .interactive-elements,
+  .toast,
+  .action-button:not(.print-btn),
+  header,
+  footer,
+  .blog-modal-footer,
+  .blog-modal-share {
+    display: none !important;
+  }
+  
+  /* Adjust layouts for print */
+  .features-grid,
+  .team-grid,
+  .blog-grid,
+  .jobs-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .feature-card,
+  .team-member,
+  .blog-card,
+  .job-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    margin-bottom: 20px;
+  }
+  
+  /* Certificate printing */
+  .certificate-container {
+    padding: 0;
+  }
+  
+  .certificate-card {
+    box-shadow: none;
+    border: none;
+  }
+  
+  .certificate {
+    border: 2px solid #000;
+  }
+  
+  .certificate-actions {
+    display: none;
+  }
+  
+  /* Links */
+  a {
+    text-decoration: underline;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+  }
+  
+  /* Page breaks */
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+  }
+  
+  img {
+    page-break-inside: avoid;
+    max-width: 100% !important;
+  }
+  
+  ul, ol, dl {
+    page-break-before: avoid;
+  }
+}
+
+/* 12. REDUCED MOTION PREFERENCES */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .loading-spinner {
+    animation: none;
+  }
+  
+  .feature-card,
+  .team-member,
+  .testimonial {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 13. DARK MODE SUPPORT */
+@media (prefers-color-scheme: dark) {
+  /* Ensure dark theme consistency */
+  :root {
+    --primary: #ffffff;
+    --secondary: #000000;
+    --accent: #888888;
+    --dark: #0a0a0a;
+    --darker: #050505;
+    --light: #ffffff;
+    --gray: #aaaaaa;
+  }
+  
+  body {
+    background-color: var(--darker);
+    color: var(--light);
+  }
+  
+  /* Print adjustments for dark mode */
+  @media print {
+    body {
+      background: white !important;
+      color: black !important;
+    }
+  }
+}
+
+/* 14. ACCESSIBILITY: HIGH CONTRAST MODE */
+@media (prefers-contrast: high) {
+  :root {
+    --primary: #ffffff;
+    --secondary: #000000;
+    --accent: #ffffff;
+    --light: #ffffff;
+    --gray: #ffffff;
+  }
+  
+  .feature-card,
+  .team-member,
+  .testimonial,
+  .demo-card,
+  .tech-card,
+  .solution-card,
+  .job-card,
+  .blog-card {
+    border: 2px solid var(--light);
+  }
+  
+  .nav-links a {
+    text-decoration: underline;
+  }
+}
+
+/* 15. FOLDABLE/DUAL SCREEN DEVICES */
+@media (spanning: single-fold-vertical) {
+  .container {
+    max-width: calc(100vw - env(fold-width));
+  }
+}
+
+/* 16. SAFARI SPECIFIC FIXES */
+@supports (-webkit-touch-callout: none) {
+  /* Safari specific CSS */
+  .hero {
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  input, textarea {
+    font-size: 16px; /* Prevents zoom on focus in iOS Safari */
+  }
+}
+
+/* 17. FIREFOX SCROLLBAR FIX */
+@-moz-document url-prefix() {
+  .testimonial-slider {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+}
+
+/* 18. EMERGENCY OVERRIDES FOR EXTREME ASPECT RATIOS */
+@media (max-aspect-ratio: 1/1) and (max-width: 768px) {
+  /* Square or portrait extreme */
+  .hero h1 {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+  
+  .hero p {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+  }
+}
+
+@media (min-aspect-ratio: 2/1) and (min-width: 1024px) {
+  /* Ultra-wide screens */
+  .container {
+    max-width: 1600px;
+  }
+  
+  .hero h1 {
+    font-size: 4rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 19. PERFORMANCE OPTIMIZATIONS FOR MOBILE */
+@media (max-width: 768px) {
+  /* Reduce heavy effects on mobile */
+  .hero::before,
+  .page-header::before,
+  .testimonials::before,
+  .newsletter::before,
+  .cta::before {
+    background: none;
+  }
+  
+  .feature-card,
+  .team-member,
+  .testimonial,
+  .demo-card,
+  .tech-card,
+  .solution-card,
+  .job-card,
+  .blog-card {
+    backdrop-filter: none;
+  }
+  
+  /* Reduce animations on mobile */
+  .feature-card,
+  .team-member {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 20. LOADING OPTIMIZATIONS */
+@media (max-width: 768px) {
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+  }
+}
+
+/* 21. DYNAMIC VIEWPORT HEIGHT FIX FOR MOBILE */
+.hero {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: calc(100vh - 60px);
+    min-height: calc(100dvh - 60px);
+  }
+}
+
+/* 22. FONT LOADING FALLBACKS */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+              'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 23. SCROLL SNAP IMPROVEMENTS */
+@media (max-width: 768px) {
+  .testimonial-slider {
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 15px;
+  }
+  
+  .testimonial {
+    scroll-snap-align: start;
+  }
+}
+
+/* 24. LAST RESORT - PREVENT HORIZONTAL SCROLL */
+body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.container {
+  overflow: hidden;
+}
+
+/* 25. CRITICAL MOBILE FIXES - ALWAYS ACTIVE ON MOBILE */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: block;
+  }
+  
+  /* Force tap highlighting */
+  .cta-button,
+  .apply-button,
+  .read-more,
+  .demo-button {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3);
+    tap-highlight-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Prevent text size adjustment */
+  html {
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+  
+  /* Smooth scrolling for whole page */
+  html, body {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 26. EMERGENCY BREAKPOINT FOR TINY SCREENS */
+@media (max-width: 320px) {
+  /* Extreme fallback for very small screens */
+  .container {
+    padding: 0 8px;
+  }
+  
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+  
+  .hero p {
+    font-size: 0.85rem;
+  }
+  
+  .cta-button,
+  .apply-button,
+  .read-more,
+  .demo-button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  /* Stack absolutely everything */
+  .features-grid,
+  .team-grid,
+  .stats-grid,
+  .demo-grid,
+  .tech-grid,
+  .solutions-grid,
+  .jobs-grid,
+  .blog-grid,
+  .footer-content,
+  .about-content,
+  .values-grid,
+  .platform-features,
+  .course-details,
+  .form-row,
+  .contact-info,
+  .offices-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  /* Remove all non-essential spacing */
+  .hero {
+    padding: 100px 0 40px;
+  }
+  
+  .features,
+  .statistics,
+  .about,
+  .team,
+  .testimonials,
+  .demos,
+  .newsletter,
+  .cta,
+  .technology,
+  .solutions,
+  .careers,
+  .blog {
+    padding: 30px 0;
+  }
+}
