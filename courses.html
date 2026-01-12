@@ -879,6 +879,66 @@
                 flex-direction: column;
                 text-align: center;
             }
+            
+            .courses-filter {
+                gap: 10px;
+                margin-bottom: 30px;
+            }
+            
+            .filter-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .courses-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .courses-hero p {
+                font-size: 1rem;
+            }
+            
+            .hero-stats {
+                gap: 15px;
+            }
+            
+            .hero-stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .hero-stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .course-card {
+                margin-bottom: 20px;
+            }
+            
+            .course-title {
+                font-size: 1.3rem;
+            }
+            
+            .course-price {
+                font-size: 1.5rem;
+            }
+            
+            .course-button {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+            
+            .courses-filter {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                white-space: nowrap;
+            }
+            
+            .filter-btn {
+                flex-shrink: 0;
+            }
         }
     </style>
 </head>
@@ -888,6 +948,14 @@
         <div class="container">
             <nav>
                 <a href="#" class="logo">BlackCode<span>AI</span></a>
+                
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
@@ -902,6 +970,9 @@
             </nav>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
     <!-- Courses Hero -->
     <section class="courses-hero">
@@ -1200,6 +1271,78 @@
         </div>
     </footer>
 
+    <!-- Mobile Menu JavaScript -->
+    <script>
+        // Mobile Menu Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const navLinks = document.querySelector('.nav-links');
+            const ctaButton = document.querySelector('nav .cta-button');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                    mobileMenuOverlay.classList.toggle('active');
+                    
+                    // Toggle body scroll
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+            
+            // Close menu when clicking overlay
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', function() {
+                    this.classList.remove('active');
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+            
+            // Close menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768) {
+                        // Reset mobile menu on desktop
+                        if (hamburger) hamburger.classList.remove('active');
+                        if (navLinks) navLinks.classList.remove('active');
+                        if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                        if (ctaButton) {
+                            ctaButton.style.display = 'block';
+                        }
+                        document.body.classList.remove('menu-open');
+                    }
+                }, 250);
+            });
+        });
+    </script>
+
+    <!-- Existing Courses JavaScript -->
     <script>
         // Course data with Scratch course included
         const courses = [
