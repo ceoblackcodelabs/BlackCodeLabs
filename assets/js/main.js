@@ -8,9 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initHeaderScroll();
     initNewsletter();
     initLoadingAnimation();
+    initMobileMenu();
 });
 
-// Space Scene Initialization
+// Space Scene Initialization (UNCHANGED - preserving your algorithm)
 let scene, camera, renderer, stars;
 
 function initSpace() {
@@ -66,6 +67,87 @@ function onWindowResize() {
     }
 }
 
+// Mobile Menu Functionality
+function initMobileMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const navLinks = document.querySelector('.nav-links');
+    const ctaButton = document.querySelector('nav .cta-button');
+    
+    if (hamburger) {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            
+            // Toggle body scroll
+            document.body.classList.toggle('menu-open');
+            
+            // Hide CTA button on mobile when menu is open
+            if (ctaButton && window.innerWidth <= 768) {
+                if (this.classList.contains('active')) {
+                    ctaButton.style.display = 'none';
+                } else {
+                    ctaButton.style.display = 'block';
+                }
+            }
+        });
+    }
+    
+    // Close menu when clicking overlay
+    if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener('click', function() {
+            this.classList.remove('active');
+            if (hamburger) hamburger.classList.remove('active');
+            if (navLinks) navLinks.classList.remove('active');
+            if (ctaButton && window.innerWidth <= 768) ctaButton.style.display = 'block';
+            document.body.classList.remove('menu-open');
+        });
+    }
+    
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (hamburger) hamburger.classList.remove('active');
+            if (navLinks) navLinks.classList.remove('active');
+            if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+            if (ctaButton && window.innerWidth <= 768) ctaButton.style.display = 'block';
+            document.body.classList.remove('menu-open');
+        });
+    });
+    
+    // Close menu when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (hamburger) hamburger.classList.remove('active');
+            if (navLinks) navLinks.classList.remove('active');
+            if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+            if (ctaButton && window.innerWidth <= 768) ctaButton.style.display = 'block';
+            document.body.classList.remove('menu-open');
+        }
+    });
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (window.innerWidth > 768) {
+                // Reset mobile menu on desktop
+                if (hamburger) hamburger.classList.remove('active');
+                if (navLinks) navLinks.classList.remove('active');
+                if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                if (ctaButton) {
+                    ctaButton.style.display = 'block';
+                    ctaButton.style.visibility = 'visible';
+                }
+                document.body.classList.remove('menu-open');
+            }
+        }, 250);
+    });
+}
+
 // Header Scroll Effect
 function initHeaderScroll() {
     window.addEventListener('scroll', function() {
@@ -102,7 +184,7 @@ function initScrollAnimations() {
     }, observerOptions);
     
     // Observe elements
-    document.querySelectorAll('.feature-card, .service-card, .value-card').forEach(card => {
+    document.querySelectorAll('.feature-card, .service-card, .value-card, .team-member').forEach(card => {
         observer.observe(card);
     });
 }
@@ -116,6 +198,18 @@ function initNavigation() {
         dot.addEventListener('click', () => {
             if (sections[index]) {
                 sections[index].scrollIntoView({ behavior: 'smooth' });
+                
+                // Close mobile menu if open
+                const hamburger = document.getElementById('hamburger');
+                const navLinks = document.querySelector('.nav-links');
+                const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+                
+                if (hamburger && hamburger.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
             }
         });
     });
