@@ -689,6 +689,14 @@
         <div class="container">
             <nav>
                 <a href="#" class="logo">BlackCode<span>AI</span></a>
+                
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
@@ -703,6 +711,9 @@
             </nav>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
     <!-- Certificate Hero -->
     <section class="certificate-hero">
@@ -998,6 +1009,12 @@
         const modalCertificate = document.getElementById('modalCertificate');
         const verificationResult = document.getElementById('verificationResult');
 
+        // Mobile Menu Elements
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const navLinks = document.querySelector('.nav-links');
+        const headerCtaButton = document.querySelector('nav .cta-button');
+
         // Initialize certificate
         function initCertificate() {
             // Set certificate data
@@ -1009,6 +1026,70 @@
             document.getElementById('detailId').textContent = certificateData.certificateId;
             
             setupEventListeners();
+            initMobileMenu(); // Initialize mobile menu
+        }
+
+        // Mobile Menu Functionality
+        function initMobileMenu() {
+            if (hamburger) {
+                hamburger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                    mobileMenuOverlay.classList.toggle('active');
+                    
+                    // Toggle body scroll
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+            
+            // Close menu when clicking overlay
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', function() {
+                    this.classList.remove('active');
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+            
+            // Close menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768) {
+                        // Reset mobile menu on desktop
+                        if (hamburger) hamburger.classList.remove('active');
+                        if (navLinks) navLinks.classList.remove('active');
+                        if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                        if (headerCtaButton) {
+                            headerCtaButton.style.display = 'block';
+                        }
+                        document.body.classList.remove('menu-open');
+                    }
+                }, 250);
+            });
         }
 
         // Download certificate as PDF
@@ -1111,8 +1192,8 @@
             document.querySelector('.verification-section').scrollIntoView({ behavior: 'smooth' });
             
             // Auto-fill the verification form
-            document.getElementById('certificateId').value = certificateData.certificateId
-                        // Focus on the first input
+            document.getElementById('certificateId').value = certificateData.certificateId;
+            // Focus on the first input
             document.getElementById('certificateId').focus();
         }
 
