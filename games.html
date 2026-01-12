@@ -231,7 +231,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 BlackCodeLabs. All rights reserved.</p>
+                <p>&copy; 2025 BlackCodeLabs. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -334,115 +334,5 @@
             });
         });
     </script>
-
-    <style>
-        /* Games Page Specific Styles */
-        .coming-soon {
-            opacity: 0.8;
-            position: relative;
-        }
-        
-        .coming-soon-badge {
-            display: inline-block;
-            background: var(--nebula-purple);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 10px;
-            animation: pulse 2s infinite;
-        }
-        
-        .blog-meta span i {
-            margin-right: 5px;
-        }
-        
-        .blog-meta span:first-child {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-        }
-        
-        .blog-meta span:nth-child(2) {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-        }
-        
-        .blog-card.coming-soon .read-more {
-            display: none;
-        }
-        
-        .read-more {
-            background: linear-gradient(45deg, var(--nebula-purple), var(--space-blue));
-            border: none;
-            color: white;
-        }
-        
-        .read-more:hover {
-            background: linear-gradient(45deg, var(--space-blue), var(--nebula-purple));
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(110, 59, 206, 0.4);
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        /* Responsive styles for games page */
-        @media (max-width: 768px) {
-            .blog-grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 20px;
-            }
-            
-            .blog-card {
-                text-align: center;
-            }
-            
-            .blog-meta {
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            
-            .blog-meta span {
-                margin-right: 0;
-                margin-bottom: 5px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .blog-card {
-                max-width: 100%;
-            }
-            
-            .blog-image {
-                height: 180px;
-            }
-            
-            .blog-content {
-                padding: 20px;
-            }
-            
-            .blog-content h3 {
-                font-size: 1.3rem;
-            }
-            
-            .read-more {
-                padding: 10px 25px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
 </body>
 </html>
