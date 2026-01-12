@@ -446,6 +446,14 @@
         <div class="container">
             <nav>
                 <a href="#" class="logo">BlackCode<span>Labs</span></a>
+                
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
@@ -460,6 +468,9 @@
             </nav>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
     <!-- Solutions Hero -->
     <section class="solutions-hero">
@@ -744,6 +755,74 @@
     </footer>
 
     <script>
+        // Mobile Menu Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const navLinks = document.querySelector('.nav-links');
+            const ctaButton = document.querySelector('nav .cta-button');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                    mobileMenuOverlay.classList.toggle('active');
+                    
+                    // Toggle body scroll
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+            
+            // Close menu when clicking overlay
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', function() {
+                    this.classList.remove('active');
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+            
+            // Close menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768) {
+                        // Reset mobile menu on desktop
+                        if (hamburger) hamburger.classList.remove('active');
+                        if (navLinks) navLinks.classList.remove('active');
+                        if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                        if (ctaButton) {
+                            ctaButton.style.display = 'block';
+                        }
+                        document.body.classList.remove('menu-open');
+                    }
+                }, 250);
+            });
+        });
+
         // Animation for stats counter
         document.addEventListener('DOMContentLoaded', function() {
             // Animate stats when they come into view
