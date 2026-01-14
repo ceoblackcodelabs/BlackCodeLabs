@@ -5,8 +5,472 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Technology | BlackCodeLabs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .hamburger .line {
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+        
+        /* Page Header */
+        .page-header {
+            padding: 120px 0 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #001510 0%, #0a0a0a 100%);
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .section-title p {
+            color: #aaa;
+            font-size: 18px;
+        }
+        
+        /* Tech Overview */
+        .tech-overview {
+            padding: 80px 0;
+            background: #111;
+        }
+        
+        .overview-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .overview-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #00ff88;
+        }
+        
+        .tech-principles {
+            margin-top: 30px;
+        }
+        
+        .principle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            color: #ddd;
+        }
+        
+        .principle i {
+            color: #00ff88;
+        }
+        
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-box {
+            background: #1a1a1a;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        
+        /* Tech Grid */
+        .technology {
+            padding: 80px 0;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .tech-card {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+        }
+        
+        .tech-icon {
+            font-size: 40px;
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+        
+        .tech-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            background: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        /* Tech Breakdown */
+        .tech-breakdown {
+            padding: 80px 0;
+            background: #111;
+        }
+        
+        .breakdown-category {
+            margin-bottom: 60px;
+        }
+        
+        .breakdown-category h3 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .framework-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        
+        .framework-icon {
+            font-size: 36px;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+        
+        /* Tech Process */
+        .tech-process {
+            padding: 80px 0;
+        }
+        
+        .process-timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .process-step {
+            text-align: center;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            font-size: 24px;
+            color: #00ff88;
+            font-weight: bold;
+        }
+        
+        .step-icon {
+            font-size: 30px;
+            color: #00ff88;
+        }
+        
+        /* CTA */
+        .tech-cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #001510 0%, #0a0a0a 100%);
+            text-align: center;
+        }
+        
+        .cta-content h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .cta-button {
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .cta-button.primary {
+            background: #00ff88;
+            color: #000;
+        }
+        
+        .cta-button.secondary {
+            background: transparent;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+        }
+        
+        /* Footer */
+        footer {
+            background: #111;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: #00ff88;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            color: #fff;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .breakdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .process-timeline {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: #0a0a0a;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: 0.3s;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .overview-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .overview-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .overview-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-timeline {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header & Navigation -->
@@ -32,19 +496,66 @@
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="games.html">Games</a></li>
                 </ul>
-                
             </nav>
         </div>
     </header>
 
     <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999;"></div>
 
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
-            <h1>Our Technology</h1>
-            <p>Discover the cutting-edge AI technologies that power our solutions and drive innovation across industries.</p>
+            <h1>Our Technology Stack</h1>
+            <p>Discover the comprehensive technologies and frameworks that power our solutions and drive digital transformation across industries.</p>
+        </div>
+    </section>
+
+    <!-- Technology Stack Overview -->
+    <section class="tech-overview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technology Philosophy</h2>
+                <p>We believe in using the right tools for the right job, combining proven technologies with modern innovations</p>
+            </div>
+            <div class="overview-content">
+                <div class="overview-text">
+                    <h3>Strategic Technology Selection</h3>
+                    <p>Our approach combines industry-standard technologies with cutting-edge frameworks to deliver scalable, maintainable, and high-performance solutions.</p>
+                    <div class="tech-principles">
+                        <div class="principle">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Scalability First Architecture</span>
+                        </div>
+                        <div class="principle">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Security by Design</span>
+                        </div>
+                        <div class="principle">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Performance Optimization</span>
+                        </div>
+                        <div class="principle">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Future-Proof Solutions</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="overview-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Programming Languages</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Frameworks & Libraries</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Tools & Platforms</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -52,51 +563,265 @@
     <section class="technology">
         <div class="container">
             <div class="section-title">
-                <h2>AI Technologies</h2>
-                <p>We leverage the latest advancements in artificial intelligence to create powerful solutions</p>
+                <h2>Core Technology Capabilities</h2>
+                <p>We leverage modern technologies to build robust, scalable, and innovative solutions</p>
             </div>
             <div class="tech-grid">
                 <div class="tech-card">
                     <div class="tech-icon">
-                        <i class="fas fa-brain"></i>
+                        <i class="fas fa-code"></i>
                     </div>
-                    <h3>Machine Learning</h3>
-                    <p>Advanced algorithms that learn from your data to predict outcomes and identify patterns with unprecedented accuracy. Our ML models continuously improve with more data.</p>
-                </div>
-                <div class="tech-card">
-                    <div class="tech-icon">
-                        <i class="fas fa-language"></i>
+                    <h3>Full-Stack Development</h3>
+                    <p>Modern frameworks and languages for building responsive websites, mobile applications, and enterprise backend systems with clean architecture.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">React.js</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Django</span>
                     </div>
-                    <h3>Natural Language Processing</h3>
-                    <p>Understand and generate human language with our advanced NLP models that power chatbots, translators, and content generators with human-like comprehension.</p>
-                </div>
-                <div class="tech-card">
-                    <div class="tech-icon">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <h3>Computer Vision</h3>
-                    <p>Extract meaningful information from visual data with our cutting-edge image and video analysis algorithms that can identify objects, patterns, and anomalies.</p>
                 </div>
                 <div class="tech-card">
                     <div class="tech-icon">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3>Intelligent Automation</h3>
-                    <p>Streamline operations and reduce costs with AI-powered process automation that adapts to your business needs and learns from user interactions.</p>
+                    <h3>Automation & Bot Development</h3>
+                    <p>Advanced automation tools and bot frameworks that streamline workflows, automate repetitive tasks, and enhance operational efficiency.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Selenium</span>
+                        <span class="tech-tag">RPA</span>
+                        <span class="tech-tag">AutoIT</span>
+                    </div>
                 </div>
                 <div class="tech-card">
                     <div class="tech-icon">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-database"></i>
                     </div>
-                    <h3>Predictive Analytics</h3>
-                    <p>Turn your data into actionable insights and make informed decisions with confidence using our powerful analytics platform and forecasting models.</p>
+                    <h3>Data Engineering & Analytics</h3>
+                    <p>Comprehensive data solutions including web scraping, big data processing, predictive modeling, and interactive dashboard development.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Pandas</span>
+                        <span class="tech-tag">Apache Spark</span>
+                        <span class="tech-tag">TensorFlow</span>
+                        <span class="tech-tag">Power BI</span>
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Chatbot & Conversational AI</h3>
+                    <p>Intelligent conversational interfaces using NLP and machine learning to provide 24/7 customer support and automated communication.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Dialogflow</span>
+                        <span class="tech-tag">Rasa</span>
+                        <span class="tech-tag">NLTK</span>
+                        <span class="tech-tag">Botpress</span>
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Custom AI Solutions</h3>
+                    <p>Specialized AI and machine learning tools tailored to specific business needs, from recommendation engines to predictive maintenance.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Scikit-learn</span>
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">OpenCV</span>
+                        <span class="tech-tag">FastAPI</span>
+                    </div>
                 </div>
                 <div class="tech-card">
                     <div class="tech-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>AI Security</h3>
-                    <p>Protect your systems and data with AI-powered security solutions that detect and respond to threats in real-time, adapting to new attack vectors.</p>
+                    <h3>Security & Infrastructure</h3>
+                    <p>Comprehensive security solutions, threat analysis, bug bounty programs, and infrastructure setup including CCTV and POS systems.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">OWASP</span>
+                        <span class="tech-tag">Metasploit</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">AWS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Technology Breakdown -->
+    <section class="tech-breakdown">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technology Stack Details</h2>
+                <p>Explore the specific tools and frameworks we work with across different domains</p>
+            </div>
+            
+            <div class="breakdown-category">
+                <h3><i class="fas fa-laptop-code"></i> Frontend Development</h3>
+                <div class="breakdown-grid">
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <h4>React.js</h4>
+                        <p>Building dynamic, single-page applications with reusable components</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-vuejs"></i>
+                        </div>
+                        <h4>Vue.js</h4>
+                        <p>Progressive framework for building user interfaces</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-angular"></i>
+                        </div>
+                        <h4>Angular</h4>
+                        <p>Platform for building mobile and desktop web applications</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-js-square"></i>
+                        </div>
+                        <h4>TypeScript</h4>
+                        <p>Typed superset of JavaScript for large-scale applications</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="breakdown-category">
+                <h3><i class="fas fa-server"></i> Backend Development</h3>
+                <div class="breakdown-grid">
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-node-js"></i>
+                        </div>
+                        <h4>Node.js</h4>
+                        <p>JavaScript runtime for building scalable network applications</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h4>Python Django</h4>
+                        <p>High-level Python web framework for rapid development</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>FastAPI</h4>
+                        <p>Modern, fast web framework for building APIs with Python</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h4>PostgreSQL/MySQL</h4>
+                        <p>Robust relational database management systems</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="breakdown-category">
+                <h3><i class="fas fa-mobile-alt"></i> Mobile Development</h3>
+                <div class="breakdown-grid">
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <h4>React Native</h4>
+                        <p>Building native mobile apps using React</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-swift"></i>
+                        </div>
+                        <h4>Swift/iOS</h4>
+                        <p>Native iOS application development</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fab fa-android"></i>
+                        </div>
+                        <h4>Kotlin/Android</h4>
+                        <p>Native Android application development</p>
+                    </div>
+                    <div class="framework-card">
+                        <div class="framework-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h4>Flutter</h4>
+                        <p>UI toolkit for natively compiled applications</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Process -->
+    <section class="tech-process">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Development Process</h2>
+                <p>A systematic approach to delivering high-quality technology solutions</p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">01</div>
+                        <div class="step-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <h3>Requirements Analysis</h3>
+                    <p>Deep dive into business needs, technical constraints, and user requirements</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">02</div>
+                        <div class="step-icon">
+                            <i class="fas fa-pencil-ruler"></i>
+                        </div>
+                    </div>
+                    <h3>Architecture Design</h3>
+                    <p>Designing scalable system architecture and selecting appropriate technologies</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">03</div>
+                        <div class="step-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
+                    <h3>Development & Testing</h3>
+                    <p>Agile development with continuous integration and rigorous testing</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">04</div>
+                        <div class="step-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                    </div>
+                    <h3>Deployment & Scaling</h3>
+                    <p>Seamless deployment, performance optimization, and scaling solutions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology CTA -->
+    <section class="tech-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Build with Modern Technology?</h2>
+                <p>Let's discuss how our technology expertise can bring your ideas to life with robust, scalable solutions.</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="cta-button primary">Start a Project</a>
+                    <a href="solutions.html" class="cta-button secondary">View Our Solutions</a>
                 </div>
             </div>
         </div>
@@ -108,7 +833,7 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>BlackCodeLabs</h3>
-                    <p>Intelligent solutions for the future</p>
+                    <p>Comprehensive technology solutions</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-linkedin"></i></a>
@@ -117,12 +842,12 @@
                     </div>
                 </div>
                 <div class="footer-column">
-                    <h3>Products</h3>
+                    <h3>Services</h3>
                     <ul>
-                        <li><a href="#">BlackCodeLabsML</a></li>
-                        <li><a href="#">BlackCodeLabsAutomate</a></li>
-                        <li><a href="#">BlackCodeLabsAnalyze</a></li>
-                        <li><a href="#">BlackCodeLabsVision</a></li>
+                        <li><a href="solutions.html#development">Development</a></li>
+                        <li><a href="solutions.html#automation">Automation</a></li>
+                        <li><a href="solutions.html#data">Data Solutions</a></li>
+                        <li><a href="solutions.html#security">Security</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -131,16 +856,16 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="careers.html">Careers</a></li>
                         <li><a href="blog.html">Blog</a></li>
-                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Case Studies</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Contact</h3>
                     <ul>
+                        <li><a href="#">Consultation</a></li>
                         <li><a href="#">Support</a></li>
-                        <li><a href="#">Sales</a></li>
                         <li><a href="#">Partnerships</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Get Quote</a></li>
                     </ul>
                 </div>
             </div>
@@ -156,27 +881,24 @@
             const hamburger = document.getElementById('hamburger');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             const navLinks = document.querySelector('.nav-links');
-            const ctaButton = document.querySelector('nav .cta-button');
             
             if (hamburger) {
                 hamburger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     this.classList.toggle('active');
                     navLinks.classList.toggle('active');
-                    mobileMenuOverlay.classList.toggle('active');
-                    
-                    // Toggle body scroll
-                    document.body.classList.toggle('menu-open');
+                    mobileMenuOverlay.style.display = mobileMenuOverlay.style.display === 'block' ? 'none' : 'block';
+                    document.body.style.overflow = document.body.style.overflow === 'hidden' ? 'auto' : 'hidden';
                 });
             }
             
             // Close menu when clicking overlay
             if (mobileMenuOverlay) {
                 mobileMenuOverlay.addEventListener('click', function() {
-                    this.classList.remove('active');
+                    this.style.display = 'none';
                     if (hamburger) hamburger.classList.remove('active');
                     if (navLinks) navLinks.classList.remove('active');
-                    document.body.classList.remove('menu-open');
+                    document.body.style.overflow = 'auto';
                 });
             }
             
@@ -185,8 +907,8 @@
                 link.addEventListener('click', function() {
                     if (hamburger) hamburger.classList.remove('active');
                     if (navLinks) navLinks.classList.remove('active');
-                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                    document.body.classList.remove('menu-open');
+                    if (mobileMenuOverlay) mobileMenuOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
                 });
             });
             
@@ -195,27 +917,43 @@
                 if (e.key === 'Escape') {
                     if (hamburger) hamburger.classList.remove('active');
                     if (navLinks) navLinks.classList.remove('active');
-                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                    document.body.classList.remove('menu-open');
+                    if (mobileMenuOverlay) mobileMenuOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
                 }
             });
             
             // Handle window resize
-            let resizeTimer;
             window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function() {
-                    if (window.innerWidth > 768) {
-                        // Reset mobile menu on desktop
-                        if (hamburger) hamburger.classList.remove('active');
-                        if (navLinks) navLinks.classList.remove('active');
-                        if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                        if (ctaButton) {
-                            ctaButton.style.display = 'block';
-                        }
-                        document.body.classList.remove('menu-open');
-                    }
-                }, 250);
+                if (window.innerWidth > 768) {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Add hover effect to tech cards
+            const techCards = document.querySelectorAll('.tech-card, .framework-card');
+            techCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.boxShadow = '0 10px 30px rgba(0, 255, 136, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Add hover effect to process steps
+            const processSteps = document.querySelectorAll('.process-step');
+            processSteps.forEach(step => {
+                step.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                step.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
             });
         });
     </script>
