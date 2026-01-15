@@ -1,0 +1,2461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+    <title>BetterBargains | Premium Kicks Marketplace</title>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - Responsive */
+        :root {
+            --primary-dark: #0a0a0a;
+            --secondary-dark: #111111;
+            --accent-red: #ff003c;
+            --accent-red-light: #ff335f;
+            --accent-red-dark: #cc002f;
+            --text-light: #f5f5f5;
+            --text-gray: #a0a0a0;
+            --card-bg: #1a1a1a;
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --box-shadow-red: 0 5px 20px rgba(255, 0, 60, 0.3);
+            
+            /* Responsive spacings */
+            --space-xs: clamp(8px, 2vw, 12px);
+            --space-sm: clamp(12px, 3vw, 20px);
+            --space-md: clamp(16px, 4vw, 30px);
+            --space-lg: clamp(24px, 5vw, 50px);
+            --space-xl: clamp(32px, 6vw, 80px);
+            --space-xxl: clamp(48px, 8vw, 120px);
+            
+            /* Responsive font sizes */
+            --text-xs: clamp(0.75rem, 1.5vw, 0.85rem);
+            --text-sm: clamp(0.875rem, 2vw, 1rem);
+            --text-base: clamp(1rem, 2.5vw, 1.1rem);
+            --text-lg: clamp(1.125rem, 3vw, 1.35rem);
+            --text-xl: clamp(1.35rem, 4vw, 1.75rem);
+            --text-2xl: clamp(1.6rem, 5vw, 2.25rem);
+            --text-3xl: clamp(2rem, 6vw, 3rem);
+            --text-4xl: clamp(2.5rem, 7vw, 4rem);
+            --text-5xl: clamp(3rem, 8vw, 4.5rem);
+            
+            /* Container widths */
+            --container-xs: 100%;
+            --container-sm: min(100%, 540px);
+            --container-md: min(100%, 720px);
+            --container-lg: min(100%, 960px);
+            --container-xl: min(100%, 1140px);
+            --container-xxl: min(100%, 1400px);
+        }
+
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-sm);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--container-xxl);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .d-block { display: block; }
+        .d-inline { display: inline; }
+        .d-flex { display: flex; }
+        .d-grid { display: grid; }
+        .w-100 { width: 100%; }
+        .h-100 { height: 100%; }
+        .mt-1 { margin-top: var(--space-xs); }
+        .mt-2 { margin-top: var(--space-sm); }
+        .mt-3 { margin-top: var(--space-md); }
+        .mb-1 { margin-bottom: var(--space-xs); }
+        .mb-2 { margin-bottom: var(--space-sm); }
+        .mb-3 { margin-bottom: var(--space-md); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: var(--text-base);
+            font-family: 'Inter', sans-serif;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                padding: var(--space-sm) var(--space-md);
+            }
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-red-dark));
+            color: white;
+            box-shadow: var(--box-shadow-red);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 60, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-red);
+            border: 2px solid var(--accent-red);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 0, 60, 0.1);
+        }
+
+        .red-text {
+            color: var(--accent-red);
+        }
+
+        /* 3D Canvas */
+        #threeCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        /* Header - Mobile First */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: var(--space-sm) 0;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            background-color: rgba(10, 10, 10, 0.85);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.1);
+        }
+
+        header.scrolled {
+            padding: var(--space-xs) 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .logo {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--text-light);
+        }
+
+        /* Mobile Navigation */
+        .mobile-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: var(--text-xl);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            z-index: 1002;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-toggle {
+                display: none;
+            }
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: min(300px, 85%);
+            height: 100vh;
+            background-color: var(--secondary-dark);
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 80px var(--space-lg) var(--space-lg);
+            gap: 0;
+            transition: var(--transition);
+            border-left: 1px solid rgba(255, 0, 60, 0.1);
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .nav-links.active {
+            right: 0;
+        }
+
+        .nav-links li {
+            width: 100%;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            position: relative;
+            font-size: var(--text-lg);
+            display: block;
+            padding: var(--space-xs) 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-red);
+            bottom: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-red);
+        }
+
+        .nav-links a:hover:after,
+        .nav-links a.active:after {
+            width: 100%;
+        }
+
+        /* Desktop Navigation */
+        @media (min-width: 769px) {
+            .nav-links {
+                position: static;
+                width: auto;
+                height: auto;
+                background-color: transparent;
+                flex-direction: row;
+                align-items: center;
+                padding: 0;
+                gap: clamp(20px, 2.5vw, 35px);
+                border-left: none;
+                display: flex;
+            }
+
+            .nav-links li {
+                width: auto;
+                padding: 0;
+                border-bottom: none;
+            }
+
+            .nav-links a {
+                font-size: var(--text-sm);
+                padding: 0;
+            }
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: var(--text-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-btn:hover {
+            color: var(--accent-red);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background-color: var(--accent-red);
+            color: white;
+            font-size: var(--text-xs);
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: clamp(120px, 20vh, 180px) 0 clamp(80px, 10vh, 120px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: min(700px, 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 0, 60, 0.1);
+            color: var(--accent-red);
+            padding: var(--space-xs) var(--space-md);
+            border-radius: 30px;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-lg);
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 {
+            font-size: var(--text-5xl);
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-subtitle {
+            font-size: var(--text-lg);
+            color: var(--text-gray);
+            margin-bottom: var(--space-xl);
+            max-width: min(600px, 100%);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--accent-red);
+            margin-bottom: 5px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: var(--text-sm);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Sneaker Showcase */
+        .sneaker-showcase {
+            padding: var(--space-xl) 0;
+            background-color: rgba(17, 17, 17, 0.7);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: var(--text-3xl);
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: clamp(80px, 10vw, 100px);
+            height: 4px;
+            background: var(--accent-red);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title p {
+            color: var(--text-gray);
+            margin-top: var(--space-lg);
+            font-size: var(--text-lg);
+        }
+
+        .brands-filter {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .brand-btn {
+            padding: var(--space-sm) var(--space-md);
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--text-sm);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 480px) {
+            .brand-btn {
+                padding: 10px 15px;
+                font-size: var(--text-xs);
+            }
+        }
+
+        .brand-btn:hover,
+        .brand-btn.active {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            background-color: rgba(255, 0, 60, 0.05);
+        }
+
+        .sneaker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        @media (max-width: 480px) {
+            .sneaker-grid {
+                gap: var(--space-md);
+            }
+        }
+
+        .sneaker-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sneaker-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--box-shadow);
+            border-color: rgba(255, 0, 60, 0.3);
+        }
+
+        .sneaker-badge {
+            position: absolute;
+            top: var(--space-sm);
+            left: var(--space-sm);
+            background-color: var(--accent-red);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .sneaker-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a, #222222);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .sneaker-image {
+                height: 200px;
+            }
+        }
+
+        .sneaker-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .sneaker-card:hover .sneaker-image img {
+            transform: scale(1.05);
+        }
+
+        .sneaker-content {
+            padding: var(--space-lg);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sneaker-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-sm);
+            font-size: var(--text-sm);
+            color: var(--text-gray);
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .sneaker-brand {
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        .sneaker-title {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-sm);
+            line-height: 1.3;
+        }
+
+        .sneaker-description {
+            color: var(--text-gray);
+            margin-bottom: var(--space-md);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .sneaker-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-top: auto;
+        }
+
+        .sneaker-price {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--accent-red);
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .original-price {
+            font-size: var(--text-base);
+            color: var(--text-gray);
+            text-decoration: line-through;
+            margin-left: 5px;
+        }
+
+        .view-3d-btn {
+            min-width: 40px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 0, 60, 0.1);
+            color: var(--accent-red);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .view-3d-btn:hover {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        /* 3D Viewer Modal - Responsive */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+            padding: var(--space-md);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--secondary-dark);
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: min(1200px, 95%);
+            height: auto;
+            max-height: 90vh;
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            box-shadow: var(--box-shadow);
+            transform: translateY(20px);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        @media (max-width: 992px) {
+            .modal-content {
+                max-height: 95vh;
+            }
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: var(--text-xl);
+            color: var(--accent-red);
+            line-height: 1.3;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: var(--text-2xl);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-red);
+        }
+
+        .modal-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            min-height: 300px;
+        }
+
+        @media (max-width: 992px) {
+            .modal-body {
+                flex-direction: column;
+            }
+        }
+
+        .model-viewer {
+            flex: 2;
+            background-color: #0a0a0a;
+            position: relative;
+            min-height: 300px;
+        }
+
+        #modelCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .model-info {
+            flex: 1;
+            padding: var(--space-lg);
+            overflow-y: auto;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            min-width: 300px;
+        }
+
+        @media (max-width: 992px) {
+            .model-info {
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                max-height: 40vh;
+            }
+            
+            .model-viewer {
+                height: 50vh;
+                min-height: 250px;
+            }
+        }
+
+        .model-info h4 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-sm);
+        }
+
+        .model-price {
+            font-size: var(--text-2xl);
+            color: var(--accent-red);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .model-description {
+            color: var(--text-gray);
+            margin-bottom: var(--space-lg);
+            line-height: 1.7;
+            font-size: var(--text-base);
+        }
+
+        .model-specs {
+            margin-bottom: var(--space-lg);
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: var(--text-base);
+        }
+
+        .spec-label {
+            color: var(--text-gray);
+        }
+
+        .spec-value {
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: var(--space-xl) 0;
+            background-color: rgba(10, 10, 10, 0.7);
+            position: relative;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+            gap: var(--space-lg);
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: var(--space-lg);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 0, 60, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--box-shadow);
+            border-color: rgba(255, 0, 60, 0.3);
+        }
+
+        .feature-icon {
+            width: clamp(60px, 8vw, 80px);
+            height: clamp(60px, 8vw, 80px);
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.1), rgba(255, 0, 60, 0.05));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-md);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--accent-red);
+            flex-shrink: 0;
+        }
+
+        .feature-card h3 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-sm);
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+            font-size: var(--text-base);
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            padding: var(--space-xl) 0;
+            background-color: rgba(255, 0, 60, 0.05);
+            position: relative;
+            border-top: 1px solid rgba(255, 0, 60, 0.1);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.1);
+        }
+
+        .newsletter-container {
+            max-width: min(700px, 100%);
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter-container h2 {
+            font-size: var(--text-3xl);
+            margin-bottom: var(--space-md);
+        }
+
+        .newsletter-container p {
+            color: var(--text-gray);
+            margin-bottom: var(--space-xl);
+            font-size: var(--text-lg);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: var(--space-sm);
+            max-width: min(500px, 100%);
+            margin: 0 auto;
+        }
+
+        @media (max-width: 576px) {
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: var(--space-md);
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--text-base);
+            min-width: 0;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--space-xl) 0 var(--space-lg);
+            background-color: var(--secondary-dark);
+            border-top: 1px solid rgba(255, 0, 60, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                gap: var(--space-lg);
+            }
+        }
+
+        .footer-col h3 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-lg);
+            color: var(--accent-red);
+            position: relative;
+            padding-bottom: var(--space-sm);
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-red);
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-logo {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            gap: 10px;
+        }
+
+        .footer-col p {
+            color: var(--text-gray);
+            margin-bottom: var(--space-md);
+            font-size: var(--text-base);
+        }
+
+        .social-links {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: var(--text-light);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-red);
+            color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            transition: var(--transition);
+            font-size: var(--text-base);
+            display: inline-block;
+            padding: 2px 0;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-red);
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-gray);
+            font-size: var(--text-sm);
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary-dark);
+            z-index: 9998;
+            transition: var(--transition);
+            border-left: 1px solid rgba(255, 0, 60, 0.1);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 577px) {
+            .cart-sidebar {
+                width: min(400px, 90%);
+            }
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .cart-header h3 {
+            margin: 0;
+            font-size: var(--text-xl);
+            color: var(--accent-red);
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: var(--text-xl);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-close:hover {
+            color: var(--accent-red);
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: var(--space-md);
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: var(--space-sm);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: var(--text-base);
+            line-height: 1.3;
+        }
+
+        .cart-item-brand {
+            color: var(--accent-red);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .cart-item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--accent-red);
+            font-size: var(--text-base);
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: var(--text-light);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        .cart-footer {
+            padding: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-lg);
+            font-size: var(--text-lg);
+            font-weight: 700;
+        }
+
+        .cart-total span:last-child {
+            color: var(--accent-red);
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover,
+            .sneaker-card:hover,
+            .feature-card:hover {
+                transform: none;
+            }
+            
+            .btn:active,
+            .sneaker-card:active,
+            .feature-card:active {
+                transform: scale(0.98);
+            }
+            
+            .nav-links a:hover:after,
+            .nav-links a.active:after {
+                width: 0;
+            }
+            
+            .nav-links a.active:after {
+                width: 100%;
+            }
+        }
+
+        /* High Contrast Mode Support */
+        @media (prefers-contrast: high) {
+            :root {
+                --accent-red: #ff0000;
+                --accent-red-light: #ff5555;
+                --accent-red-dark: #cc0000;
+            }
+            
+            .btn-primary {
+                outline: 2px solid white;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .btn:before {
+                display: none;
+            }
+        }
+
+        /* Landscape Mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero {
+                padding: 100px 0 60px;
+            }
+            
+            .hero h1 {
+                font-size: var(--text-3xl);
+            }
+            
+            .modal-content {
+                max-height: 85vh;
+            }
+            
+            .model-viewer {
+                height: 40vh;
+            }
+        }
+
+        /* Ultra-wide screens */
+        @media (min-width: 2000px) {
+            .container {
+                max-width: 1600px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            :root {
+                --space-md: 12px;
+                --space-lg: 20px;
+                --space-xl: 30px;
+            }
+            
+            .hero h1 {
+                font-size: var(--text-4xl);
+            }
+            
+            .section-title h2 {
+                font-size: var(--text-2xl);
+            }
+            
+            .brand-btn {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Background Canvas -->
+    <canvas id="threeCanvas"></canvas>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-fire"></i> Better<span>Bargains</span>
+            </a>
+            
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav aria-label="Main navigation">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#sneakers">Sneakers</a></li>
+                    <li><a href="#features">Why Us</a></li>
+                    <li><a href="#newsletter">Deals</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <button class="cart-btn" id="cartToggle" aria-label="Open cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <a href="#sneakers" class="btn btn-primary">Shop Now</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-bolt"></i> LIMITED TIME OFFERS
+                </div>
+                <h1>Premium Kicks, <span class="red-text">Unbeatable Prices</span></h1>
+                <p class="hero-subtitle">Discover the hottest sneakers from Nike, Jordan, Air Force, and Timberland at prices that won't break the bank. Authentic products, lightning-fast delivery.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat1">0</div>
+                        <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat2">0</div>
+                        <div class="stat-label">Sneaker Models</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat3">0</div>
+                        <div class="stat-label">Days Delivery</div>
+                    </div>
+                </div>
+                
+                <div class="hero-btns">
+                    <a href="#sneakers" class="btn btn-primary">
+                        <i class="fas fa-shopping-cart"></i> Shop Collection
+                    </a>
+                    <a href="#3d-viewer" class="btn btn-secondary" id="view3dBtn">
+                        <i class="fas fa-cube"></i> View in 3D
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sneaker Showcase -->
+    <section class="sneaker-showcase" id="sneakers">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured <span class="red-text">Sneakers</span></h2>
+                <p>Browse our curated collection of premium kicks at unbelievable prices</p>
+            </div>
+            
+            <div class="brands-filter">
+                <button class="brand-btn active" data-brand="all" aria-label="Show all brands">
+                    <i class="fas fa-star"></i> All Brands
+                </button>
+                <button class="brand-btn" data-brand="nike" aria-label="Show Nike sneakers">
+                    <i class="fab fa-nike"></i> Nike
+                </button>
+                <button class="brand-btn" data-brand="jordan" aria-label="Show Jordan sneakers">
+                    <i class="fas fa-basketball-ball"></i> Jordan
+                </button>
+                <button class="brand-btn" data-brand="airforce" aria-label="Show Air Force sneakers">
+                    <i class="fas fa-star"></i> Air Force
+                </button>
+                <button class="brand-btn" data-brand="timberland" aria-label="Show Timberland boots">
+                    <i class="fas fa-tree"></i> Timberland
+                </button>
+            </div>
+            
+            <div class="sneaker-grid" id="sneakerGrid">
+                <!-- Sneaker cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why <span class="red-text">BetterBargains</span></h2>
+                <p>We're changing the game for sneaker enthusiasts</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>100% Authentic</h3>
+                    <p>Every sneaker is verified by our experts to ensure authenticity and quality.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h3>Best Prices</h3>
+                    <p>We negotiate directly with suppliers to bring you unbeatable prices.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Fast Shipping</h3>
+                    <p>Get your kicks in 2-4 days with our premium shipping partners.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-undo-alt"></i>
+                    </div>
+                    <h3>Easy Returns</h3>
+                    <p>30-day return policy with free returns if you're not satisfied.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section" id="newsletter">
+        <div class="container">
+            <div class="newsletter-container">
+                <h2>Get Exclusive <span class="red-text">Deals</span></h2>
+                <p>Subscribe to our newsletter and be the first to know about flash sales, new arrivals, and member-only discounts.</p>
+                
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email address" required aria-label="Email address">
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3 class="footer-logo">
+                        <i class="fas fa-fire"></i> Better<span>Bargains</span>
+                    </h3>
+                    <p>The ultimate destination for premium sneakers at unbeatable prices. Authenticity guaranteed.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#sneakers">Sneakers</a></li>
+                        <li><a href="#features">Why Us</a></li>
+                        <li><a href="#newsletter">Deals</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Brands</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-brand="nike">Nike</a></li>
+                        <li><a href="#" data-brand="jordan">Air Jordan</a></li>
+                        <li><a href="#" data-brand="airforce">Air Force</a></li>
+                        <li><a href="#" data-brand="timberland">Timberland</a></li>
+                        <li><a href="#" data-brand="all">All Brands</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope red-text"></i> support@betterbargains.com</li>
+                        <li><i class="fas fa-phone red-text"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt red-text"></i> 123 Sneaker Street, NY</li>
+                        <li><i class="fas fa-clock red-text"></i> Mon-Sun: 9AM-9PM EST</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 BetterBargains. All rights reserved. Nike, Air Jordan, Air Force, and Timberland are trademarks of their respective owners.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 3D Viewer Modal -->
+    <div class="modal" id="modelViewerModal" role="dialog" aria-labelledby="modelTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modelTitle">Air Jordan 1 Retro High</h3>
+                <button class="modal-close" id="modelClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="model-viewer">
+                    <canvas id="modelCanvas"></canvas>
+                </div>
+                <div class="model-info">
+                    <h4 id="modelName">Air Jordan 1 Retro High</h4>
+                    <div class="model-price">$189.99 <span class="original-price">$250.00</span></div>
+                    <p class="model-description" id="modelDescription">The Air Jordan 1 Retro High remakes the classic sneaker, giving you a fresh look with a familiar feel. Premium materials with new colors and textures give modern expression to an all-time favorite.</p>
+                    
+                    <div class="model-specs">
+                        <div class="spec-item">
+                            <span class="spec-label">Brand</span>
+                            <span class="spec-value" id="modelBrand">Jordan</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Size</span>
+                            <span class="spec-value">US 7-13</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Color</span>
+                            <span class="spec-value" id="modelColor">Black/Red</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Material</span>
+                            <span class="spec-value">Leather</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Condition</span>
+                            <span class="spec-value">New</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-btns" style="margin-top: 30px;">
+                        <button class="btn btn-primary" id="addToCartModal">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar" role="dialog" aria-labelledby="cartTitle" aria-hidden="true">
+        <div class="cart-header">
+            <h3 id="cartTitle">Your Cart</h3>
+            <button class="cart-close" id="cartClose" aria-label="Close cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be populated by JavaScript -->
+            <div class="empty-cart" id="emptyCart">
+                <p style="text-align: center; color: var(--text-gray); padding: 40px 0;">Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        // Sneaker Data
+        const sneakers = [
+            {
+                id: 1,
+                brand: "nike",
+                name: "Nike Air Max 97",
+                description: "The Nike Air Max 97 keeps the sneaker favorite going strong with the same design details that made it famous: water-ripple lines, reflective piping and full-length Max Air cushioning.",
+                price: 179.99,
+                originalPrice: 220.00,
+                color: "Silver Bullet",
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "BEST SELLER"
+            },
+            {
+                id: 2,
+                brand: "jordan",
+                name: "Air Jordan 1 Retro High",
+                description: "The Air Jordan 1 Retro High remakes the classic sneaker, giving you a fresh look with a familiar feel. Premium materials with new colors and textures.",
+                price: 189.99,
+                originalPrice: 250.00,
+                color: "Black/Red",
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "LIMITED"
+            },
+            {
+                id: 3,
+                brand: "airforce",
+                name: "Nike Air Force 1 '07",
+                description: "The radiance lives on in the Nike Air Force 1 '07. This classic sneaker combines durable leather with crisp stitching and bold colors.",
+                price: 119.99,
+                originalPrice: 150.00,
+                color: "White",
+                image: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "25% OFF"
+            },
+            {
+                id: 4,
+                brand: "timberland",
+                name: "Timberland Premium 6-Inch Boot",
+                description: "The original Timberland boot is made with premium waterproof leather, seam-sealed construction, and durable rubber lug outsoles for traction.",
+                price: 199.99,
+                originalPrice: 280.00,
+                color: "Wheat",
+                image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "WATERPROOF"
+            },
+            {
+                id: 5,
+                brand: "nike",
+                name: "Nike Dunk Low Retro",
+                description: "Created for the hardwood but taken to the streets, the Nike Dunk Low Retro returns with classic colors and throwback hoops style.",
+                price: 129.99,
+                originalPrice: 170.00,
+                color: "Black/White",
+                image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "TRENDING"
+            },
+            {
+                id: 6,
+                brand: "jordan",
+                name: "Air Jordan 4 Retro",
+                description: "The Air Jordan 4 Retro returns with classic colors and original branding. Visible Air-Sole units, molded design and lightweight support.",
+                price: 229.99,
+                originalPrice: 300.00,
+                color: "Military Black",
+                image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "SALE"
+            },
+            {
+                id: 7,
+                brand: "airforce",
+                name: "Nike Air Force 1 React",
+                description: "The Nike Air Force 1 React updates the classic with lightweight React foam for all-day comfort. Fresh colors and a modern look.",
+                price: 149.99,
+                originalPrice: 190.00,
+                color: "Light Bone",
+                image: "https://images.unsplash.com/photo-1605348532760-6753d2c43329?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "NEW"
+            },
+            {
+                id: 8,
+                brand: "timberland",
+                name: "Timberland Field Boot",
+                description: "Premium waterproof leather with TimberDry technology keeps your feet dry. Rustproof speed hooks make lacing quick and easy.",
+                price: 179.99,
+                originalPrice: 240.00,
+                color: "Dark Brown",
+                image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                badge: "30% OFF"
+            }
+        ];
+
+        // Three.js Background Scene
+        let scene, camera, renderer, particles = [];
+        
+        function initThreeJS() {
+            // Create scene
+            scene = new THREE.Scene();
+            
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 15;
+            
+            // Create renderer
+            const canvas = document.getElementById('threeCanvas');
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas,
+                alpha: true,
+                antialias: true 
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x222222);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xff003c, 0.3);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+            
+            // Create particle system
+            const particleCount = 1000;
+            const particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 100;
+                positions[i + 1] = (Math.random() - 0.5) * 100;
+                positions[i + 2] = (Math.random() - 0.5) * 100;
+            }
+            
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0xff003c,
+                size: 0.1,
+                transparent: true,
+                opacity: 0.5
+            });
+            
+            const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particleSystem);
+            particles.push(particleSystem);
+            
+            // Create floating sneaker shapes
+            createSneakerShapes();
+            
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+            
+            // Start animation
+            animate();
+        }
+        
+        function createSneakerShapes() {
+            // Create abstract sneaker-like shapes
+            const brands = ['nike', 'jordan', 'airforce', 'timberland'];
+            const colors = [0xff003c, 0xcc002f, 0xff335f, 0x990023];
+            
+            for (let i = 0; i < 8; i++) {
+                let geometry;
+                const brand = brands[i % brands.length];
+                
+                // Create different shapes based on brand
+                switch(brand) {
+                    case 'nike':
+                        geometry = new THREE.ConeGeometry(1, 3, 8);
+                        break;
+                    case 'jordan':
+                        geometry = new THREE.BoxGeometry(2, 1.5, 3);
+                        break;
+                    case 'airforce':
+                        geometry = new THREE.CylinderGeometry(1.2, 1.2, 2.5, 16);
+                        break;
+                    case 'timberland':
+                        geometry = new THREE.BoxGeometry(2.5, 2, 3);
+                        break;
+                }
+                
+                const material = new THREE.MeshPhongMaterial({
+                    color: colors[i % colors.length],
+                    shininess: 30,
+                    transparent: true,
+                    opacity: 0.2
+                });
+                
+                const shape = new THREE.Mesh(geometry, material);
+                
+                // Position randomly in space
+                shape.position.x = (Math.random() - 0.5) * 40;
+                shape.position.y = (Math.random() - 0.5) * 20;
+                shape.position.z = (Math.random() - 0.5) * 40;
+                
+                // Random rotation
+                shape.rotation.x = Math.random() * Math.PI;
+                shape.rotation.y = Math.random() * Math.PI;
+                
+                // Add to scene and particles array
+                scene.add(shape);
+                particles.push(shape);
+            }
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate particles
+            particles.forEach((particle, index) => {
+                if (index > 0) { // Skip the particle system
+                    particle.rotation.x += 0.001;
+                    particle.rotation.y += 0.002;
+                    
+                    // Float up and down
+                    particle.position.y += Math.sin(Date.now() * 0.001 + index) * 0.002;
+                }
+            });
+            
+            renderer.render(scene, camera);
+        }
+        
+        // Three.js Model Viewer
+        let modelScene, modelCamera, modelRenderer, modelControls, currentModel = null;
+        
+        function initModelViewer() {
+            const canvas = document.getElementById('modelCanvas');
+            
+            // Create scene
+            modelScene = new THREE.Scene();
+            modelScene.background = new THREE.Color(0x0a0a0a);
+            
+            // Create camera
+            modelCamera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            modelCamera.position.set(5, 5, 5);
+            
+            // Create renderer
+            modelRenderer = new THREE.WebGLRenderer({ 
+                canvas: canvas,
+                antialias: true 
+            });
+            modelRenderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            modelRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            modelScene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xff003c, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            modelScene.add(directionalLight);
+            
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight2.position.set(-5, 5, -5);
+            modelScene.add(directionalLight2);
+            
+            // Add controls
+            modelControls = new THREE.OrbitControls(modelCamera, modelRenderer.domElement);
+            modelControls.enableDamping = true;
+            modelControls.dampingFactor = 0.05;
+            
+            // Create a placeholder sneaker model
+            createPlaceholderModel();
+            
+            // Handle resize
+            window.addEventListener('resize', onModelResize);
+            
+            // Start animation
+            animateModel();
+        }
+        
+        function createPlaceholderModel() {
+            // Clear existing model
+            if (currentModel) {
+                modelScene.remove(currentModel);
+            }
+            
+            // Create a sneaker-like shape
+            const group = new THREE.Group();
+            
+            // Main sole
+            const soleGeometry = new THREE.BoxGeometry(3, 0.5, 1.2);
+            const soleMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x111111,
+                shininess: 30
+            });
+            const sole = new THREE.Mesh(soleGeometry, soleMaterial);
+            sole.position.y = -1;
+            group.add(sole);
+            
+            // Upper part
+            const upperGeometry = new THREE.BoxGeometry(2.8, 1.5, 1);
+            const upperMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xff003c,
+                shininess: 50
+            });
+            const upper = new THREE.Mesh(upperGeometry, upperMaterial);
+            upper.position.y = 0.2;
+            group.add(upper);
+            
+            // Lace holes
+            const laceHoleGeometry = new THREE.SphereGeometry(0.05, 8, 8);
+            const laceHoleMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+            
+            for (let i = 0; i < 6; i++) {
+                const laceHole = new THREE.Mesh(laceHoleGeometry, laceHoleMaterial);
+                laceHole.position.set(
+                    -1 + i * 0.4,
+                    0.5,
+                    0.5
+                );
+                group.add(laceHole);
+                
+                const laceHole2 = new THREE.Mesh(laceHoleGeometry, laceHoleMaterial);
+                laceHole2.position.set(
+                    -1 + i * 0.4,
+                    0.5,
+                    -0.5
+                );
+                group.add(laceHole2);
+            }
+            
+            // Swoosh (Nike-like shape)
+            const swooshShape = new THREE.Shape();
+            swooshShape.moveTo(0, 0);
+            swooshShape.quadraticCurveTo(0.5, 0.5, 1, 0);
+            swooshShape.quadraticCurveTo(1.5, -0.5, 2, 0);
+            
+            const swooshGeometry = new THREE.ExtrudeGeometry(swooshShape, {
+                depth: 0.05,
+                bevelEnabled: false
+            });
+            
+            const swooshMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x000000,
+                shininess: 100
+            });
+            const swoosh = new THREE.Mesh(swooshGeometry, swooshMaterial);
+            swoosh.position.set(-0.5, 0.3, 0.6);
+            swoosh.rotation.y = Math.PI / 2;
+            group.add(swoosh);
+            
+            // Add to scene
+            modelScene.add(group);
+            currentModel = group;
+            
+            // Position for better view
+            group.rotation.y = Math.PI / 4;
+        }
+        
+        function onModelResize() {
+            const canvas = document.getElementById('modelCanvas');
+            modelCamera.aspect = canvas.clientWidth / canvas.clientHeight;
+            modelCamera.updateProjectionMatrix();
+            modelRenderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        }
+        
+        function animateModel() {
+            requestAnimationFrame(animateModel);
+            
+            if (currentModel) {
+                // Slow rotation
+                currentModel.rotation.y += 0.005;
+            }
+            
+            modelControls.update();
+            modelRenderer.render(modelScene, modelCamera);
+        }
+        
+        // Application Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize 3D scenes
+            initThreeJS();
+            initModelViewer();
+            
+            // Mobile navigation toggle
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            mobileToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileToggle.innerHTML = navLinks.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Animated statistics counter
+            function animateCounter(elementId, finalValue, suffix = '', duration = 2000) {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+                
+                let startValue = 0;
+                const increment = finalValue / (duration / 16);
+                const timer = setInterval(() => {
+                    startValue += increment;
+                    if (startValue >= finalValue) {
+                        element.textContent = finalValue.toLocaleString() + suffix;
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(startValue).toLocaleString() + suffix;
+                    }
+                }, 16);
+            }
+            
+            // Initialize counters
+            animateCounter('stat1', 12500);
+            animateCounter('stat2', 320);
+            animateCounter('stat3', 4);
+            
+            // Populate sneaker grid
+            const sneakerGrid = document.getElementById('sneakerGrid');
+            
+            function renderSneakers(filterBrand = 'all') {
+                sneakerGrid.innerHTML = '';
+                
+                const filteredSneakers = filterBrand === 'all' 
+                    ? sneakers 
+                    : sneakers.filter(sneaker => sneaker.brand === filterBrand);
+                
+                filteredSneakers.forEach(sneaker => {
+                    const sneakerCard = document.createElement('div');
+                    sneakerCard.className = 'sneaker-card';
+                    sneakerCard.dataset.brand = sneaker.brand;
+                    
+                    sneakerCard.innerHTML = `
+                        ${sneaker.badge ? `<div class="sneaker-badge">${sneaker.badge}</div>` : ''}
+                        <div class="sneaker-image">
+                            <img src="${sneaker.image}" alt="${sneaker.name}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                        </div>
+                        <div class="sneaker-content">
+                            <div class="sneaker-meta">
+                                <span class="sneaker-brand">${sneaker.brand.toUpperCase()}</span>
+                                <span>${sneaker.color}</span>
+                            </div>
+                            <h3 class="sneaker-title">${sneaker.name}</h3>
+                            <p class="sneaker-description">${sneaker.description.substring(0, 100)}...</p>
+                            <div class="sneaker-footer">
+                                <div>
+                                    <div class="sneaker-price">$${sneaker.price.toFixed(2)}</div>
+                                    <span class="original-price">$${sneaker.originalPrice.toFixed(2)}</span>
+                                </div>
+                                <div>
+                                    <button class="view-3d-btn" data-id="${sneaker.id}">
+                                        <i class="fas fa-cube"></i>
+                                    </button>
+                                    <button class="btn btn-primary add-to-cart-btn" data-id="${sneaker.id}" style="margin-left: 10px; padding: 10px 20px;">
+                                        <i class="fas fa-cart-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    sneakerGrid.appendChild(sneakerCard);
+                });
+                
+                // Add event listeners to 3D view buttons
+                document.querySelectorAll('.view-3d-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const sneakerId = parseInt(this.dataset.id);
+                        const sneaker = sneakers.find(s => s.id === sneakerId);
+                        
+                        if (sneaker) {
+                            openModelViewer(sneaker);
+                        }
+                    });
+                });
+                
+                // Add event listeners to add-to-cart buttons
+                document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const sneakerId = parseInt(this.dataset.id);
+                        addToCart(sneakerId);
+                    });
+                });
+            }
+            
+            // Initial render
+            renderSneakers();
+            
+            // Brand filtering
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active button
+                    document.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter sneakers
+                    const brand = this.dataset.brand;
+                    renderSneakers(brand);
+                });
+            });
+            
+            // Brand links in footer
+            document.querySelectorAll('.footer-links a[data-brand]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const brand = this.dataset.brand;
+                    
+                    // Update active button
+                    document.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelector(`.brand-btn[data-brand="${brand}"]`).classList.add('active');
+                    
+                    // Filter sneakers
+                    renderSneakers(brand);
+                    
+                    // Scroll to sneaker section
+                    document.getElementById('sneakers').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Model Viewer
+            const modelViewerModal = document.getElementById('modelViewerModal');
+            const modelClose = document.getElementById('modelClose');
+            const view3dBtn = document.getElementById('view3dBtn');
+            const addToCartModal = document.getElementById('addToCartModal');
+            
+            function openModelViewer(sneaker) {
+                // Update modal content
+                document.getElementById('modelTitle').textContent = sneaker.name;
+                document.getElementById('modelName').textContent = sneaker.name;
+                document.getElementById('modelDescription').textContent = sneaker.description;
+                document.getElementById('modelBrand').textContent = sneaker.brand.toUpperCase();
+                document.getElementById('modelColor').textContent = sneaker.color;
+                
+                const priceElement = document.querySelector('.model-price');
+                priceElement.innerHTML = `$${sneaker.price.toFixed(2)} <span class="original-price">$${sneaker.originalPrice.toFixed(2)}</span>`;
+                
+                // Update add to cart button
+                addToCartModal.dataset.id = sneaker.id;
+                
+                // Change model color based on sneaker
+                if (currentModel) {
+                    const upper = currentModel.children[1];
+                    if (upper && upper.material) {
+                        // Simple color mapping
+                        const colorMap = {
+                            'nike': 0x000000,
+                            'jordan': 0xff003c,
+                            'airforce': 0xffffff,
+                            'timberland': 0x8B4513
+                        };
+                        
+                        upper.material.color.setHex(colorMap[sneaker.brand] || 0xff003c);
+                    }
+                }
+                
+                // Open modal
+                modelViewerModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Handle model viewer resize
+                onModelResize();
+            }
+            
+            // Close model viewer
+            modelClose.addEventListener('click', () => {
+                modelViewerModal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === modelViewerModal) {
+                    modelViewerModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Open model viewer from hero button
+            view3dBtn.addEventListener('click', () => {
+                openModelViewer(sneakers[1]); // Default to Jordan 1
+            });
+            
+            // Cart functionality
+            let cart = [];
+            const cartSidebar = document.getElementById('cartSidebar');
+            const cartToggle = document.getElementById('cartToggle');
+            const cartClose = document.getElementById('cartClose');
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartFooter = document.getElementById('cartFooter');
+            const emptyCart = document.getElementById('emptyCart');
+            
+            function addToCart(sneakerId) {
+                const sneaker = sneakers.find(s => s.id === sneakerId);
+                
+                if (!sneaker) return;
+                
+                // Check if item already in cart
+                const existingItem = cart.find(item => item.id === sneakerId);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        ...sneaker,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+                
+                // Show notification
+                showNotification(`Added ${sneaker.name} to cart!`);
+            }
+            
+            function removeFromCart(sneakerId) {
+                cart = cart.filter(item => item.id !== sneakerId);
+                updateCart();
+            }
+            
+            function updateQuantity(sneakerId, newQuantity) {
+                const item = cart.find(item => item.id === sneakerId);
+                
+                if (item) {
+                    if (newQuantity < 1) {
+                        removeFromCart(sneakerId);
+                    } else {
+                        item.quantity = newQuantity;
+                    }
+                }
+                
+                updateCart();
+            }
+            
+            function updateCart() {
+                // Update cart count
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                cartCount.textContent = totalItems;
+                
+                // Update cart items
+                cartItems.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    emptyCart.style.display = 'block';
+                    cartFooter.style.display = 'none';
+                    cartItems.appendChild(emptyCart);
+                } else {
+                    emptyCart.style.display = 'none';
+                    cartFooter.style.display = 'block';
+                    
+                    let totalPrice = 0;
+                    
+                    cart.forEach(item => {
+                        const cartItem = document.createElement('div');
+                        cartItem.className = 'cart-item';
+                        
+                        const itemTotal = item.price * item.quantity;
+                        totalPrice += itemTotal;
+                        
+                        cartItem.innerHTML = `
+                            <div class="cart-item-image">
+                                <img src="${item.image}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                            </div>
+                            <div class="cart-item-details">
+                                <div class="cart-item-title">${item.name}</div>
+                                <div class="cart-item-brand">${item.brand.toUpperCase()}</div>
+                                <div class="cart-item-actions">
+                                    <div class="cart-item-price">$${itemTotal.toFixed(2)}</div>
+                                    <div class="cart-item-quantity">
+                                        <button class="quantity-btn decrease-btn" data-id="${item.id}">-</button>
+                                        <span>${item.quantity}</span>
+                                        <button class="quantity-btn increase-btn" data-id="${item.id}">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        cartItems.appendChild(cartItem);
+                    });
+                    
+                    // Update total
+                    document.getElementById('cartTotal').textContent = `$${totalPrice.toFixed(2)}`;
+                    
+                    // Add event listeners to quantity buttons
+                    document.querySelectorAll('.decrease-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const sneakerId = parseInt(this.dataset.id);
+                            const item = cart.find(item => item.id === sneakerId);
+                            if (item) {
+                                updateQuantity(sneakerId, item.quantity - 1);
+                            }
+                        });
+                    });
+                    
+                    document.querySelectorAll('.increase-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const sneakerId = parseInt(this.dataset.id);
+                            const item = cart.find(item => item.id === sneakerId);
+                            if (item) {
+                                updateQuantity(sneakerId, item.quantity + 1);
+                            }
+                        });
+                    });
+                }
+            }
+            
+            // Add to cart from modal
+            addToCartModal.addEventListener('click', function() {
+                const sneakerId = parseInt(this.dataset.id);
+                addToCart(sneakerId);
+                
+                // Close modal
+                modelViewerModal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Toggle cart sidebar
+            cartToggle.addEventListener('click', () => {
+                cartSidebar.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            cartClose.addEventListener('click', () => {
+                cartSidebar.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Close cart when clicking outside on mobile
+            window.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && !cartSidebar.contains(e.target) && e.target !== cartToggle) {
+                    cartSidebar.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Newsletter form
+            const newsletterForm = document.getElementById('newsletterForm');
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                
+                if (email) {
+                    showNotification('Thanks for subscribing! Check your email for exclusive deals.');
+                    this.reset();
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerHeight = header ? header.offsetHeight : 80;
+                        const targetPosition = targetElement.offsetTop - headerHeight;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Notification function
+            function showNotification(message) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background-color: var(--accent-red);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--box-shadow-red);
+                    z-index: 10000;
+                    transform: translateX(150%);
+                    transition: transform 0.3s;
+                    max-width: 300px;
+                    font-weight: 600;
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 10);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(150%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

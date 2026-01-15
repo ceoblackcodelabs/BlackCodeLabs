@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Analysis | Kenyan Prince Forex</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                <span class="gold-text">Kenyan Prince</span>
+                <p>Loading Premium Trading Experience</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-crown"></i> Kenyan <span>Prince</span>
+            </a>
+            
+            <button class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="index.html#vip-section">VIP</a></li>
+                    <li><a href="index.html#contact-section">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <a href="#login-modal" class="btn btn-secondary login-btn">Login</a>
+                <a href="index.html#vip-section" class="btn btn-primary">Join VIP</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Live Forex Ticker -->
+    <div class="ticker-container">
+        <div class="ticker" id="forexTicker">
+            <!-- Ticker items populated by JS -->
+        </div>
+    </div>
+
+    <!-- Blog Header -->
+    <section class="blog-header">
+        <div class="container">
+            <h1>Market <span class="gold-text">Analysis</span> & Insights</h1>
+            <p>Expert forex analysis, trading strategies, and market commentary from our elite trading team.</p>
+            
+            <div class="blog-search">
+                <input type="text" placeholder="Search for trading strategies, analysis, or market insights...">
+                <button type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Content -->
+    <section class="blog-content">
+        <div class="container">
+            <div class="blog-categories">
+                <button class="category-btn active" data-category="all">All Articles</button>
+                <button class="category-btn" data-category="analysis">Market Analysis</button>
+                <button class="category-btn" data-category="strategy">Trading Strategies</button>
+                <button class="category-btn" data-category="psychology">Trading Psychology</button>
+                <button class="category-btn" data-category="risk">Risk Management</button>
+                <button class="category-btn" data-category="forex">Forex Basics</button>
+            </div>
+            
+            <div class="blog-posts-grid">
+                <!-- Blog Post 1 -->
+                <article class="blog-post-card" data-category="analysis">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1640833907685-2f5ed9e4c67b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="EUR/USD Analysis">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Market Analysis</span>
+                            <span>May 15, 2023</span>
+                        </div>
+                        <h3 class="post-title">EUR/USD: Volatility Ahead of ECB Decision</h3>
+                        <p class="post-excerpt">Detailed analysis of EUR/USD price action ahead of the upcoming ECB meeting. We examine key levels, potential breakout directions, and trading strategies for this major currency pair.</p>
+                        <div class="post-footer">
+                            <a href="#" class="post-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">8 min read</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 2 -->
+                <article class="blog-post-card" data-category="strategy">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Forex Trading Strategies">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Trading Strategies</span>
+                            <span>May 10, 2023</span>
+                        </div>
+                        <h3 class="post-title">Advanced Risk Management Techniques for Forex Traders</h3>
+                        <p class="post-excerpt">Learn sophisticated risk management strategies used by institutional traders to protect capital while maximizing profit potential in volatile forex markets.</p>
+                        <div class="post-footer">
+                            <a href="#" class="post-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">12 min read</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 3 -->
+                <article class="blog-post-card" data-category="psychology">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Market Psychology">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Trading Psychology</span>
+                            <span>May 5, 2023</span>
+                        </div>
+                        <h3 class="post-title">Mastering Trading Psychology: The Elite Trader's Mindset</h3>
+                        <p class="post-excerpt">How elite traders maintain discipline, emotional control, and mental clarity during high-pressure market conditions. Essential psychological strategies for consistent profitability.</p>
+                        <div class="post-footer">
+                            <a href="#" class="post-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">10 min read</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 4 -->
+                <article class="blog-post-card" data-category="analysis">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="GBP/USD Analysis">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Market Analysis</span>
+                            <span>May 1, 2023</span>
+                        </div>
+                        <h3 class="post-title">GBP/USD: Technical Breakdown and Trading Opportunities</h3>
+                        <p class="post-excerpt">Comprehensive technical analysis of GBP/USD with identified support/resistance levels, pattern recognition, and high-probability trading setups for the week ahead.</p>
+                        <div class="post-footer">
+                            <a href="#" class="post-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">7 min read</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 5 -->
+                <article class="blog-post-card" data-category="risk">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Risk Management">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Risk Management</span>
+                            <span>April 25, 2023</span>
+                        </div>
+                        <h3 class="post-title">Position Sizing Strategies for Optimal Risk/Reward Ratios</h3>
+                        <p class="post-excerpt">Learn advanced position sizing techniques that help maximize returns while keeping risk at manageable levels. Essential reading for serious forex traders.</p>
+                        <div class="post-footer">
+                            <a href="#" class="post-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">9 min read</span>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 6 -->
+                <article class="blog-post-card" data-category="forex">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Forex Basics">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Forex Basics</span>
+                            <span>April 20, 2023</span>
+                        </div>
+                        <h3 class="post-title">Understanding Forex Market Structure: A Beginner's Guide</h3>
+                        <p class="post-excerpt">Essential knowledge for new traders: learn about market participants, trading sessions, liquidity patterns, and how to navigate the global forex market effectively.</p>
+                        <div class="post-footer">
+                            <a href="#" class="post-link">Read Full Analysis <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">15 min read</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="blog-pagination">
+                <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn">4</button>
+                <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3 class="footer-logo">
+                        <i class="fas fa-crown"></i> Kenyan <span>Prince</span>
+                    </h3>
+                    <p>Elite Forex trading strategies and premium market analysis for discerning investors seeking consistent profitability in global currency markets.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="blog.html">Market Analysis</a></li>
+                        <li><a href="events.html">Trading Events</a></li>
+                        <li><a href="index.html#vip-section">VIP Programs</a></li>
+                        <li><a href="index.html#contact-section">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Risk Disclaimer</a></li>
+                        <li><a href="#">Regulatory Compliance</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe for exclusive market insights and trading tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Kenyan Prince Forex Trading. All rights reserved. Forex trading involves substantial risk of loss.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Member Login</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="modal-footer-text">Not a member? <a href="index.html#vip-section">Join VIP Program</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

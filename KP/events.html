@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Events | Kenyan Prince Forex</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                <span class="gold-text">Kenyan Prince</span>
+                <p>Loading Premium Trading Experience</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-crown"></i> Kenyan <span>Prince</span>
+            </a>
+            
+            <button class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="events.html" class="active">Events</a></li>
+                    <li><a href="index.html#vip-section">VIP</a></li>
+                    <li><a href="index.html#contact-section">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <a href="#login-modal" class="btn btn-secondary login-btn">Login</a>
+                <a href="index.html#vip-section" class="btn btn-primary">Join VIP</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Live Forex Ticker -->
+    <div class="ticker-container">
+        <div class="ticker" id="forexTicker">
+            <!-- Ticker items populated by JS -->
+        </div>
+    </div>
+
+    <!-- Events Header -->
+    <section class="events-header">
+        <div class="container">
+            <h1>Forex Trading <span class="gold-text">Events</span></h1>
+            <p>Join our exclusive webinars, live trading sessions, and mentorship programs to elevate your trading skills.</p>
+            
+            <div class="events-filter">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-calendar-alt"></i> All Events
+                </button>
+                <button class="filter-btn" data-filter="webinar">
+                    <i class="fas fa-video"></i> Webinars
+                </button>
+                <button class="filter-btn" data-filter="live">
+                    <i class="fas fa-broadcast-tower"></i> Live Trading
+                </button>
+                <button class="filter-btn" data-filter="mentorship">
+                    <i class="fas fa-user-graduate"></i> Mentorship
+                </button>
+                <button class="filter-btn" data-filter="workshop">
+                    <i class="fas fa-chalkboard-teacher"></i> Workshops
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Content -->
+    <section class="events-content">
+        <div class="container">
+            <div class="events-grid">
+                <!-- Event 1 -->
+                <article class="event-card" data-type="live">
+                    <div class="event-badge">LIVE TRADING</div>
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Live Trading Session">
+                        <div class="event-date">
+                            <span class="event-day">25</span>
+                            <span class="event-month">May</span>
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="far fa-clock"></i> 2:00 PM GMT</span>
+                            <span><i class="fas fa-user"></i> Kenyan Prince</span>
+                            <span><i class="fas fa-users"></i> VIP Only</span>
+                        </div>
+                        <h3 class="event-title">Live Forex Scalping Session: EUR/USD & GBP/USD</h3>
+                        <p class="event-description">Join our lead trader for a live scalping session focusing on major currency pairs during high volatility periods. Real-time analysis and execution.</p>
+                        <div class="event-footer">
+                            <span class="event-price">VIP Exclusive</span>
+                            <a href="#" class="btn btn-primary">Register Now</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Event 2 -->
+                <article class="event-card" data-type="webinar">
+                    <div class="event-badge">FREE WEBINAR</div>
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Risk Management Webinar">
+                        <div class="event-date">
+                            <span class="event-day">05</span>
+                            <span class="event-month">Jun</span>
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="far fa-clock"></i> 4:00 PM GMT</span>
+                            <span><i class="fas fa-user"></i> Senior Analysts</span>
+                            <span><i class="fas fa-users"></i> All Members</span>
+                        </div>
+                        <h3 class="event-title">Advanced Risk Management Workshop</h3>
+                        <p class="event-description">Learn sophisticated risk management strategies to protect your capital while maximizing profit potential in volatile markets.</p>
+                        <div class="event-footer">
+                            <span class="event-price">Free</span>
+                            <a href="#" class="btn btn-primary">Register Now</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Event 3 -->
+                <article class="event-card" data-type="mentorship">
+                    <div class="event-badge">MENTORSHIP</div>
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mentorship Program">
+                        <div class="event-date">
+                            <span class="event-day">15</span>
+                            <span class="event-month">Jun</span>
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="far fa-clock"></i> 6:00 PM GMT</span>
+                            <span><i class="fas fa-user"></i> Kenyan Prince</span>
+                            <span><i class="fas fa-users"></i> Selected Applicants</span>
+                        </div>
+                        <h3 class="event-title">Mentorship Program Kickoff: Elite Trading Strategies</h3>
+                        <p class="event-description">Exclusive 6-week mentorship program for serious traders looking to elevate their strategies and market understanding.</p>
+                        <div class="event-footer">
+                            <span class="event-price">$2,999</span>
+                            <a href="#" class="btn btn-primary">Apply Now</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Event 4 -->
+                <article class="event-card" data-type="workshop">
+                    <div class="event-badge">WORKSHOP</div>
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1640833907685-2f5ed9e4c67b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Technical Analysis Workshop">
+                        <div class="event-date">
+                            <span class="event-day">22</span>
+                            <span class="event-month">Jun</span>
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="far fa-clock"></i> 3:00 PM GMT</span>
+                            <span><i class="fas fa-user"></i> Technical Analyst</span>
+                            <span><i class="fas fa-users"></i> Pro+ Members</span>
+                        </div>
+                        <h3 class="event-title">Advanced Technical Analysis: Price Action & Patterns</h3>
+                        <p class="event-description">Deep dive into advanced technical analysis techniques, including price action reading, pattern recognition, and confluence trading.</p>
+                        <div class="event-footer">
+                            <span class="event-price">$199</span>
+                            <a href="#" class="btn btn-primary">Register Now</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Event 5 -->
+                <article class="event-card" data-type="webinar">
+                    <div class="event-badge">WEBINAR</div>
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Market Analysis Webinar">
+                        <div class="event-date">
+                            <span class="event-day">29</span>
+                            <span class="event-month">Jun</span>
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="far fa-clock"></i> 5:00 PM GMT</span>
+                            <span><i class="fas fa-user"></i> Market Analyst</span>
+                            <span><i class="fas fa-users"></i> All Members</span>
+                        </div>
+                        <h3 class="event-title">Q3 Market Outlook: Forex & Commodities Analysis</h3>
+                        <p class="event-description">Comprehensive analysis of market conditions for Q3 2023, focusing on major currency pairs, gold, oil, and emerging market opportunities.</p>
+                        <div class="event-footer">
+                            <span class="event-price">Free</span>
+                            <a href="#" class="btn btn-primary">Register Now</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Event 6 -->
+                <article class="event-card" data-type="live">
+                    <div class="event-badge">LIVE TRADING</div>
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="NFP Trading Session">
+                        <div class="event-date">
+                            <span class="event-day">07</span>
+                            <span class="event-month">Jul</span>
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="far fa-clock"></i> 1:30 PM GMT</span>
+                            <span><i class="fas fa-user"></i> Kenyan Prince</span>
+                            <span><i class="fas fa-users"></i> Elite VIP Only</span>
+                        </div>
+                        <h3 class="event-title">NFP Day Live Trading: Strategy & Execution</h3>
+                        <p class="event-description">Special Non-Farm Payrolls day trading session. Learn how to navigate high-impact news events and capitalize on volatility.</p>
+                        <div class="event-footer">
+                            <span class="event-price">Elite VIP Exclusive</span>
+                            <a href="#" class="btn btn-primary">Register Now</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="events-pagination">
+                <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3 class="footer-logo">
+                        <i class="fas fa-crown"></i> Kenyan <span>Prince</span>
+                    </h3>
+                    <p>Elite Forex trading strategies and premium market analysis for discerning investors seeking consistent profitability in global currency markets.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="blog.html">Market Analysis</a></li>
+                        <li><a href="events.html">Trading Events</a></li>
+                        <li><a href="index.html#vip-section">VIP Programs</a></li>
+                        <li><a href="index.html#contact-section">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Risk Disclaimer</a></li>
+                        <li><a href="#">Regulatory Compliance</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe for exclusive market insights and trading tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Kenyan Prince Forex Trading. All rights reserved. Forex trading involves substantial risk of loss.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Member Login</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="modal-footer-text">Not a member? <a href="index.html#vip-section">Join VIP Program</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
