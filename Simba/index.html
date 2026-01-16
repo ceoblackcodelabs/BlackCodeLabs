@@ -219,14 +219,12 @@
         .portal-page {
             display: none;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.8s ease;
         }
         
         .portal-page.active {
             display: block;
             opacity: 1;
-            transform: translateY(0);
         }
         
         /* Header Styles */
@@ -619,7 +617,7 @@
             100% { opacity: 0; transform: scale(40, 40); }
         }
         
-        /* Page transition */
+        /* Page transition - FIXED */
         .page-transition {
             position: fixed;
             top: 0;
@@ -639,6 +637,7 @@
         .page-transition.hidden {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none; /* ADD THIS LINE - prevents interaction */
         }
         
         .loading-spinner {
@@ -752,8 +751,8 @@
         </div>
     </div>
     
-    <!-- Page Transition -->
-    <div class="page-transition" id="pageTransition">
+    <!-- Page Transition - Initially hidden -->
+    <div class="page-transition hidden" id="pageTransition">
         <div class="loading-spinner"></div>
     </div>
     
@@ -889,13 +888,12 @@
     </div>
 
     <script>
-        // Landing page animations
         document.addEventListener('DOMContentLoaded', function() {
             // Animate counting stats
             function animateCount(elementId, finalValue, duration = 2000) {
                 let element = document.getElementById(elementId);
                 let startValue = 0;
-                let increment = finalValue / (duration / 16); // 60fps
+                let increment = finalValue / (duration / 16);
                 let current = startValue;
                 
                 let timer = setInterval(() => {
@@ -939,7 +937,7 @@
                 // Add button click animation
                 this.style.transform = 'scale(0.95)';
                 setTimeout(() => {
-                    this.style.transform = 'scale(1)';
+                    this.style.transform = '';
                 }, 150);
             });
             
@@ -955,12 +953,6 @@
                     
                     // Add active class to clicked package
                     this.classList.add('active');
-                    
-                    // Add click animation
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1) translateY(-5px)';
-                    }, 150);
                     
                     // Update selected package info
                     const packageName = this.querySelector('.package-name').textContent;
@@ -993,6 +985,8 @@
                     // Shake animation for invalid input
                     const codeInput = document.getElementById('mpesa-code');
                     codeInput.style.borderColor = '#ff4444';
+                    
+                    // Create shake animation
                     codeInput.style.animation = 'shake 0.5s ease';
                     setTimeout(() => {
                         codeInput.style.animation = '';
@@ -1010,11 +1004,11 @@
                 
                 // Simulate API call/processing
                 setTimeout(() => {
-                    // Show success message with animation
+                    // Show success message
                     const successMessage = document.createElement('div');
                     successMessage.innerHTML = `
                         <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 2000;">
-                            <div style="background: var(--light-black); padding: 40px; border-radius: 10px; text-align: center; max-width: 500px; border: 2px solid var(--primary-gold); animation: fadeIn 0.5s ease;">
+                            <div style="background: var(--light-black); padding: 40px; border-radius: 10px; text-align: center; max-width: 500px; border: 2px solid var(--primary-gold);">
                                 <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary-gold); margin-bottom: 20px;"></i>
                                 <h2 style="color: var(--primary-gold); margin-bottom: 15px;">Connection Successful!</h2>
                                 <p style="margin-bottom: 10px;">Package: ${packageName}</p>
@@ -1030,6 +1024,20 @@
                     
                     document.body.appendChild(successMessage);
                     
+                    // Add shake animation style if not already present
+                    if (!document.querySelector('#shake-style')) {
+                        const style = document.createElement('style');
+                        style.id = 'shake-style';
+                        style.textContent = `
+                            @keyframes shake {
+                                0%, 100% { transform: translateX(0); }
+                                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                                20%, 40%, 60%, 80% { transform: translateX(5px); }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    }
+                    
                     // Close success message
                     document.getElementById('closeSuccess').addEventListener('click', function() {
                         successMessage.remove();
@@ -1042,26 +1050,17 @@
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                     
-                    // In a real scenario, this would redirect or connect the user
-                    console.log(`Connecting user with:\nPackage: ${packageName}\nAmount: ${packagePrice}\nM-Pesa Code: ${mpesaCode}\nPhone: ${phoneNumber}`);
+                    // Reset input border color
+                    document.getElementById('mpesa-code').style.borderColor = '';
                 }, 2000);
             });
             
             // Initialize with first package active
             setTimeout(() => {
-                packages[0].click();
-            }, 100);
-            
-            // Add shake animation for validation errors
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes shake {
-                    0%, 100% { transform: translateX(0); }
-                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                if (packages.length > 0) {
+                    packages[0].click();
                 }
-            `;
-            document.head.appendChild(style);
+            }, 100);
         });
     </script>
 </body>
