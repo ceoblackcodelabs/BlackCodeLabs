@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simba WiFi - Premium Internet Access</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-black: #0a0a0a;
+            --dark-black: #000000;
+            --light-black: #1a1a1a;
+            --primary-gold: #d4af37;
+            --light-gold: #f4e4a6;
+            --dark-gold: #b8941f;
+            --text-gray: #e0e0e0;
+            --border-gray: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-black);
+            color: var(--text-gray);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        /* Landing Page Styles */
+        .landing-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .landing-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .pulse-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            animation: pulse 4s infinite ease-in-out;
+        }
+        
+        .pulse-circle:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .pulse-circle:nth-child(2) {
+            bottom: 15%;
+            right: 10%;
+            animation-delay: 1s;
+            width: 200px;
+            height: 200px;
+        }
+        
+        .logo-container {
+            margin-bottom: 40px;
+            animation: fadeInDown 1.2s ease-out;
+        }
+        
+        .logo-icon {
+            color: var(--primary-gold);
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .logo-text {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary-gold), var(--light-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--light-gold);
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .landing-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            padding: 20px;
+            min-width: 150px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .stat:nth-child(1) { animation-delay: 0.4s; }
+        .stat:nth-child(2) { animation-delay: 0.6s; }
+        .stat:nth-child(3) { animation-delay: 0.8s; }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cta-button {
+            background-color: transparent;
+            color: var(--primary-gold);
+            border: 2px solid var(--primary-gold);
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            animation: fadeIn 1.5s ease forwards;
+            animation-delay: 1s;
+            opacity: 0;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.7s ease;
+            z-index: -1;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-gold);
+            color: var(--dark-black);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button i {
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button:hover i {
+            transform: translateX(5px);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary-gold);
+            animation: bounce 2s infinite;
+        }
+        
+        /* Portal Page (hidden initially) */
+        .portal-page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .portal-page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-gray);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .logo-small {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-small i {
+            color: var(--primary-gold);
+            font-size: 1.8rem;
+        }
+        
+        .logo-small-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-gold), var(--light-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .left-panel, .right-panel {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        /* Package Selection */
+        .section-title {
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-gold);
+        }
+        
+        .packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .package {
+            background-color: var(--light-black);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .package:nth-child(1) { animation: fadeInUp 0.5s ease 0.2s forwards; }
+        .package:nth-child(2) { animation: fadeInUp 0.5s ease 0.3s forwards; }
+        .package:nth-child(3) { animation: fadeInUp 0.5s ease 0.4s forwards; }
+        .package:nth-child(4) { animation: fadeInUp 0.5s ease 0.5s forwards; }
+        
+        .package:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+        }
+        
+        .package.active {
+            border-color: var(--primary-gold);
+            background-color: rgba(212, 175, 55, 0.05);
+        }
+        
+        .package-name {
+            color: var(--primary-gold);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .package-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .package-duration {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .package-highlight {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--primary-gold);
+            color: var(--dark-black);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-bottom-left-radius: 8px;
+        }
+        
+        /* Payment Steps */
+        .steps {
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .step:nth-child(1) { animation: slideInRight 0.6s ease 0.6s forwards; }
+        .step:nth-child(2) { animation: slideInRight 0.6s ease 0.8s forwards; }
+        .step:nth-child(3) { animation: slideInRight 0.6s ease 1.0s forwards; }
+        .step:nth-child(4) { animation: slideInRight 0.6s ease 1.2s forwards; }
+        
+        .step-number {
+            background-color: var(--primary-gold);
+            color: var(--dark-black);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            color: var(--light-gold);
+            margin-bottom: 5px;
+        }
+        
+        .step-content p {
+            color: #bbb;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .paybill-details {
+            background-color: var(--light-black);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid var(--primary-gold);
+            animation: pulse-gold 2s infinite;
+        }
+        
+        .paybill-details p {
+            margin-bottom: 5px;
+        }
+        
+        .highlight {
+            color: var(--primary-gold);
+            font-weight: 700;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background-color: var(--light-black);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease;
+            transform-origin: top;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light-gold);
+            font-weight: 600;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-black);
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            color: var(--text-gray);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-gold);
+        }
+        
+        .selected-package {
+            background-color: rgba(212, 175, 55, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border-left: 3px solid var(--primary-gold);
+            animation: slideInLeft 0.5s ease;
+        }
+        
+        .selected-package h4 {
+            color: var(--primary-gold);
+            margin-bottom: 5px;
+        }
+        
+        .btn {
+            background-color: var(--primary-gold);
+            color: var(--dark-black);
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .btn:hover {
+            background-color: var(--dark-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        .form-note {
+            margin-top: 15px;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-gray);
+            color: #888;
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeIn 1s ease 1.5s forwards;
+        }
+        
+        .support {
+            margin-top: 10px;
+        }
+        
+        .support a {
+            color: var(--primary-gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .support a:hover {
+            color: var(--light-gold);
+            text-decoration: underline;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+            50% { box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.1); }
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0, 0); opacity: 1; }
+            20% { transform: scale(25, 25); opacity: 1; }
+            100% { opacity: 0; transform: scale(40, 40); }
+        }
+        
+        /* Page transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-black);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        .page-transition.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(212, 175, 55, 0.2);
+            border-top: 4px solid var(--primary-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .logo-icon {
+                font-size: 3rem;
+            }
+            
+            .landing-stats {
+                gap: 20px;
+            }
+            
+            .stat {
+                min-width: 120px;
+                padding: 15px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .packages {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .logo-text {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .package-price {
+                font-size: 1.5rem;
+            }
+            
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <div class="pulse-circle"></div>
+        <div class="pulse-circle"></div>
+        
+        <div class="logo-container">
+            <i class="fas fa-wifi logo-icon"></i>
+            <h1 class="logo-text">SIMBA WIFI</h1>
+            <p class="tagline">Experience Premium High-Speed Internet</p>
+        </div>
+        
+        <div class="landing-stats">
+            <div class="stat">
+                <div class="stat-number" id="usersCount">0</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="speedCount">0</div>
+                <div class="stat-label">Mbps Speed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="coverageCount">0</div>
+                <div class="stat-label">Coverage Areas</div>
+            </div>
+        </div>
+        
+        <button class="cta-button" id="getStartedBtn">
+            Get Started <i class="fas fa-arrow-right"></i>
+        </button>
+        
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+    
+    <!-- Page Transition -->
+    <div class="page-transition" id="pageTransition">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Portal Page -->
+    <div class="portal-page" id="portalPage">
+        <div class="container">
+            <header>
+                <div class="logo-small">
+                    <i class="fas fa-wifi"></i>
+                    <div class="logo-small-text">SIMBA WIFI</div>
+                </div>
+                <div class="header-status">
+                    <div class="status-indicator">
+                        <i class="fas fa-signal" style="color: #4CAF50; margin-right: 5px;"></i>
+                        <span>Secure Network</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="main-content">
+                <div class="left-panel">
+                    <h2 class="section-title">Select Your Package</h2>
+                    <div class="packages">
+                        <div class="package active" data-package="hourly" data-price="50">
+                            <div class="package-name">Hourly Access</div>
+                            <div class="package-price">Ksh 50</div>
+                            <div class="package-duration">1 Hour of High-Speed Internet</div>
+                            <div class="package-highlight">POPULAR</div>
+                        </div>
+                        
+                        <div class="package" data-package="daily" data-price="200">
+                            <div class="package-name">Daily Access</div>
+                            <div class="package-price">Ksh 200</div>
+                            <div class="package-duration">24 Hours of Unlimited Access</div>
+                        </div>
+                        
+                        <div class="package" data-package="weekly" data-price="1200">
+                            <div class="package-name">Weekly Access</div>
+                            <div class="package-price">Ksh 1,200</div>
+                            <div class="package-duration">7 Days of Unlimited Access</div>
+                        </div>
+                        
+                        <div class="package" data-package="monthly" data-price="4000">
+                            <div class="package-name">Monthly Access</div>
+                            <div class="package-price">Ksh 4,000</div>
+                            <div class="package-duration">30 Days of Unlimited Access</div>
+                            <div class="package-highlight">BEST VALUE</div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="section-title">How to Pay via M-Pesa</h2>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Go to M-Pesa Menu</h4>
+                                <p>Select "Lipa Na M-Pesa" then "Pay Bill" option</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Enter PayBill Details</h4>
+                                <p>Use the following details:</p>
+                                <div class="paybill-details">
+                                    <p><span class="highlight">Business No:</span> 123456</p>
+                                    <p><span class="highlight">Account No:</span> SIMBA-WIFI</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Enter Amount</h4>
+                                <p>Enter the exact amount for your selected package</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Enter PIN & Complete</h4>
+                                <p>Enter your M-Pesa PIN and wait for confirmation SMS</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="right-panel">
+                    <div class="form-container">
+                        <h2 class="section-title">Enter M-Pesa Code</h2>
+                        <div class="selected-package">
+                            <h4>Selected Package: <span id="selected-package-name">Hourly Access</span></h4>
+                            <p>Amount: Ksh <span id="selected-package-price">50</span></p>
+                        </div>
+                        
+                        <form id="voucher-form">
+                            <div class="form-group">
+                                <label for="mpesa-code"><i class="fas fa-receipt"></i> M-Pesa Transaction Code</label>
+                                <div class="input-container">
+                                    <input type="text" id="mpesa-code" placeholder="Enter the 10-digit code from M-Pesa SMS" required maxlength="10">
+                                    <i class="fas fa-key input-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone-number"><i class="fas fa-phone"></i> Phone Number (Optional)</label>
+                                <div class="input-container">
+                                    <input type="tel" id="phone-number" placeholder="Phone number used for payment">
+                                    <i class="fas fa-mobile-alt input-icon"></i>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn">
+                                <i class="fas fa-unlock"></i> Connect to WiFi
+                            </button>
+                        </form>
+                        
+                        <p class="form-note">
+                            <i class="fas fa-info-circle"></i> After submitting, you will be automatically connected to the internet
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <footer>
+                <p>&copy; 2023 Simba WiFi. All rights reserved.</p>
+                <p class="support">Need help? Contact support: <a href="tel:+254700000000">+254 700 000 000</a> or <a href="mailto:support@simbawifi.co.ke">support@simbawifi.co.ke</a></p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Landing page animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate counting stats
+            function animateCount(elementId, finalValue, duration = 2000) {
+                let element = document.getElementById(elementId);
+                let startValue = 0;
+                let increment = finalValue / (duration / 16); // 60fps
+                let current = startValue;
+                
+                let timer = setInterval(() => {
+                    current += increment;
+                    if (current >= finalValue) {
+                        current = finalValue;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current);
+                }, 16);
+            }
+            
+            // Start animations after a short delay
+            setTimeout(() => {
+                animateCount('usersCount', 1250);
+                animateCount('speedCount', 150);
+                animateCount('coverageCount', 42);
+            }, 500);
+            
+            // Get Started button click - transition to portal page
+            const getStartedBtn = document.getElementById('getStartedBtn');
+            const landingPage = document.getElementById('landingPage');
+            const portalPage = document.getElementById('portalPage');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            getStartedBtn.addEventListener('click', function() {
+                // Show page transition
+                pageTransition.classList.remove('hidden');
+                
+                // After transition, show portal page
+                setTimeout(() => {
+                    landingPage.style.display = 'none';
+                    portalPage.classList.add('active');
+                    
+                    // Hide transition after a moment
+                    setTimeout(() => {
+                        pageTransition.classList.add('hidden');
+                    }, 500);
+                }, 800);
+                
+                // Add button click animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+            
+            // Package selection
+            const packages = document.querySelectorAll('.package');
+            const selectedPackageName = document.getElementById('selected-package-name');
+            const selectedPackagePrice = document.getElementById('selected-package-price');
+            
+            packages.forEach(pkg => {
+                pkg.addEventListener('click', function() {
+                    // Remove active class from all packages
+                    packages.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked package
+                    this.classList.add('active');
+                    
+                    // Add click animation
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1) translateY(-5px)';
+                    }, 150);
+                    
+                    // Update selected package info
+                    const packageName = this.querySelector('.package-name').textContent;
+                    const packagePrice = this.getAttribute('data-price');
+                    
+                    selectedPackageName.textContent = packageName;
+                    selectedPackagePrice.textContent = packagePrice;
+                    
+                    // Animate the selected package display
+                    const selectedPackageDiv = document.querySelector('.selected-package');
+                    selectedPackageDiv.style.animation = 'none';
+                    setTimeout(() => {
+                        selectedPackageDiv.style.animation = 'slideInLeft 0.5s ease';
+                    }, 10);
+                });
+            });
+            
+            // Form submission
+            const form = document.getElementById('voucher-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const mpesaCode = document.getElementById('mpesa-code').value;
+                const phoneNumber = document.getElementById('phone-number').value || 'Not provided';
+                const packageName = selectedPackageName.textContent;
+                const packagePrice = selectedPackagePrice.textContent;
+                
+                // Simple validation
+                if (mpesaCode.length !== 10) {
+                    // Shake animation for invalid input
+                    const codeInput = document.getElementById('mpesa-code');
+                    codeInput.style.borderColor = '#ff4444';
+                    codeInput.style.animation = 'shake 0.5s ease';
+                    setTimeout(() => {
+                        codeInput.style.animation = '';
+                    }, 500);
+                    
+                    alert('Please enter a valid 10-digit M-Pesa transaction code');
+                    return;
+                }
+                
+                // Show loading state on button
+                const submitBtn = this.querySelector('.btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                submitBtn.disabled = true;
+                
+                // Simulate API call/processing
+                setTimeout(() => {
+                    // Show success message with animation
+                    const successMessage = document.createElement('div');
+                    successMessage.innerHTML = `
+                        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 2000;">
+                            <div style="background: var(--light-black); padding: 40px; border-radius: 10px; text-align: center; max-width: 500px; border: 2px solid var(--primary-gold); animation: fadeIn 0.5s ease;">
+                                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--primary-gold); margin-bottom: 20px;"></i>
+                                <h2 style="color: var(--primary-gold); margin-bottom: 15px;">Connection Successful!</h2>
+                                <p style="margin-bottom: 10px;">Package: ${packageName}</p>
+                                <p style="margin-bottom: 10px;">Amount: Ksh ${packagePrice}</p>
+                                <p style="margin-bottom: 20px;">Transaction Code: ${mpesaCode}</p>
+                                <p style="color: var(--light-gold); font-size: 1.2rem; margin-bottom: 25px;">You are now connected to Simba WiFi</p>
+                                <button id="closeSuccess" style="background: var(--primary-gold); color: var(--dark-black); border: none; padding: 12px 30px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                                    Continue Browsing
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(successMessage);
+                    
+                    // Close success message
+                    document.getElementById('closeSuccess').addEventListener('click', function() {
+                        successMessage.remove();
+                    });
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // In a real scenario, this would redirect or connect the user
+                    console.log(`Connecting user with:\nPackage: ${packageName}\nAmount: ${packagePrice}\nM-Pesa Code: ${mpesaCode}\nPhone: ${phoneNumber}`);
+                }, 2000);
+            });
+            
+            // Initialize with first package active
+            setTimeout(() => {
+                packages[0].click();
+            }, 100);
+            
+            // Add shake animation for validation errors
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
