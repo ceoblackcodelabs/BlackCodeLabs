@@ -1,9 +1,9 @@
   =>  Template Name    : Drivin - Driving School Website Template
 
-  =>  Template Link    : https://BlackCodeLab.com/driving-school-website-template
+  =>  Template Link    : https://BlackCodeLabs.com/driving-school-website-template
 
-  =>  Template License : https://BlackCodeLab.com/license (or read the LICENSE.txt file)
+  =>  Template License : https://BlackCodeLabs.com/license (or read the LICENSE.txt file)
 
-  =>  Template Author  : BlackCodeLab
+  =>  Template Author  : BlackCodeLabs
 
-  =>  Author Website   : https://BlackCodeLab.com
+  =>  Author Website   : https://BlackCodeLabs.com

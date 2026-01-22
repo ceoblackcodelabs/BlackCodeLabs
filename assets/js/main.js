@@ -1,4 +1,4 @@
-// Main JavaScript for BlackCodeLab
+// Main JavaScript for BlackCodeLabs
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize everything when DOM is loaded
     initSpace();

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate | BlackCodeLab</title>
+    <title>Certificate | BlackCodeLabs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
@@ -124,7 +124,7 @@
                         <div class="signature-block">
                             <div class="signature-line"></div>
                             <div class="signature-name">Sarah Chen</div>
-                            <div class="signature-title">CEO, BlackCodeLab</div>
+                            <div class="signature-title">CEO, BlackCodeLabs</div>
                         </div>
                     </div>
 
@@ -242,7 +242,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>BlackCodeLab</h3>
+                    <h3>BlackCodeLabs</h3>
                     <p>Intelligent solutions for the future</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -280,7 +280,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 BlackCodeLab. All rights reserved. | Certificate verification system powered by blockchain technology.</p>
+                <p>&copy; 2025 BlackCodeLabs. All rights reserved. | Certificate verification system powered by blockchain technology.</p>
             </div>
         </div>
     </footer>
@@ -449,7 +449,7 @@
                 const imgHeight = canvas.height * imgWidth / canvas.width;
                 
                 pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save(`BlackCodeLab_Certificate_${certificateData.certificateId}.pdf`);
+                pdf.save(`BlackCodeLabs_Certificate_${certificateData.certificateId}.pdf`);
                 
                 // Reset button state
                 downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
@@ -498,7 +498,7 @@
                 try {
                     await navigator.share({
                         title: `My ${certificateData.courseName} Certificate`,
-                        text: `I successfully completed the ${certificateData.courseName} from BlackCodeLab! Check out my certificate.`,
+                        text: `I successfully completed the ${certificateData.courseName} from BlackCodeLabs! Check out my certificate.`,
                         url: window.location.href,
                     });
                     showToast('Certificate shared successfully!', 'success');
@@ -567,7 +567,7 @@
                             <p><strong>Completion Date:</strong> ${certificate.date}</p>
                             <p><strong>Grade:</strong> ${certificate.grade}</p>
                             <p><strong>Status:</strong> <span style="color: #4CAF50;">Valid ✓</span></p>
-                            <p><em>This certificate has been verified and authenticated by BlackCodeLab.</em></p>
+                            <p><em>This certificate has been verified and authenticated by BlackCodeLabs.</em></p>
                         </div>
                     `;
                     verificationResult.className = 'verification-result valid';
