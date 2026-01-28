@@ -1,10 +1,12 @@
 from django.views.generic import TemplateView, ListView
+from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import (
     TechServices, TeamMember, DataCounter,
-    ClientReview, ContactInquiry
+    ClientReview, ContactInquiry, DemoBooking
 )
-from .forms import ContactForm
+from .forms import ContactForm, DemoBookingForm
+from django.views.generic.edit import FormView
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_protect
@@ -13,6 +15,7 @@ import logging
 from django.contrib import messages
 from django.utils import timezone
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 
 logger = logging.getLogger(__name__)
 
@@ -265,6 +268,172 @@ def send_auto_response(inquiry):
     except Exception as e:
         logger.error(f"Failed to send auto-response email: {e}")
         # Don't raise the error - we don't want form submission to fail because of email
-
-class DemoPageView(TemplateView):
-    template_name = "Home/demo.html"
+    
+@method_decorator(csrf_protect, name='dispatch')
+class DemoBookingView(FormView):
+    template_name = 'Home/demo.html'
+    form_class = DemoBookingForm
+    success_url = reverse_lazy('demo')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'demo'
+        
+        # Add tomorrow's date for the form
+        tomorrow = timezone.now() + timezone.timedelta(days=1)
+        context['tomorrow_date'] = tomorrow.strftime('%Y-%m-%d')
+        
+        return context
+    
+    def form_valid(self, form):
+        try:
+            # Save the demo booking
+            demo_booking = form.save(commit=False)
+            
+            # Add technical information
+            demo_booking.ip_address = self.get_client_ip()
+            demo_booking.user_agent = self.request.META.get('HTTP_USER_AGENT', '')
+            demo_booking.referrer = self.request.META.get('HTTP_REFERER', '')
+            
+            # Save to database
+            demo_booking.save()
+            
+            # Store submission time for spam detection
+            self.request.session['demo_submission_time'] = timezone.now().timestamp()
+            
+            # Send email notifications
+            try:
+                self.send_admin_notification(demo_booking)
+                self.send_user_confirmation(demo_booking)
+            except Exception as e:
+                logger.warning(f"Email sending failed: {e}")
+            
+            # Success message
+            messages.success(
+                self.request,
+                f'Your demo has been scheduled for {demo_booking.formatted_datetime()}! '
+                f'Confirmation has been sent to {demo_booking.email}.'
+            )
+            
+            logger.info(f"New demo booking from {demo_booking.email} - Booking ID: {demo_booking.booking_id}")
+            
+            return super().form_valid(form)
+            
+        except Exception as e:
+            logger.error(f"Error saving demo booking: {e}")
+            messages.error(
+                self.request,
+                'There was an error scheduling your demo. Please try again.'
+            )
+            return self.form_invalid(form)
+    
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            'Please correct the errors in the form below.'
+        )
+        return super().form_invalid(form)
+    
+    def get_client_ip(self):
+        """Get the client's IP address"""
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
+        return ip
+    
+    def send_admin_notification(self, demo_booking):
+        """Send notification email to admin"""
+        if not hasattr(settings, 'EMAIL_BACKEND'):
+            return
+        
+        subject = f"New Demo Booking: {demo_booking.demo_title}"
+        message = f"""
+        New demo booking received:
+        
+        Contact Information:
+        - Name: {demo_booking.full_name()}
+        - Email: {demo_booking.email}
+        - Company: {demo_booking.company}
+        - Job Title: {demo_booking.job_title}
+        
+        Demo Details:
+        - Title: {demo_booking.demo_title}
+        - Date: {demo_booking.formatted_date()}
+        - Time: {demo_booking.formatted_time()}
+        - Service: {demo_booking.get_service_type_display() or 'Not specified'}
+        - Attendees: {demo_booking.number_of_attendees}
+        
+        Message:
+        {demo_booking.demo_message or 'No additional message'}
+        
+        Technical Information:
+        - Booking ID: {demo_booking.booking_id}
+        - IP Address: {demo_booking.ip_address or 'Unknown'}
+        - User Agent: {demo_booking.user_agent or 'Unknown'}
+        
+        Status: {demo_booking.get_status_display()}
+        
+        View in admin: {self.request.build_absolute_uri(reverse_lazy('admin:Home_demobooking_change', args=[demo_booking.id]))}
+        """
+        
+        recipient_email = getattr(settings, 'DEMO_NOTIFICATION_EMAIL', 
+                                getattr(settings, 'CONTACT_NOTIFICATION_EMAIL', 
+                                      getattr(settings, 'EMAIL_HOST_USER', None)))
+        
+        if recipient_email:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@blackcodelabs.com'),
+                recipient_list=[recipient_email],
+                fail_silently=True,
+            )
+            logger.info(f"Demo notification sent to {recipient_email}")
+    
+    def send_user_confirmation(self, demo_booking):
+        """Send confirmation email to user"""
+        if not demo_booking.email:
+            return
+        
+        subject = f"Demo Confirmation: {demo_booking.demo_title}"
+        message = f"""
+        Dear {demo_booking.first_name},
+        
+        Thank you for scheduling a demo with BlackCodeLabs! Your booking has been confirmed.
+        
+        Demo Details:
+        - Title: {demo_booking.demo_title}
+        - Date: {demo_booking.formatted_date()}
+        - Time: {demo_booking.formatted_time()} EST
+        - Duration: 45 minutes
+        
+        Booking ID: {demo_booking.booking_id}
+        
+        What to Expect:
+        1. Our team will review your requirements and send any preparation materials within 1 business day.
+        2. You'll receive a calendar invitation with the meeting link 24 hours before your scheduled time.
+        3. The demo will be conducted via {demo_booking.get_meeting_platform_display()}.
+        
+        Need to make changes?
+        - Reply to this email for any modifications or questions
+        - Reschedule up to 4 hours before your demo time
+        
+        We look forward to showing you how our solutions can transform your business!
+        
+        Best regards,
+        The BlackCodeLabs Team
+        
+        ---
+        This is an automated confirmation. Please do not reply to this email.
+        """
+        
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@blackcodelabs.com'),
+            recipient_list=[demo_booking.email],
+            fail_silently=True,
+        )
+        logger.info(f"Demo confirmation sent to {demo_booking.email}")

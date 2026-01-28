@@ -14,5 +14,5 @@ urlpatterns = [
     path('blog/', views.BlogPageView.as_view(), name='blog'),
     path('games/', views.GamesPageView.as_view(), name='games'),
     path('contact/', views.contact_view, name='contact'),
-    path('demo/', views.DemoPageView.as_view(), name='demo'),
+    path('demo/', views.DemoBookingView.as_view(), name='demo'),
 ]

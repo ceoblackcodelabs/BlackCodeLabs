@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import TechServices, DataCounter, TeamMember, ClientReview, ContactInquiry
+from .models import (
+    TechServices, DataCounter, TeamMember, 
+    ClientReview, ContactInquiry, DemoBooking
+)
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 @admin.register(TechServices)
@@ -212,3 +216,97 @@ class ContactInquiryAdmin(admin.ModelAdmin):
         updated = queryset.update(status='closed')
         self.message_user(request, f'{updated} inquiries marked as closed.')
     mark_as_closed.short_description = "Mark as Closed"
+    
+@admin.register(DemoBooking)
+class DemoBookingAdmin(admin.ModelAdmin):
+    list_display = ('booking_id_short', 'full_name', 'company', 'demo_datetime', 'status_badge', 'created_at')
+    list_filter = ('status', 'demo_date', 'service_type', 'meeting_platform', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'company', 'demo_title', 'booking_id')
+    readonly_fields = ('created_at', 'updated_at', 'ip_address', 'user_agent', 'referrer', 'booking_id')
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('first_name', 'last_name', 'email', 'phone', 'company', 'job_title')
+        }),
+        ('Demo Details', {
+            'fields': ('demo_date', 'demo_time', 'demo_title', 'service_type', 'demo_message',
+                      'number_of_attendees', 'meeting_platform')
+        }),
+        ('Meeting Information', {
+            'fields': ('meeting_link', 'meeting_id', 'meeting_password'),
+            'classes': ('collapse',)
+        }),
+        ('Status & Tracking', {
+            'fields': ('status', 'terms_accepted', 'notes')
+        }),
+        ('Technical Information', {
+            'fields': ('booking_id', 'ip_address', 'user_agent', 'referrer'),
+            'classes': ('collapse',)
+        }),
+        ('Confirmation Details', {
+            'fields': ('confirmed_at', 'confirmed_by'),
+            'classes': ('collapse',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    actions = ['confirm_selected', 'mark_as_completed', 'mark_as_cancelled', 'send_reminder_email']
+    
+    def booking_id_short(self, obj):
+        return str(obj.booking_id)[:8] + "..."
+    booking_id_short.short_description = 'Booking ID'
+    
+    def demo_datetime(self, obj):
+        return obj.formatted_datetime()
+    demo_datetime.short_description = 'Demo Date & Time'
+    
+    def status_badge(self, obj):
+        colors = {
+            'pending': 'orange',
+            'confirmed': 'green',
+            'completed': 'blue',
+            'cancelled': 'red',
+            'no_show': 'gray',
+        }
+        color = colors.get(obj.status, 'gray')
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 3px 10px; '
+            'border-radius: 12px; font-size: 12px; font-weight: bold;">{}</span>',
+            color, obj.get_status_display().upper()
+        )
+    status_badge.short_description = 'Status'
+    
+    def full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+    full_name.short_description = 'Name'
+    
+    def confirm_selected(self, request, queryset):
+        updated = queryset.update(
+            status='confirmed',
+            confirmed_at=timezone.now(),
+            confirmed_by=request.user
+        )
+        self.message_user(request, f'{updated} demo(s) confirmed.')
+    confirm_selected.short_description = "Confirm selected demos"
+    
+    def mark_as_completed(self, request, queryset):
+        updated = queryset.update(status='completed')
+        self.message_user(request, f'{updated} demo(s) marked as completed.')
+    mark_as_completed.short_description = "Mark as completed"
+    
+    def mark_as_cancelled(self, request, queryset):
+        updated = queryset.update(status='cancelled')
+        self.message_user(request, f'{updated} demo(s) marked as cancelled.')
+    mark_as_cancelled.short_description = "Mark as cancelled"
+    
+    def send_reminder_email(self, request, queryset):
+        # This would send reminder emails - you'd implement the email sending logic
+        self.message_user(request, f'Reminder emails would be sent for {queryset.count()} demo(s).')
+    send_reminder_email.short_description = "Send reminder email"
+    
+    def get_queryset(self, request):
+        # Show upcoming demos first
+        qs = super().get_queryset(request)
+        return qs.order_by('demo_date', 'demo_time')
