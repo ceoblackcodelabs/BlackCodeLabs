@@ -403,6 +403,95 @@
             grid-template-columns: 1fr;
         }
     }
+    /* Message styling only */
+    .messages-container {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        z-index: 9999;
+    }
+    
+    .alert-message {
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border-left: 4px solid #00ff88;
+        max-width: 400px;
+        animation: slideIn 0.3s ease;
+    }
+    
+    .alert-message.success {
+        border-left-color: #00ff88;
+    }
+    
+    .alert-message.error {
+        border-left-color: #ff4444;
+    }
+    
+    .alert-message.warning {
+        border-left-color: #ffaa00;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    /* Form error styling */
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 5px 0 0 0;
+    }
+    
+    .errorlist li {
+        color: #ff4444;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+    
+    /* Honeypot field */
+    .honeypot {
+        display: none !important;
+    }
+    
+    /* Success message after booking */
+    .booking-success {
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid #00ff88;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .booking-success h3 {
+        color: #00ff88;
+        margin-bottom: 15px;
+    }
+    
+    .booking-success p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 10px;
+    }
+    
+    .booking-id {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-family: monospace;
+        margin: 15px 0;
+        display: inline-block;
+    }
 </style>
 {% endblock %}
 
@@ -414,6 +503,21 @@
             <p>Experience our technology solutions firsthand. Book a personalized demo or get in touch with our team.</p>
         </div>
     </section>
+
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert-message {{ message.tags }}">
+            {{ message }}
+            <button onclick="this.parentElement.style.display='none'" 
+                    style="background:none; border:none; color:white; float:right; cursor:pointer; margin-left:10px;">
+                ×
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <!-- Demo Scheduling Section -->
     <section class="contact" id="demo-form">
@@ -476,92 +580,207 @@
                         <p>Fill in the details below to schedule your personalized technology demonstration.</p>
                     </div>
                     
-                    <form class="contact-form" id="demoForm" method="post" action="{% url 'contact' %}">
+                    <!-- Demo Form -->
+                    <form method="POST" class="contact-form" id="demoForm">
                         {% csrf_token %}
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstName">First Name *</label>
-                                <input type="text" id="firstName" name="first_name" required placeholder="Enter your first name">
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="last_name" required placeholder="Enter your last name">
-                            </div>
-                        </div>
                         
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required placeholder="your.email@company.com">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="company">Company / Organization *</label>
-                            <input type="text" id="company" name="company" required placeholder="Your company name">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="jobTitle">Job Title *</label>
-                            <input type="text" id="jobTitle" name="job_title" required placeholder="Your position">
+                        <!-- H.P.F "hidden" -->
+                        <div style="display: none;">
+                            {{ form.website }}
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="demoDate">Demo Date *</label>
-                                <input type="date" id="demoDate" name="demo_date" required>
+                                <label for="id_first_name">First Name *</label>
+                                <input type="text" 
+                                    name="first_name" 
+                                    id="id_first_name" 
+                                    class="form-control"
+                                    placeholder="Enter your first name"
+                                    required
+                                    value="{{ form.first_name.value|default:'' }}">
+                                {% if form.first_name.errors %}
+                                    <div class="errorlist">{{ form.first_name.errors }}</div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="demoTime">Preferred Time *</label>
-                                <select id="demoTime" name="demo_time" required>
+                                <label for="id_last_name">Last Name *</label>
+                                <input type="text" 
+                                    name="last_name" 
+                                    id="id_last_name" 
+                                    class="form-control"
+                                    placeholder="Enter your last name"
+                                    required
+                                    value="{{ form.last_name.value|default:'' }}">
+                                {% if form.last_name.errors %}
+                                    <div class="errorlist">{{ form.last_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_email">Email Address *</label>
+                            <input type="email" 
+                                name="email" 
+                                id="id_email" 
+                                class="form-control"
+                                placeholder="your.email@company.com"
+                                required
+                                value="{{ form.email.value|default:'' }}">
+                            {% if form.email.errors %}
+                                <div class="errorlist">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_company">Company *</label>
+                                <input type="text" 
+                                    name="company" 
+                                    id="id_company" 
+                                    class="form-control"
+                                    placeholder="Your company name"
+                                    required
+                                    value="{{ form.company.value|default:'' }}">
+                                {% if form.company.errors %}
+                                    <div class="errorlist">{{ form.company.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_job_title">Job Title *</label>
+                                <input type="text" 
+                                    name="job_title" 
+                                    id="id_job_title" 
+                                    class="form-control"
+                                    placeholder="Your position"
+                                    required
+                                    value="{{ form.job_title.value|default:'' }}">
+                                {% if form.job_title.errors %}
+                                    <div class="errorlist">{{ form.job_title.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_demo_date">Demo Date *</label>
+                                <input type="date" 
+                                    name="demo_date" 
+                                    id="id_demo_date" 
+                                    class="form-control"
+                                    required
+                                    value="{{ form.demo_date.value|default:tomorrow_date }}">
+                                {% if form.demo_date.errors %}
+                                    <div class="errorlist">{{ form.demo_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_demo_time">Preferred Time *</label>
+                                <select name="demo_time" id="id_demo_time" class="form-control" required>
                                     <option value="">Select time slot</option>
-                                    <option value="09:00">9:00 AM</option>
-                                    <option value="09:30">9:30 AM</option>
-                                    <option value="10:00">10:00 AM</option>
-                                    <option value="10:30">10:30 AM</option>
-                                    <option value="11:00">11:00 AM</option>
-                                    <option value="11:30">11:30 AM</option>
-                                    <option value="12:00">12:00 PM</option>
-                                    <option value="13:00">1:00 PM</option>
-                                    <option value="13:30">1:30 PM</option>
-                                    <option value="14:00">2:00 PM</option>
-                                    <option value="14:30">2:30 PM</option>
-                                    <option value="15:00">3:00 PM</option>
-                                    <option value="15:30">3:30 PM</option>
-                                    <option value="16:00">4:00 PM</option>
-                                    <option value="16:30">4:30 PM</option>
-                                    <option value="17:00">5:00 PM</option>
+                                    <option value="09:00" {% if form.demo_time.value == '09:00' %}selected{% endif %}>9:00 AM</option>
+                                    <option value="09:30" {% if form.demo_time.value == '09:30' %}selected{% endif %}>9:30 AM</option>
+                                    <option value="10:00" {% if form.demo_time.value == '10:00' %}selected{% endif %}>10:00 AM</option>
+                                    <option value="10:30" {% if form.demo_time.value == '10:30' %}selected{% endif %}>10:30 AM</option>
+                                    <option value="11:00" {% if form.demo_time.value == '11:00' %}selected{% endif %}>11:00 AM</option>
+                                    <option value="11:30" {% if form.demo_time.value == '11:30' %}selected{% endif %}>11:30 AM</option>
+                                    <option value="12:00" {% if form.demo_time.value == '12:00' %}selected{% endif %}>12:00 PM</option>
+                                    <option value="13:00" {% if form.demo_time.value == '13:00' %}selected{% endif %}>1:00 PM</option>
+                                    <option value="13:30" {% if form.demo_time.value == '13:30' %}selected{% endif %}>1:30 PM</option>
+                                    <option value="14:00" {% if form.demo_time.value == '14:00' %}selected{% endif %}>2:00 PM</option>
+                                    <option value="14:30" {% if form.demo_time.value == '14:30' %}selected{% endif %}>2:30 PM</option>
+                                    <option value="15:00" {% if form.demo_time.value == '15:00' %}selected{% endif %}>3:00 PM</option>
+                                    <option value="15:30" {% if form.demo_time.value == '15:30' %}selected{% endif %}>3:30 PM</option>
+                                    <option value="16:00" {% if form.demo_time.value == '16:00' %}selected{% endif %}>4:00 PM</option>
+                                    <option value="16:30" {% if form.demo_time.value == '16:30' %}selected{% endif %}>4:30 PM</option>
+                                    <option value="17:00" {% if form.demo_time.value == '17:00' %}selected{% endif %}>5:00 PM</option>
                                 </select>
+                                {% if form.demo_time.errors %}
+                                    <div class="errorlist">{{ form.demo_time.errors }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="demoTitle">Meeting Title / Topic *</label>
-                            <input type="text" id="demoTitle" name="demo_title" required placeholder="E.g., Automation Solution Demo">
+                            <label for="id_demo_title">Meeting Title / Topic *</label>
+                            <input type="text" 
+                                name="demo_title" 
+                                id="id_demo_title" 
+                                class="form-control"
+                                placeholder="E.g., Automation Solution Demo"
+                                required
+                                value="{{ form.demo_title.value|default:'' }}">
+                            {% if form.demo_title.errors %}
+                                <div class="errorlist">{{ form.demo_title.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_service_type">Service of Interest</label>
+                                <select name="service_type" id="id_service_type" class="form-control">
+                                    <option value="">Select a service</option>
+                                    <option value="automation" {% if form.service_type.value == 'automation' %}selected{% endif %}>Process Automation</option>
+                                    <option value="ai" {% if form.service_type.value == 'ai' %}selected{% endif %}>AI Solutions</option>
+                                    <option value="development" {% if form.service_type.value == 'development' %}selected{% endif %}>Custom Development</option>
+                                    <option value="data" {% if form.service_type.value == 'data' %}selected{% endif %}>Data Intelligence</option>
+                                    <option value="security" {% if form.service_type.value == 'security' %}selected{% endif %}>Security Solutions</option>
+                                    <option value="training" {% if form.service_type.value == 'training' %}selected{% endif %}>Technology Training</option>
+                                    <option value="consulting" {% if form.service_type.value == 'consulting' %}selected{% endif %}>Consulting</option>
+                                    <option value="other" {% if form.service_type.value == 'other' %}selected{% endif %}>Other</option>
+                                </select>
+                                {% if form.service_type.errors %}
+                                    <div class="errorlist">{{ form.service_type.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_number_of_attendees">Number of Attendees</label>
+                                <input type="number" 
+                                    name="number_of_attendees" 
+                                    id="id_number_of_attendees" 
+                                    class="form-control"
+                                    min="1" 
+                                    max="50" 
+                                    value="{{ form.number_of_attendees.value|default:'1' }}">
+                                {% if form.number_of_attendees.errors %}
+                                    <div class="errorlist">{{ form.number_of_attendees.errors }}</div>
+                                {% endif %}
+                            </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="serviceType">Service of Interest (Optional)</label>
-                            <select id="serviceType" name="service_type">
-                                <option value="">Select a service</option>
-                                <option value="automation">Process Automation</option>
-                                <option value="ai">AI Solutions</option>
-                                <option value="development">Custom Development</option>
-                                <option value="data">Data Intelligence</option>
-                                <option value="security">Security Solutions</option>
-                                <option value="training">Technology Training</option>
-                                <option value="consulting">Consulting</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="demoMessage">Specific Requirements or Questions</label>
-                            <textarea id="demoMessage" name="demo_message" rows="5" placeholder="Please share any specific requirements, challenges, or questions you'd like us to address during the demo..."></textarea>
+                            <label for="id_demo_message">Specific Requirements or Questions</label>
+                            <textarea name="demo_message" 
+                                    id="id_demo_message" 
+                                    class="form-control"
+                                    rows="5"
+                                    placeholder="Share any specific requirements or questions...">{{ form.demo_message.value|default:'' }}</textarea>
+                            {% if form.demo_message.errors %}
+                                <div class="errorlist">{{ form.demo_message.errors }}</div>
+                            {% endif %}
                         </div>
                         
                         <div class="form-group checkbox-group">
-                            <input type="checkbox" id="terms" name="terms" required>
-                            <label for="terms">I agree to receive calendar invites and follow-up communications regarding this demo</label>
+                            <input type="checkbox" 
+                                name="terms_accepted" 
+                                id="id_terms_accepted"
+                                {% if form.terms_accepted.value %}checked{% endif %}
+                                required>
+                            <label for="id_terms_accepted">
+                                I agree to receive calendar invites and follow-up communications regarding this demo
+                            </label>
+                            {% if form.terms_accepted.errors %}
+                                <div class="errorlist">{{ form.terms_accepted.errors }}</div>
+                            {% endif %}
                         </div>
+                        
+                        {% if form.non_field_errors %}
+                        <div class="form-group">
+                            <div class="errorlist">
+                                {{ form.non_field_errors }}
+                            </div>
+                        </div>
+                        {% endif %}
                         
                         <button type="submit" class="submit-button">
                             <i class="fas fa-calendar-check"></i> Schedule Demo
@@ -745,9 +964,8 @@
 
 {% block extra_js %}
 <script>
-    // Demo Form and FAQ JavaScript
     document.addEventListener('DOMContentLoaded', function() {
-        // Set minimum date to tomorrow
+        // Set minimum date to tomorrow (if not already set by Django)
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
@@ -757,195 +975,44 @@
         const day = String(tomorrow.getDate()).padStart(2, '0');
         const minDate = `${year}-${month}-${day}`;
         
-        const dateInput = document.getElementById('demoDate');
+        const dateInput = document.getElementById('id_demo_date');
         if (dateInput) {
-            dateInput.min = minDate;
-            dateInput.value = minDate;
+            // Only set if empty
+            if (!dateInput.value) {
+                dateInput.min = minDate;
+                dateInput.value = minDate;
+            }
         }
 
-        // Demo form submission
-        const demoForm = document.getElementById('demoForm');
-        if (demoForm) {
-            demoForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get form data
-                const formData = {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    email: document.getElementById('email').value,
-                    company: document.getElementById('company').value,
-                    jobTitle: document.getElementById('jobTitle').value,
-                    demoDate: document.getElementById('demoDate').value,
-                    demoTime: document.getElementById('demoTime').value,
-                    demoTitle: document.getElementById('demoTitle').value,
-                    serviceType: document.getElementById('serviceType').value,
-                    demoMessage: document.getElementById('demoMessage').value
-                };
-                
-                // Format date for display
-                const date = new Date(formData.demoDate);
-                const formattedDate = date.toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-                
-                // Format time for display
-                const time = formData.demoTime;
-                const formattedTime = formatTime(time);
-                
-                // Show success message
-                showToast(
-                    `Demo scheduled successfully! We've booked your "${formData.demoTitle}" demo for ${formattedDate} at ${formattedTime}. A confirmation email has been sent to ${formData.email}.`,
-                    'success'
-                );
-                
-                // Reset form
-                this.reset();
-                
-                // Reset date to tomorrow
-                const newTomorrow = new Date();
-                newTomorrow.setDate(newTomorrow.getDate() + 1);
-                
-                const newYear = newTomorrow.getFullYear();
-                const newMonth = String(newTomorrow.getMonth() + 1).padStart(2, '0');
-                const newDay = String(newTomorrow.getDate()).padStart(2, '0');
-                const newMinDate = `${newYear}-${newMonth}-${newDay}`;
-                
-                document.getElementById('demoDate').min = newMinDate;
-                document.getElementById('demoDate').value = newMinDate;
-                
-                // In a real Django app, you would submit the form data to the server
-                // For now, we're just showing a success message
+        // Auto-hide messages after 8 seconds
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.alert-message');
+            messages.forEach(msg => {
+                msg.style.opacity = '0';
+                msg.style.transition = 'opacity 0.5s';
+                setTimeout(() => msg.remove(), 500);
             });
-        }
-        
-        // FAQ accordion functionality
+        }, 8000);
+
+        // FAQ functionality
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
                 const item = question.parentElement;
-                const allItems = document.querySelectorAll('.faq-item');
-                
-                // Close all other items
-                allItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                    }
-                });
-                
-                // Toggle current item
                 item.classList.toggle('active');
             });
         });
         
-        // Form validation
-        if (demoForm) {
-            const inputs = demoForm.querySelectorAll('input[required], select[required], textarea[required]');
-            
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateField(this);
-                });
-                
-                input.addEventListener('input', function() {
-                    clearError(this);
-                });
-            });
-            
-            function validateField(field) {
-                if (!field.checkValidity()) {
-                    let message = 'This field is required';
-                    
-                    if (field.type === 'email' && field.value) {
-                        message = 'Please enter a valid email address';
-                    }
-                    
-                    showFieldError(field, message);
+        // Form submission animation
+        const form = document.getElementById('demoForm');
+        if (form) {
+            form.addEventListener('submit', function() {
+                const submitBtn = this.querySelector('.submit-button');
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scheduling...';
+                    submitBtn.disabled = true;
                 }
-            }
-            
-            function showFieldError(field, message) {
-                clearError(field);
-                field.classList.add('error');
-                
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'field-error';
-                errorDiv.textContent = message;
-                errorDiv.style.color = 'var(--error)';
-                errorDiv.style.fontSize = '0.85rem';
-                errorDiv.style.marginTop = '5px';
-                errorDiv.style.fontWeight = '500';
-                
-                field.parentNode.appendChild(errorDiv);
-            }
-            
-            function clearError(field) {
-                field.classList.remove('error');
-                const errorDiv = field.parentNode.querySelector('.field-error');
-                if (errorDiv) {
-                    errorDiv.remove();
-                }
-            }
-            
-            // Date validation
-            const dateInput = document.getElementById('demoDate');
-            if (dateInput) {
-                dateInput.addEventListener('change', function() {
-                    const selectedDate = new Date(this.value);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    
-                    if (selectedDate < today) {
-                        showFieldError(this, 'Please select a future date');
-                        this.value = '';
-                    } else {
-                        clearError(this);
-                    }
-                });
-            }
-        }
-        
-        // Live chat button
-        const liveChatBtn = document.querySelector('.demo-button');
-        if (liveChatBtn) {
-            liveChatBtn.addEventListener('click', function() {
-                showToast('Live chat feature coming soon! For now, please use the demo booking form above.', 'success');
             });
         }
     });
-    
-    // Toast notification function
-    function showToast(message, type = 'success') {
-        // Create toast element if it doesn't exist
-        let toast = document.getElementById('toast');
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.id = 'toast';
-            document.body.appendChild(toast);
-        }
-        
-        toast.textContent = message;
-        toast.className = 'toast';
-        toast.classList.add(type);
-        toast.classList.add('show');
-        
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 8000);
-    }
-    
-    // Format time from 24h to 12h
-    function formatTime(time24) {
-        if (!time24) return '';
-        
-        const [hours, minutes] = time24.split(':');
-        const hour = parseInt(hours);
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        const hour12 = hour % 12 || 12;
-        
-        return `${hour12}:${minutes} ${ampm}`;
-    }
 </script>
 {% endblock %}

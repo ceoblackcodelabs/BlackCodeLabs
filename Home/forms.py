@@ -1,7 +1,10 @@
 # Home/forms.py
 from django import forms
 from django.core.validators import RegexValidator
-from .models import ContactInquiry
+from .models import ContactInquiry, DemoBooking
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from datetime import timedelta
 
 class ContactForm(forms.ModelForm):
     phone = forms.CharField(
@@ -80,3 +83,132 @@ class ContactForm(forms.ModelForm):
             # Could mark as potential spam or raise validation error
             pass
         return message
+    
+class DemoBookingForm(forms.ModelForm):
+    # Hidden honeypot field for spam protection
+    website = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'honeypot'}),
+        label='Leave this field empty'
+    )
+    
+    class Meta:
+        model = DemoBooking
+        fields = [
+            'first_name', 'last_name', 'email', 'company', 'job_title',
+            'demo_date', 'demo_time', 'demo_title', 'service_type',
+            'demo_message', 'terms_accepted', 'number_of_attendees'
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'placeholder': 'Enter your first name',
+                'class': 'form-control'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'placeholder': 'Enter your last name',
+                'class': 'form-control'
+            }),
+            'email': forms.EmailInput(attrs={
+                'placeholder': 'your.email@company.com',
+                'class': 'form-control'
+            }),
+            'company': forms.TextInput(attrs={
+                'placeholder': 'Your company name',
+                'class': 'form-control'
+            }),
+            'job_title': forms.TextInput(attrs={
+                'placeholder': 'Your position',
+                'class': 'form-control'
+            }),
+            'demo_date': forms.DateInput(attrs={
+                'type': 'date',
+                'class': 'form-control',
+                'min': (timezone.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+            }),
+            'demo_time': forms.Select(attrs={'class': 'form-control'}),
+            'demo_title': forms.TextInput(attrs={
+                'placeholder': 'E.g., Automation Solution Demo',
+                'class': 'form-control'
+            }),
+            'service_type': forms.Select(attrs={'class': 'form-control'}),
+            'demo_message': forms.Textarea(attrs={
+                'placeholder': 'Share any specific requirements or questions...',
+                'rows': 5,
+                'class': 'form-control'
+            }),
+            'number_of_attendees': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'min': 1,
+                'max': 50,
+                'value': 1
+            }),
+            'terms_accepted': forms.CheckboxInput(attrs={
+                'class': 'form-checkbox'
+            }),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set minimum date to tomorrow
+        tomorrow = timezone.now() + timedelta(days=1)
+        self.fields['demo_date'].widget.attrs['min'] = tomorrow.strftime('%Y-%m-%d')
+    
+    def clean_website(self):
+        """Honeypot validation"""
+        website = self.cleaned_data.get('website')
+        if website:
+            raise ValidationError("Spam detected.")
+        return website
+    
+    def clean_demo_date(self):
+        demo_date = self.cleaned_data.get('demo_date')
+        
+        if demo_date:
+            # Ensure date is in the future
+            today = timezone.now().date()
+            if demo_date <= today:
+                raise ValidationError("Please select a future date for the demo.")
+            
+            # Optional: Restrict to business days
+            if demo_date.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
+                raise ValidationError("Demos are only available on weekdays.")
+            
+            # Optional: Restrict to next 90 days
+            max_date = today + timedelta(days=90)
+            if demo_date > max_date:
+                raise ValidationError("Please select a date within the next 90 days.")
+        
+        return demo_date
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        # Check if this email has too many pending demos
+        if email:
+            pending_count = DemoBooking.objects.filter(
+                email=email,
+                status__in=['pending', 'confirmed'],
+                demo_date__gte=timezone.now().date()
+            ).count()
+            
+            if pending_count >= 3:
+                raise ValidationError("You have too many pending demos. Please wait for confirmation on existing bookings.")
+        
+        return email.lower()
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        demo_date = cleaned_data.get('demo_date')
+        demo_time = cleaned_data.get('demo_time')
+        
+        # Check for time slot availability
+        if demo_date and demo_time:
+            existing_bookings = DemoBooking.objects.filter(
+                demo_date=demo_date,
+                demo_time=demo_time,
+                status__in=['pending', 'confirmed']
+            ).count()
+            
+            if existing_bookings >= 2:  # Limit 2 demos per time slot
+                raise ValidationError(f"This time slot ({demo_time}) is already booked. Please choose another time.")
+        
+        return cleaned_data

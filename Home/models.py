@@ -3,10 +3,12 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 import PIL
+import uuid
 from PIL import Image
 import ipaddress
 from django.core.validators import RegexValidator
 import os
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class TechServices(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -298,3 +300,131 @@ class ContactInquiry(models.Model):
             return str(ip_obj)
         except ValueError:
             return "Invalid IP"
+        
+
+# DEMO -----------------------------------------------------
+class DemoBooking(models.Model):
+    SERVICE_CHOICES = [
+        ('automation', 'Process Automation'),
+        ('ai', 'AI Solutions'),
+        ('development', 'Custom Development'),
+        ('data', 'Data Intelligence'),
+        ('security', 'Security Solutions'),
+        ('training', 'Technology Training'),
+        ('consulting', 'Consulting'),
+        ('other', 'Other'),
+    ]
+    
+    TIME_SLOTS = [
+        ('09:00', '9:00 AM'),
+        ('09:30', '9:30 AM'),
+        ('10:00', '10:00 AM'),
+        ('10:30', '10:30 AM'),
+        ('11:00', '11:00 AM'),
+        ('11:30', '11:30 AM'),
+        ('12:00', '12:00 PM'),
+        ('13:00', '1:00 PM'),
+        ('13:30', '1:30 PM'),
+        ('14:00', '2:00 PM'),
+        ('14:30', '2:30 PM'),
+        ('15:00', '3:00 PM'),
+        ('15:30', '3:30 PM'),
+        ('16:00', '4:00 PM'),
+        ('16:30', '4:30 PM'),
+        ('17:00', '5:00 PM'),
+    ]
+    
+    # Unique identifier
+    booking_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    
+    # Contact Information
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    company = models.CharField(max_length=200)
+    job_title = models.CharField(max_length=100)
+    
+    # Demo Details
+    demo_date = models.DateField()
+    demo_time = models.CharField(max_length=5, choices=TIME_SLOTS)
+    demo_title = models.CharField(max_length=200)
+    service_type = models.CharField(max_length=20, choices=SERVICE_CHOICES, blank=True, null=True)
+    demo_message = models.TextField(blank=True, null=True)
+    
+    # Status Tracking
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+        ('no_show', 'No Show'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    
+    # Additional Fields
+    terms_accepted = models.BooleanField(default=False)
+    number_of_attendees = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(50)])
+    meeting_platform = models.CharField(max_length=50, default='Zoom', choices=[
+        ('zoom', 'Zoom'),
+        ('teams', 'Microsoft Teams'),
+        ('google', 'Google Meet'),
+        ('other', 'Other'),
+    ])
+    
+    # Technical Information
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    user_agent = models.TextField(blank=True, null=True)
+    referrer = models.URLField(blank=True, null=True)
+    
+    # Response Tracking
+    meeting_link = models.URLField(blank=True, null=True)
+    meeting_id = models.CharField(max_length=100, blank=True, null=True)
+    meeting_password = models.CharField(max_length=50, blank=True, null=True)
+    confirmed_at = models.DateTimeField(blank=True, null=True)
+    confirmed_by = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='confirmed_demos'
+    )
+    notes = models.TextField(blank=True, null=True)
+    
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Demo Booking"
+        verbose_name_plural = "Demo Bookings"
+        ordering = ['-demo_date', 'demo_time']
+        indexes = [
+            models.Index(fields=['demo_date', 'demo_time']),
+            models.Index(fields=['email']),
+            models.Index(fields=['status']),
+        ]
+    
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.demo_title} ({self.get_demo_datetime()})"
+    
+    def get_demo_datetime(self):
+        """Combine date and time into a datetime object"""
+        from datetime import datetime
+        return datetime.combine(self.demo_date, datetime.strptime(self.demo_time, '%H:%M').time())
+    
+    def is_upcoming(self):
+        """Check if demo is in the future"""
+        return self.get_demo_datetime() > timezone.now()
+    
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    def formatted_date(self):
+        return self.demo_date.strftime('%B %d, %Y')
+    
+    def formatted_time(self):
+        return dict(self.TIME_SLOTS).get(self.demo_time, self.demo_time)
+    
+    def formatted_datetime(self):
+        return f"{self.formatted_date()} at {self.formatted_time()}"
