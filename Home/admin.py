@@ -1,9 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import TechServices, DataCounter, TeamMember, ClientReview
+from .models import TechServices, DataCounter, TeamMember, ClientReview, ContactInquiry
 from django.utils.safestring import mark_safe
-from django.contrib import messages
-from django.core.exceptions import ValidationError
 
 @admin.register(TechServices)
 class TechServicesAdmin(admin.ModelAdmin):
@@ -164,3 +162,53 @@ class ClientReviewAdmin(admin.ModelAdmin):
 admin.site.site_header = "Company Dashboard"
 admin.site.site_title = "Company Admin"
 admin.site.index_title = "Welcome to Company Administration"
+
+
+@admin.register(ContactInquiry)
+class ContactInquiryAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email', 'subject', 'department', 'status', 'created_at')
+    list_filter = ('status', 'department', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'subject', 'message')
+    readonly_fields = ('created_at', 'updated_at', 'ip_address', 'user_agent', 'referrer')
+    
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('first_name', 'last_name', 'email', 'phone', 'company')
+        }),
+        ('Inquiry Details', {
+            'fields': ('department', 'subject', 'message', 'newsletter_subscribed')
+        }),
+        ('Status', {
+            'fields': ('status', 'priority')
+        }),
+        ('Technical Information', {
+            'fields': ('ip_address', 'user_agent', 'referrer'),
+            'classes': ('collapse',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+    full_name.short_description = 'Name'
+    
+    # Simple actions without complex HTML
+    actions = ['mark_as_new', 'mark_as_responded', 'mark_as_closed']
+    
+    def mark_as_new(self, request, queryset):
+        updated = queryset.update(status='new')
+        self.message_user(request, f'{updated} inquiries marked as new.')
+    mark_as_new.short_description = "Mark as New"
+    
+    def mark_as_responded(self, request, queryset):
+        updated = queryset.update(status='responded')
+        self.message_user(request, f'{updated} inquiries marked as responded.')
+    mark_as_responded.short_description = "Mark as Responded"
+    
+    def mark_as_closed(self, request, queryset):
+        updated = queryset.update(status='closed')
+        self.message_user(request, f'{updated} inquiries marked as closed.')
+    mark_as_closed.short_description = "Mark as Closed"
