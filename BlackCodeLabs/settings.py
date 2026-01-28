@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-mwn&bi$bd60hc5xg#vs_l@qgxy^6^l=)*%g!$=hcj89cm*4an1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["blackcodelab.com", "127.0.0.1", "www.blackcodelab.com", "http://www.blackcodelab.com", "http://blackcodelab.com"]
 
 
 # Application definition
@@ -128,3 +128,50 @@ MEDIA_URL = '/media/'
 
 import os
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# LOGGING CONFIGURATION
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'Home': {  # Your app name
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Set to DEBUG for more details
+            'propagate': False,
+        },
+    },
+}
+
+
+# EMAIL CONFIGURATION FOR TESTING PURPOSES
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - emails print to console
+DEFAULT_FROM_EMAIL = 'noreply@blackcodelabs.com'
+CONTACT_NOTIFICATION_EMAIL = 'admin@blackcodelabs.com'
+
+
+# For production, uncomment and configure the following:
+# -----------------------------------------------------------------------------#
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For production
+
+# For SMTP backend (production/real emails), add these:
+# EMAIL_HOST = 'smtp.gmail.com'  # or your email provider
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'your-app-password'  # Use app password, not regular password
+# DEFAULT_FROM_EMAIL = 'noreply@blackcodelabs.com'
+# CONTACT_NOTIFICATION_EMAIL = 'admin@blackcodelabs.com'  # Where to send notifications

@@ -1,62 +1,326 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | BlackCodeLabs</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-</head>
-<body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#" class="logo">BlackCode<span>Labs</span></a>
-                
-                <!-- Hamburger Menu -->
-                <div class="hamburger" id="hamburger">
-                    <div class="line"></div>
-                    <div class="line"></div>
-                    <div class="line"></div>
-                </div>
-                
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="technology.html">Technology</a></li>
-                    <li><a href="solutions.html">Solutions</a></li>
-                    <li><a href="courses.html">Courses</a></li>
-                    <li><a href="careers.html">Careers</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="games.html">Games</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    
-                    
-                    <!-- Mobile Demo Button (hidden on desktop) -->
-                    <a href="demo.html" class="header-demo-btn mobile-only">
-                        <i class="fas fa-play-circle"></i>
-                        Live Demo
-                    </a>
-                </ul>
-                <!-- Desktop Demo Button -->
-                <a href="demo.html" class="header-demo-btn desktop-only">
-                    <i class="fas fa-play-circle"></i>
-                    Live Demo
-                </a>
-            </nav>
-        </div>
-    </header>
+<!-- Home/templates/Home/contact.html -->
+{% extends 'Home/base.html' %}
+{% load static %}
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+{% block title %}Contact | BlackCodeLabs{% endblock %}
 
+{% block extra_css %}
+<style>
+/* Additional styles for contact page */
+.page-header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 100px 0 60px;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #4CAF50, #2196F3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 50px;
+    margin: 50px 0;
+}
+
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    border-color: #4CAF50;
+}
+
+.info-icon {
+    font-size: 2.5rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.contact-form-container {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-form-header {
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input {
+    width: auto;
+}
+
+.submit-button {
+    background: linear-gradient(45deg, #4CAF50, #2196F3);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 100%;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+}
+
+.offices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.office-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s;
+}
+
+.office-card:hover {
+    transform: translateY(-5px);
+    border-color: #4CAF50;
+}
+
+.office-icon {
+    font-size: 2.5rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.office-contact p {
+    margin: 8px 0;
+    color: #b0b0b0;
+}
+
+.map-placeholder {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 60px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 40px 0;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+.map-placeholder i {
+    font-size: 4rem;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.faq-grid {
+    margin: 40px 0;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faq-question {
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.faq-answer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+}
+
+.faq-item.active .faq-answer {
+    padding: 20px;
+    max-height: 500px;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-question i {
+    transition: transform 0.3s;
+}
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.error {
+    background: #f44336;
+}
+
+/* Form validation styles */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color: #f44336;
+}
+
+.field-error {
+    color: #f44336;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+/* Success message */
+.success-message {
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid #4CAF50;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.success-message i {
+    font-size: 2.5rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+/* Honeypot field */
+.honeypot-field {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 80px 0 40px;
+        margin-top: 60px;
+    }
+    
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .offices-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
             <h1>Contact BlackCodeLabs</h1>
-            <p>Get in touch with our team to discuss how AI can transform your business.</p>
+            <p>Get in touch with our team to discuss how we can transform your business with technology.</p>
         </div>
     </section>
 
@@ -65,8 +329,25 @@
         <div class="container">
             <div class="section-title">
                 <h2>Get In Touch</h2>
-                <p>We're here to help with your AI transformation journey</p>
+                <p>We're here to help with your technology transformation journey</p>
             </div>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="toast {% if message.tags %}{{ message.tags }}{% endif %} show" id="message-toast">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% if form_submitted %}
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Message Sent Successfully!</h3>
+                    <p>Thank you for contacting us. We have received your message and will get back to you within 24 hours.</p>
+                    <p>Check your email for a confirmation message.</p>
+                </div>
+            {% endif %}
             
             <div class="contact-content">
                 <div class="contact-info">
@@ -75,7 +356,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <h3>Our Headquarters</h3>
-                        <p>123 AI Innovation Drive</p>
+                        <p>123 Tech Innovation Drive</p>
                         <p>San Francisco, CA 94107</p>
                         <p>United States</p>
                     </div>
@@ -95,9 +376,9 @@
                             <i class="fas fa-envelope"></i>
                         </div>
                         <h3>Email Addresses</h3>
-                        <p>Sales: sales@BlackCodeLabs.ai</p>
-                        <p>Support: support@BlackCodeLabs.ai</p>
-                        <p>Partnerships: partners@BlackCodeLabs.ai</p>
+                        <p>Sales: sales@blackcodelabs.com</p>
+                        <p>Support: support@blackcodelabs.com</p>
+                        <p>Partnerships: partners@blackcodelabs.com</p>
                     </div>
                     
                     <div class="info-card">
@@ -111,59 +392,129 @@
                     </div>
                 </div>
                 
+                <!-- Contact Form Section - UPDATED -->
                 <div class="contact-form-container">
                     <div class="contact-form-header">
                         <h3>Send us a Message</h3>
                         <p>Fill out the form below and our team will get back to you within 24 hours.</p>
                     </div>
                     
-                    <form class="contact-form" id="contactForm">
+                    <form method="POST" class="contact-form" id="contactForm">
+                        {% csrf_token %}
+                        
+                        <!-- Honeypot field for spam protection -->
+                        <div class="honeypot-field">
+                            <label for="id_honeypot">If you're human, leave this empty:</label>
+                            <input type="text" name="honeypot" id="id_honeypot">
+                        </div>
+                        
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="firstName">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" required>
+                                <label for="id_first_name">First Name *</label>
+                                <input type="text" 
+                                    name="first_name" 
+                                    id="id_first_name" 
+                                    placeholder="Enter your first name"
+                                    required
+                                    value="{{ form.first_name.value|default:'' }}">
+                                {% if form.first_name.errors %}
+                                    <div class="field-error">{{ form.first_name.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required>
+                                <label for="id_last_name">Last Name *</label>
+                                <input type="text" 
+                                    name="last_name" 
+                                    id="id_last_name" 
+                                    placeholder="Enter your last name"
+                                    required
+                                    value="{{ form.last_name.value|default:'' }}">
+                                {% if form.last_name.errors %}
+                                    <div class="field-error">{{ form.last_name.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="id_email">Email Address *</label>
+                            <input type="email" 
+                                name="email" 
+                                id="id_email" 
+                                placeholder="you@example.com"
+                                required
+                                value="{{ form.email.value|default:'' }}">
+                            {% if form.email.errors %}
+                                <div class="field-error">{{ form.email.errors.0 }}</div>
+                            {% endif %}
                         </div>
                         
                         <div class="form-group">
-                            <label for="company">Company</label>
-                            <input type="text" id="company" name="company">
+                            <label for="id_phone">Phone Number</label>
+                            <input type="text" 
+                                name="phone" 
+                                id="id_phone" 
+                                placeholder="+1 (555) 123-4567"
+                                value="{{ form.phone.value|default:'' }}">
+                            {% if form.phone.errors %}
+                                <div class="field-error">{{ form.phone.errors.0 }}</div>
+                            {% endif %}
                         </div>
                         
                         <div class="form-group">
-                            <label for="department">Department</label>
-                            <select id="department" name="department">
+                            <label for="id_company">Company</label>
+                            <input type="text" 
+                                name="company" 
+                                id="id_company" 
+                                placeholder="Your company name (optional)"
+                                value="{{ form.company.value|default:'' }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_department">Department</label>
+                            <select name="department" id="id_department" class="form-select">
                                 <option value="">Select a department</option>
-                                <option value="sales">Sales</option>
-                                <option value="support">Technical Support</option>
-                                <option value="partnership">Partnerships</option>
-                                <option value="careers">Careers</option>
-                                <option value="other">Other</option>
+                                <option value="sales" {% if form.department.value == 'sales' %}selected{% endif %}>Sales & Demos</option>
+                                <option value="support" {% if form.department.value == 'support' %}selected{% endif %}>Technical Support</option>
+                                <option value="partnership" {% if form.department.value == 'partnership' %}selected{% endif %}>Partnerships</option>
+                                <option value="careers" {% if form.department.value == 'careers' %}selected{% endif %}>Careers</option>
+                                <option value="general" {% if form.department.value == 'general' %}selected{% endif %}>General Inquiry</option>
+                                <option value="other" {% if form.department.value == 'other' %}selected{% endif %}>Other</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label for="subject">Subject *</label>
-                            <input type="text" id="subject" name="subject" required>
+                            <label for="id_subject">Subject *</label>
+                            <input type="text" 
+                                name="subject" 
+                                id="id_subject" 
+                                placeholder="How can we help you?"
+                                required
+                                value="{{ form.subject.value|default:'' }}">
+                            {% if form.subject.errors %}
+                                <div class="field-error">{{ form.subject.errors.0 }}</div>
+                            {% endif %}
                         </div>
                         
                         <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" name="message" rows="6" required></textarea>
+                            <label for="id_message">Message *</label>
+                            <textarea name="message" 
+                                    id="id_message" 
+                                    rows="6"
+                                    placeholder="Please provide details about your inquiry..."
+                                    required>{{ form.message.value|default:'' }}</textarea>
+                            {% if form.message.errors %}
+                                <div class="field-error">{{ form.message.errors.0 }}</div>
+                            {% endif %}
                         </div>
                         
                         <div class="form-group checkbox-group">
-                            <input type="checkbox" id="newsletter" name="newsletter">
-                            <label for="newsletter">Subscribe to our newsletter for AI insights and updates</label>
+                            <input type="checkbox" 
+                                name="newsletter_subscribed" 
+                                id="id_newsletter_subscribed"
+                                {% if form.newsletter_subscribed.value %}checked{% endif %}>
+                            <label for="id_newsletter_subscribed">
+                                Subscribe to our newsletter for technology insights and updates
+                            </label>
                         </div>
                         
                         <button type="submit" class="submit-button">Send Message</button>
@@ -192,7 +543,7 @@
                     <p>Solution pricing</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                        <p><i class="fas fa-envelope"></i> sales@BlackCodeLabs.com</p>
+                        <p><i class="fas fa-envelope"></i> sales@blackcodelabs.com</p>
                     </div>
                 </div>
                 
@@ -206,7 +557,7 @@
                     <p>System troubleshooting</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +1 (555) 987-6543</p>
-                        <p><i class="fas fa-envelope"></i> support@BlackCodeLabs.com</p>
+                        <p><i class="fas fa-envelope"></i> support@blackcodelabs.com</p>
                     </div>
                 </div>
                 
@@ -220,7 +571,7 @@
                     <p>Reseller programs</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +1 (555) 234-5678</p>
-                        <p><i class="fas fa-envelope"></i> partners@BlackCodeLabs.com</p>
+                        <p><i class="fas fa-envelope"></i> partners@blackcodelabs.com</p>
                     </div>
                 </div>
                 
@@ -234,7 +585,7 @@
                     <p>Talent acquisition</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +1 (555) 345-6789</p>
-                        <p><i class="fas fa-envelope"></i> careers@BlackCodeLabs.com</p>
+                        <p><i class="fas fa-envelope"></i> careers@blackcodelabs.com</p>
                     </div>
                 </div>
             </div>
@@ -244,7 +595,7 @@
                     <i class="fas fa-comments"></i>
                     <h3>Live Chat Available</h3>
                     <p>Chat with our team in real-time for immediate assistance</p>
-                    <button class="demo-button" style="margin-top: 20px;">
+                    <button class="demo-button" style="margin-top: 20px;" onclick="alert('Live chat coming soon!')">
                         <i class="fas fa-comment-dots"></i> Start Live Chat
                     </button>
                 </div>
@@ -252,7 +603,7 @@
         </div>
     </section>
 
-    <!-- Map Section -->
+    <!-- Global Offices Section -->
     <section class="map-section">
         <div class="container">
             <div class="section-title">
@@ -266,12 +617,12 @@
                         <i class="fas fa-city"></i>
                     </div>
                     <h3>San Francisco</h3>
-                    <p>123 AI Innovation Drive</p>
+                    <p>123 Tech Innovation Drive</p>
                     <p>San Francisco, CA 94107</p>
                     <p>United States</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                        <p><i class="fas fa-envelope"></i> sf@BlackCodeLabs.ai</p>
+                        <p><i class="fas fa-envelope"></i> sf@blackcodelabs.com</p>
                     </div>
                 </div>
                 
@@ -285,7 +636,7 @@
                     <p>United States</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +1 (555) 234-5678</p>
-                        <p><i class="fas fa-envelope"></i> ny@BlackCodeLabs.ai</p>
+                        <p><i class="fas fa-envelope"></i> ny@blackcodelabs.com</p>
                     </div>
                 </div>
                 
@@ -299,7 +650,7 @@
                     <p>United Kingdom</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +44 20 7123 4567</p>
-                        <p><i class="fas fa-envelope"></i> london@BlackCodeLabs.ai</p>
+                        <p><i class="fas fa-envelope"></i> london@blackcodelabs.com</p>
                     </div>
                 </div>
                 
@@ -313,7 +664,7 @@
                     <p>Nairobi, Kenya</p>
                     <div class="office-contact">
                         <p><i class="fas fa-phone"></i> +254 7XX XXX XXX</p>
-                        <p><i class="fas fa-envelope"></i> ke@BlackCodeLabs.com</p>
+                        <p><i class="fas fa-envelope"></i> ke@blackcodelabs.com</p>
                     </div>
                 </div>
             </div>
@@ -339,11 +690,11 @@
             <div class="faq-grid">
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>What types of AI solutions do you offer?</h3>
+                        <h3>What types of technology solutions do you offer?</h3>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>We offer a wide range of AI solutions including machine learning platforms, automation tools, computer vision systems, natural language processing, and predictive analytics. Our solutions are tailored to meet specific business needs across various industries.</p>
+                        <p>We offer a wide range of technology solutions including full-stack development, process automation, data intelligence, chatbot systems, custom AI solutions, security & threat analysis, infrastructure systems, and technology training.</p>
                     </div>
                 </div>
                 
@@ -353,17 +704,17 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Implementation timelines vary based on the complexity of the solution. Simple integrations can take 2-4 weeks, while comprehensive enterprise solutions may take 3-6 months. We provide detailed project timelines during our initial consultation.</p>
+                        <p>Implementation timelines vary based on the complexity of the solution. Simple websites can take 2-4 weeks, while comprehensive enterprise solutions may take 3-6 months. We provide detailed project timelines during our initial consultation.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <h3>Do you offer custom AI development?</h3>
+                        <h3>Do you offer custom development?</h3>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Yes, we specialize in custom AI development. Our team works closely with clients to understand their unique challenges and develop tailored solutions that address specific business needs. Contact our sales team to discuss your requirements.</p>
+                        <p>Yes, we specialize in custom development. Our team works closely with clients to understand their unique challenges and develop tailored solutions that address specific business needs. Contact our sales team to discuss your requirements.</p>
                     </div>
                 </div>
                 
@@ -373,7 +724,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>We offer 24/7 technical support, dedicated account managers, comprehensive documentation, and regular training sessions. Our support team is available via phone, email, and chat to ensure your AI solutions run smoothly.</p>
+                        <p>We offer 24/7 technical support, dedicated account managers, comprehensive documentation, and regular training sessions. Our support team is available via phone, email, and chat to ensure your solutions run smoothly.</p>
                     </div>
                 </div>
                 
@@ -383,7 +734,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Absolutely! We offer personalized product demos to show how our AI solutions can address your specific challenges. Contact our sales team to schedule a demo at your convenience.</p>
+                        <p>Absolutely! We offer personalized product demos to show how our technology solutions can address your specific challenges. Contact our sales team to schedule a demo at your convenience.</p>
                     </div>
                 </div>
                 
@@ -393,7 +744,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>We serve a wide range of industries including healthcare, finance, retail, manufacturing, logistics, and technology. Our AI solutions are adaptable to meet the unique requirements of each industry.</p>
+                        <p>We serve a wide range of industries including healthcare, finance, retail, manufacturing, logistics, and technology. Our solutions are adaptable to meet the unique requirements of each industry.</p>
                     </div>
                 </div>
             </div>
@@ -402,214 +753,91 @@
 
     <!-- CTA Section -->
     <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Transform Your Business with AI?</h2>
-                <p>Join thousands of companies already leveraging BlackCodeLabs AI solutions to drive innovation and growth.</p>
-                <button class="cta-button" onclick="window.location.href='window.html'">Schedule a Consultation</button>
-            </div>
+        <div class="container cta-content">
+            <h2>Ready to Transform Your Business with Technology?</h2>
+            <p>Join thousands of companies already leveraging BlackCodeLabs solutions to drive innovation and growth.</p>
+            <a href="{% url 'demo' %}" class="cta-button">Schedule a Consultation</a>
         </div>
     </section>
+{% endblock %}
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>BlackCodeLabs</h3>
-                    <p>Intelligent solutions for the future</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Products</h3>
-                    <ul>
-                        <li><a href="#">BlackCodeLabsML</a></li>
-                        <li><a href="#">BlackCodeLabsAutomate</a></li>
-                        <li><a href="#">BlackCodeLabsAnalyze</a></li>
-                        <li><a href="#">BlackCodeLabsVision</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Company</h3>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="careers.html">Careers</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact</h3>
-                    <ul>
-                        <li><a href="contact.html">Support</a></li>
-                        <li><a href="contact.html">Sales</a></li>
-                        <li><a href="contact.html">Partnerships</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 BlackCodeLabs. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
-
-    <!-- Mobile Menu JavaScript -->
-    <script>
-        // Mobile Menu Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.getElementById('hamburger');
-            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-            const navLinks = document.querySelector('.nav-links');
-            const ctaButton = document.querySelector('nav .cta-button');
-            
-            if (hamburger) {
-                hamburger.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    this.classList.toggle('active');
-                    navLinks.classList.toggle('active');
-                    mobileMenuOverlay.classList.toggle('active');
-                    
-                    // Toggle body scroll
-                    document.body.classList.toggle('menu-open');
-                });
-            }
-            
-            // Close menu when clicking overlay
-            if (mobileMenuOverlay) {
-                mobileMenuOverlay.addEventListener('click', function() {
-                    this.classList.remove('active');
-                    if (hamburger) hamburger.classList.remove('active');
-                    if (navLinks) navLinks.classList.remove('active');
-                    document.body.classList.remove('menu-open');
-                });
-            }
-            
-            // Close menu when clicking a link
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (hamburger) hamburger.classList.remove('active');
-                    if (navLinks) navLinks.classList.remove('active');
-                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                    document.body.classList.remove('menu-open');
-                });
-            });
-            
-            // Close menu when pressing Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (hamburger) hamburger.classList.remove('active');
-                    if (navLinks) navLinks.classList.remove('active');
-                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                    document.body.classList.remove('menu-open');
-                }
-            });
-            
-            // Handle window resize
-            let resizeTimer;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function() {
-                    if (window.innerWidth > 768) {
-                        // Reset mobile menu on desktop
-                        if (hamburger) hamburger.classList.remove('active');
-                        if (navLinks) navLinks.classList.remove('active');
-                        if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                        if (ctaButton) {
-                            ctaButton.style.display = 'block';
-                        }
-                        document.body.classList.remove('menu-open');
-                    }
-                }, 250);
-            });
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // FAQ accordion functionality
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            item.classList.toggle('active');
         });
-    </script>
-
-    <!-- JavaScript for Contact Form and FAQ -->
-    <script>
-        // Form submission handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    });
+    
+    // Auto-hide toast messages after 5 seconds
+    const toast = document.getElementById('message-toast');
+    if (toast) {
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+    }
+    
+    // Form validation and submission feedback
+    const form = document.getElementById('contactForm');
+    if (form) {
+        // Real-time validation
+        const inputs = form.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
             
-            // Show success toast
-            showToast('Your message has been sent successfully! We will get back to you within 24 hours.', 'success');
-            
-            // Reset form
-            this.reset();
-        });
-        
-        // FAQ accordion functionality
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
+            input.addEventListener('input', function() {
+                clearError(this);
             });
         });
         
-        // Toast notification function
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast';
-            toast.classList.add(type);
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 5000);
+        function validateField(field) {
+            if (!field.checkValidity()) {
+                showFieldError(field, 'Please fill out this field correctly.');
+            }
         }
         
-        // Initialize form validation
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('contactForm');
-            const inputs = form.querySelectorAll('input, textarea, select');
+        function showFieldError(field, message) {
+            clearError(field);
+            field.classList.add('error');
             
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateField(this);
-                });
-                
-                input.addEventListener('input', function() {
-                    clearError(this);
-                });
-            });
-            
-            function validateField(field) {
-                if (!field.checkValidity()) {
-                    showFieldError(field, 'Please fill out this field correctly.');
-                }
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'field-error';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
+        }
+        
+        function clearError(field) {
+            field.classList.remove('error');
+            const errorDiv = field.parentNode.querySelector('.field-error');
+            if (errorDiv) {
+                errorDiv.remove();
             }
-            
-            function showFieldError(field, message) {
-                clearError(field);
-                field.classList.add('error');
-                
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'field-error';
-                errorDiv.textContent = message;
-                errorDiv.style.color = 'var(--error)';
-                errorDiv.style.fontSize = '0.85rem';
-                errorDiv.style.marginTop = '5px';
-                
-                field.parentNode.appendChild(errorDiv);
-            }
-            
-            function clearError(field) {
-                field.classList.remove('error');
-                const errorDiv = field.parentNode.querySelector('.field-error');
-                if (errorDiv) {
-                    errorDiv.remove();
-                }
+        }
+        
+        // Form submission animation
+        form.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('.submit-button');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
             }
         });
-    </script>
-</body>
-</html>
+    }
+    
+    // Add active class to contact link in navigation
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+{% endblock %}

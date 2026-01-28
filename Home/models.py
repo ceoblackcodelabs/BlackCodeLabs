@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 import PIL
 from PIL import Image
+import ipaddress
+from django.core.validators import RegexValidator
 import os
 
 class TechServices(models.Model):
@@ -207,3 +209,92 @@ class ClientReview(models.Model):
     
     def __str__(self):
         return f"Review by {self.client_name} ({self.rating} stars)"
+    
+# CONTACT FORM SUBMISSION MODEL FOR ADMIN PANEL VIEWING
+class ContactInquiry(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    DEPARTMENT_CHOICES = [
+        ('sales', 'Sales & Demos'),
+        ('support', 'Technical Support'),
+        ('partnership', 'Partnerships'),
+        ('careers', 'Careers'),
+        ('general', 'General Inquiry'),
+        ('other', 'Other'),
+    ]
+    
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        validators=[RegexValidator(r'^\+?1?\d{9,15}$', 'Enter a valid phone number.')]
+    )
+    company = models.CharField(max_length=200, blank=True, null=True)
+    department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES, default='general')
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    
+    # Additional fields
+    newsletter_subscribed = models.BooleanField(default=False)
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    user_agent = models.TextField(blank=True, null=True)
+    referrer = models.URLField(blank=True, null=True)
+    
+    # Status tracking
+    STATUS_CHOICES = [
+        ('new', 'New'),
+        ('in_progress', 'In Progress'),
+        ('responded', 'Responded'),
+        ('closed', 'Closed'),
+        ('spam', 'Spam'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
+    priority = models.PositiveSmallIntegerField(default=1, choices=[(1, 'Low'), (2, 'Medium'), (3, 'High'), (4, 'Urgent')])
+    
+    assigned_to = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='contact_assignments'
+    )
+    
+    # Response tracking
+    response_notes = models.TextField(blank=True, null=True)
+    responded_at = models.DateTimeField(blank=True, null=True)
+    responded_by = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='contact_responses'
+    )
+    
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Contact Inquiry"
+        verbose_name_plural = "Contact Inquiries"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.subject}"
+    
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    def get_ip_location_info(self):
+        """Get location info from IP (this would require an external service in production)"""
+        if not self.ip_address:
+            return "Unknown"
+        
+        try:
+            # In production, you might want to use a service like ipinfo.io or maxmind
+            ip_obj = ipaddress.ip_address(self.ip_address)
+            return str(ip_obj)
+        except ValueError:
+            return "Invalid IP"
