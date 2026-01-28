@@ -49,9 +49,9 @@
                     <li><a href="{% url 'tech' %}">Technology</a></li>
                     <li><a href="{% url 'solutions' %}">Solutions</a></li>
                     <li><a href="{% url 'courses' %}">Courses</a></li>
-                    <li><a href="{% url 'careers' %}">Careers</a></li>
+                    {% comment %} <li><a href="{% url 'careers' %}">Careers</a></li> {% endcomment %}
                     <li><a href="{% url 'blog' %}">Blog</a></li>
-                    <li><a href="{% url 'games' %}">Games</a></li>
+                    {% comment %} <li><a href="{% url 'games' %}">Games</a></li> {% endcomment %}
                     <li><a href="{% url 'contact' %}">Contact</a></li>
                     
                     <!-- Mobile Demo Button (hidden on desktop) -->
@@ -101,7 +101,7 @@
                     <h3>Company</h3>
                     <ul>
                         <li><a href="{% url 'about' %}">About Us</a></li>
-                        <li><a href="{% url 'careers' %}">Careers</a></li>
+                        {% comment %} <li><a href="{% url 'careers' %}">Careers</a></li> {% endcomment %}
                         <li><a href="{% url 'blog' %}">Blog</a></li>
                         <li><a href="#">Case Studies</a></li>
                     </ul>
