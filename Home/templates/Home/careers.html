@@ -1,0 +1,862 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block title %}Careers | BlackCodeLabs{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Careers-specific styles */
+    .jobs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+        margin: 40px 0 60px;
+    }
+    
+    .job-card {
+        background: rgba(20, 20, 20, 0.8);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+    
+    .job-card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(0, 255, 136, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+    }
+    
+    .job-icon {
+        font-size: 40px;
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+    
+    .job-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: var(--light);
+    }
+    
+    .job-details {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--gray);
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+    }
+    
+    .job-details span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .job-card p {
+        color: var(--gray);
+        line-height: 1.6;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+    }
+    
+    .apply-button {
+        display: inline-block;
+        padding: 12px 30px;
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .apply-button:hover {
+        background: var(--accent);
+        color: var(--dark);
+        transform: translateY(-2px);
+    }
+    
+    .benefits {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 40px;
+        border-radius: 15px;
+        margin-top: 60px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .benefits h3 {
+        font-size: 1.8rem;
+        margin-bottom: 40px;
+        color: var(--light);
+        text-align: center;
+    }
+    
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .benefit-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(0, 255, 136, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .benefit-icon i {
+        font-size: 24px;
+        color: var(--accent);
+    }
+    
+    .benefit-text h4 {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+        color: var(--light);
+    }
+    
+    .benefit-text p {
+        color: var(--gray);
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    /* Application Modal Styles */
+    .application-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 1000;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    
+    .application-modal.active {
+        display: block;
+    }
+    
+    .application-modal-content {
+        background: var(--dark);
+        max-width: 700px;
+        margin: 50px auto;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        animation: modalSlideIn 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    @keyframes modalSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .application-modal-header {
+        padding: 30px;
+        background: rgba(20, 20, 20, 0.9);
+        position: relative;
+    }
+    
+    .application-modal-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--light);
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background 0.3s;
+    }
+    
+    .application-modal-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .application-modal-title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: var(--light);
+    }
+    
+    .application-modal-subtitle {
+        color: var(--gray);
+        font-size: 1.1rem;
+    }
+    
+    .application-modal-body {
+        padding: 30px;
+    }
+    
+    .application-form {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .form-group label {
+        color: var(--light);
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+    
+    .form-control {
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        color: var(--light);
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent);
+        background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .file-upload {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .file-upload input[type="file"] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: pointer;
+        display: block;
+    }
+    
+    .file-upload-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        color: var(--gray);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .file-upload-label:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .file-name {
+        margin-top: 10px;
+        color: var(--accent);
+        font-size: 0.9rem;
+    }
+    
+    .checkbox-group {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: auto;
+    }
+    
+    .checkbox-group label {
+        margin-bottom: 0;
+        font-size: 0.9rem;
+        color: var(--gray);
+    }
+    
+    .submit-application {
+        padding: 15px 30px;
+        background: var(--accent);
+        color: var(--dark);
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 20px;
+    }
+    
+    .submit-application:hover {
+        background: #00e68a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+    }
+    
+    /* Toast Notification */
+    .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--accent);
+        color: var(--dark);
+        padding: 15px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 9999;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: transform 0.3s, opacity 0.3s;
+    }
+    
+    .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .toast.success {
+        background: var(--accent);
+        color: var(--dark);
+    }
+    
+    .toast.error {
+        background: #ff6b6b;
+        color: white;
+    }
+    
+    @media (max-width: 768px) {
+        .jobs-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .benefits-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+        
+        .application-modal-content {
+            margin: 20px auto;
+        }
+        
+        .application-modal-body {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Careers at BlackCodeLabs</h1>
+            <p>Join our team of AI experts and work on cutting-edge technology that's transforming industries.</p>
+        </div>
+    </section>
+
+    <!-- Careers Section -->
+    <section class="careers">
+        <div class="container">
+            <div class="section-title">
+                <h2>Open Positions</h2>
+                <p>Explore opportunities to join our innovative team</p>
+            </div>
+            
+            <div class="jobs-grid">
+                <div class="job-card" data-job-id="ai-engineer">
+                    <div class="job-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>AI Engineer</h3>
+                    <div class="job-details">
+                        <span>San Francisco • Full-time</span>
+                    </div>
+                    <p>Design and implement machine learning models and algorithms to solve complex problems across various domains.</p>
+                    <a href="#" class="apply-button" data-job="AI Engineer">Apply Now</a>
+                </div>
+                
+                <div class="job-card" data-job-id="data-scientist">
+                    <div class="job-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Data Scientist</h3>
+                    <div class="job-details">
+                        <span>Remote • Full-time</span>
+                    </div>
+                    <p>Analyze complex data sets to extract insights and build predictive models that drive business decisions.</p>
+                    <a href="#" class="apply-button" data-job="Data Scientist">Apply Now</a>
+                </div>
+                
+                <div class="job-card" data-job-id="product-manager">
+                    <div class="job-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Product Manager</h3>
+                    <div class="job-details">
+                        <span>San Francisco • Full-time</span>
+                    </div>
+                    <p>Lead the development of innovative AI products from concept to launch, working with cross-functional teams.</p>
+                    <a href="#" class="apply-button" data-job="Product Manager">Apply Now</a>
+                </div>
+                
+                <div class="job-card" data-job-id="ai-ethics-specialist">
+                    <div class="job-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>AI Ethics Specialist</h3>
+                    <div class="job-details">
+                        <span>Remote • Full-time</span>
+                    </div>
+                    <p>Ensure our AI systems are developed and deployed responsibly, with fairness, transparency, and accountability.</p>
+                    <a href="#" class="apply-button" data-job="AI Ethics Specialist">Apply Now</a>
+                </div>
+                
+                <div class="job-card" data-job-id="ml-researcher">
+                    <div class="job-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Machine Learning Researcher</h3>
+                    <div class="job-details">
+                        <span>San Francisco • Full-time</span>
+                    </div>
+                    <p>Conduct cutting-edge research in machine learning and develop novel algorithms to advance the field.</p>
+                    <a href="#" class="apply-button" data-job="Machine Learning Researcher">Apply Now</a>
+                </div>
+                
+                <div class="job-card" data-job-id="ai-solutions-architect">
+                    <div class="job-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>AI Solutions Architect</h3>
+                    <div class="job-details">
+                        <span>New York • Full-time</span>
+                    </div>
+                    <p>Design and implement AI solutions for clients, ensuring successful integration with their existing systems.</p>
+                    <a href="#" class="apply-button" data-job="AI Solutions Architect">Apply Now</a>
+                </div>
+            </div>
+            
+            <div class="benefits">
+                <h3>Why Work at BlackCodeLabs?</h3>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Competitive Compensation</h4>
+                            <p>Salary, equity, and performance bonuses</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Health & Wellness</h4>
+                            <p>Comprehensive medical, dental, and vision insurance</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Flexible Work</h4>
+                            <p>Remote options and flexible working hours</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Learning & Development</h4>
+                            <p>Continuous learning opportunities and conference budgets</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Meals & Snacks</h4>
+                            <p>Healthy meals and snacks provided daily</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Time Off</h4>
+                            <p>Unlimited PTO and paid holidays</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Modal -->
+    <div class="application-modal" id="applicationModal">
+        <div class="application-modal-content">
+            <div class="application-modal-header">
+                <button class="application-modal-close" id="closeApplicationModal">&times;</button>
+                <h1 class="application-modal-title" id="applicationJobTitle">Apply for Position</h1>
+                <div class="application-modal-subtitle" id="applicationJobSubtitle">Fill out the form below to submit your application</div>
+            </div>
+            
+            <div class="application-modal-body">
+                <form class="application-form" id="applicationForm" method="post" action="{% url 'careers' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="jobPosition" name="job_position" value="">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="first_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="last_name" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn Profile (Optional)</label>
+                        <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/in/yourprofile">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolio">Portfolio/GitHub (Optional)</label>
+                        <input type="url" id="portfolio" name="portfolio" class="form-control" placeholder="https://github.com/yourusername">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="coverLetter">Cover Letter *</label>
+                        <textarea id="coverLetter" name="cover_letter" class="form-control" required placeholder="Tell us why you're interested in this position and what you'd bring to our team..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Resume/CV *</label>
+                        <div class="file-upload">
+                            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                            <label for="resume" class="file-upload-label">
+                                <i class="fas fa-upload"></i>
+                                <span>Choose file (PDF, DOC, DOCX)</span>
+                            </label>
+                        </div>
+                        <div class="file-name" id="resumeFileName"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additionalFiles">Additional Files (Optional)</label>
+                        <div class="file-upload">
+                            <input type="file" id="additionalFiles" name="additional_files" accept=".pdf,.doc,.docx,.jpg,.png" multiple>
+                            <label for="additionalFiles" class="file-upload-label">
+                                <i class="fas fa-file"></i>
+                                <span>Choose files (optional)</span>
+                            </label>
+                        </div>
+                        <div class="file-name" id="additionalFilesName"></div>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="privacy" name="privacy" required>
+                        <label for="privacy">I agree to the processing of my data according to the <a href="#" style="color: var(--accent);">Privacy Policy</a> *</label>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="updates" name="updates">
+                        <label for="updates">I'd like to receive updates about future job opportunities at BlackCodeLabs</label>
+                    </div>
+                    
+                    <button type="submit" class="submit-application">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Careers JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        const applicationModal = document.getElementById('applicationModal');
+        const closeApplicationModal = document.getElementById('closeApplicationModal');
+        const applyButtons = document.querySelectorAll('.apply-button');
+        const applicationForm = document.getElementById('applicationForm');
+        const jobPositionInput = document.getElementById('jobPosition');
+        const applicationJobTitle = document.getElementById('applicationJobTitle');
+        const applicationJobSubtitle = document.getElementById('applicationJobSubtitle');
+        const toast = document.getElementById('toast');
+        const resumeInput = document.getElementById('resume');
+        const additionalFilesInput = document.getElementById('additionalFiles');
+        const resumeFileName = document.getElementById('resumeFileName');
+        const additionalFilesName = document.getElementById('additionalFilesName');
+        
+        let currentJobTitle = '';
+        
+        // Function to show toast notification
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Function to open application modal
+        function openApplicationModal(jobTitle) {
+            currentJobTitle = jobTitle;
+            
+            // Update modal content
+            applicationJobTitle.textContent = `Apply for: ${jobTitle}`;
+            applicationJobSubtitle.textContent = 'Fill out the form below to submit your application';
+            jobPositionInput.value = jobTitle;
+            
+            // Show modal
+            applicationModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            applicationModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            applicationForm.reset();
+            resumeFileName.textContent = '';
+            additionalFilesName.textContent = '';
+        }
+        
+        // Add click event to apply buttons
+        applyButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const jobTitle = this.getAttribute('data-job');
+                if (jobTitle) {
+                    openApplicationModal(jobTitle);
+                } else {
+                    // Fallback to card title
+                    const jobCard = this.closest('.job-card');
+                    const titleElement = jobCard.querySelector('h3');
+                    openApplicationModal(titleElement.textContent);
+                }
+            });
+        });
+        
+        // Close modal when clicking close button
+        closeApplicationModal.addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside content
+        applicationModal.addEventListener('click', function(e) {
+            if (e.target === applicationModal) {
+                closeModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && applicationModal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+        
+        // Handle file input changes
+        if (resumeInput) {
+            resumeInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    resumeFileName.textContent = `Selected: ${this.files[0].name}`;
+                } else {
+                    resumeFileName.textContent = '';
+                }
+            });
+        }
+        
+        if (additionalFilesInput) {
+            additionalFilesInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    if (this.files.length === 1) {
+                        additionalFilesName.textContent = `Selected: ${this.files[0].name}`;
+                    } else {
+                        additionalFilesName.textContent = `Selected: ${this.files.length} files`;
+                    }
+                } else {
+                    additionalFilesName.textContent = '';
+                }
+            });
+        }
+        
+        // Handle form submission
+        applicationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const coverLetter = document.getElementById('coverLetter').value.trim();
+            const resumeFile = resumeInput.files[0];
+            
+            if (!firstName || !lastName || !email || !phone || !coverLetter || !resumeFile) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showToast('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // File type validation for resume
+            const allowedResumeTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedResumeTypes.includes(resumeFile.type)) {
+                showToast('Resume must be PDF, DOC, or DOCX format', 'error');
+                return;
+            }
+            
+            // File size validation (max 5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            if (resumeFile.size > maxSize) {
+                showToast('Resume file size must be less than 5MB', 'error');
+                return;
+            }
+            
+            // Validate additional files if any
+            if (additionalFilesInput.files.length > 0) {
+                const allowedAdditionalTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png'];
+                
+                for (let i = 0; i < additionalFilesInput.files.length; i++) {
+                    const file = additionalFilesInput.files[i];
+                    
+                    // Check file type
+                    if (!allowedAdditionalTypes.includes(file.type)) {
+                        showToast('Additional files must be PDF, DOC, DOCX, JPG, or PNG format', 'error');
+                        return;
+                    }
+                    
+                    // Check file size
+                    if (file.size > maxSize) {
+                        showToast('Each additional file must be less than 5MB', 'error');
+                        return;
+                    }
+                }
+            }
+            
+            // In a real Django app, you would submit the form to the server
+            // For now, we'll simulate a successful submission
+            
+            // Create FormData object
+            const formData = new FormData(this);
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Show success message
+                showToast(`Application for ${currentJobTitle} submitted successfully!`, 'success');
+                
+                // Close modal
+                closeModal();
+                
+                // In a real app, you would submit the form data to Django
+                // this.submit();
+            }, 1000);
+        });
+        
+        // Add animation to job cards
+        const jobCards = document.querySelectorAll('.job-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        jobCards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}
