@@ -12,104 +12,12 @@
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="features" id="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Technology Services</h2>
-                <p>End-to-end digital solutions that drive business transformation</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Full-Stack Development</h3>
-                    <p>Custom websites, applications, and backend systems built with cutting-edge technologies tailored to your business needs.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>Process Automation</h3>
-                    <p>Streamline operations with custom automation solutions, bot development, and workflow optimization systems.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Data Intelligence</h3>
-                    <p>Advanced data scraping, analysis, and predictive modeling that turns information into actionable business insights.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h3>Chatbot Systems</h3>
-                    <p>Intelligent conversational interfaces that enhance customer service and automate communication workflows.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <h3>Custom AI Solutions</h3>
-                    <p>Build specialized AI tools and machine learning models designed to solve your unique business challenges.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Security & Threat Analysis</h3>
-                    <p>Comprehensive security assessments, bug bounty programs, and threat intelligence solutions.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3>Infrastructure & Systems</h3>
-                    <p>CCTV installation, cable management, POS systems, and standalone enterprise solutions.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>Technology Training</h3>
-                    <p>Professional development courses and workshops in modern software development and data science.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Statistics Section -->
-    <section class="statistics" id="statistics">
-        <div class="container">
-            <div class="section-title">
-                <h2>By The Numbers</h2>
-                <p>Our impact across the technology landscape</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" id="stat1">0</div>
-                    <div class="stat-label">Projects Delivered</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="stat2">0</div>
-                    <div class="stat-label">Systems Automated</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="stat3">0%</div>
-                    <div class="stat-label">Client Efficiency Gain</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="stat4">0</div>
-                    <div class="stat-label">Data Models Built</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- About Section -->
     <section class="about" id="about">
+        <div class="section-title">
+            <h2>Our Story</h2>
+            <p>Engineering innovative technology solutions since 2018</p>
+        </div>
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
@@ -125,6 +33,63 @@
         </div>
     </section>
 
+    <!-- Services Section -->
+    <section class="features" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Technology Services</h2>
+                <p>End-to-end digital solutions that drive business transformation</p>
+            </div>
+            <div class="features-grid">
+                {% for service in tech_services %}
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        {{ service.icon|safe }}
+                    </div>
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics" id="statistics">
+        <div class="container">
+            <div class="section-title">
+                <h2>By The Numbers</h2>
+                <p>Our impact across the technology landscape</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" 
+                         id="stat1" 
+                         data-value="{{ data_counter.projects_delivered|default:1247 }}">0</div>
+                    <div class="stat-label">Projects Delivered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" 
+                         id="stat2" 
+                         data-value="{{ data_counter.systems_automated|default:892 }}">0</div>
+                    <div class="stat-label">Systems Automated</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" 
+                         id="stat3" 
+                         data-value="{{ data_counter.happy_clients|default:765 }}">0</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" 
+                         id="stat4" 
+                         data-value="{{ data_counter.returning_clients|default:423 }}">0</div>
+                    <div class="stat-label">Returning Clients</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Team Section -->
     <section class="team" id="team">
         <div class="container">
@@ -133,34 +98,26 @@
                 <p>Expert engineers and solution architects driving technological excellence</p>
             </div>
             <div class="team-grid">
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <i class="fas fa-user"></i>
+                {% for member in team_members %}
+                    <div class="team-member">
+                        {% if member.picture %}
+                            <div class="team-member-image">
+                                <img src="{{ member.picture.url }}" alt="{{ member.name }}">
+                            </div>
+                        {% else %}
+                            <div class="team-member-image">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                        <h3>{{ member.name }}</h3>
+                        <p>{{ member.position }}</p>
+                        {% if member.linkedin_url %}
+                            <a href="{{ member.linkedin_url }}" target="_blank" class="team-linkedin">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        {% endif %}
                     </div>
-                    <h3>Sarah Johnson</h3>
-                    <p>Chief Technology Officer</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>Michael Chen</h3>
-                    <p>Head of Development</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>Amanda Rodriguez</h3>
-                    <p>Data Systems Director</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-member-image">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>David Kim</h3>
-                    <p>Infrastructure Lead</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -173,48 +130,40 @@
                 <p>Hear from businesses transformed by our technology solutions</p>
             </div>
             <div class="testimonial-slider">
+                {% for review in client_reviews %}
                 <div class="testimonial">
                     <div class="testimonial-content">
-                        <p>BlackCodeLabs automated our entire inventory management system. We've reduced manual work by 80% and improved accuracy dramatically.</p>
+                        <p>{{ review.review_text }}</p>
+                        <div class="testimonial-rating">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= review.rating %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
+                        {% if review.client_picture %}
+                            <div class="author-avatar">
+                                <img src="{{ review.client_picture.url }}" alt="{{ review.client_name }}">
+                            </div>
+                        {% else %}
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
                         <div class="author-info">
-                            <h4>Jennifer Williams</h4>
-                            <p>Operations Director, Retail Chain</p>
+                            <h4>{{ review.client_name }}</h4>
+                            <p>{{ review.client_position }}</p>
+                            {% if review.client_company %}
+                                <small>{{ review.client_company }}</small>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <p>Their data analysis platform uncovered insights that increased our sales by 35%. The predictive models are remarkably accurate.</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Robert Zhang</h4>
-                            <p>CEO, E-commerce Platform</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <p>From custom POS systems to security installation, BlackCodeLabs handled all our technology needs seamlessly.</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Maria Gonzalez</h4>
-                            <p>Owner, Hospitality Group</p>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -280,4 +229,176 @@
             <a href="{% url 'demo' %}" class="cta-button">Start Your Project</a>
         </div>
     </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Updated JavaScript for dynamic statistics from database
+document.addEventListener('DOMContentLoaded', function() {
+    // Update the statistics initialization function
+    function initStatistics() {
+        const stat1 = document.getElementById('stat1');
+        const stat2 = document.getElementById('stat2');
+        const stat3 = document.getElementById('stat3');
+        const stat4 = document.getElementById('stat4');
+
+        // Get values from data attributes (this is the correct way)
+        const projectsDelivered = parseInt(stat1.getAttribute('data-value')) || 1247;
+        const systemsAutomated = parseInt(stat2.getAttribute('data-value')) || 892;
+        const happyClients = parseInt(stat3.getAttribute('data-value')) || 765;
+        const returningClients = parseInt(stat4.getAttribute('data-value')) || 423;
+        
+        const targetValues = [projectsDelivered, systemsAutomated, happyClients, returningClients];
+        const duration = 2000; // ms
+        const interval = 20; // ms
+        
+        const counters = [stat1, stat2, stat3, stat4];
+        
+        counters.forEach((counter, index) => {
+            if (!counter) return;
+            
+            let current = 0;
+            const increment = targetValues[index] / (duration / interval);
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= targetValues[index]) {
+                    clearInterval(timer);
+                    current = targetValues[index];
+                    
+                    // Format numbers
+                    if (targetValues[index] >= 1000) {
+                        counter.textContent = (current / 1000).toFixed(1) + 'k+';
+                    } else {
+                        counter.textContent = Math.round(current);
+                    }
+                } else {
+                    if (targetValues[index] >= 1000) {
+                        counter.textContent = Math.round(current / 1000) + 'k+';
+                    } else {
+                        counter.textContent = Math.round(current);
+                    }
+                }
+            }, interval);
+        });
+    }
+    
+    // Override the initStatistics function in the base template
+    if (window.initStatistics) {
+        // Save the original function
+        const originalInitStatistics = window.initStatistics;
+        
+        // Create a new function that calls both
+        window.initStatistics = function() {
+            // Call the original if it exists
+            if (typeof originalInitStatistics === 'function') {
+                originalInitStatistics();
+            }
+            
+            // Call our new statistics function
+            initStatistics();
+        };
+    } else {
+        // If no initStatistics exists, create it
+        window.initStatistics = initStatistics;
+    }
+    
+    // Auto-play testimonials
+    function initTestimonialSlider() {
+        const testimonialSlider = document.querySelector('.testimonial-slider');
+        if (!testimonialSlider) return;
+        
+        const testimonials = testimonialSlider.querySelectorAll('.testimonial');
+        if (testimonials.length <= 1) return;
+        
+        let currentIndex = 0;
+        
+        function showNextTestimonial() {
+            testimonials[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % testimonials.length;
+            testimonials[currentIndex].classList.add('active');
+            
+            // Update dots if they exist
+            const dots = testimonialSlider.querySelectorAll('.testimonial-dot');
+            if (dots.length > 0) {
+                dots.forEach(dot => dot.classList.remove('active'));
+                dots[currentIndex].classList.add('active');
+            }
+        }
+        
+        // Initialize first testimonial
+        testimonials[0].classList.add('active');
+        
+        // Create navigation dots
+        const dotsContainer = document.createElement('div');
+        dotsContainer.className = 'testimonial-dots';
+        testimonialSlider.appendChild(dotsContainer);
+        
+        testimonials.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'testimonial-dot';
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => {
+                testimonials[currentIndex].classList.remove('active');
+                dotsContainer.querySelectorAll('.testimonial-dot').forEach(d => d.classList.remove('active'));
+                currentIndex = index;
+                testimonials[currentIndex].classList.add('active');
+                dot.classList.add('active');
+            });
+            dotsContainer.appendChild(dot);
+        });
+        
+        // Auto rotate every 5 seconds
+        setInterval(showNextTestimonial, 5000);
+    }
+    
+    // Initialize on page load
+    setTimeout(() => {
+        // Call initStatistics (it will be called via the window.initStatistics override)
+        if (window.initStatistics && typeof window.initStatistics === 'function') {
+            window.initStatistics();
+        }
+        
+        initTestimonialSlider();
+    }, 1000);
+});
+</script>
+
+<style>
+/* Additional CSS for enhanced testimonials and team */
+.testimonial-rating {
+    color: #FFD700;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.testimonial-author .author-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #4CAF50;
+}
+
+.team-member-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.author-avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Ensure statistics are visible during count */
+.stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #4CAF50;
+    transition: all 0.3s ease;
+}
+</style>
 {% endblock %}

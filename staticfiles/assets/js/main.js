@@ -368,39 +368,39 @@ function initStatistics() {
     // Will be animated when section comes into view
 }
 
-function animateStatistics() {
-    const stat1 = document.getElementById('stat1');
-    const stat2 = document.getElementById('stat2');
-    const stat3 = document.getElementById('stat3');
-    const stat4 = document.getElementById('stat4');
+// function animateStatistics() {
+//     const stat1 = document.getElementById('stat1');
+//     const stat2 = document.getElementById('stat2');
+//     const stat3 = document.getElementById('stat3');
+//     const stat4 = document.getElementById('stat4');
     
-    if (!stat1 || stat1.textContent !== '0') return; // Prevent re-animation
+//     if (!stat1 || stat1.textContent !== '0') return; // Prevent re-animation
     
-    const targetValues = [150, 380, 98, 45];
-    const duration = 3000;
-    const interval = 20;
+//     const targetValues = [150, 380, 98, 45];
+//     const duration = 3000;
+//     const interval = 20;
     
-    const counters = [stat1, stat2, stat3, stat4];
+//     const counters = [stat1, stat2, stat3, stat4];
     
-    counters.forEach((counter, index) => {
-        let current = 0;
-        const increment = targetValues[index] / (duration / interval);
+//     counters.forEach((counter, index) => {
+//         let current = 0;
+//         const increment = targetValues[index] / (duration / interval);
         
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= targetValues[index]) {
-                clearInterval(timer);
-                current = targetValues[index];
-            }
+//         const timer = setInterval(() => {
+//             current += increment;
+//             if (current >= targetValues[index]) {
+//                 clearInterval(timer);
+//                 current = targetValues[index];
+//             }
             
-            if (index === 2) { // Percentage
-                counter.textContent = Math.round(current) + '%';
-            } else {
-                counter.textContent = Math.round(current);
-            }
-        }, interval);
-    });
-}
+//             if (index === 2) { // Percentage
+//                 counter.textContent = Math.round(current) + '%';
+//             } else {
+//                 counter.textContent = Math.round(current);
+//             }
+//         }, interval);
+//     });
+// }
 
 // Newsletter Form
 function initNewsletter() {
