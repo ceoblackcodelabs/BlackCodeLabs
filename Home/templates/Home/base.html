@@ -371,43 +371,6 @@
         });
     }
     
-    // Initialize statistics counter
-    function initStatistics() {
-        const stat1 = document.getElementById('stat1');
-        const stat2 = document.getElementById('stat2');
-        const stat3 = document.getElementById('stat3');
-        const stat4 = document.getElementById('stat4');
-        
-        if (!stat1) return; // Exit if no statistics on this page
-        
-        const targetValues = [250, 500, 45, 28];
-        const duration = 2000; // ms
-        const interval = 20; // ms
-        
-        const counters = [stat1, stat2, stat3, stat4];
-        
-        counters.forEach((counter, index) => {
-            if (!counter) return;
-            
-            let current = 0;
-            const increment = targetValues[index] / (duration / interval);
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= targetValues[index]) {
-                    clearInterval(timer);
-                    current = targetValues[index];
-                }
-                
-                if (index === 2) { // Percentage
-                    counter.textContent = Math.round(current) + '%';
-                } else {
-                    counter.textContent = Math.round(current);
-                }
-            }, interval);
-        });
-    }
-    
     // Newsletter form submission
     const newsletterForm = document.querySelector('.newsletter-form');
     if (newsletterForm) {

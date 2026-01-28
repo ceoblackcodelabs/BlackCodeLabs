@@ -1,7 +1,30 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
+from .models import (
+    TechServices, TeamMember, DataCounter,
+    ClientReview
+)
 
-class HomePageView(TemplateView):
+class HomePageView(ListView):
     template_name = "Home/index.html"
+    model = TechServices
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tech_services'] = TechServices.objects.all()
+        context['team_members'] = TeamMember.objects.all()
+        data_counter = DataCounter.objects.filter(is_active=True).first()
+        if not data_counter:
+            # Create a default counter if none exists
+            data_counter = DataCounter.objects.create(
+                projects_delivered=1247,
+                systems_automated=892,
+                happy_clients=765,
+                returning_clients=423,
+                is_active=True
+            )
+        context['data_counters'] = data_counter
+        context["client_reviews"] = ClientReview.objects.all()[:6]
+        return context
     
 class AboutPageView(TemplateView):
     template_name = "Home/about.html"

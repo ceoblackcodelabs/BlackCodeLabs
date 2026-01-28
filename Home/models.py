@@ -1,0 +1,209 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils.html import format_html
+import PIL
+from PIL import Image
+import os
+
+class TechServices(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    icon = models.TextField("Icon HTML")
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    # Order by creation date by default
+    class Meta:
+        verbose_name = "Tech Service"
+        verbose_name_plural = "Tech Services"
+        ordering = ['created_at']
+
+    def __str__(self):
+        return self.name
+    
+class DataCounter(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    projects_delivered = models.IntegerField("Projects Delivered", default=1000)
+    systems_automated = models.IntegerField("Systems Automated", default=1000)
+    happy_clients = models.IntegerField("Happy Clients", default=0)
+    returning_clients = models.IntegerField("Returning Clients", default=1000)
+    is_active = models.BooleanField("Active", default=True, 
+                                   help_text="Uncheck to hide from website")
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Data Counter"
+        verbose_name_plural = "Data Counters"
+    
+    def __str__(self):
+        return f"Counter Stats (Active: {self.is_active})"
+
+def validate_square_image(image):
+    """Validate that image is square"""
+    img = Image.open(image)
+    if img.width != img.height:
+        raise ValidationError('Image must be square (same width and height)')
+
+def validate_image_size(image, max_size_mb=2):
+    """Validate image file size"""
+    filesize = image.size
+    if filesize > max_size_mb * 1024 * 1024:
+        raise ValidationError(f"Max file size is {max_size_mb}MB")
+
+class TeamMember(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    picture = models.ImageField(
+        upload_to='team_pictures/',
+        validators=[validate_image_size],
+        help_text="Upload a square image (passport size: 2x2 inches or 600x600 pixels)"
+    )
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    email = models.EmailField(blank=True, null=True)
+    linkedin_url = models.URLField("LinkedIn URL", blank=True, null=True)
+    display_order = models.PositiveIntegerField(default=0, 
+                                               help_text="Higher number appears first")
+    is_active = models.BooleanField("Active", default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = "Team Member"
+        verbose_name_plural = "Team Members"
+        ordering = ['-display_order', 'name']
+    
+    def save(self, *args, **kwargs):
+        # Check if picture exists and is being updated
+        if self.pk:
+            try:
+                old_instance = TeamMember.objects.get(pk=self.pk)
+                if old_instance.picture != self.picture:
+                    # Delete old picture if new one is uploaded
+                    old_instance.picture.delete(save=False)
+            except TeamMember.DoesNotExist:
+                pass
+        
+        super().save(*args, **kwargs)
+        
+        if self.picture:
+            try:
+                img = Image.open(self.picture.path)
+                
+                # Make image square and passport size (600x600 pixels for web)
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    # Convert RGBA to RGB
+                    background = Image.new('RGB', img.size, (255, 255, 255))
+                    background.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+                    img = background
+                
+                # Resize to square (passport size: 600x600 for web)
+                desired_size = 600
+                
+                # Calculate new dimensions maintaining aspect ratio
+                img.thumbnail((desired_size, desired_size), Image.Resampling.LANCZOS)
+                
+                # Create square canvas
+                new_img = Image.new('RGB', (desired_size, desired_size), (255, 255, 255))
+                
+                # Calculate position to center the image
+                img_width, img_height = img.size
+                left = (desired_size - img_width) // 2
+                top = (desired_size - img_height) // 2
+                
+                # Paste resized image onto canvas
+                new_img.paste(img, (left, top))
+                
+                # Save the image
+                new_img.save(self.picture.path, 'JPEG', quality=85)
+                
+            except Exception as e:
+                # Log error but don't break the save
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error processing team member image: {e}")
+    
+    def image_preview(self):
+        if self.picture:
+            return format_html('<img src="{}" width="50" height="50" style="border-radius: 50%; object-fit: cover;" />', self.picture.url)
+        return "No Image"
+    image_preview.short_description = 'Preview'
+    
+    def __str__(self):
+        return f"{self.name} - {self.position}"
+
+class ClientReview(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    client_name = models.CharField(max_length=100)
+    client_position = models.CharField(max_length=100)
+    client_company = models.CharField(max_length=100, blank=True, null=True)
+    client_picture = models.ImageField(
+        upload_to='client_pictures/',
+        validators=[validate_image_size],
+        help_text="Upload a profile picture (recommended: 400x400 pixels)"
+    )
+    review_text = models.TextField()
+    rating = models.PositiveSmallIntegerField(
+        choices=[(1, '1 Star'), (2, '2 Stars'), (3, '3 Stars'), (4, '4 Stars'), (5, '5 Stars')],
+        default=5
+    )
+    is_featured = models.BooleanField("Featured Review", default=False)
+    display_order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = "Client Review"
+        verbose_name_plural = "Client Reviews"
+        ordering = ['-is_featured', '-display_order', '-created_at']
+    
+    def save(self, *args, **kwargs):
+        # Check if picture exists and is being updated
+        if self.pk:
+            try:
+                old_instance = ClientReview.objects.get(pk=self.pk)
+                if old_instance.client_picture != self.client_picture:
+                    # Delete old picture if new one is uploaded
+                    old_instance.client_picture.delete(save=False)
+            except ClientReview.DoesNotExist:
+                pass
+        
+        super().save(*args, **kwargs)
+        
+        if self.client_picture:
+            try:
+                img = Image.open(self.client_picture.path)
+                
+                # Convert if necessary
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    background = Image.new('RGB', img.size, (255, 255, 255))
+                    background.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+                    img = background
+                
+                # Resize to profile picture size (400x400 for web)
+                profile_size = 400
+                
+                # Resize maintaining aspect ratio
+                img.thumbnail((profile_size, profile_size), Image.Resampling.LANCZOS)
+                
+                # Create circular mask for profile picture style (optional)
+                # Or save as square with rounded corners
+                img.save(self.client_picture.path, 'JPEG', quality=85)
+                
+            except Exception as e:
+                # Log error but don't break the save
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error processing client image: {e}")
+    
+    def stars_display(self):
+        return '★' * self.rating + '☆' * (5 - self.rating)
+    stars_display.short_description = 'Rating'
+    
+    def image_preview(self):
+        if self.client_picture:
+            return format_html('<img src="{}" width="50" height="50" style="border-radius: 50%; object-fit: cover;" />', self.client_picture.url)
+        return "No Image"
+    image_preview.short_description = 'Profile Picture'
+    
+    def __str__(self):
+        return f"Review by {self.client_name} ({self.rating} stars)"
