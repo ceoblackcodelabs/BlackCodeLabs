@@ -1,0 +1,104 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block title %}About | BlackCodeLabs{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>About BlackCodeLabs</h1>
+            <p>Learn about our mission, values, and the team behind our comprehensive technology solutions.</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Story</h2>
+                <p>Engineering innovative technology solutions since 2018</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Building Tomorrow's Technology Today</h3>
+                    <p>Founded in 2018, BlackCodeLabs has been pioneering practical technology solutions that bridge innovation with real-world implementation. Our team of expert engineers and developers specializes in creating robust, scalable systems for businesses of all sizes.</p>
+                    <p>We believe in developing technology that is not only powerful but also accessible, reliable, and tailored to specific business needs. Our solutions range from custom software development and automation to data intelligence and infrastructure systems.</p>
+                    <p>From our development centers, we collaborate with clients worldwide to transform their operations and unlock new possibilities through comprehensive technology implementation.</p>
+                </div>
+                
+                <div class="about-image">
+                    <div class="about-image-content">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Engineering Excellence</h3>
+                        <p>Visualizing comprehensive technology solutions</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-title">
+                <h2>Our Values</h2>
+                <p>The principles that guide everything we do</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Technical Excellence</h3>
+                    <p>We prioritize clean architecture, scalable solutions, and cutting-edge technology to deliver robust systems that stand the test of time.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Client Partnership</h3>
+                    <p>We work as an extension of your team, understanding your unique challenges and delivering solutions that drive measurable results.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Practical Innovation</h3>
+                    <p>We focus on implementing technology that solves real business problems, balancing innovation with practicality and ROI.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Reliability & Security</h3>
+                    <p>We build systems with security-first principles, ensuring your data and operations are protected and resilient.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Mobile menu functionality is already in base.html
+    // Any page-specific JavaScript can go here
+    
+    // Example: Add animations for values cards
+    document.addEventListener('DOMContentLoaded', function() {
+        // Observe value cards for scroll animations
+        const valueCards = document.querySelectorAll('.value-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        valueCards.forEach(card => {
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}

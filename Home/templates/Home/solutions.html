@@ -1,0 +1,623 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block title %}Solutions | BlackCodeLabs{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Solutions-specific styles */
+    .solutions-hero {
+        padding: 150px 0 100px;
+        background: linear-gradient(rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.95)),
+                    url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+    }
+    
+    .solutions-hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .solutions-hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        color: var(--light);
+    }
+    
+    .solutions-hero p {
+        font-size: 1.2rem;
+        color: var(--gray);
+        margin-bottom: 40px;
+    }
+    
+    .industry-stats {
+        padding: 100px 0;
+        background: var(--dark);
+    }
+    
+    .stat-card {
+        background: rgba(20, 20, 20, 0.8);
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(0, 255, 136, 0.3);
+    }
+    
+    .stat-card .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: var(--accent);
+        margin-bottom: 10px;
+    }
+    
+    .stat-card .stat-label {
+        color: var(--gray);
+        font-size: 0.9rem;
+    }
+    
+    .solutions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    
+    .solution-card {
+        background: rgba(20, 20, 20, 0.8);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+    
+    .solution-card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(0, 255, 136, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+    }
+    
+    .solution-icon {
+        font-size: 40px;
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+    
+    .solution-features {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+    
+    .solution-features li {
+        padding: 8px 0;
+        color: var(--gray);
+        position: relative;
+        padding-left: 20px;
+    }
+    
+    .solution-features li:before {
+        content: '✓';
+        color: var(--accent);
+        position: absolute;
+        left: 0;
+    }
+    
+    .solution-cta {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 25px;
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .solution-cta:hover {
+        background: var(--accent);
+        color: var(--dark);
+    }
+    
+    .case-studies {
+        padding: 100px 0;
+        background: var(--darker);
+    }
+    
+    .case-studies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+    }
+    
+    .case-study-card {
+        background: rgba(20, 20, 20, 0.8);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .case-study-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(0, 255, 136, 0.3);
+    }
+    
+    .case-study-image {
+        height: 200px;
+        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .case-study-image i {
+        font-size: 60px;
+        color: white;
+    }
+    
+    .case-study-content {
+        padding: 30px;
+    }
+    
+    .case-study-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .case-study-industry,
+    .case-study-results {
+        font-size: 0.9rem;
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+    
+    .case-study-industry {
+        background: rgba(110, 59, 206, 0.2);
+        color: var(--secondary);
+    }
+    
+    .case-study-results {
+        background: rgba(0, 255, 136, 0.2);
+        color: var(--accent);
+    }
+    
+    .solution-process {
+        padding: 100px 0;
+        background: var(--dark);
+    }
+    
+    .process-steps {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        position: relative;
+    }
+    
+    .process-steps:before {
+        content: '';
+        position: absolute;
+        top: 40px;
+        left: 50px;
+        right: 50px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 1;
+    }
+    
+    .process-step {
+        flex: 1;
+        min-width: 200px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .step-number {
+        width: 80px;
+        height: 80px;
+        background: var(--darker);
+        border: 2px solid var(--accent);
+        color: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0 auto 20px;
+        transition: all 0.3s;
+    }
+    
+    .process-step:hover .step-number {
+        background: var(--accent);
+        color: var(--dark);
+        transform: scale(1.1);
+    }
+    
+    .step-title {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: var(--light);
+    }
+    
+    .step-description {
+        color: var(--gray);
+        font-size: 0.95rem;
+    }
+    
+    .cta-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, var(--space-blue), var(--darker));
+        text-align: center;
+    }
+    
+    .cta-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    @media (max-width: 768px) {
+        .solutions-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .process-steps:before {
+            display: none;
+        }
+        
+        .process-step {
+            margin-bottom: 40px;
+        }
+        
+        .solutions-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .case-studies-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Solutions Hero -->
+    <section class="solutions-hero">
+        <div class="container">
+            <div class="solutions-hero-content">
+                <h1>Transform Your Business with Technology</h1>
+                <p>Discover how our comprehensive technology solutions can revolutionize your operations, drive innovation, and create sustainable competitive advantages across all industries.</p>
+                <button class="cta-button" onclick="window.location.href='{% url 'demo' %}'">Schedule a Consultation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Statistics -->
+    <section class="industry-stats">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technology Impact by Numbers</h2>
+                <p>See how digital transformation is revolutionizing industries worldwide</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">of companies using automation report increased efficiency</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">52%</div>
+                    <div class="stat-label">reduction in operational costs with proper system integration</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4.2T</div>
+                    <div class="stat-label">potential value digital transformation could create across industries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">71%</div>
+                    <div class="stat-label">of businesses expect technology to increase productivity</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="solutions">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Technology Solutions</h2>
+                <p>Tailored solutions designed to address specific challenges across various business needs</p>
+            </div>
+            <div class="solutions-grid">
+                <div class="solution-card" id="development">
+                    <div class="solution-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Web & App Development</h3>
+                    <p>Build responsive, high-performance websites, mobile applications, and backend systems with modern technologies.</p>
+                    <ul class="solution-features">
+                        <li>Responsive Website Design</li>
+                        <li>E-commerce Platforms</li>
+                        <li>Mobile Applications (iOS/Android)</li>
+                        <li>Custom Backend Systems</li>
+                        <li>Progressive Web Apps</li>
+                    </ul>
+                    <a href="#" class="solution-cta">View Projects</a>
+                </div>
+                <div class="solution-card" id="automation">
+                    <div class="solution-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Process Automation</h3>
+                    <p>Streamline operations with custom automation solutions, bot development, and workflow optimization systems.</p>
+                    <ul class="solution-features">
+                        <li>Workflow Automation</li>
+                        <li>Custom Bot Development</li>
+                        <li>Data Entry Automation</li>
+                        <li>Task Scheduling Systems</li>
+                        <li>API Integration Automation</li>
+                    </ul>
+                    <a href="#" class="solution-cta">Learn More</a>
+                </div>
+                <div class="solution-card" id="data">
+                    <div class="solution-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Data Intelligence</h3>
+                    <p>Advanced data solutions including web scraping, analysis, predictive modeling, and business intelligence dashboards.</p>
+                    <ul class="solution-features">
+                        <li>Web Data Extraction</li>
+                        <li>Big Data Processing</li>
+                        <li>Predictive Analytics</li>
+                        <li>Interactive Dashboards</li>
+                        <li>Custom AI Models</li>
+                    </ul>
+                    <a href="#" class="solution-cta">Explore Solutions</a>
+                </div>
+                <div class="solution-card" id="chatbots">
+                    <div class="solution-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Chatbot Systems</h3>
+                    <p>Intelligent conversational interfaces that enhance customer service and automate communication workflows.</p>
+                    <ul class="solution-features">
+                        <li>24/7 Customer Support</li>
+                        <li>Multi-platform Integration</li>
+                        <li>Natural Language Processing</li>
+                        <li>Lead Generation Bots</li>
+                        <li>Order Processing Automation</li>
+                    </ul>
+                    <a href="#" class="solution-cta">View Demos</a>
+                </div>
+                <div class="solution-card" id="security">
+                    <div class="solution-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Security Solutions</h3>
+                    <p>Comprehensive security assessments, bug bounty programs, and threat intelligence solutions.</p>
+                    <ul class="solution-features">
+                        <li>Vulnerability Assessment</li>
+                        <li>Bug Bounty Program Management</li>
+                        <li>Threat Analysis & Monitoring</li>
+                        <li>Security Audits</li>
+                        <li>Incident Response Planning</li>
+                    </ul>
+                    <a href="#" class="solution-cta">Get Assessment</a>
+                </div>
+                <div class="solution-card" id="infrastructure">
+                    <div class="solution-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Infrastructure & Systems</h3>
+                    <p>CCTV installation, cable management, POS systems, and standalone enterprise solutions.</p>
+                    <ul class="solution-features">
+                        <li>CCTV Security Systems</li>
+                        <li>Network Cable Management</li>
+                        <li>Custom POS Solutions</li>
+                        <li>Standalone Business Systems</li>
+                        <li>Hardware Integration</li>
+                    </ul>
+                    <a href="#" class="solution-cta">Learn More</a>
+                </div>
+                <div class="solution-card" id="api">
+                    <div class="solution-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>API Development</h3>
+                    <p>Create robust, scalable, and secure APIs to connect your applications and services.</p>
+                    <ul class="solution-features">
+                        <li>RESTful API Design</li>
+                        <li>GraphQL Implementation</li>
+                        <li>API Documentation</li>
+                        <li>Authentication & Authorization</li>
+                        <li>WebSocket APIs</li>
+                    </ul>
+                    <a href="#" class="solution-cta">Explore APIs</a>
+                </div>
+                <div class="solution-card" id="training">
+                    <div class="solution-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Technology Training</h3>
+                    <p>Professional development courses and workshops in modern software development and data science.</p>
+                    <ul class="solution-features">
+                        <li>Web Development Bootcamps</li>
+                        <li>Data Science Workshops</li>
+                        <li>Automation Training</li>
+                        <li>Security Best Practices</li>
+                        <li>Team Technology Upskilling</li>
+                    </ul>
+                    <a href="{% url 'courses' %}" class="solution-cta">View Courses</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="case-studies">
+        <div class="container">
+            <div class="section-title">
+                <h2>Success Stories</h2>
+                <p>Real-world examples of how our technology solutions have transformed businesses</p>
+            </div>
+            <div class="case-studies-grid">
+                <div class="case-study-card">
+                    <div class="case-study-image">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="case-study-content">
+                        <h3>E-commerce Platform</h3>
+                        <p>Developed a custom e-commerce solution with automated inventory management, reducing manual work by 80% and increasing sales by 35%.</p>
+                        <div class="case-study-meta">
+                            <span class="case-study-industry">Retail</span>
+                            <span class="case-study-results">+35% Revenue</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-study-card">
+                    <div class="case-study-image">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="case-study-content">
+                        <h3>Manufacturing Company</h3>
+                        <p>Implemented process automation and data analysis systems, reducing production errors by 60% and improving efficiency by 45%.</p>
+                        <div class="case-study-meta">
+                            <span class="case-study-industry">Manufacturing</span>
+                            <span class="case-study-results">45% Efficiency Gain</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-study-card">
+                    <div class="case-study-image">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="case-study-content">
+                        <h3>Financial Institution</h3>
+                        <p>Developed custom security solutions and fraud detection systems, preventing $52M in potential losses in the first year.</p>
+                        <div class="case-study-meta">
+                            <span class="case-study-industry">Finance</span>
+                            <span class="case-study-results">$52M Saved</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Process -->
+    <section class="solution-process">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Implementation Process</h2>
+                <p>A structured approach to ensure successful technology integration</p>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Consultation & Analysis</h3>
+                    <p class="step-description">We analyze your business processes, current systems, and specific challenges to identify technology opportunities.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Solution Design</h3>
+                    <p class="step-description">Our experts design a tailored technology solution that addresses your unique business needs and objectives.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Development & Testing</h3>
+                    <p class="step-description">We develop and rigorously test the solution to ensure reliability, performance, and user satisfaction.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Implementation</h3>
+                    <p class="step-description">Seamless integration of the technology solution into your existing systems with minimal disruption.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <h3 class="step-title">Support & Optimization</h3>
+                    <p class="step-description">Continuous monitoring, support, and optimization to ensure long-term success and maximum ROI.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Business?</h2>
+                <p>Schedule a personalized consultation to see how our technology solutions can address your specific challenges and drive measurable results.</p>
+                <button class="cta-button" onclick="window.location.href='{% url 'demo' %}'">Schedule a Consultation</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Solutions-specific JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate stats when they come into view
+        const statCards = document.querySelectorAll('.stat-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        statCards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+        
+        // Add hover effects to solution cards
+        const solutionCards = document.querySelectorAll('.solution-card');
+        
+        solutionCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+        
+        // Smooth scroll to anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

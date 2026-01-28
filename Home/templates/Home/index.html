@@ -1,0 +1,283 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div id="space-container"></div>
+        <div class="container hero-content">
+            <h1>Engineering Your Digital Future</h1>
+            <p>BlackCodeLabs delivers comprehensive technology solutions that transform businesses through custom development, intelligent automation, and data-driven innovation.</p>
+            <button class="cta-button pulse">Explore Our Solutions</button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="features" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Technology Services</h2>
+                <p>End-to-end digital solutions that drive business transformation</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Full-Stack Development</h3>
+                    <p>Custom websites, applications, and backend systems built with cutting-edge technologies tailored to your business needs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Process Automation</h3>
+                    <p>Streamline operations with custom automation solutions, bot development, and workflow optimization systems.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Data Intelligence</h3>
+                    <p>Advanced data scraping, analysis, and predictive modeling that turns information into actionable business insights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Chatbot Systems</h3>
+                    <p>Intelligent conversational interfaces that enhance customer service and automate communication workflows.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Custom AI Solutions</h3>
+                    <p>Build specialized AI tools and machine learning models designed to solve your unique business challenges.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Security & Threat Analysis</h3>
+                    <p>Comprehensive security assessments, bug bounty programs, and threat intelligence solutions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Infrastructure & Systems</h3>
+                    <p>CCTV installation, cable management, POS systems, and standalone enterprise solutions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Technology Training</h3>
+                    <p>Professional development courses and workshops in modern software development and data science.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics" id="statistics">
+        <div class="container">
+            <div class="section-title">
+                <h2>By The Numbers</h2>
+                <p>Our impact across the technology landscape</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="stat1">0</div>
+                    <div class="stat-label">Projects Delivered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="stat2">0</div>
+                    <div class="stat-label">Systems Automated</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="stat3">0%</div>
+                    <div class="stat-label">Client Efficiency Gain</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="stat4">0</div>
+                    <div class="stat-label">Data Models Built</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Building Tomorrow's Technology</h2>
+                    <p>Founded in 2018, BlackCodeLabs has been pioneering practical technology solutions that solve real business challenges. Our team of engineers and developers bridges the gap between innovation and implementation.</p>
+                    <p>We specialize in creating robust, scalable systems—from web applications and automation tools to data platforms and security solutions—that empower businesses to operate smarter and more efficiently.</p>
+                    <a href="{% url 'about' %}" class="cta-button">Learn More About Us</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Technology Development">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team" id="team">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Technical Leadership</h2>
+                <p>Expert engineers and solution architects driving technological excellence</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Sarah Johnson</h3>
+                    <p>Chief Technology Officer</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Michael Chen</h3>
+                    <p>Head of Development</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Amanda Rodriguez</h3>
+                    <p>Data Systems Director</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>David Kim</h3>
+                    <p>Infrastructure Lead</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container testimonials-container">
+            <div class="section-title">
+                <h2>Client Success Stories</h2>
+                <p>Hear from businesses transformed by our technology solutions</p>
+            </div>
+            <div class="testimonial-slider">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>BlackCodeLabs automated our entire inventory management system. We've reduced manual work by 80% and improved accuracy dramatically.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Jennifer Williams</h4>
+                            <p>Operations Director, Retail Chain</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>Their data analysis platform uncovered insights that increased our sales by 35%. The predictive models are remarkably accurate.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Robert Zhang</h4>
+                            <p>CEO, E-commerce Platform</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>From custom POS systems to security installation, BlackCodeLabs handled all our technology needs seamlessly.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Maria Gonzalez</h4>
+                            <p>Owner, Hospitality Group</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demos" id="demos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Solution Showcase</h2>
+                <p>Explore our technology capabilities</p>
+            </div>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="demo-image">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="demo-content">
+                        <h3>Automation Demo</h3>
+                        <p>See how our workflow automation systems can streamline your business processes.</p>
+                    </div>
+                </div>
+                <div class="demo-card">
+                    <div class="demo-image">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="demo-content">
+                        <h3>Data Dashboard</h3>
+                        <p>Experience real-time data visualization and predictive analytics in action.</p>
+                    </div>
+                </div>
+                <div class="demo-card">
+                    <div class="demo-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="demo-content">
+                        <h3>App Prototype</h3>
+                        <p>Explore interactive prototypes of custom applications we've developed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" id="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Stay Updated</h2>
+                <p>Subscribe for the latest in technology solutions, automation trends, and development insights.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                    <button type="submit" class="newsletter-button">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="container cta-content">
+            <h2>Ready to Transform Your Technology Infrastructure?</h2>
+            <p>Join forward-thinking businesses leveraging BlackCodeLabs's comprehensive solutions for growth and efficiency.</p>
+            <a href="{% url 'demo' %}" class="cta-button">Start Your Project</a>
+        </div>
+    </section>
+{% endblock %}

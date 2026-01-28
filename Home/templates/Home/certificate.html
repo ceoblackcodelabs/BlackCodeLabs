@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate | BlackCodeLabs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">BlackCode<span>Labs</span></a>
+                
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="technology.html">Technology</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="games.html">Games</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    
+                    
+                    <!-- Mobile Demo Button (hidden on desktop) -->
+                    <a href="demo.html" class="header-demo-btn mobile-only">
+                        <i class="fas fa-play-circle"></i>
+                        Live Demo
+                    </a>
+                </ul>
+                <!-- Desktop Demo Button -->
+                <a href="demo.html" class="header-demo-btn desktop-only">
+                    <i class="fas fa-play-circle"></i>
+                    Live Demo
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Certificate Hero -->
+    <section class="certificate-hero">
+        <div class="container">
+            <h1>Certificate of Completion</h1>
+            <p>Recognizing your achievement and mastery of cutting-edge technology skills. Verify and share your certificate with employers worldwide.</p>
+        </div>
+    </section>
+
+    <!-- Certificate Display -->
+    <section class="certificate-container">
+        <div class="container">
+            <div class="certificate-card">
+                <!-- Certificate Design -->
+                <div class="certificate" id="certificate">
+                    <!-- Decorative Border -->
+                    <div class="certificate-border">
+                        <div class="border-corner corner-tl"></div>
+                        <div class="border-corner corner-tr"></div>
+                        <div class="border-corner corner-bl"></div>
+                        <div class="border-corner corner-br"></div>
+                    </div>
+
+                    <!-- Certificate Header -->
+                    <div class="certificate-header">
+                        <div class="certificate-logo">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h1 class="certificate-title">Certificate of Completion</h1>
+                        <div class="certificate-subtitle">This Certificate is Proudly Presented to</div>
+                    </div>
+
+                    <!-- Certificate Body -->
+                    <div class="certificate-body">
+                        <div class="certificate-awarded">For successfully completing the course</div>
+                        <div class="recipient-name" id="recipientName">John Alexander Doe</div>
+                        
+                        <div class="certificate-text">
+                            has demonstrated exceptional proficiency and dedication in mastering the principles and applications of
+                            <strong id="courseName">Python Masterclass</strong>, completing all required coursework and assessments with distinction.
+                        </div>
+
+                        <div class="course-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Course</div>
+                                <div class="detail-value" id="detailCourse">Python Masterclass</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Duration</div>
+                                <div class="detail-value" id="detailDuration">12 Weeks</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Completion Date</div>
+                                <div class="detail-value" id="detailDate">December 15, 2023</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Certificate ID</div>
+                                <div class="detail-value" id="detailId">BCL-PYTH-2023-001245</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Footer -->
+                    <div class="certificate-footer">
+                        <div class="signature-block">
+                            <div class="signature-line"></div>
+                            <div class="signature-name">Dr. Alex Johnson</div>
+                            <div class="signature-title">Lead Instructor & AI Research Director</div>
+                        </div>
+                        
+                        <div class="signature-block">
+                            <div class="signature-line"></div>
+                            <div class="signature-name">Sarah Chen</div>
+                            <div class="signature-title">CEO, BlackCodeLabs</div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Seal -->
+                    <div class="certificate-seal">
+                        <div class="seal-inner">
+                            <i class="fas fa-award seal-icon"></i>
+                            <div class="seal-text">BLACKCODE<br>LABS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate Actions -->
+                <div class="certificate-actions">
+                    <button class="action-button download-btn" id="downloadBtn">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                    <button class="action-button print-btn" id="printBtn">
+                        <i class="fas fa-print"></i> Print Certificate
+                    </button>
+                    <button class="action-button share-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <button class="action-button verify-btn" id="verifyBtn">
+                        <i class="fas fa-check-circle"></i> Verify Certificate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Verification -->
+    <section class="verification-section">
+        <div class="container">
+            <div class="verification-container">
+                <h2 class="verification-title">Verify Certificate Authenticity</h2>
+                <div class="verification-form">
+                    <div class="form-group">
+                        <label for="certificateId">Certificate ID</label>
+                        <input type="text" id="certificateId" placeholder="Enter Certificate ID (e.g., BCL-PYTH-2023-001245)">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipientEmail">Recipient Email</label>
+                        <input type="email" id="recipientEmail" placeholder="Enter recipient's email address">
+                    </div>
+                    <button class="verify-button" id="verifyCertificateBtn">
+                        <i class="fas fa-search"></i> Verify Certificate
+                    </button>
+                </div>
+                
+                <div class="verification-result" id="verificationResult">
+                    <!-- Result will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Gallery -->
+    <section class="certificate-gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Recent Graduates</h2>
+                <p>Join our community of successful learners who have earned their certificates</p>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #1a237e, #0d47a1)">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Python Masterclass</h3>
+                        <p>Sarah Johnson completed the Python Masterclass with distinction. Now working as a Python Developer at TechCorp.</p>
+                        <div class="certificate-id">BCL-PYTH-2023-001245</div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #f7df1e, #f0db4f)">
+                        <i class="fab fa-js-square"></i>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>JavaScript & React Bootcamp</h3>
+                        <p>Michael Chen earned his certificate and landed a frontend developer role at StartupX immediately after completion.</p>
+                        <div class="certificate-id">BCL-JS-2023-002189</div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image" style="background: linear-gradient(45deg, #00979c, #00bcd4)">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="gallery-content">
+                        <h3>IoT Development</h3>
+                        <p>Priya Sharma built a smart home system for her final project and now leads IoT initiatives at HomeTech Solutions.</p>
+                        <div class="certificate-id">BCL-IOT-2023-003456</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Modal for Preview -->
+    <div class="certificate-modal" id="certificateModal">
+        <div class="certificate-modal-content">
+            <button class="modal-close" id="closeCertificateModal">&times;</button>
+            <div class="modal-certificate" id="modalCertificate">
+                <!-- Certificate content will be copied here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>BlackCodeLabs</h3>
+                    <p>Intelligent solutions for the future</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Certificates</h3>
+                    <ul>
+                        <li><a href="#">Verify Certificate</a></li>
+                        <li><a href="#">Certificate Gallery</a></li>
+                        <li><a href="#">Recognition</a></li>
+                        <li><a href="#">Badges</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="courses.html">All Courses</a></li>
+                        <li><a href="#">Python Programming</a></li>
+                        <li><a href="#">JavaScript & React</a></li>
+                        <li><a href="#">IoT Development</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Certificate Issues</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">Verification Help</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 BlackCodeLabs. All rights reserved. | Certificate verification system powered by blockchain technology.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- HTML2Canvas for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        // Certificate data
+        const certificateData = {
+            recipientName: "John Alexander Doe",
+            courseName: "Python Masterclass",
+            courseDuration: "12 Weeks",
+            completionDate: "December 15, 2023",
+            certificateId: "BCL-PYTH-2023-001245",
+            instructor: "Dr. Alex Johnson",
+            ceo: "Sarah Chen",
+            grade: "Distinction",
+            hours: "96 Hours",
+            level: "Advanced"
+        };
+
+        // Verification database (simulated)
+        const certificateDatabase = [
+            {
+                id: "BCL-PYTH-2023-001245",
+                recipient: "John Alexander Doe",
+                email: "john.doe@example.com",
+                course: "Python Masterclass",
+                date: "December 15, 2023",
+                status: "valid",
+                grade: "Distinction"
+            },
+            {
+                id: "BCL-JS-2023-002189",
+                recipient: "Michael Chen",
+                email: "michael.chen@example.com",
+                course: "JavaScript & React Bootcamp",
+                date: "November 28, 2023",
+                status: "valid",
+                grade: "Excellent"
+            },
+            {
+                id: "BCL-IOT-2023-003456",
+                recipient: "Priya Sharma",
+                email: "priya.sharma@example.com",
+                course: "IoT Development",
+                date: "December 5, 2023",
+                status: "valid",
+                grade: "Outstanding"
+            }
+        ];
+
+        // DOM Elements
+        const downloadBtn = document.getElementById('downloadBtn');
+        const printBtn = document.getElementById('printBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const verifyCertificateBtn = document.getElementById('verifyCertificateBtn');
+        const certificateModal = document.getElementById('certificateModal');
+        const closeCertificateModal = document.getElementById('closeCertificateModal');
+        const modalCertificate = document.getElementById('modalCertificate');
+        const verificationResult = document.getElementById('verificationResult');
+
+        // Mobile Menu Elements
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const navLinks = document.querySelector('.nav-links');
+        const headerCtaButton = document.querySelector('nav .cta-button');
+
+        // Initialize certificate
+        function initCertificate() {
+            // Set certificate data
+            document.getElementById('recipientName').textContent = certificateData.recipientName;
+            document.getElementById('courseName').textContent = certificateData.courseName;
+            document.getElementById('detailCourse').textContent = certificateData.courseName;
+            document.getElementById('detailDuration').textContent = certificateData.courseDuration;
+            document.getElementById('detailDate').textContent = certificateData.completionDate;
+            document.getElementById('detailId').textContent = certificateData.certificateId;
+            
+            setupEventListeners();
+            initMobileMenu(); // Initialize mobile menu
+        }
+
+        // Mobile Menu Functionality
+        function initMobileMenu() {
+            if (hamburger) {
+                hamburger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                    mobileMenuOverlay.classList.toggle('active');
+                    
+                    // Toggle body scroll
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+            
+            // Close menu when clicking overlay
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', function() {
+                    this.classList.remove('active');
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+            
+            // Close menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (hamburger) hamburger.classList.remove('active');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768) {
+                        // Reset mobile menu on desktop
+                        if (hamburger) hamburger.classList.remove('active');
+                        if (navLinks) navLinks.classList.remove('active');
+                        if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+                        if (headerCtaButton) {
+                            headerCtaButton.style.display = 'block';
+                        }
+                        document.body.classList.remove('menu-open');
+                    }
+                }, 250);
+            });
+        }
+
+        // Download certificate as PDF
+        function downloadCertificate() {
+            const certificateElement = document.getElementById('certificate');
+            
+            // Show loading state
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+            downloadBtn.disabled = true;
+            
+            html2canvas(certificateElement, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF('landscape', 'mm', 'a4');
+                const imgWidth = 297; // A4 width in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save(`BlackCodeLabs_Certificate_${certificateData.certificateId}.pdf`);
+                
+                // Reset button state
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                downloadBtn.disabled = false;
+                
+                // Show success message
+                showToast('Certificate downloaded successfully!', 'success');
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                downloadBtn.disabled = false;
+                showToast('Error generating PDF. Please try again.', 'error');
+            });
+        }
+
+        // Print certificate
+        function printCertificate() {
+            // Store current display
+            const originalDisplay = document.body.style.display;
+            
+            // Show only the certificate
+            document.body.style.display = 'block';
+            const certificateContent = document.getElementById('certificate').innerHTML;
+            document.body.innerHTML = certificateContent;
+            
+            // Add print styles
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @media print {
+                    body { margin: 0; padding: 0; }
+                    .certificate { border: none; box-shadow: none; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Print
+            window.print();
+            
+            // Reload the page to restore original content
+            location.reload();
+        }
+
+        // Share certificate
+        async function shareCertificate() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `My ${certificateData.courseName} Certificate`,
+                        text: `I successfully completed the ${certificateData.courseName} from BlackCodeLabs! Check out my certificate.`,
+                        url: window.location.href,
+                    });
+                    showToast('Certificate shared successfully!', 'success');
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                    copyCertificateLink();
+                }
+            } else {
+                copyCertificateLink();
+            }
+        }
+
+        // Copy certificate link to clipboard
+        function copyCertificateLink() {
+            const certificateUrl = `${window.location.origin}${window.location.pathname}?certificate=${certificateData.certificateId}`;
+            
+            navigator.clipboard.writeText(certificateUrl).then(() => {
+                showToast('Certificate link copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showToast('Failed to copy link. Please try again.', 'error');
+            });
+        }
+
+        // Verify certificate
+        function verifyCertificate() {
+            // Scroll to verification section
+            document.querySelector('.verification-section').scrollIntoView({ behavior: 'smooth' });
+            
+            // Auto-fill the verification form
+            document.getElementById('certificateId').value = certificateData.certificateId;
+            // Focus on the first input
+            document.getElementById('certificateId').focus();
+        }
+
+        // Verify certificate from form
+        function verifyCertificateFromForm() {
+            const certificateId = document.getElementById('certificateId').value.trim();
+            const recipientEmail = document.getElementById('recipientEmail').value.trim();
+            
+            if (!certificateId || !recipientEmail) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Show loading state
+            verifyCertificateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+            verifyCertificateBtn.disabled = true;
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                const certificate = certificateDatabase.find(cert => 
+                    cert.id === certificateId && cert.email === recipientEmail
+                );
+                
+                let resultHtml = '';
+                if (certificate) {
+                    resultHtml = `
+                        <div class="result-title valid">
+                            <i class="fas fa-check-circle"></i> Certificate Verified Successfully!
+                        </div>
+                        <div class="result-details">
+                            <p><strong>Certificate ID:</strong> ${certificate.id}</p>
+                            <p><strong>Recipient:</strong> ${certificate.recipient}</p>
+                            <p><strong>Course:</strong> ${certificate.course}</p>
+                            <p><strong>Completion Date:</strong> ${certificate.date}</p>
+                            <p><strong>Grade:</strong> ${certificate.grade}</p>
+                            <p><strong>Status:</strong> <span style="color: #4CAF50;">Valid ✓</span></p>
+                            <p><em>This certificate has been verified and authenticated by BlackCodeLabs.</em></p>
+                        </div>
+                    `;
+                    verificationResult.className = 'verification-result valid';
+                    showToast('Certificate verified successfully!', 'success');
+                } else {
+                    resultHtml = `
+                        <div class="result-title invalid">
+                            <i class="fas fa-times-circle"></i> Certificate Not Found
+                        </div>
+                        <div class="result-details">
+                            <p>The certificate could not be verified. Please check:</p>
+                            <ul>
+                                <li>The Certificate ID is correct</li>
+                                <li>The recipient email matches the certificate record</li>
+                                <li>The certificate hasn't been revoked</li>
+                            </ul>
+                            <p>If you believe this is an error, please contact support.</p>
+                        </div>
+                    `;
+                    verificationResult.className = 'verification-result invalid';
+                    showToast('Certificate not found or invalid', 'error');
+                }
+                
+                verificationResult.innerHTML = resultHtml;
+                verificationResult.style.display = 'block';
+                
+                // Reset button state
+                verifyCertificateBtn.innerHTML = '<i class="fas fa-search"></i> Verify Certificate';
+                verifyCertificateBtn.disabled = false;
+            }, 1500);
+        }
+
+        // Open certificate preview modal
+        function openCertificatePreview() {
+            const certificateContent = document.getElementById('certificate').cloneNode(true);
+            modalCertificate.innerHTML = '';
+            modalCertificate.appendChild(certificateContent);
+            certificateModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close certificate preview modal
+        function closeCertificatePreview() {
+            certificateModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            downloadBtn.addEventListener('click', downloadCertificate);
+            printBtn.addEventListener('click', printCertificate);
+            shareBtn.addEventListener('click', shareCertificate);
+            verifyBtn.addEventListener('click', verifyCertificate);
+            verifyCertificateBtn.addEventListener('click', verifyCertificateFromForm);
+            closeCertificateModal.addEventListener('click', closeCertificatePreview);
+            
+            // Close modal on outside click
+            certificateModal.addEventListener('click', (e) => {
+                if (e.target === certificateModal) {
+                    closeCertificatePreview();
+                }
+            });
+            
+            // Close modal on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && certificateModal.classList.contains('active')) {
+                    closeCertificatePreview();
+                }
+            });
+            
+            // Enter key on verification form
+            document.getElementById('recipientEmail').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verifyCertificateFromForm();
+                }
+            });
+            
+            // Preview certificate on click
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', openCertificatePreview);
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            // Remove existing toast
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            // Add toast styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast-notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--dark);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    min-width: 300px;
+                    max-width: 400px;
+                    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+                    z-index: 5000;
+                    animation: slideIn 0.3s ease;
+                    border-left: 4px solid ${type === 'success' ? '#4CAF50' : '#f44336'};
+                }
+                
+                .toast-notification.success {
+                    border-left-color: #4CAF50;
+                }
+                
+                .toast-notification.error {
+                    border-left-color: #f44336;
+                }
+                
+                .toast-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                
+                .toast-content i {
+                    font-size: 1.2rem;
+                }
+                
+                .toast-close {
+                    background: transparent;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 25px;
+                    height: 25px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0.7;
+                    transition: opacity 0.3s;
+                }
+                
+                .toast-close:hover {
+                    opacity: 1;
+                }
+                
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            
+            document.head.appendChild(style);
+            document.body.appendChild(toast);
+            
+            // Close toast on button click
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.remove();
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideOut 0.3s ease forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 5000);
+            
+            // Add slideOut animation
+            const slideOutStyle = document.createElement('style');
+            slideOutStyle.textContent = `
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(slideOutStyle);
+        }
+
+        // Load certificate from URL parameters
+        function loadCertificateFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const certificateId = urlParams.get('certificate');
+            const preview = urlParams.get('preview');
+            
+            if (certificateId) {
+                // In a real application, you would fetch certificate data from API
+                // For now, we'll simulate loading a specific certificate
+                const foundCertificate = certificateDatabase.find(cert => cert.id === certificateId);
+                if (foundCertificate) {
+                    // Update certificate data
+                    certificateData.recipientName = foundCertificate.recipient;
+                    certificateData.courseName = foundCertificate.course;
+                    certificateData.completionDate = foundCertificate.date;
+                    certificateData.certificateId = foundCertificate.id;
+                    
+                    // Update display
+                    initCertificate();
+                    
+                    // Auto-open preview if preview parameter is present
+                    if (preview === 'true') {
+                        setTimeout(openCertificatePreview, 1000);
+                    }
+                }
+            }
+        }
+
+        // Add hover effects to gallery items
+        function setupGalleryHoverEffects() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    const icon = item.querySelector('.gallery-image i');
+                    if (icon) {
+                        icon.style.transform = 'scale(1.2) rotate(10deg)';
+                        icon.style.transition = 'transform 0.3s ease';
+                    }
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    const icon = item.querySelector('.gallery-image i');
+                    if (icon) {
+                        icon.style.transform = 'scale(1) rotate(0deg)';
+                    }
+                });
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initCertificate();
+            loadCertificateFromURL();
+            setupGalleryHoverEffects();
+            
+            // Add animations
+            animateCertificateElements();
+            
+            // Check if browser supports Web Share API
+            if (!navigator.share) {
+                shareBtn.title = "Copy link to clipboard";
+            }
+        });
+
+        // Animate certificate elements on load
+        function animateCertificateElements() {
+            const certificate = document.getElementById('certificate');
+            if (!certificate) return;
+            
+            // Add animation styles
+            const animationStyle = document.createElement('style');
+            animationStyle.textContent = `
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+                
+                .certificate-header {
+                    animation: fadeInUp 0.8s ease 0.2s both;
+                }
+                
+                .recipient-name {
+                    animation: fadeInUp 0.8s ease 0.4s both;
+                }
+                
+                .certificate-text {
+                    animation: fadeInUp 0.8s ease 0.6s both;
+                }
+                
+                .course-details {
+                    animation: fadeInUp 0.8s ease 0.8s both;
+                }
+                
+                .certificate-footer {
+                    animation: fadeInUp 0.8s ease 1s both;
+                }
+                
+                .certificate-seal {
+                    animation: pulse 2s ease-in-out infinite 1.5s;
+                }
+            `;
+            document.head.appendChild(animationStyle);
+        }
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add certificate ID to URL when verify button is clicked
+        document.getElementById('certificateId').addEventListener('focus', function() {
+            if (!this.value && certificateData.certificateId) {
+                this.value = certificateData.certificateId;
+            }
+        });
+
+        // Initialize tooltips
+        function initTooltips() {
+            const buttons = document.querySelectorAll('.action-button');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = this.getAttribute('data-tooltip') || '';
+                    if (tooltip.textContent) {
+                        this.appendChild(tooltip);
+                    }
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    const tooltip = this.querySelector('.tooltip');
+                    if (tooltip) {
+                        tooltip.remove();
+                    }
+                });
+            });
+        }
+
+        // Call tooltip initialization
+        initTooltips();
+
+    </script>
+
+</body>
+</html>
