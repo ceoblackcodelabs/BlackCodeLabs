@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emperor Apex | Premium Production Group</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --light-gold: #F5E8C7;
+            --dark-gold: #B8860B;
+            --white: #FFFFFF;
+            --light-bg: #F9F9F9;
+            --medium-bg: #F0F0F0;
+            --dark-text: #222222;
+            --medium-text: #444444;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            line-height: 1.6;
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark-text);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--gold);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--medium-text);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 20px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--dark-text);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--gold);
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            left: 0;
+            bottom: -5px;
+            transition: var(--transition);
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--dark-text);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8)), url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80') no-repeat center center/cover;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            text-align: left;
+        }
+
+        .hero-content h1 {
+            color: var(--dark-text);
+        }
+
+        .highlight {
+            color: var(--gold);
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--medium-text);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--gold);
+            color: var(--white);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border: 2px solid var(--gold);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* About Section */
+        #about {
+            background-color: var(--light-bg);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Events Gallery */
+        #gallery {
+            background-color: var(--white);
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 500px;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(212, 175, 55, 0.8);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background-color: var(--gold);
+        }
+
+        .prev-btn {
+            left: 20px;
+        }
+
+        .next-btn {
+            right: 20px;
+        }
+
+        /* Upcoming Events */
+        #events {
+            background-color: var(--light-bg);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .event-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+
+        .event-info {
+            padding: 1.5rem;
+        }
+
+        .event-date {
+            display: flex;
+            align-items: center;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-date i {
+            margin-right: 8px;
+        }
+
+        .event-info h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .event-detail-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--gold);
+            padding: 8px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid var(--gold);
+            transition: var(--transition);
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .event-detail-btn:hover {
+            background-color: var(--gold);
+            color: var(--white);
+        }
+
+        /* Auditions Section */
+        #auditions {
+            background-color: var(--white);
+        }
+
+        .auditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .audition-card {
+            background-color: var(--medium-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .audition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .audition-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .audition-role {
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .audition-detail-btn {
+            display: inline-block;
+            background-color: var(--dark-text);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid var(--dark-text);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .audition-detail-btn:hover {
+            background-color: transparent;
+            color: var(--dark-text);
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay-content {
+            background-color: var(--white);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 2.5rem;
+            position: relative;
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+
+        .overlay.active .overlay-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark-text);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--gold);
+        }
+
+        .ticket-form {
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--gold);
+            outline: none;
+        }
+
+        .submit-btn {
+            background-color: var(--gold);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--dark-gold);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-text);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-links h3, .footer-contact h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-contact p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-contact i {
+            margin-right: 10px;
+            color: var(--gold);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background-color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--gold);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--dark-gold);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .carousel-slide {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                box-shadow: var(--shadow);
+                padding: 1rem 0;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+            
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0 0 1rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-content {
+                text-align: center;
+            }
+            
+            .carousel-slide {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            section {
+                padding: 3rem 0;
+            }
+            
+            .overlay-content {
+                padding: 1.5rem;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#home" class="logo">Emperor <span>Apex</span></a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#auditions">Auditions</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Welcome to <span class="highlight">Emperor Apex</span></h1>
+                <p class="tagline">Where creativity meets excellence in production and entertainment.</p>
+                <p>We are a premier production group specializing in high-quality events, performances, and entertainment experiences that captivate audiences and leave lasting impressions.</p>
+                <a href="#events" class="cta-button">Explore Our Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Emperor Apex is a visionary production group founded in 2015 with the mission to create unforgettable entertainment experiences. Our team consists of award-winning directors, producers, and creative specialists dedicated to pushing the boundaries of live events and productions.</p>
+                    <p>With over 200 successful events worldwide, we have established ourselves as leaders in the industry, known for our meticulous attention to detail and innovative approach to storytelling.</p>
+                    <p>Our portfolio includes theatrical productions, music concerts, corporate events, and immersive experiences that have garnered critical acclaim and audience praise.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Emperor Apex Production Team">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Gallery -->
+    <section id="gallery">
+        <div class="container">
+            <h2>Events Gallery</h2>
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1492684223066-dd23140edf6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Concert Production">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Theatre Performance">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Music Festival">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Corporate Event">
+                    </div>
+                </div>
+                <button class="carousel-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events -->
+    <section id="events">
+        <div class="container">
+            <h2>Upcoming Events</h2>
+            <div class="events-grid">
+                <!-- Event 1 -->
+                <div class="event-card">
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1501281667305-0d4ebd5b1e5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Midnight Symphony">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-date"><i class="far fa-calendar"></i> June 15, 2023</div>
+                        <h3>Midnight Symphony</h3>
+                        <p>An immersive orchestral experience featuring classical compositions with modern electronic elements.</p>
+                        <button class="event-detail-btn" data-event="1">View Details</button>
+                    </div>
+                </div>
+                
+                <!-- Event 2 -->
+                <div class="event-card">
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Urban Legends">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-date"><i class="far fa-calendar"></i> July 22, 2023</div>
+                        <h3>Urban Legends</h3>
+                        <p>A street dance battle featuring top crews from across the country with celebrity judges.</p>
+                        <button class="event-detail-btn" data-event="2">View Details</button>
+                    </div>
+                </div>
+                
+                <!-- Event 3 -->
+                <div class="event-card">
+                    <div class="event-image">
+                        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Electric Dreams">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-date"><i class="far fa-calendar"></i> August 10, 2023</div>
+                        <h3>Electric Dreams</h3>
+                        <p>A multimedia art installation combined with live electronic music performances.</p>
+                        <button class="event-detail-btn" data-event="3">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auditions -->
+    <section id="auditions">
+        <div class="container">
+            <h2>Available Auditions</h2>
+            <div class="auditions-grid">
+                <!-- Audition 1 -->
+                <div class="audition-card">
+                    <div class="audition-info">
+                        <div class="audition-role">Lead Vocalist</div>
+                        <h3>Midnight Symphony Tour</h3>
+                        <p>We're looking for a powerful vocalist with classical training and contemporary style for our upcoming tour.</p>
+                        <p><strong>Audition Date:</strong> May 25, 2023</p>
+                    </div>
+                    <button class="audition-detail-btn" data-audition="1">View Details</button>
+                </div>
+                
+                <!-- Audition 2 -->
+                <div class="audition-card">
+                    <div class="audition-info">
+                        <div class="audition-role">Contemporary Dancers</div>
+                        <h3>Urban Legends Production</h3>
+                        <p>Seeking versatile dancers with strong technique in contemporary, hip-hop, and street styles.</p>
+                        <p><strong>Audition Date:</strong> June 5, 2023</p>
+                    </div>
+                    <button class="audition-detail-btn" data-audition="2">View Details</button>
+                </div>
+                
+                <!-- Audition 3 -->
+                <div class="audition-card">
+                    <div class="audition-info">
+                        <div class="audition-role">Stage Actors</div>
+                        <h3>Theatre Production 2024</h3>
+                        <p>Open call for actors for our upcoming original theatrical production. All ethnicities and ages welcome.</p>
+                        <p><strong>Audition Date:</strong> June 15, 2023</p>
+                    </div>
+                    <button class="audition-detail-btn" data-audition="3">View Details</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">Emperor Apex</div>
+                    <p>Creating exceptional production experiences since 2015. We specialize in events that inspire, entertain, and leave lasting impressions.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#gallery">Events Gallery</a></li>
+                        <li><a href="#events">Upcoming Events</a></li>
+                        <li><a href="#auditions">Auditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Production Avenue, Los Angeles, CA 90210</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@emperorapex.com</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Emperor Apex Production Group. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Event Detail Overlay -->
+    <div class="overlay" id="event-overlay">
+        <div class="overlay-content">
+            <button class="close-btn" id="close-event-overlay"><i class="fas fa-times"></i></button>
+            <h2 id="overlay-event-title">Event Title</h2>
+            <div class="event-date" id="overlay-event-date"><i class="far fa-calendar"></i> Date</div>
+            <p id="overlay-event-description">Event description goes here.</p>
+            <div class="ticket-form">
+                <h3>Get Tickets</h3>
+                <p>Enter your phone number to receive ticket purchase information:</p>
+                <form id="ticket-form">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    <button type="submit" class="submit-btn">I'm Interested</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audition Detail Overlay -->
+    <div class="overlay" id="audition-overlay">
+        <div class="overlay-content">
+            <button class="close-btn" id="close-audition-overlay"><i class="fas fa-times"></i></button>
+            <h2 id="overlay-audition-title">Audition Title</h2>
+            <div class="audition-role" id="overlay-audition-role">Role</div>
+            <p id="overlay-audition-description">Audition description goes here.</p>
+            <div id="overlay-audition-details">
+                <!-- Details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="back-to-top"><i class="fas fa-chevron-up"></i></a>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = nav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Carousel functionality
+        const carousel = document.querySelector('.carousel');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        let currentSlide = 0;
+        const slideCount = slides.length;
+        
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide === 0) ? slideCount - 1 : currentSlide - 1;
+            updateCarousel();
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide === slideCount - 1) ? 0 : currentSlide + 1;
+            updateCarousel();
+        });
+        
+        // Auto advance carousel every 5 seconds
+        setInterval(() => {
+            currentSlide = (currentSlide === slideCount - 1) ? 0 : currentSlide + 1;
+            updateCarousel();
+        }, 5000);
+        
+        // Event overlay functionality
+        const eventOverlay = document.getElementById('event-overlay');
+        const closeEventOverlay = document.getElementById('close-event-overlay');
+        const eventDetailBtns = document.querySelectorAll('.event-detail-btn');
+        
+        // Event data
+        const events = {
+            1: {
+                title: "Midnight Symphony",
+                date: "June 15, 2023",
+                description: "An immersive orchestral experience featuring classical compositions with modern electronic elements. This unique performance blends the power of a full symphony orchestra with cutting-edge visual effects and electronic music, creating a multisensory journey through sound and light. Held at the prestigious Grand Concert Hall, this event promises to be a landmark in contemporary classical music."
+            },
+            2: {
+                title: "Urban Legends",
+                date: "July 22, 2023",
+                description: "A street dance battle featuring top crews from across the country with celebrity judges. This high-energy competition brings together the best breaking, popping, locking, and hip-hop crews for a night of intense battles and incredible performances. With special guest performances and a panel of industry legends as judges, this is the premier street dance event of the year."
+            },
+            3: {
+                title: "Electric Dreams",
+                date: "August 10, 2023",
+                description: "A multimedia art installation combined with live electronic music performances. This immersive experience transforms the entire venue into a living canvas of light, sound, and interactive art. Featuring renowned electronic musicians and visionary visual artists, Electric Dreams creates a fully immersive environment where attendees become part of the artwork itself."
+            }
+        };
+        
+        eventDetailBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const eventId = btn.getAttribute('data-event');
+                const event = events[eventId];
+                
+                document.getElementById('overlay-event-title').textContent = event.title;
+                document.getElementById('overlay-event-date').innerHTML = `<i class="far fa-calendar"></i> ${event.date}`;
+                document.getElementById('overlay-event-description').textContent = event.description;
+                
+                eventOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeEventOverlay.addEventListener('click', () => {
+            eventOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close overlay when clicking outside content
+        eventOverlay.addEventListener('click', (e) => {
+            if (e.target === eventOverlay) {
+                eventOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Audition overlay functionality
+        const auditionOverlay = document.getElementById('audition-overlay');
+        const closeAuditionOverlay = document.getElementById('close-audition-overlay');
+        const auditionDetailBtns = document.querySelectorAll('.audition-detail-btn');
+        
+        // Audition data
+        const auditions = {
+            1: {
+                title: "Midnight Symphony Tour",
+                role: "Lead Vocalist",
+                description: "We're looking for a powerful vocalist with classical training and contemporary style for our upcoming tour.",
+                details: "<h3>Requirements</h3><ul><li>Classical vocal training (minimum 5 years)</li><li>Ability to perform both classical and contemporary repertoire</li><li>Experience with live performances</li><li>Willingness to tour for 3 months</li><li>Age range: 21-35</li></ul><h3>Audition Details</h3><p><strong>Date:</strong> May 25, 2023</p><p><strong>Time:</strong> 10:00 AM - 4:00 PM</p><p><strong>Location:</strong> Emperor Apex Studios, 123 Production Avenue, Los Angeles</p><p><strong>What to prepare:</strong> Two contrasting pieces (one classical, one contemporary), 16 bars each</p>"
+            },
+            2: {
+                title: "Urban Legends Production",
+                role: "Contemporary Dancers",
+                description: "Seeking versatile dancers with strong technique in contemporary, hip-hop, and street styles.",
+                details: "<h3>Requirements</h3><ul><li>Professional dance training in contemporary and street styles</li><li>Ability to learn choreography quickly</li><li>Performance experience</li><li>Strong stage presence</li><li>Available for rehearsals starting June 2023</li></ul><h3>Audition Details</h3><p><strong>Date:</strong> June 5, 2023</p><p><strong>Time:</strong> 9:00 AM - 5:00 PM</p><p><strong>Location:</strong> Urban Dance Studio, 456 Broadway, Los Angeles</p><p><strong>What to prepare:</strong> 1-minute solo in your style, wear appropriate dance attire</p>"
+            },
+            3: {
+                title: "Theatre Production 2024",
+                role: "Stage Actors",
+                description: "Open call for actors for our upcoming original theatrical production. All ethnicities and ages welcome.",
+                details: "<h3>Requirements</h3><ul><li>Stage acting experience</li><li>Strong improvisation skills</li><li>Ability to work collaboratively in an ensemble</li><li>Versatility in character portrayal</li><li>Availability for 6-month production schedule</li></ul><h3>Audition Details</h3><p><strong>Date:</strong> June 15, 2023</p><p><strong>Time:</strong> 11:00 AM - 6:00 PM</p><p><strong>Location:</strong> Emperor Apex Theatre, 123 Production Avenue, Los Angeles</p><p><strong>What to prepare:</strong> Two contrasting monologues (1 classical, 1 contemporary), 2 minutes total</p>"
+            }
+        };
+        
+        auditionDetailBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const auditionId = btn.getAttribute('data-audition');
+                const audition = auditions[auditionId];
+                
+                document.getElementById('overlay-audition-title').textContent = audition.title;
+                document.getElementById('overlay-audition-role').textContent = audition.role;
+                document.getElementById('overlay-audition-description').textContent = audition.description;
+                document.getElementById('overlay-audition-details').innerHTML = audition.details;
+                
+                auditionOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeAuditionOverlay.addEventListener('click', () => {
+            auditionOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close overlay when clicking outside content
+        auditionOverlay.addEventListener('click', (e) => {
+            if (e.target === auditionOverlay) {
+                auditionOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Ticket form submission
+        const ticketForm = document.getElementById('ticket-form');
+        ticketForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('phone').value;
+            alert(`Thank you for your interest! We will contact you at ${phone} with ticket purchase information.`);
+            ticketForm.reset();
+            eventOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Back to top button
+        const backToTopBtn = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('active');
+            } else {
+                backToTopBtn.classList.remove('active');
+            }
+        });
+        
+        // Header scroll effect
+        const header = document.querySelector('header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.08)';
+            }
+        });
+    </script>
+</body>
+</html>

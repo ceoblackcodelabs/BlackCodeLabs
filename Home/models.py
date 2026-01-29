@@ -10,6 +10,7 @@ import ipaddress
 from django.urls import reverse
 from django.core.validators import RegexValidator
 import os
+from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class TechServices(models.Model):
@@ -500,3 +501,255 @@ class Solution(models.Model):
             from django.utils.text import slugify
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+        
+        
+class Course(models.Model):
+    """Model for storing course information."""
+    
+    # Category choices
+    CATEGORY_CHOICES = [
+        ('python', 'Python'),
+        ('javascript', 'JavaScript'),
+        ('iot', 'IoT'),
+        ('ai', 'AI & ML'),
+        ('scratch', 'Scratch for Kids'),
+        ('web', 'Web Development'),
+        ('mobile', 'Mobile Development'),
+        ('data', 'Data Science'),
+        ('security', 'Security'),
+    ]
+    
+    # Level choices
+    LEVEL_CHOICES = [
+        ('beginner', 'Beginner'),
+        ('intermediate', 'Intermediate'),
+        ('advanced', 'Advanced'),
+        ('all', 'All Levels'),
+    ]
+    
+    # Badge choices
+    BADGE_CHOICES = [
+        ('popular', 'Most Popular'),
+        ('new', 'New'),
+        ('advanced', 'Advanced'),
+        ('kids', 'For Kids'),
+        ('', 'No Badge'),
+    ]
+    
+    # Icon choices (FontAwesome classes)
+    ICON_CHOICES = [
+        ('fab fa-python', 'Python'),
+        ('fab fa-js-square', 'JavaScript'),
+        ('fas fa-microchip', 'Microchip/IoT'),
+        ('fas fa-robot', 'Robot/AI'),
+        ('fas fa-server', 'Server'),
+        ('fas fa-chart-line', 'Chart/Data'),
+        ('fas fa-shield-alt', 'Shield/Security'),
+        ('fas fa-gamepad', 'Gamepad/Kids'),
+        ('fab fa-node-js', 'Node.js'),
+        ('fas fa-laptop-code', 'Laptop Code'),
+        ('fas fa-database', 'Database'),
+        ('fas fa-cloud', 'Cloud'),
+    ]
+    
+    # Basic Information
+    id = models.BigAutoField(primary_key=True)  # Keep ID as primary key
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    level = models.CharField(max_length=50, choices=LEVEL_CHOICES)
+    badge = models.CharField(max_length=50, choices=BADGE_CHOICES, blank=True)
+    icon_class = models.CharField(max_length=50, choices=ICON_CHOICES)
+    color = models.CharField(max_length=7, default='#3776AB', help_text="Hex color code")
+    
+    # Description
+    short_description = models.CharField(max_length=200)
+    detailed_description = models.TextField()
+    
+    # Course Details
+    duration = models.CharField(max_length=50, help_text="e.g., 12 Weeks")
+    lessons = models.CharField(max_length=50, help_text="e.g., 48 Lessons")
+    students_enrolled = models.IntegerField(default=0)
+    rating = models.DecimalField(max_digits=3, decimal_places=1, default=4.5, 
+                                validators=[MinValueValidator(0), MaxValueValidator(5)])
+    
+    # Pricing
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    original_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    
+    # Instructor Information
+    instructor_name = models.CharField(max_length=100)
+    instructor_bio = models.TextField()
+    instructor_title = models.CharField(max_length=100, blank=True, 
+                                        help_text="e.g., Senior AI Engineer")
+    
+    # Course Details (JSON-like structure stored as text)
+    details = models.JSONField(default=dict, blank=True, 
+                              help_text="JSON format: {'Mode': 'Online', 'Schedule': 'Mon & Wed'}")
+    
+    # Curriculum (stored as JSON for flexibility)
+    curriculum = models.JSONField(default=list, blank=True, 
+                                 help_text="JSON array of modules with lessons")
+    
+    # Status
+    is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
+    display_order = models.IntegerField(default=0)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['display_order', '-created_at']
+        verbose_name = "Course"
+        verbose_name_plural = "Courses"
+    
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            from django.utils.text import slugify
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse('course_detail', kwargs={'slug': self.slug})
+    
+    def discount_percentage(self):
+        if self.original_price and self.original_price > self.price:
+            return int(((self.original_price - self.price) / self.original_price) * 100)
+        return 0
+    
+    def formatted_price(self):
+        return f"${self.price:.2f}"
+    
+    def formatted_original_price(self):
+        if self.original_price:
+            return f"${self.original_price:.2f}"
+        return ""
+    
+    def get_details_dict(self):
+        """Convert details JSON to dictionary."""
+        return self.details if isinstance(self.details, dict) else {}
+    
+    def get_curriculum_list(self):
+        """Convert curriculum JSON to list."""
+        return self.curriculum if isinstance(self.curriculum, list) else []
+
+
+class CourseEnrollment(models.Model):
+    """Model for student course enrollments."""
+    
+    # Enrollment Status
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
+    # Payment Status
+    PAYMENT_CHOICES = [
+        ('pending', 'Pending Payment'),
+        ('paid', 'Paid'),
+        ('failed', 'Payment Failed'),
+        ('refunded', 'Refunded'),
+    ]
+    
+    # Experience Level
+    EXPERIENCE_CHOICES = [
+        ('beginner', 'Beginner (0-1 years)'),
+        ('intermediate', 'Intermediate (1-3 years)'),
+        ('advanced', 'Advanced (3+ years)'),
+    ]
+    
+    # Student Information
+    id = models.BigAutoField(primary_key=True)
+    student = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    
+    # Course Information
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='enrollments')
+    
+    # Additional Information
+    country = models.CharField(max_length=100)
+    experience_level = models.CharField(max_length=50, choices=EXPERIENCE_CHOICES)
+    learning_goals = models.TextField(blank=True)
+    
+    # Enrollment Details
+    enrollment_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateField(null=True, blank=True)
+    completion_date = models.DateField(null=True, blank=True)
+    
+    # Status
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
+    payment_status = models.CharField(max_length=50, choices=PAYMENT_CHOICES, default='pending')
+    payment_id = models.CharField(max_length=100, blank=True)
+    
+    # Payment Details
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    platform_fee = models.DecimalField(max_digits=10, decimal_places=2, default=10.00)
+    tax_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    # Additional Fields
+    notes = models.TextField(blank=True)
+    is_active = models.BooleanField(default=True)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-enrollment_date']
+        unique_together = ['email', 'course']
+        verbose_name = "Course Enrollment"
+        verbose_name_plural = "Course Enrollments"
+    
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.course.title}"
+    
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    def calculate_total_amount(self):
+        """Calculate total amount including fees and tax."""
+        base_amount = self.course.price
+        platform_fee = self.platform_fee
+        tax_rate = 0.10  # 10% tax
+        tax_amount = (base_amount + platform_fee) * tax_rate
+        return base_amount + platform_fee + tax_amount
+    
+    def save(self, *args, **kwargs):
+        # Auto-calculate total amount if not set
+        if not self.total_amount:
+            self.total_amount = self.calculate_total_amount()
+            self.tax_amount = (self.course.price + self.platform_fee) * 0.10
+        
+        # Auto-set amount_paid if payment is marked as paid
+        if self.payment_status == 'paid' and self.amount_paid == 0:
+            self.amount_paid = self.total_amount
+        
+        super().save(*args, **kwargs)
+
+
+class CourseStat(models.Model):
+    """Model for storing course statistics."""
+    id = models.BigAutoField(primary_key=True)
+    total_courses = models.IntegerField(default=0)
+    total_students = models.IntegerField(default=0)
+    satisfaction_rate = models.DecimalField(max_digits=4, decimal_places=1, default=98.0)
+    total_instructors = models.IntegerField(default=0)
+    last_updated = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Course Statistic"
+        verbose_name_plural = "Course Statistics"
+    
+    def __str__(self):
+        return f"Course Statistics ({self.last_updated.date()})"

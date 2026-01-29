@@ -1,7 +1,10 @@
 # Home/forms.py
 from django import forms
 from django.core.validators import RegexValidator
-from .models import ContactInquiry, DemoBooking
+from .models import (
+    ContactInquiry, DemoBooking, 
+    CourseEnrollment, Course
+)
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from datetime import timedelta
@@ -212,3 +215,96 @@ class DemoBookingForm(forms.ModelForm):
                 raise ValidationError(f"This time slot ({demo_time}) is already booked. Please choose another time.")
         
         return cleaned_data
+    
+    
+class CourseEnrollmentForm(forms.ModelForm):
+    """Form for course enrollment."""
+    
+    class Meta:
+        model = CourseEnrollment
+        fields = [
+            'first_name', 'last_name', 'email', 'phone',
+            'country', 'experience_level', 'learning_goals'
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your first name',
+                'id': 'firstName'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your last name',
+                'id': 'lastName'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your email address',
+                'id': 'email'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your phone number',
+                'id': 'phone'
+            }),
+            'country': forms.Select(attrs={
+                'class': 'form-control',
+                'id': 'country'
+            }),
+            'experience_level': forms.Select(attrs={
+                'class': 'form-control',
+                'id': 'experience'
+            }),
+            'learning_goals': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tell us what you hope to achieve with this course...',
+                'rows': 3,
+                'id': 'goals'
+            }),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Dynamically set country choices
+        self.fields['country'].choices = [
+            ('', 'Select Country'),
+            ('US', 'United States'),
+            ('UK', 'United Kingdom'),
+            ('CA', 'Canada'),
+            ('AU', 'Australia'),
+            ('IN', 'India'),
+            ('DE', 'Germany'),
+            ('FR', 'France'),
+            ('JP', 'Japan'),
+            ('SG', 'Singapore'),
+            ('AE', 'United Arab Emirates'),
+            ('ZA', 'South Africa'),
+            ('NG', 'Nigeria'),
+            ('KE', 'Kenya'),
+            ('GH', 'Ghana'),
+        ]
+
+class CourseFilterForm(forms.Form):
+    """Form for filtering courses."""
+    category = forms.ChoiceField(
+        choices=[('all', 'All Courses')] + Course.CATEGORY_CHOICES,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    level = forms.ChoiceField(
+        choices=[('', 'All Levels')] + Course.LEVEL_CHOICES,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    sort_by = forms.ChoiceField(
+        choices=[
+            ('display_order', 'Featured'),
+            ('-students_enrolled', 'Most Popular'),
+            ('-rating', 'Highest Rated'),
+            ('price', 'Price: Low to High'),
+            ('-price', 'Price: High to Low'),
+            ('-created_at', 'Newest'),
+        ],
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )

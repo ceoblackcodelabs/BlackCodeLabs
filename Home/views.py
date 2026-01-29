@@ -1,18 +1,25 @@
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, View
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import (
     TechServices, TeamMember, DataCounter,
     ClientReview, ContactInquiry, DemoBooking,
-    Solution
+    Solution, Course, CourseStat,
+    CourseEnrollment
 )
-from .forms import ContactForm, DemoBookingForm
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.core.serializers.json import DjangoJSONEncoder
+from django.views.decorators.csrf import csrf_exempt
+from .forms import ContactForm, DemoBookingForm, CourseEnrollmentForm
+import json
 from django.views.generic.edit import FormView
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
 import logging
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib import messages
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -50,12 +57,6 @@ class ContactPageView(TemplateView):
     
 class TechPageView(TemplateView):
     template_name = "Home/tech.html"
-    
-class SolutionsPageView(TemplateView):
-    template_name = "Home/solutions.html"
-    
-class CoursesPageView(TemplateView):
-    template_name = "Home/courses.html"
     
 class CareersPageView(TemplateView):
     template_name = "Home/careers.html"
@@ -458,3 +459,255 @@ class SolutionDetailView(DetailView):
     context_object_name = 'solution'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
+    
+class CoursesPageView(View):
+    """Handle both GET and POST requests for courses page."""
+    
+    template_name = 'Home/courses.html'
+    
+    def get(self, request):
+        """Handle GET request - display courses page."""
+        # Get all active courses
+        courses = Course.objects.filter(is_active=True).order_by('display_order', '-created_at')
+        
+        # Get course statistics
+        stats, _ = CourseStat.objects.get_or_create(id=1)
+        
+        # Prepare course data for JavaScript
+        courses_data = [
+            {
+                'id': course.id,
+                'title': course.title,
+                'category': course.category,
+                'level': course.level,
+                'badge': course.badge,
+                'icon': course.icon_class,
+                'description': course.short_description,
+                'duration': course.duration,
+                'lessons': course.lessons,
+                'students': str(course.students_enrolled),
+                'rating': str(course.rating),
+                'instructor': course.instructor_name,
+                'price': float(course.price),
+                'originalPrice': float(course.original_price) if course.original_price else None,
+                'color': course.color,
+                'details': course.get_details_dict(),
+                'curriculum': course.get_curriculum_list(),
+            }
+            for course in courses
+        ]
+        
+        context = {
+            'courses': courses,
+            'courses_json': json.dumps(courses_data, cls=DjangoJSONEncoder),
+            'stats': stats,
+            'categories': Course.CATEGORY_CHOICES,
+            'levels': Course.LEVEL_CHOICES,
+        }
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        """Handle POST request - process course enrollment."""
+        course_id = request.POST.get('course_id')
+        
+        if not course_id:
+            return HttpResponseBadRequest("Course ID is required")
+        
+        course = get_object_or_404(Course, id=course_id, is_active=True)
+        
+        # Create form with POST data
+        form = CourseEnrollmentForm(request.POST)
+        
+        if form.is_valid():
+            try:
+                # Check for existing enrollment
+                existing_enrollment = CourseEnrollment.objects.filter(
+                    email=form.cleaned_data['email'],
+                    course=course,
+                    is_active=True
+                ).exists()
+                
+                if existing_enrollment:
+                    messages.warning(
+                        request, 
+                        f"You are already enrolled in {course.title}. Check your email for details."
+                    )
+                    return redirect('courses')
+                
+                # Create enrollment
+                enrollment = form.save(commit=False)
+                enrollment.course = course
+                enrollment.total_amount = enrollment.calculate_total_amount()
+                
+                # If user is authenticated, link to user account
+                if request.user.is_authenticated:
+                    enrollment.student = request.user
+                
+                enrollment.save()
+                
+                # Update course student count
+                course.students_enrolled += 1
+                course.save()
+                
+                # Update global stats
+                stats, _ = CourseStat.objects.get_or_create(id=1)
+                stats.total_students += 1
+                stats.save()
+                
+                messages.success(
+                    request,
+                    f"Thank you {enrollment.first_name}! Your enrollment in '{course.title}' has been submitted. "
+                    f"We'll contact you shortly with payment details."
+                )
+                
+                # In production, you would:
+                # 1. Send confirmation email
+                # 2. Process payment
+                # 3. Redirect to payment gateway
+                
+                return redirect('courses')
+                
+            except Exception as e:
+                messages.error(
+                    request,
+                    f"An error occurred during enrollment: {str(e)}. Please try again."
+                )
+                return redirect('courses')
+        else:
+            # Form is invalid, show errors
+            messages.error(
+                request,
+                "Please correct the errors below and try again."
+            )
+            
+            # Re-render the page with form errors
+            courses = Course.objects.filter(is_active=True).order_by('display_order', '-created_at')
+            stats, _ = CourseStat.objects.get_or_create(id=1)
+            
+            courses_data = [
+                {
+                    'id': course.id,
+                    'title': course.title,
+                    'category': course.category,
+                    'level': course.level,
+                    'badge': course.badge,
+                    'icon': course.icon_class,
+                    'description': course.short_description,
+                    'duration': course.duration,
+                    'lessons': course.lessons,
+                    'students': str(course.students_enrolled),
+                    'rating': str(course.rating),
+                    'instructor': course.instructor_name,
+                    'price': float(course.price),
+                    'originalPrice': float(course.original_price) if course.original_price else None,
+                    'color': course.color,
+                    'details': course.get_details_dict(),
+                    'curriculum': course.get_curriculum_list(),
+                }
+                for course in courses
+            ]
+            
+            context = {
+                'courses': courses,
+                'courses_json': json.dumps(courses_data, cls=DjangoJSONEncoder),
+                'stats': stats,
+                'categories': Course.CATEGORY_CHOICES,
+                'levels': Course.LEVEL_CHOICES,
+                'enrollment_form': form,
+                'selected_course_id': course_id,
+            }
+            
+            return render(request, self.template_name, context)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class CourseEnrollmentAPIView(View):
+    """API endpoint for course enrollment (for AJAX calls)."""
+    
+    def post(self, request):
+        """Handle AJAX enrollment requests."""
+        try:
+            data = json.loads(request.body)
+            course_id = data.get('course_id')
+            
+            if not course_id:
+                return JsonResponse({'success': False, 'error': 'Course ID is required'})
+            
+            course = get_object_or_404(Course, id=course_id, is_active=True)
+            
+            # Create enrollment
+            enrollment_data = {
+                'first_name': data.get('first_name'),
+                'last_name': data.get('last_name'),
+                'email': data.get('email'),
+                'phone': data.get('phone'),
+                'country': data.get('country'),
+                'experience_level': data.get('experience'),
+                'learning_goals': data.get('goals'),
+            }
+            
+            form = CourseEnrollmentForm(enrollment_data)
+            
+            if form.is_valid():
+                # Check for existing enrollment
+                existing = CourseEnrollment.objects.filter(
+                    email=form.cleaned_data['email'],
+                    course=course,
+                    is_active=True
+                ).exists()
+                
+                if existing:
+                    return JsonResponse({
+                        'success': False,
+                        'error': f'You are already enrolled in {course.title}'
+                    })
+                
+                enrollment = form.save(commit=False)
+                enrollment.course = course
+                
+                if request.user.is_authenticated:
+                    enrollment.student = request.user
+                
+                enrollment.save()
+                
+                # Update stats
+                course.students_enrolled += 1
+                course.save()
+                
+                stats, _ = CourseStat.objects.get_or_create(id=1)
+                stats.total_students += 1
+                stats.save()
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': f'Enrollment successful! We will contact you soon.',
+                    'enrollment_id': enrollment.id
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Please check your form data',
+                    'errors': form.errors
+                })
+                
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Invalid JSON data'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+
+class CourseDetailView(View):
+    """View for individual course details."""
+    
+    template_name = 'course_detail.html'
+    
+    def get(self, request, slug):
+        course = get_object_or_404(Course, slug=slug, is_active=True)
+        
+        context = {
+            'course': course,
+            'enrollment_form': CourseEnrollmentForm(),
+        }
+        
+        return render(request, self.template_name, context)

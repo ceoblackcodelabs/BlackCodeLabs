@@ -15,4 +15,10 @@ urlpatterns = [
     path('games/', views.GamesPageView.as_view(), name='games'),
     path('contact/', views.contact_view, name='contact'),
     path('demo/', views.DemoBookingView.as_view(), name='demo'),
+    
+    path('courses/', views.CoursesPageView.as_view(), name='courses'),
+    path('courses/enroll/', views.CourseEnrollmentAPIView.as_view(), name='course_enroll_api'), 
+    path('courses/<slug:slug>/', views.CourseDetailView.as_view(), name='course_detail'),
+    
+    
 ]

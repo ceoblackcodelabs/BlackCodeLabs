@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from .models import (
     TechServices, DataCounter, TeamMember, 
     ClientReview, ContactInquiry, DemoBooking,
-    Solution
+    Solution, Course, CourseEnrollment, CourseStat
 )
 from django.utils import timezone
 from django.utils.safestring import mark_safe
@@ -344,3 +344,104 @@ class SolutionAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request):
         return super().get_queryset(request).order_by('display_order', 'title')
+    
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'level', 'price', 'students_enrolled', 
+                   'rating', 'is_active', 'display_order', 'created_at')
+    list_filter = ('category', 'level', 'is_active', 'is_featured', 'created_at')
+    search_fields = ('title', 'short_description', 'instructor_name')
+    list_editable = ('display_order', 'is_active', 'price')
+    readonly_fields = ('slug', 'created_at', 'updated_at', 'students_enrolled')
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'short_description', 'detailed_description')
+        }),
+        ('Course Details', {
+            'fields': ('category', 'level', 'badge', 'icon_class', 'color')
+        }),
+        ('Content & Structure', {
+            'fields': ('duration', 'lessons', 'details', 'curriculum')
+        }),
+        ('Instructor', {
+            'fields': ('instructor_name', 'instructor_title', 'instructor_bio')
+        }),
+        ('Pricing', {
+            'fields': ('price', 'original_price')
+        }),
+        ('Statistics', {
+            'fields': ('students_enrolled', 'rating')
+        }),
+        ('Display Settings', {
+            'fields': ('is_active', 'is_featured', 'display_order')
+        }),
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).order_by('display_order', '-created_at')
+
+
+@admin.register(CourseEnrollment)
+class CourseEnrollmentAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'course', 'email', 'status', 'payment_status', 
+                   'total_amount', 'enrollment_date')
+    list_filter = ('status', 'payment_status', 'enrollment_date', 'course', 'country')
+    search_fields = ('first_name', 'last_name', 'email', 'phone', 'course__title')
+    readonly_fields = ('enrollment_date', 'created_at', 'updated_at')
+    fieldsets = (
+        ('Student Information', {
+            'fields': ('student', 'first_name', 'last_name', 'email', 'phone')
+        }),
+        ('Course Information', {
+            'fields': ('course',)
+        }),
+        ('Additional Information', {
+            'fields': ('country', 'experience_level', 'learning_goals')
+        }),
+        ('Enrollment Details', {
+            'fields': ('start_date', 'completion_date')
+        }),
+        ('Payment Information', {
+            'fields': ('status', 'payment_status', 'payment_id',
+                      'amount_paid', 'platform_fee', 'tax_amount', 'total_amount')
+        }),
+        ('Administrative', {
+            'fields': ('notes', 'is_active')
+        }),
+    )
+    
+    def full_name(self, obj):
+        return obj.full_name()
+    full_name.short_description = 'Student Name'
+    
+    actions = ['mark_as_confirmed', 'mark_as_completed', 'mark_payment_paid']
+    
+    def mark_as_confirmed(self, request, queryset):
+        updated = queryset.update(status='confirmed')
+        self.message_user(request, f'{updated} enrollments marked as confirmed.')
+    mark_as_confirmed.short_description = "Mark selected as confirmed"
+    
+    def mark_as_completed(self, request, queryset):
+        updated = queryset.update(status='completed')
+        self.message_user(request, f'{updated} enrollments marked as completed.')
+    mark_as_completed.short_description = "Mark selected as completed"
+    
+    def mark_payment_paid(self, request, queryset):
+        updated = queryset.update(payment_status='paid')
+        self.message_user(request, f'{updated} payments marked as paid.')
+    mark_payment_paid.short_description = "Mark selected payments as paid"
+
+
+@admin.register(CourseStat)
+class CourseStatAdmin(admin.ModelAdmin):
+    list_display = ('total_courses', 'total_students', 'satisfaction_rate', 
+                   'total_instructors', 'last_updated')
+    readonly_fields = ('last_updated',)
+    
+    def has_add_permission(self, request):
+        # Only allow one stats record
+        return not CourseStat.objects.exists()
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
