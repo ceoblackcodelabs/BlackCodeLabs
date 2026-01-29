@@ -7,6 +7,7 @@ import uuid
 from PIL import Image
 from django.utils import timezone
 import ipaddress
+from django.urls import reverse
 from django.core.validators import RegexValidator
 import os
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -336,7 +337,7 @@ class DemoBooking(models.Model):
     ]
     
     # Unique identifier
-    booking_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    booking_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     
     # Contact Information
     first_name = models.CharField(max_length=100)
@@ -429,3 +430,73 @@ class DemoBooking(models.Model):
     
     def formatted_datetime(self):
         return f"{self.formatted_date()} at {self.formatted_time()}"
+    
+    
+class Solution(models.Model):
+    """Model to store technology solutions information."""
+    
+    # Icon choices (using FontAwesome classes)
+    ICON_CHOICES = [
+        ('fa-code', 'Code'),
+        ('fa-robot', 'Robot'),
+        ('fa-database', 'Database'),
+        ('fa-comments', 'Comments'),
+        ('fa-shield-alt', 'Shield'),
+        ('fa-server', 'Server'),
+        ('fa-network-wired', 'Network'),
+        ('fa-graduation-cap', 'Graduation Cap'),
+    ]
+    
+    # Slug/id for URL identification
+    slug = models.SlugField(max_length=50, unique=True, help_text="Used in URLs and for identification", primary_key=True)
+    
+    # Basic information
+    title = models.CharField(max_length=100)
+    short_description = models.TextField(max_length=200)
+    detailed_description = models.TextField()
+    
+    # Visual elements
+    icon_class = models.CharField(max_length=50, choices=ICON_CHOICES)
+    z_index = models.IntegerField(default=0, help_text="CSS z-index value for styling")
+    
+    # Features
+    features = models.TextField(
+        help_text="Enter features separated by new lines. Each line will become a list item."
+    )
+    
+    # Call to action
+    cta_text = models.CharField(max_length=50, default="Learn More")
+    cta_link = models.CharField(max_length=200, default="#")
+    
+    # Meta
+    display_order = models.IntegerField(
+        default=0,
+        help_text="Order in which solutions are displayed (lower numbers first)"
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['display_order', 'title']
+        verbose_name = "Technology Solution"
+        verbose_name_plural = "Technology Solutions"
+    
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('solutions_detail', kwargs={'slug': self.slug})
+    
+    def get_features_list(self):
+        """Convert features text field to list."""
+        if self.features:
+            return [feature.strip() for feature in self.features.split('\n') if feature.strip()]
+        return []
+    
+    def save(self, *args, **kwargs):
+        # Auto-generate slug from title if not provided
+        if not self.slug and self.title:
+            from django.utils.text import slugify
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)

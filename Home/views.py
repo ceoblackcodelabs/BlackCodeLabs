@@ -1,9 +1,10 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import (
     TechServices, TeamMember, DataCounter,
-    ClientReview, ContactInquiry, DemoBooking
+    ClientReview, ContactInquiry, DemoBooking,
+    Solution
 )
 from .forms import ContactForm, DemoBookingForm
 from django.views.generic.edit import FormView
@@ -437,3 +438,23 @@ class DemoBookingView(FormView):
             fail_silently=True,
         )
         logger.info(f"Demo confirmation sent to {demo_booking.email}")
+        
+class SolutionsPageView(ListView):
+    model = Solution
+    template_name = 'Home/solutions.html' 
+    context_object_name = 'solutions'
+    
+    def get_queryset(self):
+        return Solution.objects.filter(is_active=True).order_by('display_order', 'title')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add any additional context if needed
+        return context
+
+class SolutionDetailView(DetailView):
+    model = Solution
+    template_name = 'solutions_detail.html' 
+    context_object_name = 'solution'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'

@@ -342,126 +342,25 @@
                 <p>Tailored solutions designed to address specific challenges across various business needs</p>
             </div>
             <div class="solutions-grid">
-                <div class="solution-card" id="development">
+                {% for solution in solutions %}
+                <div class="solution-card" id="{{ solution.slug }}" style="z-index: {{ solution.z_index }};">
                     <div class="solution-icon">
-                        <i class="fas fa-code"></i>
+                        <i class="fas {{ solution.icon_class }}"></i>
                     </div>
-                    <h3>Web & App Development</h3>
-                    <p>Build responsive, high-performance websites, mobile applications, and backend systems with modern technologies.</p>
+                    <h3>{{ solution.title }}</h3>
+                    <p>{{ solution.short_description }}</p>
+                    
+                    {% if solution.get_features_list %}
                     <ul class="solution-features">
-                        <li>Responsive Website Design</li>
-                        <li>E-commerce Platforms</li>
-                        <li>Mobile Applications (iOS/Android)</li>
-                        <li>Custom Backend Systems</li>
-                        <li>Progressive Web Apps</li>
+                        {% for feature in solution.get_features_list %}
+                        <li>{{ feature }}</li>
+                        {% endfor %}
                     </ul>
-                    <a href="#" class="solution-cta">View Projects</a>
+                    {% endif %}
+                    
+                    <a href="{{ solution.cta_link }}" class="solution-cta">{{ solution.cta_text }}</a>
                 </div>
-                <div class="solution-card" id="automation">
-                    <div class="solution-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>Process Automation</h3>
-                    <p>Streamline operations with custom automation solutions, bot development, and workflow optimization systems.</p>
-                    <ul class="solution-features">
-                        <li>Workflow Automation</li>
-                        <li>Custom Bot Development</li>
-                        <li>Data Entry Automation</li>
-                        <li>Task Scheduling Systems</li>
-                        <li>API Integration Automation</li>
-                    </ul>
-                    <a href="#" class="solution-cta">Learn More</a>
-                </div>
-                <div class="solution-card" id="data">
-                    <div class="solution-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Data Intelligence</h3>
-                    <p>Advanced data solutions including web scraping, analysis, predictive modeling, and business intelligence dashboards.</p>
-                    <ul class="solution-features">
-                        <li>Web Data Extraction</li>
-                        <li>Big Data Processing</li>
-                        <li>Predictive Analytics</li>
-                        <li>Interactive Dashboards</li>
-                        <li>Custom AI Models</li>
-                    </ul>
-                    <a href="#" class="solution-cta">Explore Solutions</a>
-                </div>
-                <div class="solution-card" id="chatbots">
-                    <div class="solution-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h3>Chatbot Systems</h3>
-                    <p>Intelligent conversational interfaces that enhance customer service and automate communication workflows.</p>
-                    <ul class="solution-features">
-                        <li>24/7 Customer Support</li>
-                        <li>Multi-platform Integration</li>
-                        <li>Natural Language Processing</li>
-                        <li>Lead Generation Bots</li>
-                        <li>Order Processing Automation</li>
-                    </ul>
-                    <a href="#" class="solution-cta">View Demos</a>
-                </div>
-                <div class="solution-card" id="security">
-                    <div class="solution-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Security Solutions</h3>
-                    <p>Comprehensive security assessments, bug bounty programs, and threat intelligence solutions.</p>
-                    <ul class="solution-features">
-                        <li>Vulnerability Assessment</li>
-                        <li>Bug Bounty Program Management</li>
-                        <li>Threat Analysis & Monitoring</li>
-                        <li>Security Audits</li>
-                        <li>Incident Response Planning</li>
-                    </ul>
-                    <a href="#" class="solution-cta">Get Assessment</a>
-                </div>
-                <div class="solution-card" id="infrastructure">
-                    <div class="solution-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3>Infrastructure & Systems</h3>
-                    <p>CCTV installation, cable management, POS systems, and standalone enterprise solutions.</p>
-                    <ul class="solution-features">
-                        <li>CCTV Security Systems</li>
-                        <li>Network Cable Management</li>
-                        <li>Custom POS Solutions</li>
-                        <li>Standalone Business Systems</li>
-                        <li>Hardware Integration</li>
-                    </ul>
-                    <a href="#" class="solution-cta">Learn More</a>
-                </div>
-                <div class="solution-card" id="api">
-                    <div class="solution-icon">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
-                    <h3>API Development</h3>
-                    <p>Create robust, scalable, and secure APIs to connect your applications and services.</p>
-                    <ul class="solution-features">
-                        <li>RESTful API Design</li>
-                        <li>GraphQL Implementation</li>
-                        <li>API Documentation</li>
-                        <li>Authentication & Authorization</li>
-                        <li>WebSocket APIs</li>
-                    </ul>
-                    <a href="#" class="solution-cta">Explore APIs</a>
-                </div>
-                <div class="solution-card" id="training">
-                    <div class="solution-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>Technology Training</h3>
-                    <p>Professional development courses and workshops in modern software development and data science.</p>
-                    <ul class="solution-features">
-                        <li>Web Development Bootcamps</li>
-                        <li>Data Science Workshops</li>
-                        <li>Automation Training</li>
-                        <li>Security Best Practices</li>
-                        <li>Team Technology Upskilling</li>
-                    </ul>
-                    <a href="{% url 'courses' %}" class="solution-cta">View Courses</a>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>

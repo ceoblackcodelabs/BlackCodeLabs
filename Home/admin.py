@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import (
     TechServices, DataCounter, TeamMember, 
-    ClientReview, ContactInquiry, DemoBooking
+    ClientReview, ContactInquiry, DemoBooking,
+    Solution
 )
 from django.utils import timezone
 from django.utils.safestring import mark_safe
@@ -310,3 +311,36 @@ class DemoBookingAdmin(admin.ModelAdmin):
         # Show upcoming demos first
         qs = super().get_queryset(request)
         return qs.order_by('demo_date', 'demo_time')
+    
+@admin.register(Solution)
+class SolutionAdmin(admin.ModelAdmin):
+    list_display = ('title', 'display_order', 'is_active', 'icon_preview', 'created_at')
+    list_filter = ('is_active', 'icon_class', 'created_at')
+    search_fields = ('title', 'short_description', 'detailed_description')
+    list_editable = ('display_order', 'is_active')
+    readonly_fields = ('slug', 'created_at', 'updated_at')
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'short_description', 'detailed_description')
+        }),
+        ('Visual Elements', {
+            'fields': ('icon_class', 'z_index')
+        }),
+        ('Content', {
+            'fields': ('features', 'cta_text', 'cta_link')
+        }),
+        ('Display Settings', {
+            'fields': ('display_order', 'is_active')
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def icon_preview(self, obj):
+        return format_html('<i class="fas {}"></i> {}', obj.icon_class, obj.get_icon_class_display())
+    icon_preview.short_description = 'Icon'
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).order_by('display_order', 'title')
