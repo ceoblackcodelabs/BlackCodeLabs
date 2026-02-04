@@ -1,6 +1,8 @@
 # Home/forms.py
 from django import forms
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, validate_email
+import re
+from decimal import Decimal
 from .models import (
     ContactInquiry, DemoBooking, 
     CourseEnrollment, Course
@@ -220,57 +222,53 @@ class DemoBookingForm(forms.ModelForm):
 class CourseEnrollmentForm(forms.ModelForm):
     """Form for course enrollment."""
     
+    course_id = forms.IntegerField(widget=forms.HiddenInput())
+    
     class Meta:
         model = CourseEnrollment
         fields = [
             'first_name', 'last_name', 'email', 'phone',
-            'country', 'experience_level', 'learning_goals'
+            'country', 'experience_level', 'learning_goals',
+            'course_id'
         ]
         widgets = {
             'first_name': forms.TextInput(attrs={
-                'class': 'form-control',
                 'placeholder': 'Enter your first name',
-                'id': 'firstName'
+                'class': 'form-control'
             }),
             'last_name': forms.TextInput(attrs={
-                'class': 'form-control',
                 'placeholder': 'Enter your last name',
-                'id': 'lastName'
+                'class': 'form-control'
             }),
             'email': forms.EmailInput(attrs={
-                'class': 'form-control',
                 'placeholder': 'Enter your email address',
-                'id': 'email'
+                'class': 'form-control'
             }),
             'phone': forms.TextInput(attrs={
-                'class': 'form-control',
                 'placeholder': 'Enter your phone number',
-                'id': 'phone'
+                'class': 'form-control'
             }),
             'country': forms.Select(attrs={
-                'class': 'form-control',
-                'id': 'country'
+                'class': 'form-control'
             }),
             'experience_level': forms.Select(attrs={
-                'class': 'form-control',
-                'id': 'experience'
+                'class': 'form-control'
             }),
             'learning_goals': forms.Textarea(attrs={
-                'class': 'form-control',
                 'placeholder': 'Tell us what you hope to achieve with this course...',
-                'rows': 3,
-                'id': 'goals'
+                'class': 'form-control',
+                'rows': 4
             }),
         }
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Dynamically set country choices
-        self.fields['country'].choices = [
+        # Customize country choices if needed
+        self.fields['country'].widget.choices = [
             ('', 'Select Country'),
             ('US', 'United States'),
-            ('UK', 'United Kingdom'),
             ('CA', 'Canada'),
+            ('GB', 'United Kingdom'),
             ('AU', 'Australia'),
             ('IN', 'India'),
             ('DE', 'Germany'),
@@ -278,33 +276,148 @@ class CourseEnrollmentForm(forms.ModelForm):
             ('JP', 'Japan'),
             ('SG', 'Singapore'),
             ('AE', 'United Arab Emirates'),
+            # African Countries
             ('ZA', 'South Africa'),
             ('NG', 'Nigeria'),
             ('KE', 'Kenya'),
             ('GH', 'Ghana'),
+            ('ET', 'Ethiopia'),
+            ('EG', 'Egypt'),
+            ('TZ', 'Tanzania'),
+            ('UG', 'Uganda'),
+            ('DZ', 'Algeria'),
+            ('SD', 'Sudan'),
+            ('MA', 'Morocco'),
+            ('AO', 'Angola'),
+            ('MZ', 'Mozambique'),
+            ('CI', 'Côte d\'Ivoire'),
+            ('MG', 'Madagascar'),
+            ('CM', 'Cameroon'),
         ]
+    
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name', '').strip()
+        if not first_name:
+            raise ValidationError('First name is required.')
+        if len(first_name) < 2:
+            raise ValidationError('First name must be at least 2 characters.')
+        if not re.match(r'^[A-Za-z\s\-]+$', first_name):
+            raise ValidationError('First name can only contain letters, spaces, and hyphens.')
+        return first_name
+    
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name', '').strip()
+        if not last_name:
+            raise ValidationError('Last name is required.')
+        if len(last_name) < 2:
+            raise ValidationError('Last name must be at least 2 characters.')
+        if not re.match(r'^[A-Za-z\s\-]+$', last_name):
+            raise ValidationError('Last name can only contain letters, spaces, and hyphens.')
+        return last_name
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip().lower()
+        if not email:
+            raise ValidationError('Email is required.')
+        try:
+            validate_email(email)
+        except ValidationError:
+            raise ValidationError('Please enter a valid email address.')
+        return email
+    
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone', '').strip()
+        if not phone:
+            raise ValidationError('Phone number is required.')
+        
+        # Allow various phone formats
+        phone_regex = r'^[\+]?[1-9][\d]{0,15}$'
+        if not re.match(phone_regex, phone.replace(' ', '').replace('-', '').replace('(', '').replace(')', '')):
+            raise ValidationError('Please enter a valid phone number.')
+        return phone
+    
+    def clean_country(self):
+        country = self.cleaned_data.get('country')
+        if not country:
+            raise ValidationError('Please select your country.')
+        return country
+    
+    def clean_experience_level(self):
+        experience_level = self.cleaned_data.get('experience_level')
+        if not experience_level:
+            raise ValidationError('Please select your experience level.')
+        return experience_level
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        
+        # Additional cross-field validation
+        email = cleaned_data.get('email')
+        course_id = cleaned_data.get('course_id')
+        
+        # Check if email is already enrolled in this course
+        if email and course_id:
+            from .models import Course, CourseEnrollment
+            try:
+                course = Course.objects.get(id=course_id)
+                if CourseEnrollment.objects.filter(email=email, course=course).exists():
+                    self.add_error('email', 'This email is already enrolled in this course.')
+            except Course.DoesNotExist:
+                self.add_error('course_id', 'Invalid course selected.')
+        
+        return cleaned_data
 
-class CourseFilterForm(forms.Form):
-    """Form for filtering courses."""
-    category = forms.ChoiceField(
-        choices=[('all', 'All Courses')] + Course.CATEGORY_CHOICES,
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-    level = forms.ChoiceField(
-        choices=[('', 'All Levels')] + Course.LEVEL_CHOICES,
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-    sort_by = forms.ChoiceField(
-        choices=[
-            ('display_order', 'Featured'),
-            ('-students_enrolled', 'Most Popular'),
-            ('-rating', 'Highest Rated'),
-            ('price', 'Price: Low to High'),
-            ('-price', 'Price: High to Low'),
-            ('-created_at', 'Newest'),
-        ],
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
+# Additional Forms for Admin
+
+class CourseForm(forms.ModelForm):
+    """Form for creating/editing courses."""
+    
+    class Meta:
+        model = Course
+        fields = '__all__'
+        widgets = {
+            'short_description': forms.Textarea(attrs={'rows': 3}),
+            'detailed_description': forms.Textarea(attrs={'rows': 10}),
+            'instructor_bio': forms.Textarea(attrs={'rows': 5}),
+            'details': forms.Textarea(attrs={
+                'rows': 5,
+                'placeholder': '{"Mode": "Online", "Schedule": "Mon & Wed"}'
+            }),
+            'curriculum': forms.Textarea(attrs={
+                'rows': 10,
+                'placeholder': '[{"title": "Module 1", "lessons": ["Lesson 1", "Lesson 2"]}]'
+            }),
+            'color': forms.TextInput(attrs={'type': 'color'}),
+        }
+    
+    def clean_details(self):
+        details = self.cleaned_data.get('details')
+        if details:
+            try:
+                import json
+                json.loads(details)
+            except json.JSONDecodeError:
+                raise ValidationError('Details must be valid JSON format.')
+        return details
+    
+    def clean_curriculum(self):
+        curriculum = self.cleaned_data.get('curriculum')
+        if curriculum:
+            try:
+                import json
+                data = json.loads(curriculum)
+                if not isinstance(data, list):
+                    raise ValidationError('Curriculum must be a JSON array.')
+            except json.JSONDecodeError:
+                raise ValidationError('Curriculum must be valid JSON format.')
+        return curriculum
+
+class EnrollmentStatusForm(forms.ModelForm):
+    """Form for updating enrollment status."""
+    
+    class Meta:
+        model = CourseEnrollment
+        fields = ['status', 'payment_status', 'notes']
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 3}),
+        }

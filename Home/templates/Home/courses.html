@@ -5,6 +5,18 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'assets/css/courses.css' %}">
+<style>
+    /* Debug info */
+    .debug-info {
+        display: none;
+        background: #f0f0f0;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 12px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -15,19 +27,19 @@
             <p>Learn from industry experts with hands-on projects, live sessions, and career support. Start your journey today with our comprehensive coding courses.</p>
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <div class="hero-stat-number">50+</div>
+                    <div class="hero-stat-number">{{ stats.total_courses|default:"50" }}+</div>
                     <div class="hero-stat-label">Courses Available</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-number">10K+</div>
+                    <div class="hero-stat-number">{{ stats.total_students|default:"10K" }}+</div>
                     <div class="hero-stat-label">Students Enrolled</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-number">98%</div>
+                    <div class="hero-stat-number">{{ stats.satisfaction_rate|default:"98" }}%</div>
                     <div class="hero-stat-label">Satisfaction Rate</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-number">500+</div>
+                    <div class="hero-stat-number">{{ stats.total_instructors|default:"500" }}+</div>
                     <div class="hero-stat-label">Expert Instructors</div>
                 </div>
             </div>
@@ -47,15 +59,66 @@
                 <button class="filter-btn" data-filter="beginner">Beginner</button>
                 <button class="filter-btn" data-filter="intermediate">Intermediate</button>
                 <button class="filter-btn" data-filter="advanced">Advanced</button>
-                <button class="filter-btn" data-filter="python">Python</button>
-                <button class="filter-btn" data-filter="javascript">JavaScript</button>
-                <button class="filter-btn" data-filter="iot">IoT</button>
-                <button class="filter-btn" data-filter="ai">AI & ML</button>
-                <button class="filter-btn" data-filter="scratch">Scratch for Kids</button>
+                {% for category in categories %}
+                <button class="filter-btn" data-filter="{{ category.0 }}">{{ category.1 }}</button>
+                {% endfor %}
+            </div>
+            
+            <!-- Debug info (visible only in development) -->
+            <div class="debug-info" id="debugInfo">
+                Loading courses data...
             </div>
             
             <div class="courses-grid" id="courses-container">
-                <!-- Course cards will be populated by JavaScript -->
+                <!-- Static fallback if JavaScript fails -->
+                {% for course in courses %}
+                <div class="course-card" data-id="{{ course.id }}" data-category="{{ course.category }}" data-level="{{ course.level }}">
+                    {% if course.badge %}
+                    <div class="course-badge {{ course.badge }}">
+                        {% if course.badge == 'popular' %}Most Popular
+                        {% elif course.badge == 'new' %}New
+                        {% elif course.badge == 'advanced' %}Advanced
+                        {% elif course.badge == 'kids' %}For Kids
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    <div class="course-image" style="background: linear-gradient(45deg, {{ course.color }}, var(--space-blue))">
+                        <i class="{{ course.icon_class }}"></i>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">{{ course.get_category_display|upper }}</div>
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-description">{{ course.short_description }}</p>
+                        <div class="course-meta">
+                            <div class="course-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ course.duration }}</span>
+                            </div>
+                            <div class="course-meta-item">
+                                <i class="fas fa-book"></i>
+                                <span>{{ course.lessons }}</span>
+                            </div>
+                            <div class="course-meta-item">
+                                <i class="fas fa-signal"></i>
+                                <span>{{ course.get_level_display }}</span>
+                            </div>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-price">
+                                ${{ course.price }}
+                                {% if course.original_price %}
+                                <span>${{ course.original_price }}</span>
+                                {% endif %}
+                            </div>
+                            <button class="course-button view-course" data-id="{{ course.id }}">View Course</button>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="no-courses">
+                    <p>No courses available at the moment. Please check back soon!</p>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -101,22 +164,22 @@
         <div class="course-modal-content">
             <div class="course-modal-header">
                 <button class="course-modal-close" id="closeCourseModal">&times;</button>
-                <h1 class="course-modal-title" id="modalCourseTitle">Python Masterclass</h1>
+                <h1 class="course-modal-title" id="modalCourseTitle">Loading...</h1>
                 <div class="course-modal-meta" id="modalCourseMeta">
-                    <span><i class="fas fa-clock"></i> <span id="modalDuration">12 Weeks</span></span>
-                    <span><i class="fas fa-signal"></i> <span id="modalLevel">Beginner to Advanced</span></span>
-                    <span><i class="fas fa-users"></i> <span id="modalStudents">2450 students</span></span>
-                    <span><i class="fas fa-star"></i> <span id="modalRating">4.9 (1200 reviews)</span></span>
+                    <span><i class="fas fa-clock"></i> <span id="modalDuration">-</span></span>
+                    <span><i class="fas fa-signal"></i> <span id="modalLevel">-</span></span>
+                    <span><i class="fas fa-users"></i> <span id="modalStudents">- students</span></span>
+                    <span><i class="fas fa-star"></i> <span id="modalRating">- (- reviews)</span></span>
                 </div>
             </div>
             
             <div class="course-modal-image">
-                <i class="fab fa-python" id="modalCourseIcon"></i>
+                <i class="fas fa-book" id="modalCourseIcon"></i>
             </div>
             
             <div class="course-modal-body">
                 <div class="course-modal-intro" id="modalCourseIntro">
-                    Master Python programming from basics to advanced concepts with hands-on projects.
+                    Loading course details...
                 </div>
                 
                 <div class="course-details-grid" id="modalCourseDetails">
@@ -125,7 +188,7 @@
                 
                 <div class="curriculum-section" id="curriculumSection">
                     <h3>Course Curriculum</h3>
-                    <!-- Filled by JavaScript -->
+                    <p>Loading curriculum...</p>
                 </div>
                 
                 <div class="instructor-section">
@@ -135,14 +198,14 @@
                             <i class="fas fa-user-tie"></i>
                         </div>
                         <div class="instructor-details">
-                            <h4 id="modalInstructorName">Dr. Alex Johnson</h4>
-                            <p id="modalInstructorBio">Senior AI Engineer with 10+ years of experience in Python development and machine learning. Former lead developer at TechGiant Inc.</p>
+                            <h4 id="modalInstructorName">Loading...</h4>
+                            <p id="modalInstructorBio">Loading instructor information...</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="enrollment-section">
-                    <div class="enrollment-price" id="modalCoursePrice">$199 <span>$299</span></div>
+                    <div class="enrollment-price" id="modalCoursePrice">$0 <span></span></div>
                     <div class="enrollment-details" id="modalEnrollmentDetails">
                         Includes lifetime access, certificate of completion, and all future updates
                     </div>
@@ -156,67 +219,97 @@
     <div class="registration-modal" id="registrationModal">
         <div class="registration-modal-content">
             <div class="registration-modal-header">
-                <button class="registration-modal-close" id="closeRegistrationModal">&times;</button>
+                <button type="button" class="registration-modal-close" id="closeRegistrationModal">&times;</button>
                 <h1 class="registration-modal-title">Enroll in <span id="registrationCourseTitle">Course</span></h1>
                 <div class="registration-modal-subtitle" id="registrationCourseSubtitle">Complete the form below to register for this course</div>
             </div>
             
             <div class="registration-modal-body">
-                <form class="registration-form" id="registrationForm" method="post" action="{% url 'courses' %}">
+                <form class="registration-form" id="registrationForm">
                     {% csrf_token %}
+                    <input type="hidden" name="course_id" id="hiddenCourseId" value="">
+                    
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="firstName">First Name</label>
+                            <label for="firstName">First Name *</label>
                             <input type="text" id="firstName" name="first_name" required>
+                            <div class="error-message" id="firstNameError"></div>
                         </div>
                         <div class="form-group">
-                            <label for="lastName">Last Name</label>
+                            <label for="lastName">Last Name *</label>
                             <input type="text" id="lastName" name="last_name" required>
+                            <div class="error-message" id="lastNameError"></div>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="email">Email Address</label>
+                        <label for="email">Email Address *</label>
                         <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="emailError"></div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="phone">Phone Number</label>
+                        <label for="phone">Phone Number *</label>
                         <input type="tel" id="phone" name="phone" required>
+                        <div class="error-message" id="phoneError"></div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="country">Country</label>
+                        <label for="country">Country *</label>
                         <select id="country" name="country" required>
                             <option value="">Select Country</option>
                             <option value="US">United States</option>
-                            <option value="UK">United Kingdom</option>
                             <option value="CA">Canada</option>
+                            <option value="GB">United Kingdom</option>
                             <option value="AU">Australia</option>
-                            <!-- More countries... -->
+                            <option value="IN">India</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="JP">Japan</option>
+                            <option value="SG">Singapore</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <!-- African Countries -->
+                            <option value="ZA">South Africa</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="KE">Kenya</option>
+                            <option value="GH">Ghana</option>
+                            <option value="ET">Ethiopia</option>
+                            <option value="EG">Egypt</option>
+                            <option value="TZ">Tanzania</option>
+                            <option value="UG">Uganda</option>
+                            <option value="DZ">Algeria</option>
+                            <option value="SD">Sudan</option>
+                            <option value="MA">Morocco</option>
+                            <option value="AO">Angola</option>
+                            <option value="MZ">Mozambique</option>
+                            <option value="CI">Côte d'Ivoire</option>
+                            <option value="MG">Madagascar</option>
+                            <option value="CM">Cameroon</option>
                         </select>
+                        <div class="error-message" id="countryError"></div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="experience">Programming Experience</label>
-                        <select id="experience" name="experience" required>
+                        <label for="experience">Programming Experience *</label>
+                        <select id="experience" name="experience_level" required>
                             <option value="">Select Experience Level</option>
                             <option value="beginner">Beginner (0-1 years)</option>
                             <option value="intermediate">Intermediate (1-3 years)</option>
                             <option value="advanced">Advanced (3+ years)</option>
                         </select>
+                        <div class="error-message" id="experienceError"></div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="goals">What are your learning goals?</label>
-                        <textarea id="goals" name="goals" placeholder="Tell us what you hope to achieve with this course..."></textarea>
+                        <label for="goals">What are your learning goals? (Optional)</label>
+                        <textarea id="goals" name="learning_goals" placeholder="Tell us what you hope to achieve with this course..."></textarea>
                     </div>
                     
                     <div class="payment-summary">
                         <h4>Order Summary</h4>
                         <div class="payment-item">
                             <span>Course Fee:</span>
-                            <span id="courseFee">$199.00</span>
+                            <span id="courseFee">$0.00</span>
                         </div>
                         <div class="payment-item">
                             <span>Platform Fee:</span>
@@ -224,15 +317,16 @@
                         </div>
                         <div class="payment-item">
                             <span>Tax:</span>
-                            <span id="taxAmount">$20.89</span>
+                            <span id="taxAmount">$0.00</span>
                         </div>
                         <div class="payment-total">
                             <span>Total:</span>
-                            <span id="totalAmount">$229.89</span>
+                            <span id="totalAmount">$0.00</span>
                         </div>
                     </div>
                     
                     <button type="submit" class="submit-registration">Complete Enrollment & Pay</button>
+                    <div class="form-status" id="formStatus"></div>
                 </form>
             </div>
         </div>
@@ -241,11 +335,165 @@
 
 {% block extra_js %}
 <script>
-    // Get courses data from Django context
-    const courses = JSON.parse('{{ courses_json|escapejs }}');
+    // Debug logging
+    console.log('Courses page JavaScript loaded');
+    
+    // Try to get courses data from Django context
+    let courses = [];
+    try {
+        const coursesJson = '{{ courses_json|escapejs }}';
+        console.log('Courses JSON string available:', coursesJson ? 'Yes' : 'No');
+        
+        if (coursesJson && coursesJson !== 'null' && coursesJson !== 'undefined' && coursesJson !== '[]') {
+            courses = JSON.parse(coursesJson);
+            console.log(`Successfully parsed ${courses.length} courses`);
+            
+            // Fix any decimal issues
+            courses = courses.map(course => {
+                // Ensure price is a number
+                if (typeof course.price === 'string') {
+                    course.price = parseFloat(course.price) || 0;
+                }
+                if (course.price === null || course.price === undefined) {
+                    course.price = 0;
+                }
+                
+                // Ensure originalPrice is a number or null
+                if (course.originalPrice && typeof course.originalPrice === 'string') {
+                    course.originalPrice = parseFloat(course.originalPrice);
+                }
+                
+                // Ensure other numeric fields
+                course.students = parseInt(course.students) || 0;
+                course.rating = parseFloat(course.rating) || 0;
+                
+                return course;
+            });
+            
+        } else {
+            console.warn('No courses data found in context, using static HTML');
+            courses = extractCoursesFromHTML();
+        }
+    } catch (error) {
+        console.error('Error parsing courses JSON:', error);
+        console.log('JSON string that failed (first 500 chars):', '{{ courses_json|escapejs|slice:":500" }}');
+        courses = extractCoursesFromHTML();
+    }
+    
+    console.log(`Total courses loaded: ${courses.length}`);
+    
+    // Fallback function to extract courses from existing HTML
+    function extractCoursesFromHTML() {
+        console.log('Extracting courses from HTML...');
+        const courseCards = document.querySelectorAll('.course-card[data-id]');
+        const extractedCourses = [];
+        
+        courseCards.forEach(card => {
+            try {
+                const id = parseInt(card.getAttribute('data-id'));
+                const title = card.querySelector('.course-title')?.textContent?.trim() || 'Course Title';
+                const description = card.querySelector('.course-description')?.textContent?.trim() || 'Course description';
+                const category = card.getAttribute('data-category') || 'web';
+                const level = card.getAttribute('data-level') || 'beginner';
+                
+                // Extract price
+                const priceText = card.querySelector('.course-price')?.textContent || '$0';
+                const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
+                const originalPriceMatch = priceText.match(/\$(\d+(\.\d+)?)\s*<span>\$(\d+(\.\d+)?)<\/span>/);
+                
+                const price = priceMatch ? parseFloat(priceMatch[1]) : 0;
+                const originalPrice = originalPriceMatch ? parseFloat(originalPriceMatch[3]) : null;
+                
+                // Extract badge
+                const badgeElement = card.querySelector('.course-badge');
+                let badge = '';
+                if (badgeElement) {
+                    const badgeClass = badgeElement.className;
+                    if (badgeClass.includes('popular')) badge = 'popular';
+                    else if (badgeClass.includes('new')) badge = 'new';
+                    else if (badgeClass.includes('advanced')) badge = 'advanced';
+                    else if (badgeClass.includes('kids')) badge = 'kids';
+                }
+                
+                // Extract icon
+                const iconElement = card.querySelector('.course-image i');
+                const icon = iconElement ? iconElement.className : getIconForCategory(category);
+                
+                // Extract color from background style
+                const imageElement = card.querySelector('.course-image');
+                const style = imageElement ? imageElement.getAttribute('style') : '';
+                const colorMatch = style.match(/linear-gradient\(45deg, (#[0-9A-Fa-f]+)/);
+                const color = colorMatch ? colorMatch[1] : getColorForCategory(category);
+                
+                extractedCourses.push({
+                    id: id,
+                    title: title,
+                    description: description,
+                    category: category,
+                    level: level,
+                    badge: badge,
+                    icon: icon,
+                    duration: card.querySelector('.course-meta-item:nth-child(1) span')?.textContent || '12 Weeks',
+                    lessons: card.querySelector('.course-meta-item:nth-child(2) span')?.textContent || '48 Lessons',
+                    students: '1000',
+                    rating: '4.5',
+                    instructor_name: 'Expert Instructor',
+                    price: price,
+                    originalPrice: originalPrice,
+                    color: color,
+                    details: {},
+                    curriculum: []
+                });
+            } catch (e) {
+                console.error('Error extracting course from HTML:', e);
+            }
+        });
+        
+        console.log(`Extracted ${extractedCourses.length} courses from HTML`);
+        return extractedCourses;
+    }
+    
+    // Helper functions
+    function getIconForCategory(category) {
+        const icons = {
+            'python': 'fab fa-python',
+            'javascript': 'fab fa-js-square',
+            'iot': 'fas fa-microchip',
+            'ai': 'fas fa-robot',
+            'scratch': 'fas fa-gamepad',
+            'web': 'fas fa-laptop-code',
+            'mobile': 'fas fa-mobile-alt',
+            'data': 'fas fa-chart-line',
+            'security': 'fas fa-shield-alt',
+        };
+        return icons[category] || 'fas fa-book';
+    }
+    
+    function getColorForCategory(category) {
+        const colors = {
+            'python': '#3776AB',
+            'javascript': '#F7DF1E',
+            'iot': '#00979C',
+            'ai': '#FF6B6B',
+            'scratch': '#FF8C42',
+            'web': '#4B8BBE',
+            'mobile': '#68A063',
+            'data': '#2E8B57',
+            'security': '#C51A4A',
+        };
+        return colors[category] || '#3776AB';
+    }
+    
+    // Update debug info
+    const debugInfo = document.getElementById('debugInfo');
+    if (debugInfo) {
+        debugInfo.textContent = `Loaded ${courses.length} courses`;
+        debugInfo.style.display = 'block';
+    }
     
     // Get CSRF token for AJAX requests
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+    console.log('CSRF Token available:', csrftoken ? 'Yes' : 'No');
     
     // DOM Elements
     const coursesContainer = document.getElementById('courses-container');
@@ -261,101 +509,85 @@
     const totalAmountElement = document.getElementById('totalAmount');
     const registrationCourseTitle = document.getElementById('registrationCourseTitle');
     const registrationCourseSubtitle = document.getElementById('registrationCourseSubtitle');
+    const hiddenCourseId = document.getElementById('hiddenCourseId');
+    const formStatus = document.getElementById('formStatus');
 
     // Current selected course
     let currentCourse = null;
 
     // Initialize courses
     function initCourses() {
-        renderCourses(courses);
+        console.log('Initializing courses...');
+        
+        // Use static HTML rendering from Django, just add data attributes
+        setupEventListenersForExistingCards();
         setupEventListeners();
     }
-
-    // Render courses to the DOM
-    function renderCourses(coursesToRender) {
-        coursesContainer.innerHTML = '';
-        
-        coursesToRender.forEach(course => {
-            const courseCard = document.createElement('div');
-            courseCard.className = `course-card ${course.category} ${course.level}`;
-            courseCard.setAttribute('data-id', course.id);
-            
-            let badgeHTML = '';
-            if (course.badge) {
-                let badgeText = '';
-                if (course.badge === 'popular') badgeText = 'Most Popular';
-                else if (course.badge === 'new') badgeText = 'New';
-                else if (course.badge === 'advanced') badgeText = 'Advanced';
-                else if (course.badge === 'kids') badgeText = 'For Kids';
-                
-                badgeHTML = `<div class="course-badge ${course.badge}">${badgeText}</div>`;
-            }
-            
-            courseCard.innerHTML = `
-                ${badgeHTML}
-                <div class="course-image" style="background: linear-gradient(45deg, ${course.color}, var(--space-blue))">
-                    <i class="${course.icon}"></i>
-                </div>
-                <div class="course-content">
-                    <div class="course-category">${course.category.toUpperCase()}</div>
-                    <h3 class="course-title">${course.title}</h3>
-                    <p class="course-description">${course.description}</p>
-                    <div class="course-meta">
-                        <div class="course-meta-item">
-                            <i class="fas fa-clock"></i>
-                            <span>${course.duration}</span>
-                        </div>
-                        <div class="course-meta-item">
-                            <i class="fas fa-book"></i>
-                            <span>${course.lessons}</span>
-                        </div>
-                        <div class="course-meta-item">
-                            <i class="fas fa-signal"></i>
-                            <span>${course.level}</span>
-                        </div>
-                    </div>
-                    <div class="course-footer">
-                        <div class="course-price">
-                            $${course.price}
-                            ${course.originalPrice ? `<span>$${course.originalPrice}</span>` : ''}
-                        </div>
-                        <button class="course-button view-course" data-id="${course.id}">View Course</button>
-                    </div>
-                </div>
-            `;
-            
-            coursesContainer.appendChild(courseCard);
-        });
-        
-        // Add event listeners to view buttons
+    
+    // Set up event listeners for existing static cards
+    function setupEventListenersForExistingCards() {
+        console.log('Setting up event listeners for existing cards');
         document.querySelectorAll('.view-course').forEach(button => {
             button.addEventListener('click', (e) => {
                 const courseId = parseInt(e.target.getAttribute('data-id'));
+                console.log(`Opening course modal for ID: ${courseId} (from static HTML)`);
                 openCourseModal(courseId);
+            });
+        });
+        
+        // Also support clicks on the entire course card
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Only open modal if not clicking on the view button (to avoid double event)
+                if (!e.target.closest('.view-course') && !e.target.closest('.course-badge')) {
+                    const courseId = parseInt(card.getAttribute('data-id'));
+                    console.log(`Opening course modal for ID: ${courseId} (click on card)`);
+                    openCourseModal(courseId);
+                }
             });
         });
     }
 
     // Open course modal
     function openCourseModal(courseId) {
+        console.log(`Looking for course with ID: ${courseId}`);
+        
         currentCourse = courses.find(course => course.id === courseId);
         
-        if (currentCourse) {
-            // Update modal content
-            document.getElementById('modalCourseTitle').textContent = currentCourse.title;
-            document.getElementById('modalCourseIcon').className = currentCourse.icon;
-            document.getElementById('modalCourseIntro').textContent = currentCourse.description;
-            document.getElementById('modalDuration').textContent = currentCourse.duration;
-            document.getElementById('modalLevel').textContent = currentCourse.level.charAt(0).toUpperCase() + currentCourse.level.slice(1);
-            document.getElementById('modalStudents').textContent = `${currentCourse.students} students`;
-            document.getElementById('modalRating').textContent = `${currentCourse.rating} (${Math.floor(currentCourse.students / 2)} reviews)`;
-            document.getElementById('modalInstructorName').textContent = currentCourse.instructor;
-            document.getElementById('modalCoursePrice').innerHTML = `$${currentCourse.price} ${currentCourse.originalPrice ? `<span>$${currentCourse.originalPrice}</span>` : ''}`;
-            
-            // Update course details grid
-            const detailsGrid = document.getElementById('modalCourseDetails');
-            detailsGrid.innerHTML = '';
-            
+        if (!currentCourse) {
+            console.error(`Course with ID ${courseId} not found`);
+            alert('Course not found. Please try again.');
+            return;
+        }
+        
+        console.log('Found course:', currentCourse);
+        
+        // Update modal content with safe defaults
+        document.getElementById('modalCourseTitle').textContent = currentCourse.title || 'Course Title';
+        document.getElementById('modalCourseIcon').className = currentCourse.icon || 'fas fa-book';
+        document.getElementById('modalCourseIntro').textContent = currentCourse.description || currentCourse.short_description || 'Course description not available.';
+        document.getElementById('modalDuration').textContent = currentCourse.duration || 'Duration not specified';
+        document.getElementById('modalLevel').textContent = formatLevel(currentCourse.level);
+        document.getElementById('modalStudents').textContent = `${currentCourse.students || '0'} students`;
+        document.getElementById('modalRating').textContent = `${currentCourse.rating || '0.0'} (${Math.floor(parseInt(currentCourse.students || 0) / 10) || 0} reviews)`;
+        document.getElementById('modalInstructorName').textContent = currentCourse.instructor_name || 'Expert Instructor';
+        
+        // Price display - FIXED to handle decimal issues
+        const priceElement = document.getElementById('modalCoursePrice');
+        const price = typeof currentCourse.price === 'number' ? currentCourse.price : 0;
+        const originalPrice = typeof currentCourse.originalPrice === 'number' ? currentCourse.originalPrice : null;
+        
+        if (originalPrice && originalPrice > price) {
+            priceElement.innerHTML = `$${price.toFixed(2)} <span>$${originalPrice.toFixed(2)}</span>`;
+        } else {
+            priceElement.innerHTML = `$${price.toFixed(2)}`;
+        }
+        
+        // Update course details grid
+        const detailsGrid = document.getElementById('modalCourseDetails');
+        detailsGrid.innerHTML = '';
+        
+        if (currentCourse.details && typeof currentCourse.details === 'object') {
             for (const [key, value] of Object.entries(currentCourse.details)) {
                 detailsGrid.innerHTML += `
                     <div class="detail-item">
@@ -365,6 +597,25 @@
                     </div>
                 `;
             }
+        } else {
+            // Add default details based on category
+            detailsGrid.innerHTML = `
+                <div class="detail-item">
+                    <i class="fas fa-desktop"></i>
+                    <div class="detail-label">Format</div>
+                    <div class="detail-value">Online</div>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div class="detail-label">Schedule</div>
+                    <div class="detail-value">Flexible</div>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-certificate"></i>
+                    <div class="detail-label">Certificate</div>
+                    <div class="detail-value">Yes</div>
+                </div>
+            `;
             
             // Add special features for Scratch course
             if (currentCourse.category === 'scratch') {
@@ -379,104 +630,112 @@
                         <div class="detail-label">Certificates</div>
                         <div class="detail-value">Digital Badges</div>
                     </div>
-                    <div class="detail-item">
-                        <i class="fas fa-users"></i>
-                        <div class="detail-label">Class Size</div>
-                        <div class="detail-value">Max 8 Students</div>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-comments"></i>
-                        <div class="detail-label">Parent Updates</div>
-                        <div class="detail-value">Weekly Reports</div>
-                    </div>
                 `;
             }
-            
-            // Update curriculum section
-            const curriculumSection = document.getElementById('curriculumSection');
-            if (currentCourse.curriculum && currentCourse.curriculum.length > 0) {
-                let curriculumHTML = '<h3>Course Curriculum</h3>';
-                
-                currentCourse.curriculum.forEach((module, index) => {
-                    const isActive = index === 0 ? 'active' : '';
-                    const lessonsHTML = module.lessons ? module.lessons.map(lesson => 
-                        `<li><i class="fas fa-play-circle"></i> ${lesson}</li>`
-                    ).join('') : '';
-                    
-                    curriculumHTML += `
-                        <div class="curriculum-item ${isActive}">
-                            <div class="curriculum-header">
-                                <h4>${module.title || 'Module ' + (index + 1)}</h4>
-                                <i class="fas fa-chevron-down curriculum-icon"></i>
-                            </div>
-                            <div class="curriculum-content">
-                                <ul class="curriculum-lessons">
-                                    ${lessonsHTML}
-                                </ul>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                curriculumSection.innerHTML = curriculumHTML;
-                
-                // Re-initialize curriculum accordion
-                setupCurriculumAccordion();
-            } else {
-                curriculumSection.innerHTML = '<h3>Course Curriculum</h3><p>Curriculum details coming soon!</p>';
-            }
-            
-            // Set modal image background
-            document.querySelector('.course-modal-image').style.background = `linear-gradient(45deg, ${currentCourse.color}, var(--space-blue))`;
-            
-            // Show modal
-            courseModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
         }
+        
+        // Update curriculum section
+        const curriculumSection = document.getElementById('curriculumSection');
+        if (currentCourse.curriculum && Array.isArray(currentCourse.curriculum) && currentCourse.curriculum.length > 0) {
+            let curriculumHTML = '<h3>Course Curriculum</h3>';
+            
+            currentCourse.curriculum.forEach((module, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                const lessons = module.lessons || [];
+                const lessonsHTML = lessons.map(lesson => 
+                    `<li><i class="fas fa-play-circle"></i> ${lesson}</li>`
+                ).join('');
+                
+                curriculumHTML += `
+                    <div class="curriculum-item ${isActive}">
+                        <div class="curriculum-header">
+                            <h4>${module.title || 'Module ' + (index + 1)}</h4>
+                            <i class="fas fa-chevron-down curriculum-icon"></i>
+                        </div>
+                        <div class="curriculum-content">
+                            <ul class="curriculum-lessons">
+                                ${lessonsHTML}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            curriculumSection.innerHTML = curriculumHTML;
+            setupCurriculumAccordion();
+        } else {
+            curriculumSection.innerHTML = '<h3>Course Curriculum</h3><p>Detailed curriculum will be provided upon enrollment.</p>';
+        }
+        
+        // Set modal image background
+        const modalImage = document.querySelector('.course-modal-image');
+        if (modalImage && currentCourse.color) {
+            modalImage.style.background = `linear-gradient(45deg, ${currentCourse.color}, #1a1a2e)`;
+        }
+        
+        // Show modal
+        courseModal.style.display = 'flex';
+        courseModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        console.log('Course modal opened successfully');
+    }
+
+    // Helper function to format level
+    function formatLevel(level) {
+        if (!level) return 'Not specified';
+        const levelMap = {
+            'beginner': 'Beginner',
+            'intermediate': 'Intermediate',
+            'advanced': 'Advanced',
+            'all': 'All Levels'
+        };
+        return levelMap[level] || level.charAt(0).toUpperCase() + level.slice(1);
     }
 
     // Open registration modal
     function openRegistrationModal() {
         if (currentCourse) {
-            registrationCourseTitle.textContent = currentCourse.title;
-            registrationCourseSubtitle.textContent = `Complete the form below to register for ${currentCourse.title}`;
+            // Clear any previous form errors
+            clearFormErrors();
+            formStatus.innerHTML = '';
             
-            // Calculate fees
+            registrationCourseTitle.textContent = currentCourse.title || 'Course';
+            registrationCourseSubtitle.textContent = `Complete the form below to register for ${currentCourse.title || 'this course'}`;
+            
+            // Calculate fees - FIXED to handle decimal issues
             const platformFee = 10;
             const taxRate = 0.1;
-            const taxAmount = (currentCourse.price + platformFee) * taxRate;
-            const totalAmount = currentCourse.price + platformFee + taxAmount;
+            const price = typeof currentCourse.price === 'number' ? currentCourse.price : 0;
+            const taxAmount = (price + platformFee) * taxRate;
+            const totalAmount = price + platformFee + taxAmount;
             
-            courseFeeElement.textContent = `$${currentCourse.price.toFixed(2)}`;
+            courseFeeElement.textContent = `$${price.toFixed(2)}`;
             taxAmountElement.textContent = `$${taxAmount.toFixed(2)}`;
             totalAmountElement.textContent = `$${totalAmount.toFixed(2)}`;
             
             // Set hidden course_id field
-            const courseIdInput = document.querySelector('input[name="course_id"]');
-            if (courseIdInput) {
-                courseIdInput.value = currentCourse.id;
-            } else {
-                // Create hidden input if it doesn't exist
-                const hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'course_id';
-                hiddenInput.value = currentCourse.id;
-                registrationForm.appendChild(hiddenInput);
-            }
+            hiddenCourseId.value = currentCourse.id;
             
+            registrationModal.style.display = 'flex';
             registrationModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
     }
 
     // Close modals
     function closeModals() {
+        courseModal.style.display = 'none';
+        registrationModal.style.display = 'none';
         courseModal.classList.remove('active');
         registrationModal.classList.remove('active');
         document.body.style.overflow = 'auto';
     }
 
-    // Filter courses
+    // Filter courses - UPDATED to use CSS display
     function filterCourses(filter) {
+        console.log(`Filtering courses by: ${filter}`);
+        
         filterButtons.forEach(btn => {
             if (btn.getAttribute('data-filter') === filter) {
                 btn.classList.add('active');
@@ -485,16 +744,23 @@
             }
         });
         
-        let filteredCourses = courses;
+        const courseCards = document.querySelectorAll('.course-card');
         
-        if (filter !== 'all') {
-            filteredCourses = courses.filter(course => 
-                course.category === filter || 
-                course.level === filter
-            );
-        }
-        
-        renderCourses(filteredCourses);
+        courseCards.forEach(card => {
+            if (filter === 'all') {
+                card.style.display = 'block';
+                return;
+            }
+            
+            const category = card.getAttribute('data-category');
+            const level = card.getAttribute('data-level');
+            
+            if (category === filter || level === filter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
     }
 
     // Setup curriculum accordion
@@ -507,21 +773,59 @@
         });
     }
 
+    // Clear form errors
+    function clearFormErrors() {
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.textContent = '';
+        });
+        document.querySelectorAll('input, select, textarea').forEach(el => {
+            el.classList.remove('error');
+        });
+    }
+
+    // Display form errors
+    function displayFormErrors(errors) {
+        clearFormErrors();
+        
+        for (const [field, errorList] of Object.entries(errors)) {
+            const errorElement = document.getElementById(`${field}Error`);
+            const inputElement = document.getElementById(field);
+            
+            if (errorElement && inputElement) {
+                errorElement.textContent = errorList[0];
+                inputElement.classList.add('error');
+            }
+        }
+    }
+
     // Handle form submission (AJAX version)
     async function handleRegistrationSubmit(e) {
         e.preventDefault();
         
+        // Clear previous errors and status
+        clearFormErrors();
+        formStatus.innerHTML = '';
+        
         // Get form data
         const formData = new FormData(registrationForm);
+        
+        // Convert FormData to object
         const formObject = {};
         formData.forEach((value, key) => {
             formObject[key] = value;
         });
         
-        // Add course_id if not in form
-        if (!formObject.course_id && currentCourse) {
-            formObject.course_id = currentCourse.id;
+        // Validate required fields
+        if (!formObject.course_id) {
+            formStatus.innerHTML = '<div class="alert alert-error">Please select a course first.</div>';
+            return;
         }
+        
+        // Show loading state
+        const submitButton = registrationForm.querySelector('.submit-registration');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Processing...';
+        submitButton.disabled = true;
         
         try {
             // Send AJAX request
@@ -537,20 +841,40 @@
             const result = await response.json();
             
             if (result.success) {
-                showToast(result.message, 'success');
-                registrationForm.reset();
-                closeModals();
+                // Show success message
+                formStatus.innerHTML = '<div class="alert alert-success">' + result.message + '</div>';
                 
-                // Reload page to update student count
+                // Clear form and close modal after delay
                 setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                    registrationForm.reset();
+                    closeModals();
+                    
+                    // Show toast notification
+                    showToast(result.message, 'success');
+                    
+                    // Reload page to update student count after 2 seconds
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                }, 1500);
+                
             } else {
+                // Show error message
+                if (result.errors) {
+                    displayFormErrors(result.errors);
+                } else {
+                    formStatus.innerHTML = '<div class="alert alert-error">' + result.error + '</div>';
+                }
                 showToast(result.error || 'Registration failed. Please try again.', 'error');
             }
         } catch (error) {
             console.error('Error:', error);
+            formStatus.innerHTML = '<div class="alert alert-error">Network error. Please try again.</div>';
             showToast('Network error. Please try again.', 'error');
+        } finally {
+            // Restore button state
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
         }
     }
 
@@ -563,11 +887,11 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: ${type === 'success' ? 'var(--accent)' : '#ff6b6b'};
-            color: ${type === 'success' ? 'var(--dark)' : 'white'};
+            background: ${type === 'success' ? '#10b981' : '#ff6b6b'};
+            color: white;
             padding: 15px 25px;
             border-radius: 10px;
-            z-index: 9999;
+            z-index: 99999;
             transform: translateX(100%);
             transition: transform 0.3s;
             font-weight: 600;
@@ -589,6 +913,8 @@
 
     // Setup event listeners
     function setupEventListeners() {
+        console.log('Setting up event listeners...');
+        
         // Filter buttons
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -618,7 +944,9 @@
         enrollButton.addEventListener('click', openRegistrationModal);
         
         // Form submission - use AJAX
-        registrationForm.addEventListener('submit', handleRegistrationSubmit);
+        if (registrationForm) {
+            registrationForm.addEventListener('submit', handleRegistrationSubmit);
+        }
         
         // Close modal with Escape key
         document.addEventListener('keydown', (e) => {
@@ -626,9 +954,102 @@
                 closeModals();
             }
         });
+        
+        // Add CSS for error states and modal display
+        const style = document.createElement('style');
+        style.textContent = `
+            .error {
+                border-color: #ff6b6b !important;
+                background-color: #fff5f5 !important;
+            }
+            .error-message {
+                color: #ff6b6b;
+                font-size: 0.875rem;
+                margin-top: 0.25rem;
+                min-height: 1.25rem;
+            }
+            .alert {
+                padding: 0.75rem 1rem;
+                border-radius: 0.5rem;
+                margin: 1rem 0;
+            }
+            .alert-success {
+                background-color: #d1fae5;
+                color: #065f46;
+                border: 1px solid #34d399;
+            }
+            .alert-error {
+                background-color: #fee2e2;
+                color: #991b1b;
+                border: 1px solid #f87171;
+            }
+            .form-status {
+                min-height: 3rem;
+            }
+            /* Modal styles */
+            .course-modal, .registration-modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 9999;
+                overflow-y: auto;
+                align-items: center;
+                justify-content: center;
+            }
+            .course-modal.active, .registration-modal.active {
+                display: flex;
+            }
+            /* Curriculum accordion */
+            .curriculum-item.active .curriculum-content {
+                display: block;
+            }
+            .curriculum-content {
+                display: none;
+                padding: 10px 0;
+            }
+            .curriculum-header {
+                cursor: pointer;
+                padding: 10px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .curriculum-header:hover {
+                background: #f5f5f5;
+            }
+            /* Toast notification */
+            .toast {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 10px;
+                z-index: 99999;
+                transform: translateX(100%);
+                transition: transform 0.3s;
+                font-weight: 600;
+                color: white;
+            }
+            .toast.success {
+                background: #10b981;
+            }
+            .toast.error {
+                background: #ff6b6b;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        console.log('Event listeners setup complete');
     }
 
     // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initCourses);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCourses);
+    } else {
+        // DOM already loaded
+        initCourses();
+    }
 </script>
 {% endblock %}
