@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 import PIL
+from decimal import Decimal
 import uuid
 from PIL import Image
 from django.utils import timezone
@@ -637,6 +638,28 @@ class Course(models.Model):
     def get_curriculum_list(self):
         """Convert curriculum JSON to list."""
         return self.curriculum if isinstance(self.curriculum, list) else []
+    
+    def to_dict(self):
+        """Convert course to dictionary for JSON serialization"""
+        return {
+            'id': self.id,
+            'title': self.title,
+            'category': self.category,
+            'level': self.level,
+            'badge': self.badge,
+            'icon': self.icon_class,
+            'description': self.short_description,
+            'duration': self.duration,
+            'lessons': self.lessons,
+            'students': str(self.students_enrolled),
+            'rating': str(self.rating),
+            'instructor': self.instructor_name,
+            'price': float(self.price) if self.price else 0.0,
+            'originalPrice': float(self.original_price) if self.original_price else None,
+            'color': self.color,
+            'details': self.get_details_dict() or {},
+            'curriculum': self.get_curriculum_list() or [],
+        }
 
 
 class CourseEnrollment(models.Model):
@@ -719,9 +742,9 @@ class CourseEnrollment(models.Model):
     
     def calculate_total_amount(self):
         """Calculate total amount including fees and tax."""
-        base_amount = self.course.price
-        platform_fee = self.platform_fee
-        tax_rate = 0.10  # 10% tax
+        base_amount = Decimal(str(self.course.price))
+        platform_fee = Decimal(str(self.platform_fee))
+        tax_rate = Decimal('0.10')  # 10% tax
         tax_amount = (base_amount + platform_fee) * tax_rate
         return base_amount + platform_fee + tax_amount
     
@@ -729,7 +752,7 @@ class CourseEnrollment(models.Model):
         # Auto-calculate total amount if not set
         if not self.total_amount:
             self.total_amount = self.calculate_total_amount()
-            self.tax_amount = (self.course.price + self.platform_fee) * 0.10
+            self.tax_amount = (Decimal(str(self.course.price)) + Decimal(str(self.platform_fee))) * Decimal('0.10')
         
         # Auto-set amount_paid if payment is marked as paid
         if self.payment_status == 'paid' and self.amount_paid == 0:
