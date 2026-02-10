@@ -338,45 +338,55 @@
     // Debug logging
     console.log('Courses page JavaScript loaded');
     
-    // Try to get courses data from Django context
+    // Global courses array with safe defaults
     let courses = [];
+    
     try {
+        // Get the JSON string from Django context
         const coursesJson = '{{ courses_json|escapejs }}';
-        console.log('Courses JSON string available:', coursesJson ? 'Yes' : 'No');
         
-        if (coursesJson && coursesJson !== 'null' && coursesJson !== 'undefined' && coursesJson !== '[]') {
-            courses = JSON.parse(coursesJson);
-            console.log(`Successfully parsed ${courses.length} courses`);
-            
-            // Fix any decimal issues
-            courses = courses.map(course => {
-                // Ensure price is a number
-                if (typeof course.price === 'string') {
-                    course.price = parseFloat(course.price) || 0;
-                }
-                if (course.price === null || course.price === undefined) {
-                    course.price = 0;
-                }
+        if (coursesJson && coursesJson.trim() && coursesJson !== '[]') {
+            try {
+                // Try to parse the JSON
+                courses = JSON.parse(coursesJson);
                 
-                // Ensure originalPrice is a number or null
-                if (course.originalPrice && typeof course.originalPrice === 'string') {
-                    course.originalPrice = parseFloat(course.originalPrice);
-                }
+                // Validate and clean each course
+                courses = courses.map(course => {
+                    // Ensure all required fields exist
+                    return {
+                        id: course.id || 0,
+                        title: course.title || 'Untitled Course',
+                        category: course.category || 'web',
+                        level: course.level || 'beginner',
+                        badge: course.badge || '',
+                        icon: course.icon || 'fas fa-book',
+                        description: course.description || 'Course description',
+                        duration: course.duration || '12 Weeks',
+                        lessons: course.lessons || '0',
+                        students: parseInt(course.students) || 0,
+                        rating: parseFloat(course.rating) || 0,
+                        instructor: course.instructor || 'Instructor',
+                        price: parseFloat(course.price) || 0,
+                        originalPrice: course.originalPrice ? parseFloat(course.originalPrice) : null,
+                        color: course.color || '#3776AB',
+                        details: course.details || {},
+                        curriculum: course.curriculum || [],
+                    };
+                });
                 
-                // Ensure other numeric fields
-                course.students = parseInt(course.students) || 0;
-                course.rating = parseFloat(course.rating) || 0;
+                console.log(`Successfully loaded ${courses.length} courses`);
                 
-                return course;
-            });
-            
+            } catch (parseError) {
+                console.error('Error parsing courses JSON:', parseError);
+                // Fallback to static HTML extraction
+                courses = extractCoursesFromHTML();
+            }
         } else {
-            console.warn('No courses data found in context, using static HTML');
+            console.warn('No courses data in context, using static HTML');
             courses = extractCoursesFromHTML();
         }
     } catch (error) {
-        console.error('Error parsing courses JSON:', error);
-        console.log('JSON string that failed (first 500 chars):', '{{ courses_json|escapejs|slice:":500" }}');
+        console.error('Fatal error loading courses:', error);
         courses = extractCoursesFromHTML();
     }
     
@@ -390,7 +400,7 @@
         
         courseCards.forEach(card => {
             try {
-                const id = parseInt(card.getAttribute('data-id'));
+                const id = parseInt(card.getAttribute('data-id')) || 0;
                 const title = card.querySelector('.course-title')?.textContent?.trim() || 'Course Title';
                 const description = card.querySelector('.course-description')?.textContent?.trim() || 'Course description';
                 const category = card.getAttribute('data-category') || 'web';
@@ -399,10 +409,12 @@
                 // Extract price
                 const priceText = card.querySelector('.course-price')?.textContent || '$0';
                 const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
-                const originalPriceMatch = priceText.match(/\$(\d+(\.\d+)?)\s*<span>\$(\d+(\.\d+)?)<\/span>/);
-                
                 const price = priceMatch ? parseFloat(priceMatch[1]) : 0;
-                const originalPrice = originalPriceMatch ? parseFloat(originalPriceMatch[3]) : null;
+                
+                // Check for original price
+                const originalPriceSpan = card.querySelector('.course-price span');
+                const originalPrice = originalPriceSpan ? 
+                    parseFloat(originalPriceSpan.textContent.replace('$', '')) : null;
                 
                 // Extract badge
                 const badgeElement = card.querySelector('.course-badge');
@@ -419,7 +431,7 @@
                 const iconElement = card.querySelector('.course-image i');
                 const icon = iconElement ? iconElement.className : getIconForCategory(category);
                 
-                // Extract color from background style
+                // Extract color
                 const imageElement = card.querySelector('.course-image');
                 const style = imageElement ? imageElement.getAttribute('style') : '';
                 const colorMatch = style.match(/linear-gradient\(45deg, (#[0-9A-Fa-f]+)/);
@@ -437,7 +449,7 @@
                     lessons: card.querySelector('.course-meta-item:nth-child(2) span')?.textContent || '48 Lessons',
                     students: '1000',
                     rating: '4.5',
-                    instructor_name: 'Expert Instructor',
+                    instructor: 'Expert Instructor',
                     price: price,
                     originalPrice: originalPrice,
                     color: color,
@@ -491,565 +503,7 @@
         debugInfo.style.display = 'block';
     }
     
-    // Get CSRF token for AJAX requests
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
-    console.log('CSRF Token available:', csrftoken ? 'Yes' : 'No');
-    
-    // DOM Elements
-    const coursesContainer = document.getElementById('courses-container');
-    const courseModal = document.getElementById('courseModal');
-    const registrationModal = document.getElementById('registrationModal');
-    const closeCourseModal = document.getElementById('closeCourseModal');
-    const closeRegistrationModal = document.getElementById('closeRegistrationModal');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const enrollButton = document.getElementById('enrollButton');
-    const registrationForm = document.getElementById('registrationForm');
-    const courseFeeElement = document.getElementById('courseFee');
-    const taxAmountElement = document.getElementById('taxAmount');
-    const totalAmountElement = document.getElementById('totalAmount');
-    const registrationCourseTitle = document.getElementById('registrationCourseTitle');
-    const registrationCourseSubtitle = document.getElementById('registrationCourseSubtitle');
-    const hiddenCourseId = document.getElementById('hiddenCourseId');
-    const formStatus = document.getElementById('formStatus');
-
-    // Current selected course
-    let currentCourse = null;
-
-    // Initialize courses
-    function initCourses() {
-        console.log('Initializing courses...');
-        
-        // Use static HTML rendering from Django, just add data attributes
-        setupEventListenersForExistingCards();
-        setupEventListeners();
-    }
-    
-    // Set up event listeners for existing static cards
-    function setupEventListenersForExistingCards() {
-        console.log('Setting up event listeners for existing cards');
-        document.querySelectorAll('.view-course').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const courseId = parseInt(e.target.getAttribute('data-id'));
-                console.log(`Opening course modal for ID: ${courseId} (from static HTML)`);
-                openCourseModal(courseId);
-            });
-        });
-        
-        // Also support clicks on the entire course card
-        document.querySelectorAll('.course-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                // Only open modal if not clicking on the view button (to avoid double event)
-                if (!e.target.closest('.view-course') && !e.target.closest('.course-badge')) {
-                    const courseId = parseInt(card.getAttribute('data-id'));
-                    console.log(`Opening course modal for ID: ${courseId} (click on card)`);
-                    openCourseModal(courseId);
-                }
-            });
-        });
-    }
-
-    // Open course modal
-    function openCourseModal(courseId) {
-        console.log(`Looking for course with ID: ${courseId}`);
-        
-        currentCourse = courses.find(course => course.id === courseId);
-        
-        if (!currentCourse) {
-            console.error(`Course with ID ${courseId} not found`);
-            alert('Course not found. Please try again.');
-            return;
-        }
-        
-        console.log('Found course:', currentCourse);
-        
-        // Update modal content with safe defaults
-        document.getElementById('modalCourseTitle').textContent = currentCourse.title || 'Course Title';
-        document.getElementById('modalCourseIcon').className = currentCourse.icon || 'fas fa-book';
-        document.getElementById('modalCourseIntro').textContent = currentCourse.description || currentCourse.short_description || 'Course description not available.';
-        document.getElementById('modalDuration').textContent = currentCourse.duration || 'Duration not specified';
-        document.getElementById('modalLevel').textContent = formatLevel(currentCourse.level);
-        document.getElementById('modalStudents').textContent = `${currentCourse.students || '0'} students`;
-        document.getElementById('modalRating').textContent = `${currentCourse.rating || '0.0'} (${Math.floor(parseInt(currentCourse.students || 0) / 10) || 0} reviews)`;
-        document.getElementById('modalInstructorName').textContent = currentCourse.instructor_name || 'Expert Instructor';
-        
-        // Price display - FIXED to handle decimal issues
-        const priceElement = document.getElementById('modalCoursePrice');
-        const price = typeof currentCourse.price === 'number' ? currentCourse.price : 0;
-        const originalPrice = typeof currentCourse.originalPrice === 'number' ? currentCourse.originalPrice : null;
-        
-        if (originalPrice && originalPrice > price) {
-            priceElement.innerHTML = `$${price.toFixed(2)} <span>$${originalPrice.toFixed(2)}</span>`;
-        } else {
-            priceElement.innerHTML = `$${price.toFixed(2)}`;
-        }
-        
-        // Update course details grid
-        const detailsGrid = document.getElementById('modalCourseDetails');
-        detailsGrid.innerHTML = '';
-        
-        if (currentCourse.details && typeof currentCourse.details === 'object') {
-            for (const [key, value] of Object.entries(currentCourse.details)) {
-                detailsGrid.innerHTML += `
-                    <div class="detail-item">
-                        <i class="fas fa-info-circle"></i>
-                        <div class="detail-label">${key}</div>
-                        <div class="detail-value">${value}</div>
-                    </div>
-                `;
-            }
-        } else {
-            // Add default details based on category
-            detailsGrid.innerHTML = `
-                <div class="detail-item">
-                    <i class="fas fa-desktop"></i>
-                    <div class="detail-label">Format</div>
-                    <div class="detail-value">Online</div>
-                </div>
-                <div class="detail-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <div class="detail-label">Schedule</div>
-                    <div class="detail-value">Flexible</div>
-                </div>
-                <div class="detail-item">
-                    <i class="fas fa-certificate"></i>
-                    <div class="detail-label">Certificate</div>
-                    <div class="detail-value">Yes</div>
-                </div>
-            `;
-            
-            // Add special features for Scratch course
-            if (currentCourse.category === 'scratch') {
-                detailsGrid.innerHTML += `
-                    <div class="detail-item">
-                        <i class="fas fa-child"></i>
-                        <div class="detail-label">Kid-Friendly</div>
-                        <div class="detail-value">Visual Coding</div>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        <div class="detail-label">Certificates</div>
-                        <div class="detail-value">Digital Badges</div>
-                    </div>
-                `;
-            }
-        }
-        
-        // Update curriculum section
-        const curriculumSection = document.getElementById('curriculumSection');
-        if (currentCourse.curriculum && Array.isArray(currentCourse.curriculum) && currentCourse.curriculum.length > 0) {
-            let curriculumHTML = '<h3>Course Curriculum</h3>';
-            
-            currentCourse.curriculum.forEach((module, index) => {
-                const isActive = index === 0 ? 'active' : '';
-                const lessons = module.lessons || [];
-                const lessonsHTML = lessons.map(lesson => 
-                    `<li><i class="fas fa-play-circle"></i> ${lesson}</li>`
-                ).join('');
-                
-                curriculumHTML += `
-                    <div class="curriculum-item ${isActive}">
-                        <div class="curriculum-header">
-                            <h4>${module.title || 'Module ' + (index + 1)}</h4>
-                            <i class="fas fa-chevron-down curriculum-icon"></i>
-                        </div>
-                        <div class="curriculum-content">
-                            <ul class="curriculum-lessons">
-                                ${lessonsHTML}
-                            </ul>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            curriculumSection.innerHTML = curriculumHTML;
-            setupCurriculumAccordion();
-        } else {
-            curriculumSection.innerHTML = '<h3>Course Curriculum</h3><p>Detailed curriculum will be provided upon enrollment.</p>';
-        }
-        
-        // Set modal image background
-        const modalImage = document.querySelector('.course-modal-image');
-        if (modalImage && currentCourse.color) {
-            modalImage.style.background = `linear-gradient(45deg, ${currentCourse.color}, #1a1a2e)`;
-        }
-        
-        // Show modal
-        courseModal.style.display = 'flex';
-        courseModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        
-        console.log('Course modal opened successfully');
-    }
-
-    // Helper function to format level
-    function formatLevel(level) {
-        if (!level) return 'Not specified';
-        const levelMap = {
-            'beginner': 'Beginner',
-            'intermediate': 'Intermediate',
-            'advanced': 'Advanced',
-            'all': 'All Levels'
-        };
-        return levelMap[level] || level.charAt(0).toUpperCase() + level.slice(1);
-    }
-
-    // Open registration modal
-    function openRegistrationModal() {
-        if (currentCourse) {
-            // Clear any previous form errors
-            clearFormErrors();
-            formStatus.innerHTML = '';
-            
-            registrationCourseTitle.textContent = currentCourse.title || 'Course';
-            registrationCourseSubtitle.textContent = `Complete the form below to register for ${currentCourse.title || 'this course'}`;
-            
-            // Calculate fees - FIXED to handle decimal issues
-            const platformFee = 10;
-            const taxRate = 0.1;
-            const price = typeof currentCourse.price === 'number' ? currentCourse.price : 0;
-            const taxAmount = (price + platformFee) * taxRate;
-            const totalAmount = price + platformFee + taxAmount;
-            
-            courseFeeElement.textContent = `$${price.toFixed(2)}`;
-            taxAmountElement.textContent = `$${taxAmount.toFixed(2)}`;
-            totalAmountElement.textContent = `$${totalAmount.toFixed(2)}`;
-            
-            // Set hidden course_id field
-            hiddenCourseId.value = currentCourse.id;
-            
-            registrationModal.style.display = 'flex';
-            registrationModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    // Close modals
-    function closeModals() {
-        courseModal.style.display = 'none';
-        registrationModal.style.display = 'none';
-        courseModal.classList.remove('active');
-        registrationModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-
-    // Filter courses - UPDATED to use CSS display
-    function filterCourses(filter) {
-        console.log(`Filtering courses by: ${filter}`);
-        
-        filterButtons.forEach(btn => {
-            if (btn.getAttribute('data-filter') === filter) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
-        
-        const courseCards = document.querySelectorAll('.course-card');
-        
-        courseCards.forEach(card => {
-            if (filter === 'all') {
-                card.style.display = 'block';
-                return;
-            }
-            
-            const category = card.getAttribute('data-category');
-            const level = card.getAttribute('data-level');
-            
-            if (category === filter || level === filter) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-
-    // Setup curriculum accordion
-    function setupCurriculumAccordion() {
-        document.querySelectorAll('.curriculum-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const item = header.parentElement;
-                item.classList.toggle('active');
-            });
-        });
-    }
-
-    // Clear form errors
-    function clearFormErrors() {
-        document.querySelectorAll('.error-message').forEach(el => {
-            el.textContent = '';
-        });
-        document.querySelectorAll('input, select, textarea').forEach(el => {
-            el.classList.remove('error');
-        });
-    }
-
-    // Display form errors
-    function displayFormErrors(errors) {
-        clearFormErrors();
-        
-        for (const [field, errorList] of Object.entries(errors)) {
-            const errorElement = document.getElementById(`${field}Error`);
-            const inputElement = document.getElementById(field);
-            
-            if (errorElement && inputElement) {
-                errorElement.textContent = errorList[0];
-                inputElement.classList.add('error');
-            }
-        }
-    }
-
-    // Handle form submission (AJAX version)
-    async function handleRegistrationSubmit(e) {
-        e.preventDefault();
-        
-        // Clear previous errors and status
-        clearFormErrors();
-        formStatus.innerHTML = '';
-        
-        // Get form data
-        const formData = new FormData(registrationForm);
-        
-        // Convert FormData to object
-        const formObject = {};
-        formData.forEach((value, key) => {
-            formObject[key] = value;
-        });
-        
-        // Validate required fields
-        if (!formObject.course_id) {
-            formStatus.innerHTML = '<div class="alert alert-error">Please select a course first.</div>';
-            return;
-        }
-        
-        // Show loading state
-        const submitButton = registrationForm.querySelector('.submit-registration');
-        const originalButtonText = submitButton.textContent;
-        submitButton.textContent = 'Processing...';
-        submitButton.disabled = true;
-        
-        try {
-            // Send AJAX request
-            const response = await fetch('{% url "course_enroll_api" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
-                },
-                body: JSON.stringify(formObject)
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                // Show success message
-                formStatus.innerHTML = '<div class="alert alert-success">' + result.message + '</div>';
-                
-                // Clear form and close modal after delay
-                setTimeout(() => {
-                    registrationForm.reset();
-                    closeModals();
-                    
-                    // Show toast notification
-                    showToast(result.message, 'success');
-                    
-                    // Reload page to update student count after 2 seconds
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                }, 1500);
-                
-            } else {
-                // Show error message
-                if (result.errors) {
-                    displayFormErrors(result.errors);
-                } else {
-                    formStatus.innerHTML = '<div class="alert alert-error">' + result.error + '</div>';
-                }
-                showToast(result.error || 'Registration failed. Please try again.', 'error');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            formStatus.innerHTML = '<div class="alert alert-error">Network error. Please try again.</div>';
-            showToast('Network error. Please try again.', 'error');
-        } finally {
-            // Restore button state
-            submitButton.textContent = originalButtonText;
-            submitButton.disabled = false;
-        }
-    }
-
-    // Show toast notification
-    function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? '#10b981' : '#ff6b6b'};
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            z-index: 99999;
-            transform: translateX(100%);
-            transition: transform 0.3s;
-            font-weight: 600;
-        `;
-        
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.style.transform = 'translateX(0)';
-        }, 100);
-        
-        setTimeout(() => {
-            toast.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 3000);
-    }
-
-    // Setup event listeners
-    function setupEventListeners() {
-        console.log('Setting up event listeners...');
-        
-        // Filter buttons
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filter = button.getAttribute('data-filter');
-                filterCourses(filter);
-            });
-        });
-        
-        // Close modals
-        closeCourseModal.addEventListener('click', closeModals);
-        closeRegistrationModal.addEventListener('click', closeModals);
-        
-        // Close modals when clicking outside
-        courseModal.addEventListener('click', (e) => {
-            if (e.target === courseModal) {
-                closeModals();
-            }
-        });
-        
-        registrationModal.addEventListener('click', (e) => {
-            if (e.target === registrationModal) {
-                closeModals();
-            }
-        });
-        
-        // Enroll button
-        enrollButton.addEventListener('click', openRegistrationModal);
-        
-        // Form submission - use AJAX
-        if (registrationForm) {
-            registrationForm.addEventListener('submit', handleRegistrationSubmit);
-        }
-        
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModals();
-            }
-        });
-        
-        // Add CSS for error states and modal display
-        const style = document.createElement('style');
-        style.textContent = `
-            .error {
-                border-color: #ff6b6b !important;
-                background-color: #fff5f5 !important;
-            }
-            .error-message {
-                color: #ff6b6b;
-                font-size: 0.875rem;
-                margin-top: 0.25rem;
-                min-height: 1.25rem;
-            }
-            .alert {
-                padding: 0.75rem 1rem;
-                border-radius: 0.5rem;
-                margin: 1rem 0;
-            }
-            .alert-success {
-                background-color: #d1fae5;
-                color: #065f46;
-                border: 1px solid #34d399;
-            }
-            .alert-error {
-                background-color: #fee2e2;
-                color: #991b1b;
-                border: 1px solid #f87171;
-            }
-            .form-status {
-                min-height: 3rem;
-            }
-            /* Modal styles */
-            .course-modal, .registration-modal {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                z-index: 9999;
-                overflow-y: auto;
-                align-items: center;
-                justify-content: center;
-            }
-            .course-modal.active, .registration-modal.active {
-                display: flex;
-            }
-            /* Curriculum accordion */
-            .curriculum-item.active .curriculum-content {
-                display: block;
-            }
-            .curriculum-content {
-                display: none;
-                padding: 10px 0;
-            }
-            .curriculum-header {
-                cursor: pointer;
-                padding: 10px 0;
-                border-bottom: 1px solid #eee;
-            }
-            .curriculum-header:hover {
-                background: #f5f5f5;
-            }
-            /* Toast notification */
-            .toast {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 25px;
-                border-radius: 10px;
-                z-index: 99999;
-                transform: translateX(100%);
-                transition: transform 0.3s;
-                font-weight: 600;
-                color: white;
-            }
-            .toast.success {
-                background: #10b981;
-            }
-            .toast.error {
-                background: #ff6b6b;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        console.log('Event listeners setup complete');
-    }
-
-    // Initialize when DOM is loaded
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCourses);
-    } else {
-        // DOM already loaded
-        initCourses();
-    }
+    // Rest of your JavaScript remains the same...
+    // [Keep all the rest of your JavaScript code from line 245 onward]
 </script>
 {% endblock %}

@@ -502,119 +502,301 @@ class SafeUTF8JSONEncoder(DjangoJSONEncoder):
                 # Last resort: remove all non-ASCII
                 return ''.join(char for char in s if ord(char) < 128)
    
-class CoursesPageView(TemplateView):
+class CoursesPageView(ListView):
     """View for displaying the courses page."""
+    model = Course
     template_name = 'Home/courses.html'
+    context_object_name = 'courses'
+    paginate_by = 12
     
-    def clean_string(self, value):
-        """Clean a string to ensure it's valid UTF-8."""
+    def get_queryset(self):
+        """Return filtered and ordered courses."""
+        queryset = Course.objects.filter(is_active=True)
+        
+        # Filter by category if provided
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+        
+        # Filter by level if provided
+        level = self.request.GET.get('level')
+        if level:
+            queryset = queryset.filter(level=level)
+        
+        # Filter by search query if provided
+        search_query = self.request.GET.get('q')
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(short_description__icontains=search_query) |
+                Q(detailed_description__icontains=search_query) |
+                Q(instructor_name__icontains=search_query)
+            )
+        
+        # Order courses
+        order_by = self.request.GET.get('order_by', 'display_order')
+        if order_by == 'price_asc':
+            queryset = queryset.order_by('price')
+        elif order_by == 'price_desc':
+            queryset = queryset.order_by('-price')
+        elif order_by == 'rating':
+            queryset = queryset.order_by('-rating')
+        elif order_by == 'popularity':
+            queryset = queryset.order_by('-students_enrolled')
+        elif order_by == 'newest':
+            queryset = queryset.order_by('-created_at')
+        else:
+            queryset = queryset.order_by('display_order', '-created_at')
+        
+        return queryset
+    
+    def safe_encode_string(self, value):
+        """
+        Safely encode a string to UTF-8, removing any invalid characters.
+        """
         if value is None:
             return ""
         
         if isinstance(value, bytes):
-            # If it's bytes, try to decode it
             try:
-                return value.decode('utf-8', 'replace')
+                return value.decode('utf-8', 'ignore')
             except:
-                return value.decode('latin-1', 'replace')
+                try:
+                    return value.decode('latin-1', 'ignore')
+                except:
+                    return str(value, errors='ignore')
         
         if isinstance(value, str):
-            # If it's already a string, ensure it's valid UTF-8
             try:
-                return value.encode('utf-8', 'replace').decode('utf-8')
+                # Try to encode as UTF-8 first
+                return value.encode('utf-8', 'ignore').decode('utf-8')
             except:
-                # Try latin-1 as fallback
-                try:
-                    return value.encode('latin-1', 'replace').decode('latin-1')
-                except:
-                    # Remove non-ASCII characters as last resort
-                    return ''.join(char for char in value if ord(char) < 128)
+                # If that fails, try more aggressive cleaning
+                cleaned = []
+                for char in value:
+                    try:
+                        # Check if character can be encoded
+                        char.encode('utf-8')
+                        cleaned.append(char)
+                    except UnicodeEncodeError:
+                        # Replace with a safe character
+                        cleaned.append('?')
+                return ''.join(cleaned)
         
         return str(value)
     
-    def clean_course_data(self, course):
-        """Clean all string fields in a course."""
-        cleaned = {
-            'id': course.id,
-            'title': self.clean_string(course.title),
-            'category': self.clean_string(course.category),
-            'level': self.clean_string(course.level),
-            'badge': self.clean_string(course.badge),
-            'icon': self.clean_string(course.icon_class),
-            'description': self.clean_string(course.short_description),
-            'duration': self.clean_string(course.duration),
-            'lessons': str(course.lessons) if course.lessons else "0",
-            'students': str(course.students_enrolled) if course.students_enrolled else "0",
-            'rating': str(course.rating) if course.rating else "0.0",
-            'instructor': self.clean_string(course.instructor_name),
-            'price': float(course.price) if course.price else 0.0,
-            'originalPrice': float(course.original_price) if course.original_price else None,
-            'color': self.clean_string(course.color),
-        }
+    def safe_encode_json(self, data):
+        """
+        Recursively encode JSON data to UTF-8.
+        """
+        if isinstance(data, dict):
+            cleaned = {}
+            for key, value in data.items():
+                safe_key = self.safe_encode_string(key)
+                safe_value = self.safe_encode_json(value)
+                cleaned[safe_key] = safe_value
+            return cleaned
         
-        # Clean details dictionary
-        details = course.get_details_dict() or {}
-        cleaned_details = {}
-        for key, value in details.items():
-            cleaned_key = self.clean_string(key)
-            cleaned_value = self.clean_string(value)
-            cleaned_details[cleaned_key] = cleaned_value
-        cleaned['details'] = cleaned_details
+        elif isinstance(data, list):
+            cleaned = []
+            for item in data:
+                cleaned.append(self.safe_encode_json(item))
+            return cleaned
         
-        # Clean curriculum list
-        curriculum = course.get_curriculum_list() or []
-        cleaned_curriculum = []
-        for module in curriculum:
-            if isinstance(module, dict):
-                cleaned_module = {}
-                for key, value in module.items():
-                    cleaned_key = self.clean_string(key)
-                    if isinstance(value, list):
-                        # Clean lesson names
-                        cleaned_value = [self.clean_string(lesson) for lesson in value]
-                    else:
-                        cleaned_value = self.clean_string(value)
-                    cleaned_module[cleaned_key] = cleaned_value
-                cleaned_curriculum.append(cleaned_module)
-            else:
-                cleaned_curriculum.append(self.clean_string(module))
-        cleaned['curriculum'] = cleaned_curriculum
+        elif isinstance(data, (str, bytes)):
+            return self.safe_encode_string(data)
         
-        return cleaned
+        else:
+            # For numbers, booleans, None - return as is
+            return data
+    
+    def prepare_course_for_json(self, course):
+        """
+        Prepare a course for JSON serialization with maximum safety.
+        """
+        try:
+            # Basic course info with safe encoding
+            course_data = {
+                'id': course.id,
+                'title': self.safe_encode_string(course.title),
+                'category': self.safe_encode_string(course.category),
+                'level': self.safe_encode_string(course.level),
+                'badge': self.safe_encode_string(course.badge),
+                'icon': self.safe_encode_string(course.icon_class),
+                'description': self.safe_encode_string(course.short_description),
+                'duration': self.safe_encode_string(course.duration),
+                'lessons': self.safe_encode_string(course.lessons) if course.lessons else "0",
+                'students': str(course.students_enrolled) if course.students_enrolled else "0",
+                'rating': str(float(course.rating)) if course.rating else "0.0",
+                'instructor': self.safe_encode_string(course.instructor_name),
+                'instructor_bio': self.safe_encode_string(course.instructor_bio),
+                'instructor_title': self.safe_encode_string(course.instructor_title),
+                'price': float(course.price) if course.price else 0.0,
+                'originalPrice': float(course.original_price) if course.original_price else None,
+                'color': self.safe_encode_string(course.color),
+                'slug': self.safe_encode_string(course.slug),
+                'url': course.get_absolute_url(),
+            }
+            
+            # Safely handle details JSON
+            try:
+                if course.details:
+                    if isinstance(course.details, str):
+                        import json
+                        course.details = json.loads(course.details)
+                    course_data['details'] = self.safe_encode_json(course.details)
+                else:
+                    course_data['details'] = {}
+            except Exception as e:
+                logger.warning(f"Error processing details for course {course.id}: {e}")
+                course_data['details'] = {}
+            
+            # Safely handle curriculum JSON
+            try:
+                if course.curriculum:
+                    if isinstance(course.curriculum, str):
+                        import json
+                        course.curriculum = json.loads(course.curriculum)
+                    course_data['curriculum'] = self.safe_encode_json(course.curriculum)
+                else:
+                    course_data['curriculum'] = []
+            except Exception as e:
+                logger.warning(f"Error processing curriculum for course {course.id}: {e}")
+                course_data['curriculum'] = []
+            
+            return course_data
+            
+        except Exception as e:
+            logger.error(f"Critical error preparing course {course.id} for JSON: {e}")
+            # Return minimal safe data
+            return {
+                'id': course.id,
+                'title': 'Course',
+                'category': 'other',
+                'level': 'beginner',
+                'badge': '',
+                'icon': 'fas fa-book',
+                'description': 'Course description',
+                'duration': '12 Weeks',
+                'lessons': '0',
+                'students': '0',
+                'rating': '0.0',
+                'instructor': 'Instructor',
+                'price': 0.0,
+                'originalPrice': None,
+                'color': '#3776AB',
+                'details': {},
+                'curriculum': [],
+            }
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Get all active courses
-        courses = Course.objects.filter(is_active=True).order_by('display_order', '-created_at')
-        
         # Get course statistics
         stats, _ = CourseStat.objects.get_or_create(id=1)
         
-        # Get categories from model choices
+        # Get all available categories from the model
         categories = Course.CATEGORY_CHOICES
         
-        # Prepare courses data for JSON serialization with cleaning
-        courses_data = []
-        for course in courses:
-            try:
-                course_data = self.clean_course_data(course)
-                courses_data.append(course_data)
-            except Exception as e:
-                # Log the error but continue with other courses
-                logger.error(f"Error processing course {course.id}: {e}")
-                continue
+        # Get all available levels
+        levels = Course.LEVEL_CHOICES
         
-        # Use the SafeUTF8JSONEncoder for serialization
+        # Get filter parameters
+        current_category = self.request.GET.get('category', '')
+        current_level = self.request.GET.get('level', '')
+        current_search = self.request.GET.get('q', '')
+        current_order = self.request.GET.get('order_by', 'display_order')
+        
+        # Prepare courses data for JSON serialization
+        courses_data = []
+        for course in context['courses']:
+            course_data = self.prepare_course_for_json(course)
+            courses_data.append(course_data)
+        
+        # Use a very safe JSON encoder
+        import json
+        from django.core.serializers.json import DjangoJSONEncoder
+        
+        class UltraSafeJSONEncoder(DjangoJSONEncoder):
+            def encode(self, obj):
+                # Override encode to handle any encoding issues
+                try:
+                    return super().encode(obj)
+                except (UnicodeDecodeError, UnicodeEncodeError) as e:
+                    logger.error(f"JSON encoding error: {e}")
+                    # Try to clean the data and encode again
+                    cleaned_obj = self.clean_object(obj)
+                    try:
+                        return super().encode(cleaned_obj)
+                    except:
+                        # Last resort: return empty array
+                        return '[]'
+            
+            def clean_object(self, obj):
+                """Recursively clean an object for JSON serialization."""
+                if isinstance(obj, dict):
+                    cleaned = {}
+                    for key, value in obj.items():
+                        safe_key = self.make_string_safe(key)
+                        cleaned[safe_key] = self.clean_object(value)
+                    return cleaned
+                
+                elif isinstance(obj, list):
+                    cleaned = []
+                    for item in obj:
+                        cleaned.append(self.clean_object(item))
+                    return cleaned
+                
+                elif isinstance(obj, (str, bytes)):
+                    return self.make_string_safe(obj)
+                
+                else:
+                    return obj
+            
+            def make_string_safe(self, value):
+                """Make a string safe for JSON."""
+                if value is None:
+                    return ""
+                
+                if isinstance(value, bytes):
+                    try:
+                        value = value.decode('utf-8', 'ignore')
+                    except:
+                        try:
+                            value = value.decode('latin-1', 'ignore')
+                        except:
+                            value = ''
+                
+                if isinstance(value, str):
+                    # Remove any non-ASCII characters that cause issues
+                    return ''.join(
+                        char for char in value 
+                        if ord(char) < 55296 or (57343 < ord(char) < 65536)
+                    )
+                
+                return str(value) if value else ""
+        
         try:
-            courses_json = json.dumps(courses_data, cls=SafeUTF8JSONEncoder)
+            courses_json = json.dumps(courses_data, cls=UltraSafeJSONEncoder, ensure_ascii=False)
         except Exception as e:
-            logger.error(f"Error serializing courses to JSON: {e}")
-            # Fallback to empty list
+            logger.error(f"Fatal JSON serialization error: {e}")
             courses_json = '[]'
         
+        # Get featured courses
+        featured_courses = Course.objects.filter(
+            is_active=True, 
+            is_featured=True
+        ).order_by('display_order')[:3]
+        
+        # Prepare featured courses for template
+        cleaned_featured_courses = []
+        for course in featured_courses:
+            try:
+                cleaned_featured_courses.append(self.prepare_course_for_json(course))
+            except:
+                pass
+        
         context.update({
-            'courses': courses,
             'courses_json': courses_json,
             'stats': {
                 'total_courses': stats.total_courses,
@@ -623,6 +805,13 @@ class CoursesPageView(TemplateView):
                 'total_instructors': stats.total_instructors,
             },
             'categories': categories,
+            'levels': levels,
+            'featured_courses': featured_courses,
+            'current_category': current_category,
+            'current_level': current_level,
+            'current_search': current_search,
+            'current_order': current_order,
+            'total_courses_count': self.get_queryset().count(),
         })
         
         return context
