@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Home',
+    # 'SalesPro.apps.SalesproConfig',
     'Pitchs.apps.PitchsConfig'
 ]
 
@@ -123,6 +124,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'Home' / 'static',
+    BASE_DIR / 'SalesPro' / 'static',
 ]
 
 MEDIA_URL = '/media/'
@@ -157,22 +159,26 @@ LOGGING = {
     },
 }
 
+#timezone
+TIME_ZONE = 'Africa/Nairobi'
+USE_TZ = True
+
+from decouple import config
+
 
 # EMAIL CONFIGURATION FOR TESTING PURPOSES
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - emails print to console
 DEFAULT_FROM_EMAIL = 'noreply@blackcodelabs.com'
-CONTACT_NOTIFICATION_EMAIL = 'admin@blackcodelabs.com'
+CONTACT_NOTIFICATION_EMAIL = 'sales@blackcodelabs.com'
 
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://blackcodelabs.com']
 
 # For production, uncomment and configure the following:
-# -----------------------------------------------------------------------------#
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For production
-
-# For SMTP backend (production/real emails), add these:
-# EMAIL_HOST = 'smtp.gmail.com'  # or your email provider
-# EMAIL_PORT = 587
+# EMAIL_BACKEND = config('EMAIL_BACKEND')
+# EMAIL_HOST = config('EMAIL_HOST')
+# EMAIL_PORT = int(config('EMAIL_PORT'))  # Default to 587 if not set
 # EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'your-app-password'  # Use app password, not regular password
-# DEFAULT_FROM_EMAIL = 'noreply@blackcodelabs.com'
-# CONTACT_NOTIFICATION_EMAIL = 'admin@blackcodelabs.com'  # Where to send notifications
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
