@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Enolix Consultants | Strategic Tax & Corporate Advisory</title>
+    <!-- Google Fonts: Sophisticated & Clean -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+        }
+
+        /* Clean, spaced out layout */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 2rem 3rem;
+        }
+
+        /* Header / Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f3b2c;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: #2c7a5e;
+            font-weight: 500;
+        }
+        .nav-cta {
+            background: #0f3b2c;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.6rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-cta:hover {
+            background: #1a5a44;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            align-items: center;
+        }
+        @media (max-width: 800px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+        }
+        .hero-content h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #0a2e24;
+            margin-bottom: 1rem;
+        }
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #334155;
+            margin-bottom: 2rem;
+            max-width: 90%;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        .hero-stat {
+            text-align: left;
+        }
+        .hero-stat .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f3b2c;
+        }
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: #547a6a;
+        }
+        .hero-badge {
+            background: #e6f4ef;
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0f3b2c;
+            margin-bottom: 1rem;
+        }
+        .hero-image {
+            background: linear-gradient(135deg, #e0f2e9, #cbdde6);
+            border-radius: 2rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.05);
+        }
+        .hero-image i {
+            font-size: 5rem;
+            color: #0f3b2c;
+            opacity: 0.8;
+        }
+
+        /* Pinned Section Title */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #0a2e24;
+        }
+        .section-title i {
+            color: #2c7a5e;
+            font-size: 1.6rem;
+        }
+
+        /* Pinned Grid - Clean Card Layout */
+        .pinned-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .pin-card {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.25s ease;
+            border: 1px solid #eef2f6;
+            cursor: default;
+        }
+        .pin-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -12px rgba(0,0,0,0.08);
+            border-color: #cbdde0;
+        }
+        .pin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .pin-icon {
+            color: #c48b2b;
+            font-size: 0.9rem;
+        }
+        .pin-views {
+            font-size: 0.7rem;
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            color: #4a6a5c;
+            font-weight: 500;
+        }
+        .pin-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1e2f3a;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        .pin-desc {
+            font-size: 0.75rem;
+            color: #5f7c6e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Services & Info Row */
+        .info-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        @media (max-width: 700px) {
+            .info-row {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .pinned-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .service-card, .contact-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            border: 1px solid #eef2f8;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .service-card h3, .contact-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #0f3b2c;
+        }
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f4f8;
+        }
+        .service-item i {
+            width: 28px;
+            color: #2c7a5e;
+            font-size: 1.1rem;
+        }
+        .contact-details {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .phone-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f3b2c;
+            letter-spacing: -0.02em;
+            margin: 0.5rem 0;
+        }
+        .contact-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 2.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+        .contact-btn.outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: #1e4620;
+            margin-left: 0.5rem;
+        }
+        .contact-btn.outline:hover {
+            background: #f1f5f9;
+        }
+        .contact-btn:hover {
+            transform: scale(1.02);
+            background: #128C7E;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            color: #5b6e5e;
+        }
+        .badge-expert {
+            background: #eef2ff;
+            color: #1e4a6e;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            font-weight: 600;
+        }
+        .toast-message {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: #1e293b;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(4px);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Navigation -->
+    <div class="navbar">
+        <div class="logo">
+            <h1>ENOLIX <span>CONSULTANTS</span></h1>
+        </div>
+        <button class="nav-cta" id="navContactBtn"><i class="fas fa-headset"></i> Expert Help</button>
+    </div>
+
+    <!-- Hero Section: Clean & Premium -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-badge"><i class="fas fa-chart-line"></i> Kenya's Trusted Tax & Corporate Partner</div>
+            <h2>Navigate Tax,<br>Structure & Growth</h2>
+            <p>Strategic advisory for business owners, investors, and property holders. From KRA compliance to LLC conversions — we architect your success.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="number">5.5M+</div>
+                    <div class="label">Community Reach</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number">352K+</div>
+                    <div class="label">Tax Resolutions</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number">198K+</div>
+                    <div class="label">Business Guides</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <i class="fas fa-building"></i>
+            <i class="fas fa-chart-pie" style="margin-left: 1rem;"></i>
+            <i class="fas fa-gavel" style="margin-left: 1rem;"></i>
+            <p style="margin-top: 1rem; font-size:0.8rem; color:#2c5a4a;">Corporate & Tax Architects</p>
+        </div>
+    </div>
+
+    <!-- Pinned Posts Section (From Image Data) -->
+    <div class="section-title">
+        <i class="fas fa-thumbtack"></i> 
+        <span>Pinned Insights & Updates</span>
+        <span class="badge-expert" style="margin-left: 1rem;">2025-2026 Edition</span>
+    </div>
+    <div class="pinned-grid" id="pinnedGrid">
+        <!-- Pinned items will be injected via JS from the given data -->
+    </div>
+
+    <!-- Services & Contact Row -->
+    <div class="info-row">
+        <div class="service-card">
+            <h3><i class="fas fa-briefcase"></i> Core Expertise</h3>
+            <div class="service-list" id="servicesList"></div>
+        </div>
+        <div class="contact-card">
+            <h3><i class="fas fa-phone-alt"></i> Direct Advisory</h3>
+            <div class="contact-details">
+                <p><i class="fas fa-map-marker-alt"></i> Nairobi | Kenya</p>
+                <div class="phone-number" id="phoneNumber">+254 700 111 222</div>
+                <p style="font-size: 0.75rem; color:#5f7c6e;">📞 Call / WhatsApp / Telegram</p>
+                <div>
+                    <button class="contact-btn" id="whatsappTrigger"><i class="fab fa-whatsapp"></i> WhatsApp Now</button>
+                    <button class="contact-btn outline" id="copyPhoneBtn"><i class="far fa-copy"></i> Copy Number</button>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.7rem; background: #eef2ef; padding: 0.5rem; border-radius: 1rem;">
+                    <i class="fas fa-clock"></i> Response within 1 hour | Mon-Sat 8am-6pm
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <i class="fas fa-scale-balanced"></i> Enolix Consultants — Expert guidance on KRA compliance, rental tax, property gains, LLC registration & foreign ownership. 
+        <br>© 2025 — Transforming Complexity into Clarity.
+    </div>
+</div>
+
+<script>
+    // Pinned data exactly as per image description
+    const pinnedItemsData = [
+        { title: "Removing someone from your company in 2025", views: "92.9K", category: "Corporate" },
+        { title: "Business Name vs Limited liability company [LLC]", views: "198.4K", category: "Structuring" },
+        { title: "Tax Compliance HAS BEEN WITHDRAWN IN KENYA. Here how to manage the situation", views: "352.4K", category: "Urgent KRA" },
+        { title: "Filing Tax Returns for Business owners & former employers", views: "2.8K", category: "Compliance" },
+        { title: "Rental income tax for tenants who pay Quarterly...", views: "6.1K", category: "Property" },
+        { title: "Land ownership by foreigners in Kenya", views: "4.3K", category: "Legal" },
+        { title: "Tax Liability of the Property you bought...", views: "4.7K", category: "Capital Gains" },
+        { title: "Monthly Rental income tax in Kenya. YOU MUST KNOW THIS", views: "6.9K", category: "Essential" },
+        { title: "Filing Nil Returns & eTims 2026", views: "9.2K", category: "eTims" },
+        { title: "Selling property in accordance with Kenya Revenue Authority", views: "176K", category: "Transaction" },
+        { title: "Convert your business name to limited liability company", views: "5.9K", category: "Conversion" },
+        { title: "Call number in BIO for assistance", views: "5.5M", category: "Support" }
+    ];
+
+    // Render Pinned Grid
+    const pinnedGrid = document.getElementById('pinnedGrid');
+    if (pinnedGrid) {
+        pinnedItemsData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'pin-card';
+            card.innerHTML = `
+                <div class="pin-header">
+                    <span class="pin-icon"><i class="fas fa-thumbtack"></i> Pinned</span>
+                    <span class="pin-views"><i class="fas fa-eye"></i> ${item.views} views</span>
+                </div>
+                <div class="pin-title">${item.title}</div>
+                <div class="pin-desc">
+                    <i class="fas fa-tag"></i> ${item.category}
+                    <span style="margin-left: auto; font-size: 0.7rem; color:#2c7a5e;"><i class="fas fa-arrow-right"></i> insight</span>
+                </div>
+            `;
+            card.addEventListener('click', () => {
+                showToastMessage(`🔍 Accessing: ${item.title} — Premium resource from Enolix.`);
+            });
+            pinnedGrid.appendChild(card);
+        });
+    }
+
+    // Services List Data
+    const servicesData = [
+        { icon: "fas fa-chart-line", text: "KRA Tax Compliance & Audit Support" },
+        { icon: "fas fa-building", text: "Business Name to LLC Conversion" },
+        { icon: "fas fa-home", text: "Rental Income & Property Tax Structuring" },
+        { icon: "fas fa-globe", text: "Foreign Land Ownership & Investment" },
+        { icon: "fas fa-file-alt", text: "Nil Returns, eTims 2026 & Digital Filing" },
+        { icon: "fas fa-user-check", text: "Director/Shareholder Changes & Removal" },
+        { icon: "fas fa-hand-holding-usd", text: "Capital Gains & Property Sales Advisory" }
+    ];
+    const servicesContainer = document.getElementById('servicesList');
+    if (servicesContainer) {
+        servicesData.forEach(service => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'service-item';
+            itemDiv.innerHTML = `<i class="${service.icon}"></i> <span>${service.text}</span>`;
+            servicesContainer.appendChild(itemDiv);
+        });
+    }
+
+    // Toast message utility
+    function showToastMessage(message, duration = 3500) {
+        const existingToast = document.querySelector('.toast-message');
+        if (existingToast) existingToast.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.innerHTML = `<i class="fas fa-circle-info" style="color:#6fbf4c;"></i> ${message}`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s';
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    }
+
+    // Copy phone number functionality
+    const phoneNumberElem = document.getElementById('phoneNumber');
+    const copyBtn = document.getElementById('copyPhoneBtn');
+    const phoneNumberRaw = "+254700111222";
+    
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(phoneNumberRaw).then(() => {
+                showToastMessage("📋 Phone number copied: +254 700 111 222 — Reach out anytime.");
+            }).catch(() => {
+                showToastMessage("Could not copy, please manually note the number.");
+            });
+        });
+    }
+    
+    // WhatsApp trigger
+    const whatsappBtn = document.getElementById('whatsappTrigger');
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', () => {
+            const waUrl = `https://wa.me/${phoneNumberRaw.replace(/[^0-9]/g, '')}`;
+            window.open(waUrl, '_blank');
+            showToastMessage("💬 Opening WhatsApp — A consultant will respond promptly.");
+        });
+    }
+    
+    // Nav contact button
+    const navBtn = document.getElementById('navContactBtn');
+    if (navBtn) {
+        navBtn.addEventListener('click', () => {
+            showToastMessage("📞 Speak to a senior consultant: Call +254 700 111 222 or WhatsApp.");
+            // Smooth scroll to contact card
+            document.querySelector('.contact-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+    
+    // Optional: add quick hover effects on pin cards (micro-interaction)
+    const style = document.createElement('style');
+    style.textContent = `
+        .pin-card {
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .service-item:hover {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding-left: 8px;
+            transition: 0.1s;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Add subtle statistic counters for hero numbers? Already static but nice.
+    console.log("Enolix Consultants — Super clean, premium & responsive UI ready");
+    
+    // Additional Interactive: phone number click to copy
+    if (phoneNumberElem) {
+        phoneNumberElem.style.cursor = 'pointer';
+        phoneNumberElem.addEventListener('click', () => {
+            navigator.clipboard.writeText(phoneNumberRaw);
+            showToastMessage("✅ Number copied! We're ready to assist.");
+        });
+    }
+    
+    // For each pinned card - add a light shimmer effect on hover via js (optional)
+    const cards = document.querySelectorAll('.pin-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', (e) => {
+            card.style.borderColor = '#cbd5e1';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.borderColor = '#eef2f6';
+        });
+    });
+</script>
+</body>
+</html>

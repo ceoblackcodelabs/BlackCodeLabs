@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Home',
     # 'SalesPro.apps.SalesproConfig',
+    'QRidentifier.apps.QRIdentifierConfig',
     'Pitchs.apps.PitchsConfig'
 ]
 
