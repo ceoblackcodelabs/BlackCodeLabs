@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2D-Doc Verification - Said Rachid Naguib</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0a0a0a;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #111111;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      padding: 20px 30px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #22c55e;
+    }
+
+    .status::before {
+      content: "✅";
+      font-size: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #ffffff;
+    }
+
+    .main-content {
+      padding: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th, td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid #222;
+    }
+
+    th {
+      background-color: #1a1a1a;
+      color: #888;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      color: #ddd;
+    }
+
+    .highlight {
+      background-color: #1f2a1f;
+      font-weight: 600;
+      color: #4ade80;
+    }
+
+    .section-title {
+      background-color: #1f1f1f;
+      padding: 12px 18px;
+      margin: 25px 0 10px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #aaa;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #222;
+    }
+
+    .badge {
+      background-color: #22c55e;
+      color: black;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>VDSeal Reader</h1>
+        <div class="status">Le 2D-Doc est valide</div>
+      </div>
+      <div class="badge">VALID</div>
+    </header>
+
+    <div class="main-content">
+
+      <div class="section-title">Document Information</div>
+      <table>
+        <tr>
+          <th>Document Type</th>
+          <td>Foreign Document</td>
+        </tr>
+        <tr>
+          <th>AC Identifier</th>
+          <td>FR06</td>
+        </tr>
+        <tr>
+          <th>Participant Identifier</th>
+          <td>DGE0</td>
+        </tr>
+        <tr>
+          <th>Issue Date</th>
+          <td>28 April 2026</td>
+        </tr>
+        <tr>
+          <th>Signature Date</th>
+          <td>28 April 2026</td>
+        </tr>
+      </table>
+
+      <div class="section-title">Personal Information</div>
+      <table>
+        <tr>
+          <th>Surname (Patronymic Name)</th>
+          <td class="highlight">NAGUIB</td>
+        </tr>
+        <tr>
+          <th>First Names</th>
+          <td class="highlight">SAID RACHID</td>
+        </tr>
+        <tr>
+          <th>Gender</th>
+          <td>Male</td>
+        </tr>
+        <tr>
+          <th>Date of Birth</th>
+          <td>25 August 2002 (Age: 23)</td>
+        </tr>
+        <tr>
+          <th>Place of Birth</th>
+          <td>OUELLAH MITSAMIOULI</td>
+        </tr>
+        <tr>
+          <th>Country of Birth</th>
+          <td>Comoros (KM)</td>
+        </tr>
+        <tr>
+          <th>Nationality</th>
+          <td>Comoros (KM)</td>
+        </tr>
+      </table>
+      <div class="section-title">Authorization & Residence</div>
+      <table>
+        <tr>
+          <th>Authorization</th>
+          <td class="highlight">AUTHORIZED TO WORK</td>
+        </tr>
+        <tr>
+          <th>Title Category</th>
+          <td class="highlight">FAMILY MEMBER OF A FRENCH CITIZEN</td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>9 Traverse des Rosiers, 13014 Marseille, France</td>
+        </tr>
+      </table>
+
+      <div class="section-title">Document Details</div>
+      <table>
+        <tr>
+          <th>Foreign Document Request Number</th>
+          <td>1304202604280447966</td>
+        </tr>
+        <tr>
+          <th>Request Date</th>
+          <td>28 April 2026</td>
+        </tr>
+        <tr>
+          <th>Foreigner Number</th>
+          <td>NONE</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <strong>Direction Générale des Étrangers en France</strong><br>
+      Code 2D-Doc Certified • Issued on 28 April 2026
+    </div>
+  </div>
+</body>
+</html>
