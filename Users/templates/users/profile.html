@@ -1,0 +1,475 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ profile.name }} - Developer Portfolio</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free Website Template" name="keywords">
+    <meta content="Free Website Template" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'pot/img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'pot/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'pot/lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'pot/lib/animate/animate.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'pot/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'pot/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4 sticky-lg-top vh-100">
+                <div class="d-flex flex-column h-100 text-center overflow-auto shadow">
+                    {% if profile.profile_image %}
+                        <img class="w-100 img-fluid mb-4" src="{{ profile.profile_image.url }}" alt="{{ profile.name }}">
+                    {% else %}
+                        <img class="w-100 img-fluid mb-4" src="/static/img/profile.jpg" alt="Profile Image">
+                    {% endif %}
+                    
+                    <h1 class="text-primary mt-2">{{ profile.name }}</h1>
+                    
+                    <div class="mb-4" style="height: 22px;">
+                        <h4 class="typed-text-output d-inline-block text-light"></h4>
+                        <div class="typed-text d-none">{{ profile.typed_texts }}</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center mt-auto mb-3">
+                        {% if profile.twitter %}
+                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                        {% endif %}
+                        {% if profile.facebook %}
+                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        {% endif %}
+                        {% if profile.linkedin %}
+                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        {% endif %}
+                        {% if profile.instagram %}
+                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                        {% endif %}
+                        {% if profile.github %}
+                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.github }}" target="_blank"><i class="fab fa-github"></i></a>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex align-items-end justify-content-between border-top">
+                        {% if profile.cv_file %}
+                            <a href="{{ profile.cv_file.url }}" class="btn w-50 border-end" download>Download CV</a>
+                        {% else %}
+                            <a href="#" class="btn w-50 border-end">Download CV</a>
+                        {% endif %}
+                        <a href="#contact" class="btn w-50 btn-scroll">Contact Me</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <!-- About Start -->
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
+                    <h1 class="title pb-3 mb-5">About Me</h1>
+                    <p>{{ profile.about_text|linebreaks }}</p>
+                    
+                    <div class="row mb-4">
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Name:</span> {{ profile.name }}
+                        </div>
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Birthday:</span> {{ profile.birthday|date:"j F Y"|default:"Not specified" }}
+                        </div>
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Degree:</span> {{ profile.degree }}
+                        </div>
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Experience:</span> {{ profile.experience_years }} Years
+                        </div>
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Phone:</span> {{ profile.phone }}
+                        </div>
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Email:</span> {{ profile.email }}
+                        </div>
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Address:</span> {{ profile.address }}
+                        </div>
+                        <div class="col-sm-6 py-1">
+                            <span class="fw-medium text-primary">Freelance:</span> {{ profile.get_freelance_status_display }}
+                        </div>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-4 col-lg-6 col-xl-4">
+                            <div class="d-flex bg-secondary p-4">
+                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">{{ profile.years_of_experience }}</h1>
+                                <div class="ps-3">
+                                    <p class="mb-0">Years of</p>
+                                    <h5 class="mb-0">Experience</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-6 col-xl-4">
+                            <div class="d-flex bg-secondary p-4">
+                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">{{ profile.happy_clients }}</h1>
+                                <div class="ps-3">
+                                    <p class="mb-0">Happy</p>
+                                    <h5 class="mb-0">Clients</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-6 col-xl-4">
+                            <div class="d-flex bg-secondary p-4">
+                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">{{ profile.completed_projects }}</h1>
+                                <div class="ps-3">
+                                    <p class="mb-0">Complete</p>
+                                    <h5 class="mb-0">Projects</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- About End -->
+
+                <!-- Skills Start -->
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
+                    <h1 class="title pb-3 mb-5">Skills</h1>
+                    <div class="row">
+                        {% for skill in skills %}
+                            <div class="col-sm-6">
+                                <div class="skill mb-4">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-2">{{ skill.name }}</p>
+                                        <p class="mb-2">{{ skill.percentage }}%</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-{{ skill.color }}" role="progressbar" 
+                                             aria-valuenow="{{ skill.percentage }}" aria-valuemin="0" aria-valuemax="100" 
+                                             style="width: {{ skill.percentage }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12">
+                                <p class="text-center">No skills added yet.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <!-- Skills End -->
+
+                <!-- Experience Start -->
+                <section class="py-5 wow fadeInUp" data-wow-delay="0.1s">
+                    <h1 class="title pb-3 mb-5">Experience</h1>
+                    <div class="border-start border-2 border-light pt-2 ps-5">
+                        {% for experience in experiences %}
+                            <div class="position-relative mb-4">
+                                <span class="bi bi-arrow-right fs-4 text-light position-absolute" style="top: -5px; left: -50px;"></span>
+                                <h5 class="mb-1">{{ experience.title }}</h5>
+                                <p class="mb-2">{{ experience.company }} | <small>{{ experience.get_date_range }}</small></p>
+                                <p>{{ experience.description|linebreaks|truncatewords:50 }}</p>
+                            </div>
+                        {% empty %}
+                            <div class="position-relative mb-4">
+                                <p>No work experience added yet.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <!-- Experience End -->
+
+                <!-- Education Start -->
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
+                    <h1 class="title pb-3 mb-5">Education</h1>
+                    <div class="border-start border-2 border-light pt-2 ps-5">
+                        {% for education in educations %}
+                            <div class="position-relative mb-4">
+                                <span class="bi bi-arrow-right fs-4 text-light position-absolute" style="top: -5px; left: -50px;"></span>
+                                <h5 class="mb-1">{{ education.degree }}</h5>
+                                <p class="mb-2">{{ education.institution }} | <small>{{ education.start_year }} - {% if education.end_year %}{{ education.end_year }}{% else %}Present{% endif %}</small></p>
+                                <p>{{ education.description|linebreaks|truncatewords:50 }}</p>
+                            </div>
+                        {% empty %}
+                            <div class="position-relative mb-4">
+                                <p>No education added yet.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <!-- Education End -->
+
+                <!-- Subscribe Start -->
+                <section class="wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-secondary text-center p-5">
+                        <h1 class="text-white font-weight-bold">{{ site_settings.subscribe_title|default:"Subscribe My Newsletter" }}</h1>
+                        <p class="text-white">{{ site_settings.subscribe_text|default:"Subscribe and get my latest article in your inbox" }}</p>
+                        <div class="position-relative w-100">
+                            <input class="form-control bg-dark border-0 w-100 py-3 ps-4 pe-5" type="email" id="newsletter-email" placeholder="Your email">
+                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2" id="subscribe-btn">Subscribe</button>
+                        </div>
+                        <div id="subscribe-message" class="mt-3"></div>
+                    </div>
+                </section>
+                <!-- Subscribe End -->
+
+                <!-- Services Start -->
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
+                    <h1 class="title pb-3 mb-5">Services</h1>
+                    <div class="row g-4">
+                        {% for service in services %}
+                            <div class="col-md-6">
+                                <div class="service-item">
+                                    <i class="fa fa-2x {{ service.icon }} mx-auto mb-4"></i>
+                                    <h5 class="mb-2">{{ service.title }}</h5>
+                                    <p class="mb-0">{{ service.description|truncatewords:30 }}</p>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12">
+                                <p class="text-center">No services added yet.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <!-- Services End -->
+
+                <!-- Portfolio Start -->
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
+                    <h1 class="title pb-3 mb-5">Portfolio</h1>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 text-center mb-2">
+                                    <ul class="list-inline mb-4" id="portfolio-flters">
+                                        <li class="btn btn-secondary active" data-filter="*"><i class="fa fa-star me-2"></i>All</li>
+                                        {% for category in portfolio_categories %}
+                                            <li class="btn btn-secondary" data-filter=".{{ category.filter_class }}"><i class="fa fa-laptop-code me-2"></i>{{ category.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row portfolio-container">
+                                {% for item in portfolio_items %}
+                                    <div class="col-md-6 mb-4 portfolio-item {{ item.category.filter_class|default:'' }}">
+                                        <div class="position-relative overflow-hidden mb-2">
+                                            {% if item.image %}
+                                                <img class="img-fluid w-100" src="{{ item.image.url }}" alt="{{ item.title }}">
+                                            {% else %}
+                                                <img class="img-fluid w-100" src="/static/img/portfolio-1.jpg" alt="{{ item.title }}">
+                                            {% endif %}
+                                            <div class="portfolio-btn d-flex align-items-center justify-content-center">
+                                                <a href="{% if item.image %}{{ item.image.url }}{% else %}/static/img/portfolio-1.jpg{% endif %}" data-lightbox="portfolio">
+                                                    <i class="bi bi-plus text-light"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <h5 class="text-center mt-2">{{ item.title }}</h5>
+                                        <p class="text-center small">{{ item.description|truncatewords:20 }}</p>
+                                    </div>
+                                {% empty %}
+                                    <div class="col-12">
+                                        <p class="text-center">No portfolio items added yet.</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Portfolio End -->
+
+                <!-- Testimonial Start -->
+                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
+                    <h1 class="title pb-3 mb-5">Testimonial</h1>
+                    <div class="owl-carousel testimonial-carousel">
+                        {% for testimonial in testimonials %}
+                            <div class="text-left">
+                                <i class="fa fa-3x fa-quote-left text-primary mb-4"></i>
+                                <p class="fs-4 mb-4">{{ testimonial.testimonial_text|truncatewords:40 }}</p>
+                                <div class="d-flex align-items-center">
+                                    {% if testimonial.client_image %}
+                                        <img class="img-fluid" src="{{ testimonial.client_image.url }}" style="width: 60px; height: 60px; border-radius: 50%;">
+                                    {% else %}
+                                        <img class="img-fluid" src="/static/img/testimonial-1.jpg" style="width: 60px; height: 60px;">
+                                    {% endif %}
+                                    <div class="ps-3">
+                                        <p class="text-primary fs-5 mb-1">{{ testimonial.client_name }}</p>
+                                        <i>{{ testimonial.client_profession }}</i>
+                                        <div class="mt-1">
+                                            {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= testimonial.rating %}
+                                                    <i class="fas fa-star text-warning" style="font-size: 12px;"></i>
+                                                {% else %}
+                                                    <i class="far fa-star text-warning" style="font-size: 12px;"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="text-left">
+                                <p>No testimonials added yet.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <!-- Testimonial End -->
+
+                <!-- Contact Start -->
+                <section class="py-5 wow fadeInUp" data-wow-delay="0.1s" id="contact">
+                    <h1 class="title pb-3 mb-5">Contact Me</h1>
+                    {% if site_settings.contact_form_active %}
+                        <p class="mb-4">{{ site_settings.contact_form_message|default:"I'll get back to you within 24 hours." }}</p>
+                        <form id="contact-form" method="post" action="{% url 'users:send_contact' %}">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control border-0 bg-secondary" id="name" name="name" placeholder="Your Name" required>
+                                        <label for="name">Your Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control border-0 bg-secondary" id="email" name="email" placeholder="Your Email" required>
+                                        <label for="email">Your Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control border-0 bg-secondary" id="subject" name="subject" placeholder="Subject" required>
+                                        <label for="subject">Subject</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control border-0 bg-secondary" placeholder="Leave a message here" id="message" name="message" style="height: 200px" required></textarea>
+                                        <label for="message">Message</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="contact-message" class="mt-3"></div>
+                    {% else %}
+                        <p class="mb-4">{{ site_settings.contact_form_message|default:"The contact form is currently inactive. Please reach out via email or social media." }}</p>
+                    {% endif %}
+                </section>
+                <!-- Contact End -->
+
+                <!-- Footer Start -->
+                <section class="wow fadeIn" data-wow-delay="0.1s">
+                    <div class="bg-secondary text-light text-center p-5">
+                        <div class="d-flex justify-content-center mb-4">
+                            {% if profile.twitter %}
+                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                            {% if profile.facebook %}
+                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            {% endif %}
+                            {% if profile.linkedin %}
+                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            {% endif %}
+                            {% if profile.instagram %}
+                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-center mb-3">
+                            <a class="text-light px-3 border-end" href="#">Privacy</a>
+                            <a class="text-light px-3 border-end" href="#">Terms</a>
+                            <a class="text-light px-3 border-end" href="#">FAQs</a>
+                            <a class="text-light px-3" href="#">Help</a>
+                        </div>
+                        
+                        <p class="m-0">&copy; {% now "Y" %} {{ site_settings.footer_text|default:"All Rights Reserved. Designed by HTML Codex" }}</p>
+                    </div>
+                </section>
+                <!-- Footer End -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'pot/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'pot/lib/typed/typed.min.js' %}"></script>
+    <script src="{% static 'pot/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'pot/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'pot/lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'pot/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'pot/lib/isotope/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'pot/lib/lightbox/js/lightbox.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'pot/js/main.js' %}"></script>
+    
+    <!-- Custom AJAX for Subscribe and Contact -->
+    <script>
+        // Typed text initialization
+        $(document).ready(function() {
+            if ($('.typed-text').length) {
+                var typed_strings = $('.typed-text').text().split(',');
+                var typed = new Typed('.typed-text-output', {
+                    strings: typed_strings,
+                    typeSpeed: 100,
+                    backSpeed: 20,
+                    smartBackspace: false,
+                    loop: true
+                });
+            }
+            
+            // Newsletter subscription
+            $('#subscribe-btn').click(function() {
+                var email = $('#newsletter-email').val();
+                if (email) {
+                    $.ajax({
+                        url: '{% url "users:subscribe" %}',
+                        type: 'POST',
+                        data: {
+                            'email': email,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            $('#subscribe-message').html('<div class="alert alert-success">' + response.message + '</div>');
+                            $('#newsletter-email').val('');
+                        },
+                        error: function(response) {
+                            $('#subscribe-message').html('<div class="alert alert-danger">' + response.responseJSON.error + '</div>');
+                        }
+                    });
+                } else {
+                    $('#subscribe-message').html('<div class="alert alert-warning">Please enter your email address.</div>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

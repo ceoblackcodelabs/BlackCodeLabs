@@ -25,6 +25,7 @@ urlpatterns = [
     # path("salespro/", include("SalesPro.urls")),
     path('QRIdentifier/', include('QRIdentifier.urls')),
     path('', include('Home.urls')),
+    path('accounts/', include('Users.urls')),
 ]
 
 if settings.DEBUG:

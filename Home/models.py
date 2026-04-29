@@ -12,6 +12,7 @@ from django.urls import reverse
 from django.core.validators import RegexValidator
 import os
 from django.utils.text import slugify
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class TechServices(models.Model):
@@ -260,7 +261,7 @@ class ContactInquiry(models.Model):
     priority = models.PositiveSmallIntegerField(default=1, choices=[(1, 'Low'), (2, 'Medium'), (3, 'High'), (4, 'Urgent')])
     
     assigned_to = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -271,7 +272,7 @@ class ContactInquiry(models.Model):
     response_notes = models.TextField(blank=True, null=True)
     responded_at = models.DateTimeField(blank=True, null=True)
     responded_by = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -387,7 +388,7 @@ class DemoBooking(models.Model):
     meeting_password = models.CharField(max_length=50, blank=True, null=True)
     confirmed_at = models.DateTimeField(blank=True, null=True)
     confirmed_by = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -690,7 +691,7 @@ class CourseEnrollment(models.Model):
     
     # Student Information
     id = models.BigAutoField(primary_key=True)
-    student = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
