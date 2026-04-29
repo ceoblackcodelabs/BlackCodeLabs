@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('projects/', include('Pitchs.urls')),
     # path("salespro/", include("SalesPro.urls")),
+    path('QRIdentifier/', include('QRIdentifier.urls')),
     path('', include('Home.urls')),
 ]
 
