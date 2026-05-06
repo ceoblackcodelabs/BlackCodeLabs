@@ -63,26 +63,26 @@
             </div>
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number" 
-                         id="stat1" 
+                    <div class="stat-number"
+                         id="stat1"
                          data-value="{{ data_counter.projects_delivered|default:1247 }}">0</div>
                     <div class="stat-label">Projects Delivered</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" 
-                         id="stat2" 
+                    <div class="stat-number"
+                         id="stat2"
                          data-value="{{ data_counter.systems_automated|default:892 }}">0</div>
                     <div class="stat-label">Systems Automated</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" 
-                         id="stat3" 
+                    <div class="stat-number"
+                         id="stat3"
                          data-value="{{ data_counter.happy_clients|default:765 }}">0</div>
                     <div class="stat-label">Happy Clients</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" 
-                         id="stat4" 
+                    <div class="stat-number"
+                         id="stat4"
                          data-value="{{ data_counter.returning_clients|default:423 }}">0</div>
                     <div class="stat-label">Returning Clients</div>
                 </div>
@@ -168,6 +168,20 @@
         </div>
     </section>
 
+    <!--Package Pricing-->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Package Pricing</h2>
+                <p>Choose the perfect plan for your needs</p>
+            </div>
+            <div class="pricing-grid">
+                <!-- Pricing plans will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+
     <!-- Demo Section -->
     <section class="demos" id="demos">
         <div class="container">
@@ -247,25 +261,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const systemsAutomated = parseInt(stat2.getAttribute('data-value')) || 892;
         const happyClients = parseInt(stat3.getAttribute('data-value')) || 765;
         const returningClients = parseInt(stat4.getAttribute('data-value')) || 423;
-        
+
         const targetValues = [projectsDelivered, systemsAutomated, happyClients, returningClients];
         const duration = 2000; // ms
         const interval = 20; // ms
-        
+
         const counters = [stat1, stat2, stat3, stat4];
-        
+
         counters.forEach((counter, index) => {
             if (!counter) return;
-            
+
             let current = 0;
             const increment = targetValues[index] / (duration / interval);
-            
+
             const timer = setInterval(() => {
                 current += increment;
                 if (current >= targetValues[index]) {
                     clearInterval(timer);
                     current = targetValues[index];
-                    
+
                     // Format numbers
                     if (targetValues[index] >= 1000) {
                         counter.textContent = (current / 1000).toFixed(1) + 'k+';
@@ -282,19 +296,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }, interval);
         });
     }
-    
+
     // Override the initStatistics function in the base template
     if (window.initStatistics) {
         // Save the original function
         const originalInitStatistics = window.initStatistics;
-        
+
         // Create a new function that calls both
         window.initStatistics = function() {
             // Call the original if it exists
             if (typeof originalInitStatistics === 'function') {
                 originalInitStatistics();
             }
-            
+
             // Call our new statistics function
             initStatistics();
         };
@@ -302,22 +316,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // If no initStatistics exists, create it
         window.initStatistics = initStatistics;
     }
-    
+
     // Auto-play testimonials
     function initTestimonialSlider() {
         const testimonialSlider = document.querySelector('.testimonial-slider');
         if (!testimonialSlider) return;
-        
+
         const testimonials = testimonialSlider.querySelectorAll('.testimonial');
         if (testimonials.length <= 1) return;
-        
+
         let currentIndex = 0;
-        
+
         function showNextTestimonial() {
             testimonials[currentIndex].classList.remove('active');
             currentIndex = (currentIndex + 1) % testimonials.length;
             testimonials[currentIndex].classList.add('active');
-            
+
             // Update dots if they exist
             const dots = testimonialSlider.querySelectorAll('.testimonial-dot');
             if (dots.length > 0) {
@@ -325,15 +339,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 dots[currentIndex].classList.add('active');
             }
         }
-        
+
         // Initialize first testimonial
         testimonials[0].classList.add('active');
-        
+
         // Create navigation dots
         const dotsContainer = document.createElement('div');
         dotsContainer.className = 'testimonial-dots';
         testimonialSlider.appendChild(dotsContainer);
-        
+
         testimonials.forEach((_, index) => {
             const dot = document.createElement('div');
             dot.className = 'testimonial-dot';
@@ -347,18 +361,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             dotsContainer.appendChild(dot);
         });
-        
+
         // Auto rotate every 5 seconds
         setInterval(showNextTestimonial, 5000);
     }
-    
+
     // Initialize on page load
     setTimeout(() => {
         // Call initStatistics (it will be called via the window.initStatistics override)
         if (window.initStatistics && typeof window.initStatistics === 'function') {
             window.initStatistics();
         }
-        
+
         initTestimonialSlider();
     }, 1000);
 });
