@@ -35,25 +35,23 @@
         <div class="container">
             <nav>
                 <a href="{% url 'home' %}" class="logo">BlackCode<span>Labs</span></a>
-                
+
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <div class="line"></div>
                     <div class="line"></div>
                     <div class="line"></div>
                 </div>
-                
+
                 <ul class="nav-links">
                     <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'tech' %}">Technology</a></li>
                     <li><a href="{% url 'solutions' %}">Solutions</a></li>
-                    <li><a href="{% url 'courses' %}">Courses</a></li>
                     <!--<li><a href="{% url 'careers' %}">Careers</a></li>-->
-                    <li><a href="{% url 'blog' %}">Blog</a></li>
                     <!--<li><a href="{% url 'games' %}">Games</a></li>-->
                     <li><a href="{% url 'contact' %}">Contact</a></li>
-                    
+
                     <!-- Mobile Demo Button (hidden on desktop) -->
                     <a href="{% url 'demo' %}" class="header-demo-btn mobile-only">
                         <i class="fas fa-play-circle"></i>
@@ -123,39 +121,39 @@
     </footer>
 
     {% block extra_js %}{% endblock %}
-    
+
     <script>
     // [All JavaScript code from original remains identical]
     // Only changed HTML and text content above
     // Initialize Three.js space scene
     let scene, camera, renderer, sun, moon, earth;
     let mouseX = 0, mouseY = 0;
-    
+
     function initSpace() {
         // Only initialize if space container exists
         const spaceContainer = document.getElementById('space-container');
         if (!spaceContainer) return;
-        
+
         // Scene setup
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         spaceContainer.appendChild(renderer.domElement);
-        
+
         // Create sun
         const sunGeometry = new THREE.SphereGeometry(1.5, 32, 32);
-        const sunMaterial = new THREE.MeshBasicMaterial({ 
+        const sunMaterial = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             emissive: 0xffffff,
             emissiveIntensity: 0.8
         });
         sun = new THREE.Mesh(sunGeometry, sunMaterial);
         scene.add(sun);
-        
+
         // Create earth
         const earthGeometry = new THREE.SphereGeometry(0.8, 32, 32);
-        const earthMaterial = new THREE.MeshPhongMaterial({ 
+        const earthMaterial = new THREE.MeshPhongMaterial({
             color: 0x888888,
             specular: 0x333333,
             shininess: 5
@@ -163,10 +161,10 @@
         earth = new THREE.Mesh(earthGeometry, earthMaterial);
         earth.position.x = 4;
         scene.add(earth);
-        
+
         // Create moon
         const moonGeometry = new THREE.SphereGeometry(0.4, 32, 32);
-        const moonMaterial = new THREE.MeshPhongMaterial({ 
+        const moonMaterial = new THREE.MeshPhongMaterial({
             color: 0xdddddd,
             specular: 0xffffff,
             shininess: 10
@@ -174,21 +172,21 @@
         moon = new THREE.Mesh(moonGeometry, moonMaterial);
         moon.position.x = 5.5;
         scene.add(moon);
-        
+
         // Add ambient light
         const ambientLight = new THREE.AmbientLight(0x333333);
         scene.add(ambientLight);
-        
+
         // Add point light for sun
         const pointLight = new THREE.PointLight(0xffffff, 1.5, 100);
         pointLight.position.set(0, 0, 0);
         scene.add(pointLight);
-        
+
         // Add directional light
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
         directionalLight.position.set(5, 3, 5);
         scene.add(directionalLight);
-        
+
         // Add stars background
         const starGeometry = new THREE.BufferGeometry();
         const starVertices = [];
@@ -199,98 +197,98 @@
             starVertices.push(x, y, z);
         }
         starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-        const starMaterial = new THREE.PointsMaterial({ 
-            color: 0xffffff, 
+        const starMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
             size: 1.5,
             sizeAttenuation: true
         });
         const stars = new THREE.Points(starGeometry, starMaterial);
         scene.add(stars);
-        
+
         // Set camera position
         camera.position.z = 10;
-        
+
         // Mouse move event for rotation
         document.addEventListener('mousemove', onMouseMove);
-        
+
         // Animation loop
         animate();
-        
+
         // Handle window resize
         window.addEventListener('resize', onWindowResize);
     }
-    
+
     function onMouseMove(event) {
         // Calculate mouse position in normalized device coordinates
         mouseX = (event.clientX / window.innerWidth) * 2 - 1;
         mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     }
-    
+
     function animate() {
         requestAnimationFrame(animate);
-        
+
         // Only animate if scene exists
         if (!scene || !renderer || !camera) return;
-        
+
         // Rotate celestial bodies
         if (sun) sun.rotation.y += 0.003;
         if (earth) earth.rotation.y += 0.01;
         if (moon) moon.rotation.y += 0.005;
-        
+
         // Orbit earth around sun
         if (earth) {
             earth.position.x = 4 * Math.sin(Date.now() * 0.0005);
             earth.position.z = 4 * Math.cos(Date.now() * 0.0005);
         }
-        
+
         // Orbit moon around earth
         if (moon && earth) {
             moon.position.x = earth.position.x + 1.5 * Math.sin(Date.now() * 0.001);
             moon.position.z = earth.position.z + 1.5 * Math.cos(Date.now() * 0.001);
         }
-        
+
         // Rotate camera based on mouse position
         camera.position.x += (mouseX * 10 - camera.position.x) * 0.01;
         camera.position.y += (mouseY * 10 - camera.position.y) * 0.01;
         camera.lookAt(scene.position);
-        
+
         renderer.render(scene, camera);
     }
-    
+
     function onWindowResize() {
         if (!camera || !renderer) return;
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
-    
+
     // Initialize page when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
         const loading = document.querySelector('.loading');
-        
+
         // Initialize space if container exists (homepage only)
         setTimeout(() => {
             initSpace();
-            
+
             // Hide loading animation
             if (loading) {
                 loading.classList.add('hidden');
             }
-            
+
             // Initialize other features
             initScrollAnimations();
             initNavigation();
-            
+
             // Initialize statistics only if elements exist
             const stat1 = document.getElementById('stat1');
             if (stat1) {
                 initStatistics();
             }
-            
+
             initMobileMenu();
         }, 500); // Reduced from 1500ms for better UX
     });
-    
+
     // Header scroll effect
     window.addEventListener('scroll', function() {
         const header = document.querySelector('header');
@@ -300,11 +298,11 @@
         } else {
             header.style.background = 'rgba(10, 10, 10, 0.95)';
         }
-        
+
         // Update navigation dots based on scroll position
         updateNavigation();
     });
-    
+
     // Initialize scroll animations
     function initScrollAnimations() {
         const observerOptions = {
@@ -312,7 +310,7 @@
             rootMargin: '0px',
             threshold: 0.1
         };
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -320,23 +318,23 @@
                 }
             });
         }, observerOptions);
-        
+
         // Observe feature cards
         document.querySelectorAll('.feature-card').forEach(card => {
             observer.observe(card);
         });
-        
+
         // Observe team members
         document.querySelectorAll('.team-member').forEach(member => {
             observer.observe(member);
         });
     }
-    
+
     // Initialize navigation dots
     function initNavigation() {
         const sections = document.querySelectorAll('section');
         const dots = document.querySelectorAll('.nav-dot');
-        
+
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
                 if (sections[index]) {
@@ -345,24 +343,24 @@
             });
         });
     }
-    
+
     // Update navigation dots based on scroll position
     function updateNavigation() {
         const sections = document.querySelectorAll('section');
         const dots = document.querySelectorAll('.nav-dot');
-        
+
         let currentSection = '';
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
-            
-            if (window.scrollY >= sectionTop - 200 && 
+
+            if (window.scrollY >= sectionTop - 200 &&
                 window.scrollY < sectionTop + sectionHeight - 200) {
                 currentSection = section.getAttribute('id');
             }
         });
-        
+
         dots.forEach(dot => {
             dot.classList.remove('active');
             if (dot.getAttribute('data-section').toLowerCase() === currentSection) {
@@ -370,39 +368,39 @@
             }
         });
     }
-    
+
     // Newsletter form submission
     const newsletterForm = document.querySelector('.newsletter-form');
     if (newsletterForm) {
         newsletterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const email = this.querySelector('input').value;
-            
+
             // Simple validation
             if (!email || !email.includes('@')) {
                 alert('Please enter a valid email address.');
                 return;
             }
-            
+
             // In a real application, you would send this to a server
             alert('Thank you for subscribing to our newsletter!');
             this.querySelector('input').value = '';
         });
     }
-    
+
     // Mobile Menu Functionality
     function initMobileMenu() {
         const hamburger = document.getElementById('hamburger');
         const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
         const navLinks = document.querySelector('.nav-links');
         const headerDemoBtn = document.querySelector('.header-demo-btn.desktop-only');
-        
+
         if (hamburger) {
             hamburger.addEventListener('click', function() {
                 this.classList.toggle('active');
                 if (navLinks) navLinks.classList.toggle('active');
                 if (mobileMenuOverlay) mobileMenuOverlay.classList.toggle('active');
-                
+
                 // Hide/show CTA button on mobile when menu is open
                 if (headerDemoBtn) {
                     if (this.classList.contains('active')) {
@@ -413,7 +411,7 @@
                 }
             });
         }
-        
+
         // Close menu when clicking overlay
         if (mobileMenuOverlay) {
             mobileMenuOverlay.addEventListener('click', function() {
@@ -423,7 +421,7 @@
                 if (headerDemoBtn) headerDemoBtn.style.display = 'block';
             });
         }
-        
+
         // Close menu when clicking a link
         if (navLinks) {
             document.querySelectorAll('.nav-links a').forEach(link => {
@@ -435,7 +433,7 @@
                 });
             });
         }
-        
+
         // Handle window resize
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
