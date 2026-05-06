@@ -172,11 +172,173 @@
     <section class="pricing" id="pricing">
         <div class="container">
             <div class="section-title">
-                <h2>Package Pricing</h2>
-                <p>Choose the perfect plan for your needs</p>
+                <h2>Web Development Investment Plans</h2>
+                <p>Choose the perfect package for your business needs. All plans include our signature quality, dedicated support, and ongoing maintenance.</p>
             </div>
             <div class="pricing-grid">
-                <!-- Pricing plans will be dynamically inserted here -->
+                <!-- Starter Package -->
+                <div class="pricing-card starter">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">704</span>
+                            <span class="period">one-time</span>
+                        </div>
+                        <div class="pricing-maintenance">
+                            <span class="maintenance-price">$168/month</span>
+                            <span class="maintenance-label">maintenance</span>
+                        </div>
+                        <p class="pricing-description">Perfect for small businesses getting started with web development</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Website Landing Page</li>
+                            <li><i class="fas fa-check-circle"></i> Basic AI Chatbot Setup </li>
+                            <li><i class="fas fa-check-circle"></i> Contact Form Integration</li>
+                            <li><i class="fas fa-check-circle"></i> Social Media Integration</li>
+                            <li><i class="fas fa-check-circle"></i> Basic Analytics Dashboard</li>
+                            <li><i class="fas fa-check-circle"></i> Email Support</li>
+                            <li><i class="fas fa-check-circle"></i> 1 Month Free Support</li>
+                            <li><i class="fas fa-check-circle"></i> Monthly Maintenance Included</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <button class="pricing-cta starter-cta" onclick="selectPackage('Starter', 900)">Get Started</button>
+                        <small>30-day money-back guarantee</small>
+                    </div>
+                </div>
+
+                <!-- Professional Package (Most Popular) -->
+                <div class="pricing-card professional featured">
+                    <div class="pricing-badge popular">
+                        <i class="fas fa-star"></i> Most Popular
+                    </div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">1,250</span>
+                            <span class="period">one-time</span>
+                        </div>
+                        <div class="pricing-maintenance">
+                            <span class="maintenance-price">$168/month</span>
+                            <span class="maintenance-label">maintenance</span>
+                        </div>
+                        <p class="pricing-description">Comprehensive solution for growing businesses</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Custom Website Development</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced SEO Optimization</li>
+                            <li><i class="fas fa-check-circle"></i> Social Media Integration & Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced Analytics Dashboard</li>
+                            <li><i class="fas fa-check-circle"></i> CRM Integration</li>
+                            <li><i class="fas fa-check-circle"></i> Marketing Campaign Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Priority Support</li>
+                            <li><i class="fas fa-check-circle"></i> 2 Months Free Support</li>
+                            <li><i class="fas fa-check-circle"></i> Training Sessions (2 hours)</li>
+                            <li><i class="fas fa-check-circle"></i> Monthly Maintenance Included</li>
+                            <li><i class="fas fa-check-circle"></i> Custom API Development</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <button class="pricing-cta professional-cta" onclick="selectPackage('Professional', 2250)">Choose Professional</button>
+                        <small>30-day money-back guarantee</small>
+                    </div>
+                </div>
+
+                <!-- Enterprise Package -->
+                <div class="pricing-card enterprise">
+                    <div class="pricing-badge premium">
+                        <i class="fas fa-crown"></i> Premium
+                    </div>
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">Custom</span>
+                        </div>
+                        <div class="pricing-maintenance">
+                            <span class="maintenance-price">Custom</span>
+                            <span class="maintenance-label">maintenance</span>
+                        </div>
+                        <p class="pricing-description">Tailored solutions for large organizations</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Full Web Development Suite</li>
+                            <li><i class="fas fa-check-circle"></i> Enterprise Website Platform</li>
+                            <li><i class="fas fa-check-circle"></i> Multi-Channel Marketing Integration</li>
+                            <li><i class="fas fa-check-circle"></i> Custom Integrations</li>
+                            <li><i class="fas fa-check-circle"></i> Dedicated Account Manager</li>
+                            <li><i class="fas fa-check-circle"></i> 24/7 Priority Support</li>
+                            <li><i class="fas fa-check-circle"></i> Ongoing Maintenance</li>
+                            <li><i class="fas fa-check-circle"></i> Staff Training Program</li>
+                            <li><i class="fas fa-check-circle"></i> Custom Maintenance Plan</li>
+                            <li><i class="fas fa-check-circle"></i> Full E-commerce Solution</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced Database Architecture</li>
+                            <li><i class="fas fa-check-circle"></i> Custom API Development</li>
+                            <li><i class="fas fa-check-circle"></i> Cloud Hosting Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced Security Features</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <button class="pricing-cta enterprise-cta" onclick="contactEnterprise()">Contact Sales</button>
+                        <small>Custom solutions available</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance Details Section -->
+            <div class="maintenance-info">
+                <div class="maintenance-card">
+                    <div class="maintenance-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>What's Included in Maintenance?</h3>
+                    <div class="maintenance-grid">
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>24/7 System Monitoring</span>
+                        </div>
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Regular Updates & Security Patches</span>
+                        </div>
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Performance Optimization</span>
+                        </div>
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Technical Support</span>
+                        </div>
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Backup & Recovery</span>
+                        </div>
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Monthly Performance Reports</span>
+                        </div>
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Bug Fixes & Troubleshooting</span>
+                        </div>
+                        <div class="maintenance-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Database Optimization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="custom-solution">
+                    <p>Need a custom solution? We work with businesses of all sizes to create tailored packages.</p>
+                    <button class="custom-btn" onclick="contactCustom()">
+                        <i class="fas fa-comments"></i> Discuss Custom Requirements
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -376,6 +538,30 @@ document.addEventListener('DOMContentLoaded', function() {
         initTestimonialSlider();
     }, 1000);
 });
+// Package selection functions
+function selectPackage(packageName, price) {
+    const message = `I'm interested in the ${packageName} Package ($${price.toLocaleString()}). Please contact me with more details about web development services.`;
+
+    if (confirm(`Would you like to inquire about the ${packageName} Package?`)) {
+        window.location.href = `/contact/?package=${packageName}&price=${price}&message=${encodeURIComponent(message)}`;
+    }
+}
+
+function contactEnterprise() {
+    const message = "I'm interested in the Enterprise Package. Please contact me to discuss custom web development solutions.";
+
+    if (confirm("Would you like to discuss a custom Enterprise solution?")) {
+        window.location.href = `/contact/?package=Enterprise&message=${encodeURIComponent(message)}`;
+    }
+}
+
+function contactCustom() {
+    const message = "I'd like to discuss a custom web development solution tailored to my business needs.";
+
+    if (confirm("Would you like to discuss custom requirements?")) {
+        window.location.href = `/contact/?message=${encodeURIComponent(message)}`;
+    }
+}
 </script>
 
 <style>
@@ -414,5 +600,475 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #4CAF50;
     transition: all 0.3s ease;
 }
+
+/* Pricing Section Styles */
+.pricing {
+    padding: 100px 0;
+    background: linear-gradient(to bottom, var(--darker), var(--dark));
+    position: relative;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.pricing-card {
+    background: rgba(20, 20, 20, 0.8);
+    border-radius: 20px;
+    padding: 40px 30px;
+    position: relative;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.pricing-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.pricing-card.starter::before {
+    background: linear-gradient(90deg, #4299e1, transparent);
+}
+
+.pricing-card.professional::before {
+    background: linear-gradient(90deg, #ffd700, transparent);
+}
+
+.pricing-card.enterprise::before {
+    background: linear-gradient(90deg, #9f7aea, transparent);
+}
+
+.pricing-card.featured {
+    transform: scale(1.05);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.pricing-card.featured:hover {
+    transform: translateY(-10px) scale(1.05);
+}
+
+.pricing-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pricing-badge.popular {
+    background: linear-gradient(135deg, #ffd700, #ff9800);
+    color: var(--dark);
+    border: none;
+}
+
+.pricing-badge.premium {
+    background: linear-gradient(135deg, #9f7aea, #6b46c0);
+    color: white;
+    border: none;
+}
+
+.pricing-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.pricing-header h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--light);
+}
+
+.pricing-price {
+    margin-bottom: 10px;
+}
+
+.pricing-price .currency {
+    font-size: 1.5rem;
+    vertical-align: top;
+    color: var(--accent);
+}
+
+.pricing-price .amount {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--light);
+}
+
+.pricing-price .period {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.pricing-maintenance {
+    margin-bottom: 15px;
+}
+
+.maintenance-price {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffd700;
+}
+
+.maintenance-label {
+    font-size: 0.9rem;
+    color: var(--gray);
+    margin-left: 5px;
+}
+
+.pricing-description {
+    color: var(--gray);
+    font-size: 0.95rem;
+}
+
+.pricing-features {
+    margin-bottom: 30px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.pricing-features::-webkit-scrollbar {
+    width: 5px;
+}
+
+.pricing-features::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.pricing-features::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.pricing-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.pricing-features li {
+    padding: 10px 0;
+    color: var(--gray);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+}
+
+.pricing-features li i {
+    font-size: 1rem;
+}
+
+.pricing-features li .fa-check-circle {
+    color: #4CAF50;
+}
+
+.pricing-features li .fa-times-circle {
+    color: #f44336;
+}
+
+.pricing-features li.disabled {
+    opacity: 0.5;
+}
+
+.pricing-footer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pricing-cta {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.starter-cta {
+    background: transparent;
+    color: #4299e1;
+    border: 2px solid #4299e1;
+}
+
+.starter-cta:hover {
+    background: #4299e1;
+    color: var(--dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(66, 153, 225, 0.3);
+}
+
+.professional-cta {
+    background: linear-gradient(135deg, #ffd700, #ff9800);
+    color: var(--dark);
+    border: none;
+}
+
+.professional-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+}
+
+.enterprise-cta {
+    background: linear-gradient(135deg, #9f7aea, #6b46c0);
+    color: white;
+    border: none;
+}
+
+.enterprise-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(159, 122, 234, 0.3);
+}
+
+.pricing-footer small {
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+/* Maintenance Info Section */
+.maintenance-info {
+    margin-top: 60px;
+}
+
+.maintenance-card {
+    background: rgba(20, 20, 20, 0.8);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px;
+}
+
+.maintenance-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 152, 0, 0.2));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #ffd700;
+}
+
+.maintenance-card h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: var(--light);
+}
+
+.maintenance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.maintenance-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.maintenance-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.maintenance-item i {
+    color: #4CAF50;
+    font-size: 1.1rem;
+}
+
+.maintenance-item span {
+    color: var(--gray);
+    font-size: 0.95rem;
+}
+
+.custom-solution {
+    text-align: center;
+    padding: 30px;
+    background: rgba(20, 20, 20, 0.6);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.custom-solution p {
+    color: var(--gray);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.custom-btn {
+    padding: 12px 30px;
+    background: transparent;
+    color: var(--light);
+    border: 1px solid var(--light);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-btn:hover {
+    background: var(--light);
+    color: var(--dark);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .pricing-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .pricing-card {
+        padding: 30px 20px;
+    }
+
+    .pricing-card.featured {
+        transform: scale(1.02);
+    }
+
+    .pricing-card.featured:hover {
+        transform: scale(1.02) translateY(-10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .pricing {
+        padding: 60px 0;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 450px;
+        margin: 40px auto 0;
+    }
+
+    .pricing-card.featured {
+        transform: scale(1);
+    }
+
+    .pricing-card.featured:hover {
+        transform: translateY(-10px);
+    }
+
+    .pricing-header h3 {
+        font-size: 1.8rem;
+    }
+
+    .pricing-price .amount {
+        font-size: 3rem;
+    }
+
+    .maintenance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .maintenance-card {
+        padding: 25px;
+    }
+
+    .maintenance-card h3 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing-card {
+        padding: 25px 20px;
+    }
+
+    .pricing-header h3 {
+        font-size: 1.6rem;
+    }
+
+    .pricing-price .amount {
+        font-size: 2.5rem;
+    }
+
+    .maintenance-price {
+        font-size: 1.1rem;
+    }
+
+    .pricing-features li {
+        font-size: 0.85rem;
+        padding: 8px 0;
+    }
+
+    .pricing-cta {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Animation for pricing cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pricing-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.pricing-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.pricing-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.pricing-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
 </style>
 {% endblock %}
