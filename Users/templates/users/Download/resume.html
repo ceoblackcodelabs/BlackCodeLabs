@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .resume-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Download Button Container */
+        .download-container {
+            width: 1000px;
+            max-width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .download-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .download-btn:hover {
+            background-color: #555;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            padding: 30px;
+            border-bottom: 2px solid #333;
+            background-color: #fff;
+        }
+
+        .photo-container {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #333;
+            margin-right: 30px;
+            flex-shrink: 0;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .title {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            display: flex;
+            padding: 30px;
+        }
+
+        .left-column {
+            flex: 3;
+            padding-right: 30px;
+            border-right: 1px solid #ddd;
+        }
+
+        .right-column {
+            flex: 2;
+            padding-left: 30px;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Experience Section */
+        .experience-item {
+            margin-bottom: 20px;
+        }
+
+        .job-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .date {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .responsibilities {
+            font-size: 14px;
+            list-style-type: none;
+        }
+
+        .responsibilities li {
+            margin-bottom: 5px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .responsibilities li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #333;
+        }
+
+        /* Skills Section */
+        .skill-item {
+            margin-bottom: 15px;
+        }
+
+        .skill-name {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-level {
+            height: 100%;
+            background-color: #333;
+            border-radius: 4px;
+        }
+
+        /* Education Section */
+        .education-item {
+            margin-bottom: 15px;
+        }
+
+        .degree {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .institution {
+            color: #555;
+            margin-bottom: 3px;
+        }
+
+        .education-date {
+            font-size: 14px;
+            color: #777;
+        }
+
+        /* Languages Section */
+        .language-item {
+            margin-bottom: 10px;
+        }
+
+        .language-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        /* Reviews Section */
+        .review-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 3px solid #333;
+        }
+
+        .review-text {
+            font-style: italic;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .reviewer {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .reviewer-company {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* Emergency Contacts */
+        .contact-person {
+            margin-bottom: 15px;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .contact-relation {
+            color: #555;
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+
+        .contact-phone {
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 15px 30px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #777;
+            background-color: #f9f9f9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .photo-container {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .left-column {
+                padding-right: 0;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 30px;
+                margin-bottom: 30px;
+            }
+
+            .right-column {
+                padding-left: 0;
+            }
+
+            .download-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Download Button (outside the resume container) -->
+    <div class="download-container">
+        <button class="download-btn" id="downloadBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+            </svg>
+            Download PDF
+        </button>
+    </div>
+
+    <!-- Resume Content -->
+    <div class="resume-container" id="resume-content">
+        <!-- Header Section with Photo -->
+        <div class="header">
+            <div class="photo-container">
+                <div class="photo-placeholder">
+                    Professional Photo
+                </div>
+            </div>
+            <div class="header-info">
+                <h1 class="name">ALEXANDER JOHNSON</h1>
+                <div class="title">Senior Project Manager</div>
+                <p>Results-driven professional with 10+ years of experience in project management, team leadership, and strategic planning. Proven track record of delivering complex projects on time and within budget.</p>
+                <div class="contact-info">
+                    <div class="contact-item">alex.johnson@email.com</div>
+                    <div class="contact-item">(123) 456-7890</div>
+                    <div class="contact-item">linkedin.com/in/alexjohnson</div>
+                    <div class="contact-item">New York, NY</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Experience Section -->
+                <div class="section">
+                    <h2 class="section-title">Professional Experience</h2>
+
+                    <div class="experience-item">
+                        <div class="job-title">Senior Project Manager</div>
+                        <div class="company">TechSolutions Inc.</div>
+                        <div class="date">March 2018 - Present</div>
+                        <ul class="responsibilities">
+                            <li>Led cross-functional teams of 15+ members to deliver complex software projects</li>
+                            <li>Managed project budgets exceeding $2M, consistently delivering under budget</li>
+                            <li>Implemented agile methodologies, increasing team productivity by 25%</li>
+                            <li>Developed and maintained project documentation, risk registers, and status reports</li>
+                        </ul>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="job-title">Project Manager</div>
+                        <div class="company">InnovateCorp</div>
+                        <div class="date">June 2014 - February 2018</div>
+                        <ul class="responsibilities">
+                            <li>Managed multiple concurrent projects with budgets ranging from $500K to $1.5M</li>
+                            <li>Coordinated with stakeholders to define project scope and deliverables</li>
+                            <li>Implemented project management best practices across the organization</li>
+                            <li>Mentored junior project managers and team members</li>
+                        </ul>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="job-title">Assistant Project Manager</div>
+                        <div class="company">Global Systems Ltd.</div>
+                        <div class="date">August 2012 - May 2014</div>
+                        <ul class="responsibilities">
+                            <li>Supported senior project managers in planning and execution</li>
+                            <li>Tracked project milestones and prepared status reports</li>
+                            <li>Facilitated communication between technical teams and stakeholders</li>
+                            <li>Assisted in resource allocation and timeline management</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education Section -->
+                <div class="section">
+                    <h2 class="section-title">Education</h2>
+
+                    <div class="education-item">
+                        <div class="degree">Master of Business Administration (MBA)</div>
+                        <div class="institution">Harvard Business School</div>
+                        <div class="education-date">2010 - 2012</div>
+                    </div>
+
+                    <div class="education-item">
+                        <div class="degree">Bachelor of Science in Computer Science</div>
+                        <div class="institution">Stanford University</div>
+                        <div class="education-date">2006 - 2010</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Skills Section -->
+                <div class="section">
+                    <h2 class="section-title">Skills</h2>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Project Management</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 95%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Agile Methodologies</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 90%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Budget Management</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 88%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Risk Management</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Team Leadership</span>
+                            <span>92%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 92%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Stakeholder Communication</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Languages Section -->
+                <div class="section">
+                    <h2 class="section-title">Languages</h2>
+
+                    <div class="language-item">
+                        <div class="language-name">
+                            <span>English</span>
+                            <span>Native</span>
+                        </div>
+                    </div>
+
+                    <div class="language-item">
+                        <div class="language-name">
+                            <span>Spanish</span>
+                            <span>Fluent</span>
+                        </div>
+                    </div>
+
+                    <div class="language-item">
+                        <div class="language-name">
+                            <span>French</span>
+                            <span>Intermediate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="section">
+                    <h2 class="section-title">Professional Reviews</h2>
+
+                    <div class="review-item">
+                        <div class="review-text">"Alex consistently delivers exceptional results under tight deadlines. His leadership during our Q4 product launch was instrumental to our success."</div>
+                        <div class="reviewer">Sarah Mitchell</div>
+                        <div class="reviewer-company">CTO, TechSolutions Inc.</div>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="review-text">"One of the most organized and effective project managers I've worked with. Alex's ability to navigate complex stakeholder relationships is remarkable."</div>
+                        <div class="reviewer">Michael Roberts</div>
+                        <div class="reviewer-company">Director of Product, InnovateCorp</div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contacts -->
+                <div class="section">
+                    <h2 class="section-title">Emergency Contacts</h2>
+
+                    <div class="contact-person">
+                        <div class="contact-name">Jennifer Johnson</div>
+                        <div class="contact-relation">Spouse</div>
+                        <div class="contact-phone">(123) 456-7891</div>
+                    </div>
+
+                    <div class="contact-person">
+                        <div class="contact-name">Robert Johnson</div>
+                        <div class="contact-relation">Father</div>
+                        <div class="contact-phone">(123) 456-7892</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>References available upon request | This resume was designed for integration with TenaWork</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const element = document.getElementById('resume-content');
+            const options = {
+                margin: 10,
+                filename: 'Alexander_Johnson_Resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(options).from(element).save();
+        });
+    </script>
+</body>
+</html>

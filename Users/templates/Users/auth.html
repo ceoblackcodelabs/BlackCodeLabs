@@ -1,0 +1,398 @@
+{% load static %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BlackCodeLabs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/auth.css" %}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-hero">
+            <div class="hero-content">
+                <a href="home.html" class="logo" style="color: var(--white);">BlackCode<span>Labs</span></a>
+                <h2>Find Your Next Opportunity</h2>
+                <p>Join thousands of skilled professionals and employers connecting on BlackCodeLabs</p>
+                <ul class="features-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Access to our exclusive network</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Connect with verified employers</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Build your professional profile</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Get recognized for your skills and achievements</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="auth-content">
+            <a href="home.html" class="logo">BlackCode<span>Labs</span></a>
+            <div class="auth-header">
+                <h1>Welcome Back</h1>
+                <p>Sign in to your account to continue your journey</p>
+            </div>
+
+            <!-- Django Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message-box {{ message.tags }}" id="django-message-{{ forloop.counter }}">
+                        <i class="fas
+                            {% if message.tags == 'success' %}fa-check-circle
+                            {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                            {% elif message.tags == 'info' %}fa-info-circle
+                            {% else %}fa-exclamation-circle{% endif %}">
+                        </i>
+                        <span>{{ message }}</span>
+                    </div>
+                    <script>
+                        {% if message.tags == 'success' %}
+                            setTimeout(() => {
+                                document.getElementById('django-message-{{ forloop.counter }}').style.display = 'none';
+                            }, 5000);
+                        {% endif %}
+                    </script>
+                {% endfor %}
+            {% endif %}
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Sign In</button>
+                <button class="auth-tab" data-tab="register">Create Account</button>
+            </div>
+
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <div class="auth-form-panel active" id="login-form">
+                    <form class="auth-form" id="loginForm" method="POST" action="{% url 'authenticate' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="login">
+
+                        <div class="form-group">
+                            <label for="login-email">
+                                <i class="fas fa-envelope"></i> Email Address
+                            </label>
+                            {{ login_form.username }}
+                            {% if login_form.username.errors %}
+                                <div class="field-error">
+                                    {% for error in login_form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-password">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            <div class="password-input-container">
+                                {{ login_form.password }}
+                                <button type="button" class="password-toggle" data-target="login-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            {% if login_form.password.errors %}
+                                <div class="field-error">
+                                    {% for error in login_form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="remember-me">
+                                <label for="remember-me">Remember me</label>
+                            </div>
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </button>
+
+                        <div class="divider">
+                            <span>Or continue with</span>
+                        </div>
+
+                        <button type="button" class="btn btn-google">
+                            <i class="fab fa-google"></i> Google
+                        </button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="#" class="switch-to-register">Sign up</a></p>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="auth-form-panel" id="register-form">
+                    <form class="auth-form" id="registerForm" method="POST" action="{% url 'authenticate' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="register">
+
+                        <div class="form-group">
+                            <label for="register-fullname">
+                                <i class="fas fa-user"></i> Full Name
+                            </label>
+                            {{ register_form.full_name }}
+                            {% if register_form.full_name.errors %}
+                                <div class="field-error">
+                                    {% for error in register_form.full_name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-email">
+                                <i class="fas fa-envelope"></i> Email Address
+                            </label>
+                            {{ register_form.email }}
+                            {% if register_form.email.errors %}
+                                <div class="field-error">
+                                    {% for error in register_form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-password">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            <div class="password-input-container">
+                                {{ register_form.password1 }}
+                                <button type="button" class="password-toggle" data-target="register-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            {% if register_form.password1.errors %}
+                                <div class="field-error">
+                                    {% for error in register_form.password1.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="password-strength">
+                                <div class="strength-bar">
+                                    <div class="strength-fill" id="password-strength-bar"></div>
+                                </div>
+                                <div class="strength-text" id="password-strength-text">Password strength</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-confirm-password">
+                                <i class="fas fa-lock"></i> Confirm Password
+                            </label>
+                            <div class="password-input-container">
+                                {{ register_form.password2 }}
+                                <button type="button" class="password-toggle" data-target="register-confirm-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            {% if register_form.password2.errors %}
+                                <div class="field-error">
+                                    {% for error in register_form.password2.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-account-type">
+                                <i class="fas fa-users"></i> I am a
+                            </label>
+                            {{ register_form.account_type }}
+                            {% if register_form.account_type.errors %}
+                                <div class="field-error">
+                                    {% for error in register_form.account_type.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="terms-agreement">
+                            {{ register_form.agree_terms }}
+                            <label for="agree-terms">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </label>
+                            {% if register_form.agree_terms.errors %}
+                                <div class="field-error">
+                                    {% for error in register_form.agree_terms.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if register_form.non_field_errors %}
+                            <div class="message-box error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {% for error in register_form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+
+                        <div class="divider">
+                            <span>Or continue with</span>
+                        </div>
+
+                        <button type="button" class="btn btn-google" onclick="window.location.href='{% provider_login_url 'google' %}'">
+                            <i class="fab fa-google"></i> Google
+                        </button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="#" class="switch-to-login">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            const tabs = document.querySelectorAll('.auth-tab');
+            const panels = document.querySelectorAll('.auth-form-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-tab');
+
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    panels.forEach(panel => {
+                        panel.classList.remove('active');
+                        if (panel.id === `${target}-form`) {
+                            panel.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Switch between login and register links
+            document.querySelector('.switch-to-register').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('[data-tab="register"]').click();
+            });
+
+            document.querySelector('.switch-to-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('[data-tab="login"]').click();
+            });
+
+            // Password visibility toggle
+            const toggleButtons = document.querySelectorAll('.password-toggle');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const passwordInput = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+
+            // Password strength indicator
+            const passwordInput = document.getElementById('register-password');
+            const strengthBar = document.getElementById('password-strength-bar');
+            const strengthText = document.getElementById('password-strength-text');
+
+            if (passwordInput) {
+                passwordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    let strength = 0;
+                    let text = 'Password strength';
+                    let color = '#e5e7eb';
+
+                    if (password.length >= 8) strength += 25;
+                    if (/[A-Z]/.test(password)) strength += 25;
+                    if (/[0-9]/.test(password)) strength += 25;
+                    if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+
+                    strengthBar.style.width = `${strength}%`;
+
+                    if (strength < 50) {
+                        color = '#ef4444';
+                        text = 'Weak password';
+                    } else if (strength < 75) {
+                        color = '#f59e0b';
+                        text = 'Medium password';
+                    } else {
+                        color = '#10b981';
+                        text = 'Strong password';
+                    }
+
+                    strengthBar.style.background = color;
+                    strengthText.textContent = text;
+                    strengthText.style.color = color;
+                });
+            }
+
+            // Form submission loading states
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+                submitBtn.disabled = true;
+            });
+
+            // Registration form submission
+            registerForm.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+                submitBtn.disabled = true;
+            });
+
+            // Forgot password
+            document.querySelector('.forgot-password').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Password reset feature coming soon!');
+            });
+        });
+    </script>
+</body>
+</html>
