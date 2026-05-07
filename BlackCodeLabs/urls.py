@@ -21,11 +21,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('projects/', include('Pitchs.urls')),
     # path("salespro/", include("SalesPro.urls")),
     path('QRIdentifier/', include('QRIdentifier.urls')),
     path('', include('Home.urls')),
-    path('accounts/', include('Users.urls')),
+    path('auth/', include('Users.urls')),
 ]
 
 if settings.DEBUG:

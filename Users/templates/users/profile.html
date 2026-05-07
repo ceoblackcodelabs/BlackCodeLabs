@@ -3,473 +3,800 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>{{ profile.name }} - Developer Portfolio</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free Website Template" name="keywords">
-    <meta content="Free Website Template" name="description">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seeker.user.full_name }} - {{ seeker.primary_trade }} | BlackCodeLabs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static "css/resume.css" %}">
+    <style>
+        /* ===== DJANGO MESSAGES POPUP STYLES ===== */
+        .messages-popup {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+        }
 
-    <!-- Favicon -->
-    <link href="{% static 'pot/img/favicon.ico' %}" rel="icon">
+        .messages-popup.active .messages-container {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        .messages-container {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            width: 350px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid #e5e7eb;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        .messages-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            background: var(--light);
+            border-radius: 12px 12px 0 0;
+        }
 
-    <!-- Libraries Stylesheet -->
-    <link href="{% static 'pot/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'pot/lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
-    <link href="{% static 'pot/lib/animate/animate.min.css' %}" rel="stylesheet">
+        .messages-header h4 {
+            margin: 0;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'pot/css/bootstrap.min.css' %}" rel="stylesheet">
+        .close-messages {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
 
-    <!-- Template Stylesheet -->
-    <link href="{% static 'pot/css/style.css' %}" rel="stylesheet">
+        .close-messages:hover {
+            background: #f1f5f9;
+            color: var(--dark);
+        }
+
+        .messages-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+            animation: slideInLeft 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .message-item.success {
+            background: #f0fdf4;
+            border-left-color: var(--success);
+            color: #166534;
+        }
+
+        .message-item.error {
+            background: #fef2f2;
+            border-left-color: #ef4444;
+            color: #dc2626;
+        }
+
+        .message-item.warning {
+            background: #fffbeb;
+            border-left-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .message-item.info {
+            background: #eff6ff;
+            border-left-color: var(--primary);
+            color: #1e40af;
+        }
+
+        .message-item.debug {
+            background: #f8fafc;
+            border-left-color: var(--gray);
+            color: var(--dark);
+        }
+
+        .message-item:hover {
+            transform: translateX(5px);
+        }
+
+        .message-icon {
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .message-text {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .message-close {
+            background: none;
+            border: none;
+            color: currentColor;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            opacity: 0.7;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .message-close:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .messages-toggle {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .messages-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 99, 235, 0.6);
+        }
+
+        .message-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--white);
+        }
+
+        .no-messages {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .no-messages i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.5;
+        }
+
+        .no-messages p {
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* Animation for new messages */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive design for messages */
+        @media (max-width: 480px) {
+            .messages-popup {
+                bottom: 10px;
+                left: 10px;
+            }
+
+            .messages-container {
+                width: 300px;
+                left: 0;
+            }
+
+            .messages-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-4 sticky-lg-top vh-100">
-                <div class="d-flex flex-column h-100 text-center overflow-auto shadow">
-                    {% if profile.profile_image %}
-                        <img class="w-100 img-fluid mb-4" src="{{ profile.profile_image.url }}" alt="{{ profile.name }}">
-                    {% else %}
-                        <img class="w-100 img-fluid mb-4" src="/static/img/profile.jpg" alt="Profile Image">
-                    {% endif %}
-                    
-                    <h1 class="text-primary mt-2">{{ profile.name }}</h1>
-                    
-                    <div class="mb-4" style="height: 22px;">
-                        <h4 class="typed-text-output d-inline-block text-light"></h4>
-                        <div class="typed-text d-none">{{ profile.typed_texts }}</div>
+    <!-- Header Section -->
+    <header class="profile-header">
+        <div class="container">
+            <div class="profile-info">
+                <div class="profile-avatar">
+                    <div class="avatar-circle">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="{{ seeker.user.full_name }}">
                     </div>
-                    
-                    <div class="d-flex justify-content-center mt-auto mb-3">
-                        {% if profile.twitter %}
-                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
-                        {% endif %}
-                        {% if profile.facebook %}
-                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        {% endif %}
-                        {% if profile.linkedin %}
-                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        {% endif %}
-                        {% if profile.instagram %}
-                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
-                        {% endif %}
-                        {% if profile.github %}
-                            <a class="btn btn-secondary btn-square mx-1" href="{{ profile.github }}" target="_blank"><i class="fab fa-github"></i></a>
-                        {% endif %}
+                    <div class="availability-status">
+                        <i class="fas fa-circle"></i>
+                        Available for new projects
                     </div>
-                    
-                    <div class="d-flex align-items-end justify-content-between border-top">
-                        {% if profile.cv_file %}
-                            <a href="{{ profile.cv_file.url }}" class="btn w-50 border-end" download>Download CV</a>
-                        {% else %}
-                            <a href="#" class="btn w-50 border-end">Download CV</a>
-                        {% endif %}
-                        <a href="#contact" class="btn w-50 btn-scroll">Contact Me</a>
+                </div>
+                <div class="profile-details">
+                    <h1>{{ seeker.user.full_name }}</h1>
+                    <div class="profile-title">Majors in {{ seeker.primary_trade }}</div>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-value">{{ seeker.years_experience }}</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">127</span>
+                            <span class="stat-label">Projects Completed</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">4.9</span>
+                            <span class="stat-label">Rating</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">${{ seeker.hourly_rate }}</span>
+                            <span class="stat-label">Hourly Rate</span>
+                        </div>
+                    </div>
+                    <p>{{ seeker.user_description }}</p>
+                    <div class="profile-actions">
+                        <a href="#contact" class="btn btn-primary">Contact Me</a>
+                        <a href="#" class="btn btn-secondary">Download Resume</a>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-lg-8">
-                <!-- About Start -->
-                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">About Me</h1>
-                    <p>{{ profile.about_text|linebreaks }}</p>
-                    
-                    <div class="row mb-4">
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Name:</span> {{ profile.name }}
-                        </div>
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Birthday:</span> {{ profile.birthday|date:"j F Y"|default:"Not specified" }}
-                        </div>
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Degree:</span> {{ profile.degree }}
-                        </div>
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Experience:</span> {{ profile.experience_years }} Years
-                        </div>
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Phone:</span> {{ profile.phone }}
-                        </div>
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Email:</span> {{ profile.email }}
-                        </div>
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Address:</span> {{ profile.address }}
-                        </div>
-                        <div class="col-sm-6 py-1">
-                            <span class="fw-medium text-primary">Freelance:</span> {{ profile.get_freelance_status_display }}
-                        </div>
-                    </div>
-                    
-                    <div class="row g-4">
-                        <div class="col-md-4 col-lg-6 col-xl-4">
-                            <div class="d-flex bg-secondary p-4">
-                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">{{ profile.years_of_experience }}</h1>
-                                <div class="ps-3">
-                                    <p class="mb-0">Years of</p>
-                                    <h5 class="mb-0">Experience</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-6 col-xl-4">
-                            <div class="d-flex bg-secondary p-4">
-                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">{{ profile.happy_clients }}</h1>
-                                <div class="ps-3">
-                                    <p class="mb-0">Happy</p>
-                                    <h5 class="mb-0">Clients</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-6 col-xl-4">
-                            <div class="d-flex bg-secondary p-4">
-                                <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">{{ profile.completed_projects }}</h1>
-                                <div class="ps-3">
-                                    <p class="mb-0">Complete</p>
-                                    <h5 class="mb-0">Projects</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- About End -->
+        </div>
+    </header>
 
-                <!-- Skills Start -->
-                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">Skills</h1>
-                    <div class="row">
-                        {% for skill in skills %}
-                            <div class="col-sm-6">
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">{{ skill.name }}</p>
-                                        <p class="mb-2">{{ skill.percentage }}%</p>
+    <!-- Main Content -->
+    <main class="profile-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Left Column -->
+                <div class="left-column">
+                    <!-- Skills Section -->
+                    <section class="section">
+                        <div class="section-header">
+                            <i class="fas fa-tools"></i>
+                            <h2>Skills & Expertise</h2>
+                        </div>
+                        <div class="skills-grid">
+                            <div class="skill-category">
+                                <h3>Technical Skills</h3>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Electrical Installation</span>
+                                        <span class="skill-percentage">95%</span>
                                     </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-{{ skill.color }}" role="progressbar" 
-                                             aria-valuenow="{{ skill.percentage }}" aria-valuemin="0" aria-valuemax="100" 
-                                             style="width: {{ skill.percentage }}%"></div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Circuit Design</span>
+                                        <span class="skill-percentage">90%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Smart Home Systems</span>
+                                        <span class="skill-percentage">85%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Energy Efficiency Solutions</span>
+                                        <span class="skill-percentage">88%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: 88%"></div>
                                     </div>
                                 </div>
                             </div>
-                        {% empty %}
-                            <div class="col-12">
-                                <p class="text-center">No skills added yet.</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </section>
-                <!-- Skills End -->
+                            <div class="skill-category">
+                                <h3>Professional Skills</h3>
 
-                <!-- Experience Start -->
-                <section class="py-5 wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">Experience</h1>
-                    <div class="border-start border-2 border-light pt-2 ps-5">
-                        {% for experience in experiences %}
-                            <div class="position-relative mb-4">
-                                <span class="bi bi-arrow-right fs-4 text-light position-absolute" style="top: -5px; left: -50px;"></span>
-                                <h5 class="mb-1">{{ experience.title }}</h5>
-                                <p class="mb-2">{{ experience.company }} | <small>{{ experience.get_date_range }}</small></p>
-                                <p>{{ experience.description|linebreaks|truncatewords:50 }}</p>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Time Management</span>
+                                        <span class="skill-percentage">{{ tm }}%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: {{ tm }}%"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Critical Thinking</span>
+                                        <span class="skill-percentage">{{ ct }}%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: {{ ct }}%"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Team Work</span>
+                                        <span class="skill-percentage">{{ tw }}%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: {{ tw }}%"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Leadership</span>
+                                        <span class="skill-percentage">{{ lead }}%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: {{ lead }}%"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-item">
+                                    <div class="skill-header">
+                                        <span class="skill-name">Communication</span>
+                                        <span class="skill-percentage">{{ com }}%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress" style="width: {{ com }}%"></div>
+                                    </div>
+                                </div>
                             </div>
-                        {% empty %}
-                            <div class="position-relative mb-4">
-                                <p>No work experience added yet.</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </section>
-                <!-- Experience End -->
-
-                <!-- Education Start -->
-                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">Education</h1>
-                    <div class="border-start border-2 border-light pt-2 ps-5">
-                        {% for education in educations %}
-                            <div class="position-relative mb-4">
-                                <span class="bi bi-arrow-right fs-4 text-light position-absolute" style="top: -5px; left: -50px;"></span>
-                                <h5 class="mb-1">{{ education.degree }}</h5>
-                                <p class="mb-2">{{ education.institution }} | <small>{{ education.start_year }} - {% if education.end_year %}{{ education.end_year }}{% else %}Present{% endif %}</small></p>
-                                <p>{{ education.description|linebreaks|truncatewords:50 }}</p>
-                            </div>
-                        {% empty %}
-                            <div class="position-relative mb-4">
-                                <p>No education added yet.</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </section>
-                <!-- Education End -->
-
-                <!-- Subscribe Start -->
-                <section class="wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="bg-secondary text-center p-5">
-                        <h1 class="text-white font-weight-bold">{{ site_settings.subscribe_title|default:"Subscribe My Newsletter" }}</h1>
-                        <p class="text-white">{{ site_settings.subscribe_text|default:"Subscribe and get my latest article in your inbox" }}</p>
-                        <div class="position-relative w-100">
-                            <input class="form-control bg-dark border-0 w-100 py-3 ps-4 pe-5" type="email" id="newsletter-email" placeholder="Your email">
-                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2" id="subscribe-btn">Subscribe</button>
                         </div>
-                        <div id="subscribe-message" class="mt-3"></div>
-                    </div>
-                </section>
-                <!-- Subscribe End -->
+                    </section>
 
-                <!-- Services Start -->
-                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">Services</h1>
-                    <div class="row g-4">
-                        {% for service in services %}
-                            <div class="col-md-6">
-                                <div class="service-item">
-                                    <i class="fa fa-2x {{ service.icon }} mx-auto mb-4"></i>
-                                    <h5 class="mb-2">{{ service.title }}</h5>
-                                    <p class="mb-0">{{ service.description|truncatewords:30 }}</p>
-                                </div>
-                            </div>
-                        {% empty %}
-                            <div class="col-12">
-                                <p class="text-center">No services added yet.</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </section>
-                <!-- Services End -->
+                    <!-- Experience Section -->
+                    <section class="section">
+                        <div class="section-header">
+                            <i class="fas fa-briefcase"></i>
+                            <h2>Work Experience</h2>
+                        </div>
+                        <div class="timeline">
+                            {% for experience in experiences %}
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{ experience.start_date }} - {{ experience.end_date|default:"Present" }}</div>
+                                <h3 class="timeline-title">{{ experience.role }}</h3>
+                                <div class="timeline-company">{{ experience.company }}</div>
+                                <p class="timeline-description">"{{ experience.my_description }}"</p>
 
-                <!-- Portfolio Start -->
-                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">Portfolio</h1>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-12 text-center mb-2">
-                                    <ul class="list-inline mb-4" id="portfolio-flters">
-                                        <li class="btn btn-secondary active" data-filter="*"><i class="fa fa-star me-2"></i>All</li>
-                                        {% for category in portfolio_categories %}
-                                            <li class="btn btn-secondary" data-filter=".{{ category.filter_class }}"><i class="fa fa-laptop-code me-2"></i>{{ category.name }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="row portfolio-container">
-                                {% for item in portfolio_items %}
-                                    <div class="col-md-6 mb-4 portfolio-item {{ item.category.filter_class|default:'' }}">
-                                        <div class="position-relative overflow-hidden mb-2">
-                                            {% if item.image %}
-                                                <img class="img-fluid w-100" src="{{ item.image.url }}" alt="{{ item.title }}">
-                                            {% else %}
-                                                <img class="img-fluid w-100" src="/static/img/portfolio-1.jpg" alt="{{ item.title }}">
-                                            {% endif %}
-                                            <div class="portfolio-btn d-flex align-items-center justify-content-center">
-                                                <a href="{% if item.image %}{{ item.image.url }}{% else %}/static/img/portfolio-1.jpg{% endif %}" data-lightbox="portfolio">
-                                                    <i class="bi bi-plus text-light"></i>
-                                                </a>
-                                            </div>
+                                <div class="company-reviews">
+                                    <div class="review-item">
+                                        <div class="review-header">
+                                            <span class="reviewer">{{ experience.company.owner.full_name }}, Human Resource</span>
+                                            <span class="review-date">March 2023</span>
                                         </div>
-                                        <h5 class="text-center mt-2">{{ item.title }}</h5>
-                                        <p class="text-center small">{{ item.description|truncatewords:20 }}</p>
+                                        {% if star == "FIVE_STAR" %}
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        {% endif %}
+                                        {% if star == "FOUR_STAR" %}
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        {% endif %}
+                                        {% if star == "THREE_STAR" %}
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="fas fa-star-o"></i>
+                                        </div>
+                                        {% endif %}
+                                        {% if star == "TWO_STAR" %}
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="fas fa-star-o"></i>
+                                        </div>
+                                        {% endif %}
+                                        {% if star == "ONE_STAR" %}
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="fas fa-star-o"></i>
+                                        </div>
+                                        {% endif %}
+                                        <p class="review-text">"{{ experience.employer_description }}"</p>
                                     </div>
-                                {% empty %}
-                                    <div class="col-12">
-                                        <p class="text-center">No portfolio items added yet.</p>
-                                    </div>
-                                {% endfor %}
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
-                    </div>
-                </section>
-                <!-- Portfolio End -->
+                    </section>
 
-                <!-- Testimonial Start -->
-                <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
-                    <h1 class="title pb-3 mb-5">Testimonial</h1>
-                    <div class="owl-carousel testimonial-carousel">
-                        {% for testimonial in testimonials %}
-                            <div class="text-left">
-                                <i class="fa fa-3x fa-quote-left text-primary mb-4"></i>
-                                <p class="fs-4 mb-4">{{ testimonial.testimonial_text|truncatewords:40 }}</p>
-                                <div class="d-flex align-items-center">
-                                    {% if testimonial.client_image %}
-                                        <img class="img-fluid" src="{{ testimonial.client_image.url }}" style="width: 60px; height: 60px; border-radius: 50%;">
-                                    {% else %}
-                                        <img class="img-fluid" src="/static/img/testimonial-1.jpg" style="width: 60px; height: 60px;">
-                                    {% endif %}
-                                    <div class="ps-3">
-                                        <p class="text-primary fs-5 mb-1">{{ testimonial.client_name }}</p>
-                                        <i>{{ testimonial.client_profession }}</i>
-                                        <div class="mt-1">
-                                            {% for i in "12345"|make_list %}
-                                                {% if forloop.counter <= testimonial.rating %}
-                                                    <i class="fas fa-star text-warning" style="font-size: 12px;"></i>
-                                                {% else %}
-                                                    <i class="far fa-star text-warning" style="font-size: 12px;"></i>
+                    <!-- Contact Section -->
+                    <section class="section" id="contact">
+                        <div class="section-header">
+                            <i class="fas fa-envelope"></i>
+                            <h2>Contact Information</h2>
+                        </div>
+                        <div class="contact-grid">
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Primary Phone</h4>
+                                        <p>{{ seeker.user.contact }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Email Address</h4>
+                                        <p>{{ seeker.user.email }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="contact-item emergency-contact">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Emergency Contact</h4>
+                                        <p>+1 (555) 987-6543</p>
+                                        <small>Available 24/7 for urgent electrical issues</small>
+                                    </div>
+                                </div>
+
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Location</h4>
+                                        <p>San Francisco, CA</p>
+                                        <small>Serving Bay Area and surrounding regions</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="qr-code">
+                                {% if qr_code_data %}
+                                <div class="qr-image">
+                                    <img src="{{ qr_code_data }}"
+                                        alt="Scan to save {{ seeker.user.full_name }}'s contact info">
+                                </div>
+                                <p class="qr-text">Scan to save contact info</p>
+                                {% else %}
+                                <div class="qr-placeholder">
+                                    <i class="fas fa-qrcode fa-2x"></i>
+                                </div>
+                                <p class="qr-text qr-error">QR Code unavailable</p>
+                                {% endif %}
+                            </div>
+                                                    </div>
+
+                        <div class="contact-form">
+                            <h3>Suggest a Gig For Me</h3>
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="name">Location</label>
+                                        {{dmTalentForm.location }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Hourly Rate in USD</label>
+                                        {{dmTalentForm.hourly_rate }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject">Subject</label>
+                                    {{  dmTalentForm.subject }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="project-type">Project Type</label>
+                                    {{  dmTalentForm.project_type }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    {{ dmTalentForm.description }}
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column (Sidebar) -->
+                <div class="right-column">
+                    <!-- Certifications -->
+                    <section class="sidebar-section">
+                        <h3><i class="fas fa-award"></i> Certifications</h3>
+                        <div class="certifications-list">
+                            {% if certs %}
+                                {% for cert in certs %}
+                                <div class="certification-item">
+                                    <div class="cert-icon">
+                                        <i class="fas fa-award"></i>
+                                    </div>
+                                    <div class="cert-details">
+                                        <h4>{{ cert.name }}</h4>
+                                        <div class="cert-organization">{{ cert.issuing_organization }}</div>
+                                        <div class="cert-date">
+                                            {% if cert.issue_date %}
+                                                Issued: {{ cert.issue_date|date:"M Y" }}
+                                                {% if cert.expiration_date %}
+                                                    - Expires: {{ cert.expiration_date|date:"M Y" }}
                                                 {% endif %}
-                                            {% endfor %}
+                                            {% else %}
+                                                Certified Professional
+                                            {% endif %}
                                         </div>
+                                        {% if cert.credential_id %}
+                                        <div class="cert-id">ID: {{ cert.credential_id }}</div>
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </div>
-                        {% empty %}
-                            <div class="text-left">
-                                <p>No testimonials added yet.</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </section>
-                <!-- Testimonial End -->
-
-                <!-- Contact Start -->
-                <section class="py-5 wow fadeInUp" data-wow-delay="0.1s" id="contact">
-                    <h1 class="title pb-3 mb-5">Contact Me</h1>
-                    {% if site_settings.contact_form_active %}
-                        <p class="mb-4">{{ site_settings.contact_form_message|default:"I'll get back to you within 24 hours." }}</p>
-                        <form id="contact-form" method="post" action="{% url 'users:send_contact' %}">
-                            {% csrf_token %}
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control border-0 bg-secondary" id="name" name="name" placeholder="Your Name" required>
-                                        <label for="name">Your Name</label>
+                                {% endfor %}
+                            {% else %}
+                                <div class="certification-item">
+                                    <div class="cert-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="cert-details">
+                                        <h4>Master Electrician License</h4>
+                                        <div class="cert-organization">State of California</div>
+                                        <div class="cert-date">Issued: Jan 2020 - Expires: Jan 2024</div>
+                                        <div class="cert-id">ID: #12345</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control border-0 bg-secondary" id="email" name="email" placeholder="Your Email" required>
-                                        <label for="email">Your Email</label>
+                                <div class="certification-item">
+                                    <div class="cert-icon">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <div class="cert-details">
+                                        <h4>Smart Home Professional</h4>
+                                        <div class="cert-organization">CEDIA</div>
+                                        <div class="cert-date">Issued: Mar 2021</div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control border-0 bg-secondary" id="subject" name="subject" placeholder="Subject" required>
-                                        <label for="subject">Subject</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control border-0 bg-secondary" placeholder="Leave a message here" id="message" name="message" style="height: 200px" required></textarea>
-                                        <label for="message">Message</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
-                                </div>
-                            </div>
-                        </form>
-                        <div id="contact-message" class="mt-3"></div>
-                    {% else %}
-                        <p class="mb-4">{{ site_settings.contact_form_message|default:"The contact form is currently inactive. Please reach out via email or social media." }}</p>
-                    {% endif %}
-                </section>
-                <!-- Contact End -->
-
-                <!-- Footer Start -->
-                <section class="wow fadeIn" data-wow-delay="0.1s">
-                    <div class="bg-secondary text-light text-center p-5">
-                        <div class="d-flex justify-content-center mb-4">
-                            {% if profile.twitter %}
-                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
-                            {% endif %}
-                            {% if profile.facebook %}
-                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                            {% endif %}
-                            {% if profile.linkedin %}
-                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                            {% endif %}
-                            {% if profile.instagram %}
-                                <a class="btn btn-dark btn-square mx-1" href="{{ profile.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
                             {% endif %}
                         </div>
-                        <div class="d-flex justify-content-center mb-3">
-                            <a class="text-light px-3 border-end" href="#">Privacy</a>
-                            <a class="text-light px-3 border-end" href="#">Terms</a>
-                            <a class="text-light px-3 border-end" href="#">FAQs</a>
-                            <a class="text-light px-3" href="#">Help</a>
+                    </section>
+
+                    <!-- Specializations -->
+                    <section class="sidebar-section">
+                        <h3><i class="fas fa-star"></i> Specializations</h3>
+                        <ul style="list-style: none; padding-left: 0;">
+                            {% if skills %}
+                            {% for skill in skills %}
+                                <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;">
+                                    <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                    {{ skill.skill }}
+                                </li>
+                            {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </section>
+
+                    <!-- Connect -->
+                    <section class="sidebar-section">
+                        <h3><i class="fas fa-share-alt"></i> Connect With Me</h3>
+                        <div class="social-links">
+                            <a href="#" class="social-link">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
                         </div>
-                        
-                        <p class="m-0">&copy; {% now "Y" %} {{ site_settings.footer_text|default:"All Rights Reserved. Designed by HTML Codex" }}</p>
-                    </div>
-                </section>
-                <!-- Footer End -->
+                    </section>
+                </div>
             </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="#" class="footer-logo">
+                    <span>BlackCode</span>Labs
+                </a>
+                <div class="copyright">
+                    &copy; 2023 BlackCodeLabs. All rights reserved.
+                </div>
+                <div class="powered-by">
+                    Powered by BlackCodeLabs
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation for skill bars
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillBars = document.querySelectorAll('.skill-progress');
+
+            skillBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+        <!-- Django Messages Popup -->
+    <div id="messagesPopup" class="messages-popup">
+        <div class="messages-container">
+            <div class="messages-header">
+                <h4>Notifications</h4>
+                <button class="close-messages" id="closeMessages">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="messages-list" id="messagesList">
+                {% for message in messages %}
+                <div class="message-item {{ message.tags }}">
+                    <div class="message-icon">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-title">
+                            {% if message.tags == 'success' %}Success!
+                            {% elif message.tags == 'error' %}Error!
+                            {% elif message.tags == 'warning' %}Warning!
+                            {% else %}Info{% endif %}
+                        </div>
+                        <div class="message-text">{{ message }}</div>
+                    </div>
+                    <button class="message-close" onclick="this.parentElement.remove(); updateMessageCount();">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% empty %}
+                <div class="no-messages">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="messages-toggle" id="messagesToggle">
+            <i class="fas fa-bell"></i>
+            {% if messages %}
+            <span class="message-count">{{ messages|length }}</span>
+            {% endif %}
         </div>
     </div>
 
-    <!-- Back to Top -->
-    <a href="#" class="back-to-top"><i class="fa fa-angle-double-up"></i></a>
-    
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'pot/lib/wow/wow.min.js' %}"></script>
-    <script src="{% static 'pot/lib/typed/typed.min.js' %}"></script>
-    <script src="{% static 'pot/lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'pot/lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'pot/lib/counterup/counterup.min.js' %}"></script>
-    <script src="{% static 'pot/lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'pot/lib/isotope/isotope.pkgd.min.js' %}"></script>
-    <script src="{% static 'pot/lib/lightbox/js/lightbox.min.js' %}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{% static 'pot/js/main.js' %}"></script>
-    
-    <!-- Custom AJAX for Subscribe and Contact -->
     <script>
-        // Typed text initialization
-        $(document).ready(function() {
-            if ($('.typed-text').length) {
-                var typed_strings = $('.typed-text').text().split(',');
-                var typed = new Typed('.typed-text-output', {
-                    strings: typed_strings,
-                    typeSpeed: 100,
-                    backSpeed: 20,
-                    smartBackspace: false,
-                    loop: true
-                });
-            }
-            
-            // Newsletter subscription
-            $('#subscribe-btn').click(function() {
-                var email = $('#newsletter-email').val();
-                if (email) {
-                    $.ajax({
-                        url: '{% url "users:subscribe" %}',
-                        type: 'POST',
-                        data: {
-                            'email': email,
-                            'csrfmiddlewaretoken': '{{ csrf_token }}'
-                        },
-                        success: function(response) {
-                            $('#subscribe-message').html('<div class="alert alert-success">' + response.message + '</div>');
-                            $('#newsletter-email').val('');
-                        },
-                        error: function(response) {
-                            $('#subscribe-message').html('<div class="alert alert-danger">' + response.responseJSON.error + '</div>');
-                        }
-                    });
-                } else {
-                    $('#subscribe-message').html('<div class="alert alert-warning">Please enter your email address.</div>');
+        // Messages Popup Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const messagesPopup = document.getElementById('messagesPopup');
+            const messagesToggle = document.getElementById('messagesToggle');
+            const closeMessages = document.getElementById('closeMessages');
+
+            // Toggle messages popup
+            messagesToggle.addEventListener('click', function() {
+                messagesPopup.classList.toggle('active');
+            });
+
+            // Close messages popup
+            closeMessages.addEventListener('click', function() {
+                messagesPopup.classList.remove('active');
+            });
+
+            // Close popup when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!messagesPopup.contains(event.target) && !messagesToggle.contains(event.target)) {
+                    messagesPopup.classList.remove('active');
                 }
             });
+
+            // Auto-hide success messages after 5 seconds
+            setTimeout(function() {
+                const successMessages = document.querySelectorAll('.message-item.success');
+                successMessages.forEach(message => {
+                    setTimeout(() => {
+                        message.style.opacity = '0';
+                        message.style.transform = 'translateX(-100%)';
+                        setTimeout(() => {
+                            message.remove();
+                            updateMessageCount();
+                        }, 300);
+                    }, 5000);
+                });
+            }, 1000);
+
+            // Update message count initially
+            updateMessageCount();
         });
+
+        // Function to update message count badge
+        function updateMessageCount() {
+            const messageCount = document.querySelector('.message-count');
+            const messages = document.querySelectorAll('.message-item');
+
+            if (messageCount) {
+                if (messages.length === 0) {
+                    messageCount.style.display = 'none';
+                } else {
+                    messageCount.textContent = messages.length;
+                    messageCount.style.display = 'flex';
+                }
+            }
+        }
     </script>
 </body>
 </html>

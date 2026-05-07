@@ -1,22 +1,21 @@
-# Users/urls.py
 from django.urls import path
-from django.contrib.auth import views as auth_views
-from . import views
-
-app_name = 'users'
+from .views import (BuildProfile, DeleteCertificationView,
+                    MyResume, ResumeBuilder, TalentDetailView,
+                    AddSkillView, RemoveSkillView,RemoveProfilePictureView,
+                    auth_view, activate
+                    )
 
 urlpatterns = [
-    # Registration URLs
-    path('register/', views.UserRegistrationView.as_view(), name='register'),
-    path('register-auto/', views.UserRegistrationAutoLoginView.as_view(), name='register_auto'),
+    path('authenticate/', auth_view, name='authenticate'),
+    path('activate/<uidb64>/<token>/', activate, name='activate'),
 
-    path('login/', views.CustomUserLoginView.as_view(), name='custom_login'),
-    
-    # Logout URL
-    path('logout/', views.UserLogoutView.as_view(), name='logout'),
-    
-    path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('find-talent/Resume/<int:pk>/',TalentDetailView.as_view(), name="profile"),
+    path('build-profile/', BuildProfile.as_view(), name='build_profile'),
+    path('remove-profile-picture/', RemoveProfilePictureView.as_view(), name='remove_profile_picture'),
+    path('add-skill/', AddSkillView.as_view(), name='add_skill'),
+    path('remove-skill/<int:skill_id>/', RemoveSkillView.as_view(), name='remove_skill'),
+    path('delete-certification/<int:cert_id>/', DeleteCertificationView.as_view(), name='delete_certification'),
 
-    path('subscribe/', views.subscribe_newsletter, name='subscribe'),
-    path('send-contact/', views.send_contact_message, name='send_contact'),
+    path('my-resume/', MyResume.as_view(), name='my_resume'),
+    path('resume-builder/', ResumeBuilder.as_view(), name='resume_builder'),
 ]

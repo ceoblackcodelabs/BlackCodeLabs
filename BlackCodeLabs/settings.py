@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,8 +42,31 @@ INSTALLED_APPS = [
     'Users',
     # 'SalesPro.apps.SalesproConfig',
     'QRIdentifier',
-    'Pitchs.apps.PitchsConfig'
+    'Pitchs.apps.PitchsConfig',
+
+    # Allauth apps
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': config('GCI'),
+            'secret': config('GCS'),
+            'key': ''
+        }
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'BlackCodeLabs.urls'
@@ -174,6 +199,10 @@ from decouple import config
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - emails print to console
 DEFAULT_FROM_EMAIL = 'noreply@blackcodelabs.com'
 CONTACT_NOTIFICATION_EMAIL = 'sales@blackcodelabs.com'
+
+LOGIN_REDIRECT_URL = 'build_profile'
+LOGOUT_REDIRECT_URL = 'authenticate'
+LOGIN_URL = 'authenticate'
 
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://blackcodelabs.com']

@@ -1,0 +1,164 @@
+{% load static %}
+
+{% load message_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/messages.css" %}">
+    <script src="{% static "js/msg.js" %}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{% static "/img/logo/logo.png" %}">
+    {% block morecss %}{% endblock morecss %}
+    {% block morejs %}{% endblock morejs %}
+</head>
+<body>
+    <!-- Message Box Container -->
+    <div id="messageBox" class="message-box">
+        <div class="message-content">
+            <div class="message-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="message-text">
+                <h4 class="message-title" id="messageTitle">Success!</h4>
+                <p class="message-description" id="messageDescription">Your action was completed successfully.</p>
+            </div>
+            <button class="message-close" onclick="hideMessage()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="message-progress"></div>
+    </div>
+
+    <!-- Django Messages Handler -->
+    <div id="djangoMessages" style="display: none;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="django-message"
+                    data-tags="{{ message.tags }}"
+                    data-message="{{ message|escape }}"
+                    data-icon="{{ message.tags|message_icon }}"
+                    data-title="{{ message.tags|message_title }}">
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <!-- Premium Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="{% url "home" %}" class="logo">
+                    {% comment %} <img src="{% static 'img/logo/logo.png' %}" alt="BlackCodeLabs" class="logo-img square"> {% endcomment %}
+                    BlackCode<span>Labs</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url "home" %}" class="active">Home</a></li>
+                    <li><a href="{% url "about" %}">About</a></li>
+                    <li><a href="{% url "contact" %}">Contact</a></li>
+                    <li><a href="{% url "about" %}">Profile</a></li>
+                    <li><a href="{% url "demo" %}" class="cta-button"><i class="fas fa-rocket"></i> Get Started</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}{% endblock body %}
+
+    <!-- Premium Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>BlackCodelabs</h4>
+                    <p>your number one source for systems, automation and software development solutions.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>For Workers</h4>
+                    <ul class="footer-links">
+                        <li><a href="finds_job.html"><i class="fas fa-search"></i> Find Jobs</a></li>
+                        <li><a href="build_profile.html"><i class="fas fa-user-edit"></i> Build Profile</a></li>
+                        <li><a href="skill_training.html"><i class="fas fa-graduation-cap"></i> Skill Training</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i> Resume Builder</a></li>
+                        <li><a href="#"><i class="fas fa-chart-line"></i> Career Growth</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>For Employers</h4>
+                    <ul class="footer-links">
+                        <li><a href="post_jobs.html"><i class="fas fa-briefcase"></i> Post Jobs</a></li>
+                        <li><a href="find_talent.html"><i class="fas fa-users"></i> Find Talent</a></li>
+                        <li><a href="manage_hires.html"><i class="fas fa-tasks"></i> Manage Hires</a></li>
+                        <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                        <li><a href="#"><i class="fas fa-shield-alt"></i> Verification</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                        <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                        <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+                        <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BlackCodeLabs. All rights reserved. Building better workforce connections worldwide.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block belowfooter %}{% endblock belowfooter %}
+
+    <script>
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Add animation to feature cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards and steps
+        document.querySelectorAll('.feature-card, .step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            observer.observe(el);
+        });
+
+        {% block morescripts %}{% endblock %}
+
+    </script>
+</body>
+</html>
