@@ -3,7 +3,8 @@ from .models import (
     SeekerProfile, Skill, SeekerSkill,
     Certification, ToolProficiency,
     Specialization, WorkExperience,
-    Review, DmFromResume
+    Review, DmFromResume, User,
+    Company, CompanyReview
 )
 
 # --- Inline Models ---
@@ -31,6 +32,11 @@ class SpecializationInline(admin.TabularInline):
 class WorkExperienceInline(admin.TabularInline):
     model = WorkExperience
     extra = 1
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('email', 'contact', 'full_name', 'account_type', "agree_terms")
+    search_fields = ('username', 'email', 'full_name', 'contact', 'account_type')
 
 
 # --- SeekerProfile Admin ---
@@ -109,3 +115,15 @@ class DmFromResumeAdmin(admin.ModelAdmin):
     list_display = ('company', 'talent', 'subject', 'project_type', 'hourly_rate')
     search_fields = ('company__name', 'talent__user__username', 'subject')
     list_filter = ('project_type',)
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'name', 'industry', 'location', 'review', 'website', 'email', 'phone')
+    search_fields = ('name', 'email', 'phone', 'location')
+
+@admin.register(CompanyReview)
+class CompanyReviewAdmin(admin.ModelAdmin):
+    list_display = ('company_name', 'review_text', 'rating')
+    search_fields = ('company__name', 'review_text', 'rating')
+    list_filter = ('rating', 'company__name')

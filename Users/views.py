@@ -120,6 +120,76 @@ class UserLogoutView(LogoutView):
         messages.info(request, 'You have been logged out successfully.')
         return super().dispatch(request, *args, **kwargs)
 
+class UserProfileView(LoginRequiredMixin, DetailView):
+    template_name = 'users/myProfile.html'
+    model = SeekerProfile
+    context_object_name = 'seeker'
+
+    def get_object(self, queryset=None):
+        # Return the SeekerProfile, not the User
+        profile, created = SeekerProfile.objects.get_or_create(user=self.request.user)
+        return profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.object  # This is now a SeekerProfile object
+        user = self.request.user
+
+        # Get all related data (using profile directly)
+        skills = SeekerSkill.objects.filter(profile=profile)
+        certifications = Certification.objects.filter(profile=profile)
+        tools = ToolProficiency.objects.filter(profile=profile)
+        specializations = Specialization.objects.filter(profile=profile)
+        experience = WorkExperience.objects.filter(profile=profile)
+        ratings = Review.objects.filter(profile=profile)  # Fixed: remove username lookup
+
+        # Calculate average ratings (you likely want to aggregate, not overwrite)
+        rating_data = {
+            'tm': 0,
+            'tw': 0,
+            'com': 0,
+            'ct': 0,
+            'lead': 0,
+            'star': 0
+        }
+
+        if ratings.exists():
+            rating_data['tm'] = ratings.aggregate(Avg('time_management'))['time_management__avg'] or 0
+            rating_data['tw'] = ratings.aggregate(Avg('teamwork'))['teamwork__avg'] or 0
+            rating_data['com'] = ratings.aggregate(Avg('Communication'))['Communication__avg'] or 0
+            rating_data['ct'] = ratings.aggregate(Avg('critical_thinking'))['critical_thinking__avg'] or 0
+            rating_data['lead'] = ratings.aggregate(Avg('leadership'))['leadership__avg'] or 0
+            rating_data['star'] = ratings.aggregate(Avg('ratings'))['ratings__avg'] or 0
+
+        context.update(rating_data)
+
+        # Rest of your code remains the same...
+        available_skills = Skill.objects.exclude(
+            id__in=skills.values_list('skill_id', flat=True)
+        )[:10]
+
+        # Generate QR code (now profile is SeekerProfile)
+        try:
+            qr_code_data = generate_vcard_qr_code(profile)  # Pass profile, not self.object
+            print(f"QR code data length: {len(qr_code_data) if qr_code_data else 'None'}")
+        except Exception as e:
+            print(f"Error in view generating QR: {e}")
+            qr_code_data = None
+
+        context.update({
+            'profile': profile,
+            'skills': skills,
+            'certifications': certifications,
+            'tools': tools,
+            'specializations': specializations,
+            'qr_code_data': qr_code_data,
+            'available_skills': available_skills,
+            'experiences': experience,
+            'ratings': ratings
+        })
+
+        return context
+
 
 class BuildProfile(LoginRequiredMixin, TemplateView):
     template_name = 'users/build_profile.html'

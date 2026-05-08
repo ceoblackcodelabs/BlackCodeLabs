@@ -815,3 +815,464 @@ body {
         font-size: 0.8rem;
     }
 }
+
+/* ===== MODERN BUSINESS CARD STYLES ===== */
+.business-card {
+    background: linear-gradient(145deg, #0f0f1a 0%, #1a1a2e 100%);
+    border-radius: 28px;
+    padding: 0;
+    margin-top: 2rem;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    position: relative;
+}
+
+.business-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.business-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(59, 130, 246, 0.4);
+    border-color: var(--primary);
+}
+
+/* Card Header */
+.card-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #34d399;
+}
+
+.card-status i {
+    font-size: 0.6rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.card-badge {
+    background: rgba(59, 130, 246, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--primary);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.card-badge i {
+    font-size: 0.65rem;
+}
+
+/* Card Body */
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* QR Section */
+.card-qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    min-width: 130px;
+}
+
+.qr-wrapper {
+    width: 110px;
+    height: 110px;
+    background: var(--white);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: transform 0.3s ease;
+}
+
+.qr-wrapper:hover {
+    transform: scale(1.05);
+}
+
+.qr-code-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.qr-placeholder-alt {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e1e3a, #0a0a1a);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray);
+    border: 2px dashed rgba(59, 130, 246, 0.3);
+}
+
+.qr-placeholder-alt i {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.qr-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--gray);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+}
+
+.qr-text i {
+    color: var(--primary);
+    font-size: 0.7rem;
+}
+
+/* Divider */
+.card-divider {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.5), transparent);
+}
+
+/* Info Section */
+.card-info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+}
+
+.card-avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.card-avatar-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.card-avatar-placeholder-alt {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 2rem;
+    border: 3px solid var(--primary);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.avatar-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #1a1a2e;
+    color: white;
+    font-size: 0.6rem;
+}
+
+.card-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.card-title {
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin: -0.25rem 0 0 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Contact Info */
+.card-contact {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.contact-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+    color: var(--gray);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contact-row:last-child {
+    border-bottom: none;
+}
+
+.contact-row i {
+    width: 20px;
+    color: var(--primary);
+    font-size: 0.85rem;
+}
+
+.contact-row span {
+    flex: 1;
+    text-align: left;
+    word-break: break-all;
+}
+
+/* Download Button */
+.btn-download-card-alt {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--white);
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 40px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-download-card-alt::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-download-card-alt:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-download-card-alt:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    gap: 1rem;
+}
+
+.btn-download-card-alt:active {
+    transform: translateY(0);
+}
+
+.btn-download-card-alt i:first-child {
+    font-size: 0.9rem;
+}
+
+.btn-download-card-alt i:last-child {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.btn-download-card-alt:hover i:last-child {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
+/* Card Footer */
+.card-footer {
+    padding: 1rem 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-icons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    background: var(--primary);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+.card-watermark {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.05);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card-body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card-divider {
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(59, 130, 246, 0.5), transparent);
+    }
+
+    .card-qr-section {
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .qr-wrapper {
+        width: 80px;
+        height: 80px;
+    }
+
+    .card-info-section {
+        width: 100%;
+    }
+
+    .card-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+
+    .contact-row span {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .business-card {
+        margin-top: 1rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .card-name {
+        font-size: 1.1rem;
+    }
+
+    .card-title {
+        font-size: 0.7rem;
+    }
+
+    .card-avatar-img,
+    .card-avatar-placeholder-alt {
+        width: 65px;
+        height: 65px;
+    }
+
+    .avatar-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 0.5rem;
+    }
+
+    .contact-row {
+        font-size: 0.7rem;
+        padding: 0.4rem 0;
+    }
+
+    .btn-download-card-alt {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .social-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+}
