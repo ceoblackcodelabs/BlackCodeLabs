@@ -58,6 +58,8 @@ class SeekerProfile(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seeker_profile')
+    emergency_contact_name = models.CharField(max_length=255, blank=True)
+    emergency_contact_phone = models.CharField(max_length=20, blank=True)
     pfp = models.ImageField(upload_to="SeekerPfp", default="SeekerPfp/default.jpg")
     primary_trade = models.CharField(max_length=20, choices=TRADE_CHOICES)
     years_experience = models.CharField(max_length=5, choices=EXPERIENCE_LEVELS)
