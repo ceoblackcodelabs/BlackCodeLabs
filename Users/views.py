@@ -18,7 +18,7 @@ from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.tokens import default_token_generator
-from django.db.models import Q
+from django.db.models import Q, Avg
 from utils.qrgen import generate_vcard_qr_code
 
 from .forms import (
