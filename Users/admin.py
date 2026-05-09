@@ -2,7 +2,7 @@ from os import name
 
 from django.contrib import admin
 from .models import (
-    SeekerProfile, Skill, SeekerSkill,
+    CompanySpecialization, SeekerProfile, Skill, SeekerSkill,
     Certification, ToolProficiency,
     Specialization, WorkExperience,
     Review, DmFromResume, User,
@@ -118,6 +118,11 @@ class DmFromResumeAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email', 'talent__user__username', 'subject', 'link', 'location')
     list_filter = ('project_type', 'created_at', 'name')
 
+
+@admin.register(CompanySpecialization)
+class CompanySpecializationAdmin(admin.ModelAdmin):
+    list_display = ('company', 'name')
+    search_fields = ('company__name', 'name')
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):

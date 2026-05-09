@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (BuildProfile, DeleteCertificationView,
                     MyResume, ResumeBuilder, TalentDetailView,
                     AddSkillView, RemoveSkillView,RemoveProfilePictureView,
-                    UserProfileView,
+                    UserProfileView, CompanyProfileView,
                     auth_view, activate
                     )
 
@@ -20,5 +20,8 @@ urlpatterns = [
 
     path('my-resume/', MyResume.as_view(), name='my_resume'),
     path('resume-builder/', ResumeBuilder.as_view(), name='resume_builder'),
+
+    # company profile
+    path('myCompany/', CompanyProfileView.as_view(), name='company_profile'),
 ]
 

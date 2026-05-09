@@ -21,6 +21,8 @@ from django.utils.encoding import force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models import Q, Avg
 from utils.qrgen import generate_vcard_qr_code, digital_card_qr_code
+from utils.empGen import generate_vcard_qr_code_employer, digital_card_qr_code_employer
+import datetime
 
 from .forms import (
     RegisterForm, EmailLoginForm, SeekerProfileForm,
@@ -28,9 +30,10 @@ from .forms import (
     SpecializationForm, ContactTalentForm
 )
 from .models import (
-    User, SeekerProfile, SeekerSkill,
+    CompanyReview, User, SeekerProfile, SeekerSkill,
     Certification, ToolProficiency, Specialization,
-    Skill, Review, DmFromResume, Company, WorkExperience
+    Skill, Review, DmFromResume, Company, WorkExperience,
+    CompanySpecialization
 )
 
 User = get_user_model()
@@ -204,6 +207,83 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
         return context
 
+class CompanyProfileView(LoginRequiredMixin, DetailView):
+    template_name = 'users/companyProfile.html'
+    model = Company
+    context_object_name = 'company'
+
+    def get_object(self, queryset=None):
+        # Return the Company profile for the logged-in user
+        company, created = Company.objects.get_or_create(owner=self.request.user)
+        return company
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.object  # This is now a Company object
+        owner = self.request.user
+
+        # Get all related data (using profile directly)
+        ratings = CompanyReview.objects.filter(company_name=profile)
+
+        # Calculate average ratings
+        rating_data = {
+            'tm': 0,
+            'tw': 0,
+            'com': 0,
+            'ct': 0,
+            'lead': 0,
+            'star': 0
+        }
+
+        if ratings.exists():
+            rating_data['tm'] = ratings.aggregate(Avg('time_management'))['time_management__avg'] or 0
+            rating_data['tw'] = ratings.aggregate(Avg('teamwork'))['teamwork__avg'] or 0
+            rating_data['com'] = ratings.aggregate(Avg('Communication'))['Communication__avg'] or 0
+            rating_data['ct'] = ratings.aggregate(Avg('critical_thinking'))['critical_thinking__avg'] or 0
+            rating_data['lead'] = ratings.aggregate(Avg('leadership'))['leadership__avg'] or 0
+            rating_data['star'] = ratings.aggregate(Avg('ratings'))['ratings__avg'] or 0
+
+        context.update(rating_data)
+
+        # Generate vCard QR code
+        try:
+            qr_code_data = generate_vcard_qr_code_employer(profile)
+            if qr_code_data:
+                print(f"{Fore.GREEN}vCard QR code generated successfully{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.YELLOW}vCard QR code returned None{Style.RESET_ALL}")
+        except Exception as e:
+            print(f"{Fore.RED}Error generating vCard QR: {e}{Style.RESET_ALL}")
+            qr_code_data = None
+
+        # Generate digital card QR code - FIXED: Pass profile and request
+        try:
+            digital_qr_code_data = digital_card_qr_code_employer(profile, self.request)
+            if digital_qr_code_data:
+                print(f"{Fore.GREEN}Digital card QR generated successfully{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.YELLOW}Digital card QR returned None{Style.RESET_ALL}")
+        except Exception as e:
+            print(f"{Fore.RED}Error generating digital card QR: {e}{Style.RESET_ALL}")
+            digital_qr_code_data = None
+
+            
+        current_year = datetime.datetime.now().year
+        experience = current_year - profile.year_founded if profile.year_founded else 0
+
+        # specialization
+        specialization = CompanySpecialization.objects.filter(company=profile)
+
+        context.update({
+            'profile': profile,
+            'experience': experience,
+            'specializations': specialization,
+            'qr_code_data': qr_code_data,
+            'digital_qr_code_data': digital_qr_code_data,
+            'ratings': ratings
+        })
+
+        return context
 
 class BuildProfile(LoginRequiredMixin, TemplateView):
     template_name = 'users/build_profile.html'
