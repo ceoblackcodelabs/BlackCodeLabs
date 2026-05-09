@@ -6,8 +6,9 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     ACCOUNT_TYPE_CHOICES = [
         ('Seeker', 'Seeker / Job Seeker'),
-        ('Employer', 'Employer / Recruiter'),
-        ('Developer', 'Developer / Admin'),
+        ('Student', 'Student / Apprentice'),
+        ('Institution', 'Institution / Training Provider'),
+        ('Company', 'Employer / Recruiter'),
     ]
 
     # Keep username but make email required and unique
@@ -221,6 +222,13 @@ PROJECT_TYPE = [
     {'contract', 'Contract'},
 ]
 
+class CompanySpecialization(models.Model):
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, related_name='specializations')
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.company.name} - {self.name}"
+
 class CompanyReview(models.Model):
     company_name = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     review_text = models.TextField(default="")
@@ -239,6 +247,9 @@ class Company(models.Model):
     description = models.TextField(default="", blank=True)
     email = models.EmailField(max_length=255, blank=True, default="")
     phone = models.CharField(max_length=20, blank=True, default="")
+    year_founded = models.IntegerField(null=True, blank=True, default=2020)
+    specialization = models.ForeignKey(CompanySpecialization, on_delete=models.CASCADE, null=True, blank=True, related_name="company_specialization")
+    pfp = models.ImageField(upload_to="CompanyPfp", default="CompanyPfp/default.jpg")
 
     def __str__(self):
         return self.name
