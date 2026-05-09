@@ -208,11 +208,21 @@ class SpecializationForm(forms.Form):
 class ContactTalentForm(forms.ModelForm):
     class Meta:
         model = DmFromResume
-        fields = ['subject', 'project_type', 'description', 'location', 'hourly_rate',]
+        fields = ['name', 'email', 'subject', 'project_type', 'description', 'location', 'contact', 'link']
         widgets = {
-            'subject': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Project Subject', 'id':'subject'}),
-            'project_type': forms.Select(attrs={'class': 'form-select', 'id':'project-type'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Project Description', 'id':'message', 'rows':4}),
-            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'City, State'}),
-            'hourly_rate': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 45.00'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Name', 'required': 'required'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Your Email', 'required': 'required'}),
+            'subject': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Project Subject', 'required': 'required'}),
+            'project_type': forms.Select(attrs={'class': 'form-select'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Project Description', 'rows': 4, 'required': 'required'}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'City, State', 'required': 'required'}),
+            'contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number', 'required': 'required'}),
+            'link': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Project Link (optional)'}),
         }
+
+    def clean_contact(self):
+        contact = self.cleaned_data.get('contact')
+        # Allow longer phone numbers
+        if contact and len(contact) > 20:
+            raise forms.ValidationError("Phone number is too long. Max 20 characters.")
+        return contact

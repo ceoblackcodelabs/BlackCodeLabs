@@ -490,23 +490,26 @@ class TalentDetailView(DetailView):
         self.object = self.get_object()
         form = ContactTalentForm(request.POST)
 
+        # DEBUG: Print form errors
+        print(f"Form is valid: {form.is_valid()}")
+        if not form.is_valid():
+            messages.error(request, f'Form errors: {form.errors}')
+            context = self.get_context_data()
+            context['dmTalentForm'] = form
+            return self.render_to_response(context)
+
         if form.is_valid():
             try:
-                # Get the company associated with the logged-in user
-                company = Company.objects.get(owner=request.user)
-                talent = SeekerProfile.objects.get(pk=self.object.pk)
-
-                dm_instance = form.save(commit=False)
-                dm_instance.company = company
-                dm_instance.talent = talent
-                dm_instance.save()
-
-                messages.success(request, 'Your message has been sent to the Talent.')
-                return redirect('talent_resume', pk=self.object.pk)
-
-            except Company.DoesNotExist:
-                messages.error(request, 'You need to have a company profile to contact Talent.')
-                return redirect('talent_resume', pk=self.object.pk)
+                dm_message = form.save(commit=False)
+                dm_message.talent = self.object
+                dm_message.save()
+                messages.success(request, 'Your message has been sent to the talent!')
+                print(f"{Fore.GREEN}Message sent: {dm_message.subject} to {self.object.user.email}{Style.RESET_ALL}")  # Debug
+                return redirect('profile', pk=self.object.pk)
+            except Exception as e:
+                messages.error(request, f'Error sending message: {str(e)}')
+                print(f"{Fore.RED}Error saving message: {e}{Style.RESET_ALL}")  # Debug
+                return redirect('profile', pk=self.object.pk)
         else:
             context = self.get_context_data()
             context['dmTalentForm'] = form

@@ -1,3 +1,5 @@
+from os import name
+
 from django.contrib import admin
 from .models import (
     SeekerProfile, Skill, SeekerSkill,
@@ -112,9 +114,9 @@ from .models import DmFromResume
 
 @admin.register(DmFromResume)
 class DmFromResumeAdmin(admin.ModelAdmin):
-    list_display = ('company', 'talent', 'subject', 'project_type', 'hourly_rate')
-    search_fields = ('company__name', 'talent__user__username', 'subject')
-    list_filter = ('project_type',)
+    list_display = ('name', 'email', 'talent', 'subject', 'project_type', 'contact', 'link', 'location', 'created_at')
+    search_fields = ('name', 'email', 'talent__user__username', 'subject', 'link', 'location')
+    list_filter = ('project_type', 'created_at', 'name')
 
 
 @admin.register(Company)

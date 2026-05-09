@@ -116,9 +116,11 @@
                             <h3>Suggest a Gig For Me</h3>
                             <form method="post">
                                 {% csrf_token %}
-                                <div class="form-row"><div class="form-group"><label>Location</label>{{dmTalentForm.location}}</div><div class="form-group"><label>Hourly Rate in USD</label>{{dmTalentForm.hourly_rate}}</div></div>
+                                <div class="form-row"><div class="form-group"><label>Name</label>{{dmTalentForm.name}}</div><div class="form-group"><label>Email</label>{{dmTalentForm.email}}</div></div>
+                                <div class="form-row"><div class="form-group"><label>Location</label>{{dmTalentForm.location}}</div><div class="form-group"><label>Contact</label>{{dmTalentForm.contact}}</div></div>
                                 <div class="form-group"><label>Subject</label>{{dmTalentForm.subject}}</div>
                                 <div class="form-group"><label>Project Type</label>{{dmTalentForm.project_type}}</div>
+                                <div class="form-group"><label>Link</label>{{dmTalentForm.link}}</div>
                                 <div class="form-group"><label>Message</label>{{dmTalentForm.description}}</div>
                                 <button type="submit" class="btn btn-primary">Send Message</button>
                             </form>

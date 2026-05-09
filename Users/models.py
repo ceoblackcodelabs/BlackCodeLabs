@@ -259,10 +259,13 @@ requirements_CHOICES = [
 ]
 
 class DmFromResume(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="sent_messages")
+    name = models.CharField(max_length=255, default="")
+    email = models.EmailField(max_length=255, default="")
     talent = models.ForeignKey(SeekerProfile, on_delete=models.CASCADE, related_name="received_messages", null=True, blank=True)
     subject = models.CharField(max_length=100, default="Checking Availabilty To Hire")
     location = models.TextField(default="")
-    hourly_rate = models.FloatField(default=10.0)
+    contact = models.CharField(max_length=20, default="")
+    link = models.URLField(max_length=200, default="", null=True, blank=True)
     project_type = models.CharField(max_length=50, default='hybrid', choices=PROJECT_TYPE)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     description = models.TextField(default="")
