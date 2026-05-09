@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 import json
+from colorama import Fore, Style
 from django.views import View
 from django.db import transaction
 from django.contrib.auth import get_user_model
@@ -19,7 +20,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models import Q, Avg
-from utils.qrgen import generate_vcard_qr_code
+from utils.qrgen import generate_vcard_qr_code, digital_card_qr_code
 
 from .forms import (
     RegisterForm, EmailLoginForm, SeekerProfileForm,
@@ -141,9 +142,9 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         tools = ToolProficiency.objects.filter(profile=profile)
         specializations = Specialization.objects.filter(profile=profile)
         experience = WorkExperience.objects.filter(profile=profile)
-        ratings = Review.objects.filter(profile=profile)  # Fixed: remove username lookup
+        ratings = Review.objects.filter(profile=profile)
 
-        # Calculate average ratings (you likely want to aggregate, not overwrite)
+        # Calculate average ratings
         rating_data = {
             'tm': 0,
             'tw': 0,
@@ -170,11 +171,23 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
         # Generate QR code (now profile is SeekerProfile)
         try:
-            qr_code_data = generate_vcard_qr_code(profile)  # Pass profile, not self.object
-            print(f"QR code data length: {len(qr_code_data) if qr_code_data else 'None'}")
+            qr_code_data = generate_vcard_qr_code(profile)  # Pass request
+            print(f"{Fore.GREEN}QR code data length: {len(qr_code_data) if qr_code_data else 'None'}{Style.RESET_ALL}")
         except Exception as e:
-            print(f"Error in view generating QR: {e}")
+            print(f"{Fore.RED}Error in view generating QR: {e}{Style.RESET_ALL}")
             qr_code_data = None
+
+        # Generate digital card QR code - PASS THE REQUEST OBJECT
+        try:
+            digital_qr_code_data = digital_card_qr_code(
+                SeekerProfile,
+                user.username,
+                request=self.request  # Pass the request object here
+            )
+            print(f"{Fore.GREEN}Digital card QR code data length: {len(digital_qr_code_data) if digital_qr_code_data else 'None'}{Style.RESET_ALL}")
+        except Exception as e:
+            print(f"{Fore.RED}Error in view generating digital card QR: {e}{Style.RESET_ALL}")
+            digital_qr_code_data = None
 
         context.update({
             'profile': profile,
@@ -183,6 +196,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
             'tools': tools,
             'specializations': specializations,
             'qr_code_data': qr_code_data,
+            'digital_qr_code_data': digital_qr_code_data,
             'available_skills': available_skills,
             'experiences': experience,
             'ratings': ratings
@@ -435,7 +449,7 @@ class MyResume(TemplateView):
 class ResumeBuilder(TemplateView):
     template_name = 'Seekers/resume_builder.html'
 
-class TalentDetailView(LoginRequiredMixin, DetailView):
+class TalentDetailView(DetailView):
     model = SeekerProfile
     context_object_name = "seeker"
     template_name = "users/profile.html"

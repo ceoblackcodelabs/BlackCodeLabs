@@ -259,7 +259,7 @@
             <div class="profile-info">
                 <div class="profile-avatar">
                     <div class="avatar-circle">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="{{ seeker.user.full_name }}">
+                        <img src="{{ seeker.pfp.url }}" alt="{{ seeker.user.full_name }}">
                     </div>
                     <div class="availability-status">
                         <i class="fas fa-circle"></i>
@@ -554,7 +554,9 @@
                             <div class="card-body">
                                 <div class="card-qr-section">
                                     <div class="qr-wrapper">
-                                        {% if qr_code_data %}
+                                        {% if digital_qr_code_data %}
+                                            <img src="{{ digital_qr_code_data }}" alt="Digital Profile QR Code" class="qr-code-image">
+                                        {% elif qr_code_data %}
                                             <img src="{{ qr_code_data }}" alt="Profile QR Code" class="qr-code-image">
                                         {% else %}
                                             <div class="qr-placeholder-alt">

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-mwn&bi$bd60hc5xg#vs_l@qgxy^6^l=)*%g!$=hcj89cm*4an1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://blackcodelab.com", "blackcodelab.com", "www.blackcodelab.com", "http://www.blackcodelab.com", "http://blackcodelab.com", "https://www.blackcodelab.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["https://blackcodelab.com", "blackcodelab.com", "www.blackcodelab.com", "http://www.blackcodelab.com", "http://blackcodelab.com", "https://www.blackcodelab.com", "127.0.0.1", '10.5.5.208']
 
 
 # Application definition
