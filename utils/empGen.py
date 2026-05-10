@@ -31,7 +31,7 @@ ORG:{company_profile.name or 'Company Name'}
 TITLE:{company_profile.industry or 'Industry'}
 TEL:{phone_number}
 EMAIL:{company_profile.email if company_profile.email else 'Not provided'}
-URL:https://blackcodelab.com/auth/find-talent/Resume/{company_profile.pk}/
+URL:https://blackcodelab.com/auth/company/profile/{company_profile.pk}/
 ADR:;;{company_profile.location or 'Location not specified'};;;
 NOTE:Available for {company_profile.industry or 'professional'} projects
 END:VCARD"""
@@ -111,9 +111,6 @@ def digital_card_qr_code_employer(company_profile, request):
         qr_url = None
         possible_url_names = [
             'company_profile_detail',
-            'company-detail',
-            'company_detail',
-            'profile'
         ]
 
         for url_name in possible_url_names:

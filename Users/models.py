@@ -242,7 +242,9 @@ class CompanyReview(models.Model):
     rating = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.company_name.name
+        if self.company_name:
+            return f"{self.company_name.name} - {self.name}"
+        return f"Review by {self.name} (No company)"
 
 class Company(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
