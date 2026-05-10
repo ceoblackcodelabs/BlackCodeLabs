@@ -8,7 +8,7 @@ from django.utils import timezone
 from .models import (
     User, SeekerProfile, SeekerSkill, Certification,
     ToolProficiency, Specialization, WorkExperience, Skill,
-    DmFromResume
+    DmFromResume, Company, CompanyReview, CompanySpecialization
 )
 
 User = get_user_model()
@@ -226,3 +226,166 @@ class ContactTalentForm(forms.ModelForm):
         if contact and len(contact) > 20:
             raise forms.ValidationError("Phone number is too long. Max 20 characters.")
         return contact
+
+# ============= COMPANY PROFILE FORMS =============
+
+class CompanyProfileForm(forms.ModelForm):
+    """
+    Form for updating company profile information
+    """
+    class Meta:
+        model = Company
+        fields = [
+            'name', 'industry', 'location', 'description',
+            'website', 'email', 'phone', 'year_founded', 'pfp'
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Company Name',
+                'required': 'required'
+            }),
+            'industry': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g., Software Development, Construction, Healthcare'
+            }),
+            'location': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'City, Country'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tell us about your company...',
+                'rows': 5
+            }),
+            'website': forms.URLInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'https://yourcompany.com'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'contact@company.com'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '+1234567890'
+            }),
+            'year_founded': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': '2020',
+                'min': 1800,
+                'max': 2025
+            }),
+            'pfp': forms.FileInput(attrs={
+                'class': 'file-input',
+                'accept': 'image/*'
+            }),
+        }
+        labels = {
+            'name': 'Company Name',
+            'industry': 'Industry',
+            'location': 'Headquarters Location',
+            'description': 'Company Description',
+            'website': 'Company Website',
+            'email': 'Company Email',
+            'phone': 'Contact Phone',
+            'year_founded': 'Year Founded',
+            'pfp': 'Company Logo',
+        }
+
+    def clean_website(self):
+        website = self.cleaned_data.get('website')
+        if website and not website.startswith(('http://', 'https://')):
+            website = f'https://{website}'
+        return website
+
+    def clean_year_founded(self):
+        year = self.cleaned_data.get('year_founded')
+        current_year = timezone.now().year
+        if year and year > current_year:
+            raise forms.ValidationError("Year founded cannot be in the future.")
+        if year and year < 1800:
+            raise forms.ValidationError("Please enter a valid year.")
+        return year
+
+
+class CompanySpecializationForm(forms.Form):
+    """
+    Form for managing company specializations
+    """
+    COMPANY_SPECIALIZATION_CHOICES = [
+        ('web_development', 'Web Development'),
+        ('mobile_development', 'Mobile App Development'),
+        ('ai_ml', 'AI & Machine Learning'),
+        ('cloud_services', 'Cloud Services'),
+        ('cybersecurity', 'Cybersecurity'),
+        ('devops', 'DevOps & Infrastructure'),
+        ('ui_ux_design', 'UI/UX Design'),
+        ('data_analytics', 'Data Analytics'),
+        ('erp_solutions', 'ERP Solutions'),
+        ('crm_development', 'CRM Development'),
+        ('ecommerce', 'E-Commerce Solutions'),
+        ('digital_marketing', 'Digital Marketing'),
+        ('it_consulting', 'IT Consulting'),
+        ('software_testing', 'Software Testing & QA'),
+        ('maintenance_support', 'Maintenance & Support'),
+    ]
+
+    specializations = forms.MultipleChoiceField(
+        choices=COMPANY_SPECIALIZATION_CHOICES,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'specialization-checkbox'}),
+        required=False,
+        label="Company Specializations"
+    )
+
+
+class CompanyReviewForm(forms.ModelForm):
+    """
+    Form for submitting company reviews
+    """
+    class Meta:
+        model = CompanyReview
+        fields = ['name', 'email', 'service', 'review_text', 'rating']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Your Full Name',
+                'required': 'required'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'your.email@example.com',
+                'required': 'required'
+            }),
+            'service': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'What service did you receive?',
+                'rows': 2,
+                'required': 'required'
+            }),
+            'review_text': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Share your experience with this company...',
+                'rows': 5,
+                'required': 'required'
+            }),
+            'rating': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Rating (1-5)',
+                'min': 1,
+                'max': 5,
+                'required': 'required'
+            }),
+        }
+
+    def clean_rating(self):
+        rating = self.cleaned_data.get('rating')
+        if rating and (rating < 1 or rating > 5):
+            raise forms.ValidationError("Rating must be between 1 and 5.")
+        return rating
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and not '@' in email:
+            raise forms.ValidationError("Enter a valid email address.")
+        return email

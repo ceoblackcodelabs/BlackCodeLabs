@@ -1,5 +1,8 @@
+from datetime import timezone
+
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import AbstractUser
 
@@ -230,8 +233,12 @@ class CompanySpecialization(models.Model):
         return f"{self.company.name} - {self.name}"
 
 class CompanyReview(models.Model):
-    company_name = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
+    company_name = models.ForeignKey('Company', on_delete=models.CASCADE, related_name='reviews', null=True, blank=True)
+    service = models.TextField(default="offerd software solution to relate with customers")
+    name = models.CharField(max_length=255, default="")
+    email = models.EmailField(max_length=255, default="")
     review_text = models.TextField(default="")
+    date = models.DateField(default=timezone.now)
     rating = models.IntegerField(default=0)
 
     def __str__(self):
