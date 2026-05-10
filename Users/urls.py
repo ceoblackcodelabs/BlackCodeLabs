@@ -2,8 +2,9 @@ from django.urls import path
 from .views import (BuildProfile, DeleteCertificationView,
                     MyResume, ResumeBuilder, TalentDetailView,
                     AddSkillView, RemoveSkillView,RemoveProfilePictureView,
-                    UserProfileView, CompanyProfileView,
-                    auth_view, activate
+                    UserProfileView, CompanyProfileView, BuildCompanyProfile,
+                    auth_view, activate,
+                    AddCompanySpecialization, RemoveCompanySpecialization
                     )
 
 urlpatterns = [
@@ -22,6 +23,10 @@ urlpatterns = [
     path('resume-builder/', ResumeBuilder.as_view(), name='resume_builder'),
 
     # company profile
-    path('myCompany/', CompanyProfileView.as_view(), name='company_profile'),
+    path('company/profile/build/', BuildCompanyProfile.as_view(), name='build_company_profile'),
+    path('company/profile/<int:pk>/', CompanyProfileView.as_view(), name='company_profile_detail'),
+    # AJAX URLs for specializations
+    path('company/specialization/add/', AddCompanySpecialization.as_view(), name='add_company_specialization'),
+    path('company/specialization/remove/<int:spec_id>/', RemoveCompanySpecialization.as_view(), name='remove_company_specialization'),
 ]
 

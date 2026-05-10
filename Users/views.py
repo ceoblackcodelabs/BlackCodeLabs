@@ -27,7 +27,8 @@ import datetime
 from .forms import (
     RegisterForm, EmailLoginForm, SeekerProfileForm,
     SkillForm, CertificationForm, ToolProficiencyForm,
-    SpecializationForm, ContactTalentForm
+    SpecializationForm, ContactTalentForm, CompanyProfileForm,
+    CompanySpecializationForm, CompanyReviewForm
 )
 from .models import (
     CompanyReview, User, SeekerProfile, SeekerSkill,
@@ -225,25 +226,6 @@ class CompanyProfileView(LoginRequiredMixin, DetailView):
         # Get all related data (using profile directly)
         ratings = CompanyReview.objects.filter(company_name=profile)
 
-        # Calculate average ratings
-        rating_data = {
-            'tm': 0,
-            'tw': 0,
-            'com': 0,
-            'ct': 0,
-            'lead': 0,
-            'star': 0
-        }
-
-        if ratings.exists():
-            rating_data['tm'] = ratings.aggregate(Avg('time_management'))['time_management__avg'] or 0
-            rating_data['tw'] = ratings.aggregate(Avg('teamwork'))['teamwork__avg'] or 0
-            rating_data['com'] = ratings.aggregate(Avg('Communication'))['Communication__avg'] or 0
-            rating_data['ct'] = ratings.aggregate(Avg('critical_thinking'))['critical_thinking__avg'] or 0
-            rating_data['lead'] = ratings.aggregate(Avg('leadership'))['leadership__avg'] or 0
-            rating_data['star'] = ratings.aggregate(Avg('ratings'))['ratings__avg'] or 0
-
-        context.update(rating_data)
 
         # Generate vCard QR code
         try:
@@ -267,12 +249,13 @@ class CompanyProfileView(LoginRequiredMixin, DetailView):
             print(f"{Fore.RED}Error generating digital card QR: {e}{Style.RESET_ALL}")
             digital_qr_code_data = None
 
-            
+
         current_year = datetime.datetime.now().year
         experience = current_year - profile.year_founded if profile.year_founded else 0
 
         # specialization
         specialization = CompanySpecialization.objects.filter(company=profile)
+        reviews = CompanyReview.objects.filter(company_name=profile)
 
         context.update({
             'profile': profile,
@@ -280,7 +263,8 @@ class CompanyProfileView(LoginRequiredMixin, DetailView):
             'specializations': specialization,
             'qr_code_data': qr_code_data,
             'digital_qr_code_data': digital_qr_code_data,
-            'ratings': ratings
+            'ratings': ratings,
+            'reviews': reviews
         })
 
         return context
@@ -451,6 +435,69 @@ class BuildProfile(LoginRequiredMixin, TemplateView):
 
         return redirect('build_profile')
 
+class BuildCompanyProfile(LoginRequiredMixin, DetailView):
+    template_name = 'users/build_company_profile.html'
+    model = Company
+    context_object_name = 'company'
+
+    def get_object(self, queryset=None):
+        company, created = Company.objects.get_or_create(owner=self.request.user)
+        return company
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        company = self.object
+
+        # Get related data
+        specializations = CompanySpecialization.objects.filter(company=company)
+
+        context.update({
+            'company': company,
+            'specializations': specializations,
+            'company_form': CompanyProfileForm(instance=company),
+            'specialization_form': CompanySpecializationForm(initial={
+                'specializations': list(specializations.values_list('name', flat=True))
+            }),
+        })
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        section = request.POST.get('section')
+
+        if section == 'basic_info':
+            form = CompanyProfileForm(request.POST, request.FILES, instance=self.object)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Company profile updated successfully!')
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f'{field}: {error}')
+
+        elif section == 'specializations':
+            form = CompanySpecializationForm(request.POST)
+            if form.is_valid():
+                selected_specializations = form.cleaned_data['specializations']
+
+                # Update specializations
+                with transaction.atomic():
+                    # Remove existing specializations
+                    CompanySpecialization.objects.filter(company=self.object).delete()
+                    # Add new specializations
+                    for spec_name in selected_specializations:
+                        # Convert the choice value to a readable name
+                        readable_name = dict(form.COMPANY_SPECIALIZATION_CHOICES).get(spec_name, spec_name)
+                        CompanySpecialization.objects.create(
+                            company=self.object,
+                            name=readable_name
+                        )
+                messages.success(request, 'Specializations updated successfully!')
+            else:
+                messages.error(request, 'Please correct the errors below.')
+
+        return redirect('build_company_profile')
+
 # Add these views for handling AJAX requests
 class AddSkillView(LoginRequiredMixin, View):
     def post(self, request):
@@ -594,3 +641,54 @@ class TalentDetailView(DetailView):
             context = self.get_context_data()
             context['dmTalentForm'] = form
             return self.render_to_response(context)
+
+class AddCompanySpecialization(LoginRequiredMixin, View):
+    """
+    AJAX view to add a company specialization
+    """
+    def post(self, request):
+        try:
+            company = Company.objects.get(owner=request.user)
+            spec_name = request.POST.get('spec_name', '').strip()
+
+            if not spec_name:
+                return JsonResponse({'success': False, 'error': 'Specialization name is required'}, status=400)
+
+            # Check if specialization already exists
+            if CompanySpecialization.objects.filter(company=company, name__iexact=spec_name).exists():
+                return JsonResponse({'success': False, 'error': 'Specialization already exists'}, status=400)
+
+            # Create new specialization
+            specialization = CompanySpecialization.objects.create(
+                company=company,
+                name=spec_name
+            )
+
+            return JsonResponse({
+                'success': True,
+                'specialization_id': specialization.id,
+                'specialization_name': specialization.name
+            })
+
+        except Company.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Company profile not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+class RemoveCompanySpecialization(LoginRequiredMixin, View):
+    """
+    AJAX view to remove a company specialization
+    """
+    def post(self, request, spec_id):
+        try:
+            company = Company.objects.get(owner=request.user)
+            specialization = get_object_or_404(CompanySpecialization, id=spec_id, company=company)
+            specialization.delete()
+
+            return JsonResponse({'success': True})
+
+        except Company.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Company profile not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)

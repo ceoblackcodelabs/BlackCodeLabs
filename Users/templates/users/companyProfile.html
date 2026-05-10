@@ -34,7 +34,7 @@
                     </div>
                     <p>{{ company.description }}</p>
                     <div class="profile-actions">
-                        <a href="{% url 'build_profile' %}" class="btn btn-primary">Update Profile</a>
+                        <a href="{% url 'build_company_profile' %}" class="btn btn-primary">Update Profile</a>
                         <a href="#" class="btn btn-secondary">Download Resume</a>
                     </div>
                 </div>
@@ -52,17 +52,17 @@
                     <section class="section">
                         <div class="section-header"><i class="fas fa-briefcase"></i><h2>Company Reviews</h2></div>
                         <div class="timeline">
-                            {% for experience in experiences %}
+                            {% for review in reviews %}
                             <div class="timeline-item">
-                                <div class="timeline-date">{{ experience.start_date }} - {{ experience.end_date|default:"Present" }}</div>
-                                <h3 class="timeline-title">{{ experience.role }}</h3>
-                                <div class="timeline-company">{{ experience.company }}</div>
-                                <p class="timeline-description">"{{ experience.my_description }}"</p>
+                                <div class="timeline-date">{{ review.date }}</div>
+                                <h3 class="timeline-title">Review From: {{ review.name }}</h3>
+                                <div class="timeline-company">To: {{ review.company_name.name }}</div>
+                                <p class="timeline-description">"{{ review.service }}"</p>
                                 <div class="company-reviews">
                                     <div class="review-item">
-                                        <div class="review-header"><span class="reviewer">{{ experience.company.owner.full_name }}, HR</span><span class="review-date">March 2023</span></div>
+                                        <div class="review-header"><span class="reviewer">{{ review.name }}</span><span class="review-date">{{ review.date }}</span></div>
                                         <div class="review-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                                        <p class="review-text">"{{ experience.employer_description }}"</p>
+                                        <p class="review-text">"{{ review.review_text }}"</p>
                                     </div>
                                 </div>
                             </div>

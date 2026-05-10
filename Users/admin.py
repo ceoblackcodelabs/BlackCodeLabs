@@ -131,6 +131,6 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(CompanyReview)
 class CompanyReviewAdmin(admin.ModelAdmin):
-    list_display = ('company_name', 'review_text', 'rating')
-    search_fields = ('company__name', 'review_text', 'rating')
-    list_filter = ('rating', 'company__name')
+    list_display = ('company_name', 'name', 'email', 'review_text', 'rating')
+    search_fields = ('company_name__name', 'name', 'email', 'review_text', 'rating')
+    list_filter = ('rating', 'company_name', 'name')
