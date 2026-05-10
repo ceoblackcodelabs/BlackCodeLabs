@@ -31,7 +31,7 @@ ORG:{company_profile.name or 'Company Name'}
 TITLE:{company_profile.industry or 'Industry'}
 TEL:{phone_number}
 EMAIL:{company_profile.email if company_profile.email else 'Not provided'}
-URL:https://blackcodelab.com/auth/company/profile/{company_profile.pk}/
+URL:https://blackcodelab.com/auth/company/{company_profile.pk}/
 ADR:;;{company_profile.location or 'Location not specified'};;;
 NOTE:Available for {company_profile.industry or 'professional'} projects
 END:VCARD"""
@@ -124,7 +124,7 @@ def digital_card_qr_code_employer(company_profile, request):
         # If no named URL worked, create a fallback URL
         if qr_url is None:
             print(f"{Fore.YELLOW}Warning: No named URL found, using fallback{Style.RESET_ALL}")
-            qr_url = request.build_absolute_uri(f"/auth/company/profile/{company_profile.pk}/")
+            qr_url = request.build_absolute_uri(f"/auth/company/{company_profile.pk}/")
 
         print(f"QR URL: {qr_url}")
 
