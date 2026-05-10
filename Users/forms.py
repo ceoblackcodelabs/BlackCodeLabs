@@ -8,7 +8,8 @@ from django.utils import timezone
 from .models import (
     User, SeekerProfile, SeekerSkill, Certification,
     ToolProficiency, Specialization, WorkExperience, Skill,
-    DmFromResume, Company, CompanyReview, CompanySpecialization
+    DmFromResume, Company, CompanyReview, CompanySpecialization,
+    DmFromCompany
 )
 
 User = get_user_model()
@@ -218,6 +219,25 @@ class ContactTalentForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'City, State', 'required': 'required'}),
             'contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number', 'required': 'required'}),
             'link': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Project Link (optional)'}),
+        }
+
+    def clean_contact(self):
+        contact = self.cleaned_data.get('contact')
+        # Allow longer phone numbers
+        if contact and len(contact) > 20:
+            raise forms.ValidationError("Phone number is too long. Max 20 characters.")
+        return contact
+
+class ContactCompanyForm(forms.ModelForm):
+    class Meta:
+        model = DmFromCompany
+        fields = ['name', 'email', 'subject', 'description', 'contact']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Name', 'required': 'required'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Your Email', 'required': 'required'}),
+            'subject': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject', 'required': 'required'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Message Description', 'rows': 4, 'required': 'required'}),
+            'contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number', 'required': 'required'}),
         }
 
     def clean_contact(self):

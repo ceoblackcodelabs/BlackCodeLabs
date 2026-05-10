@@ -289,3 +289,12 @@ class DmFromResume(models.Model):
     project_type = models.CharField(max_length=50, default='hybrid', choices=PROJECT_TYPE)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     description = models.TextField(default="")
+
+class DmFromCompany(models.Model):
+    name = models.CharField(max_length=255, default="")
+    email = models.EmailField(max_length=255, default="")
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="received_messages", null=True, blank=True)
+    subject = models.CharField(max_length=100, default="Checking Availabilty To Hire")
+    contact = models.CharField(max_length=20, default="")
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    description = models.TextField(default="")

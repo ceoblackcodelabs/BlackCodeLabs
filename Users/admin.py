@@ -110,13 +110,20 @@ class WorkExperienceAdmin(admin.ModelAdmin):
     list_filter = ('current', 'start_date')
     date_hierarchy = 'start_date'
 
-from .models import DmFromResume
+from .models import DmFromResume, DmFromCompany
 
 @admin.register(DmFromResume)
 class DmFromResumeAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'talent', 'subject', 'project_type', 'contact', 'link', 'location', 'created_at')
     search_fields = ('name', 'email', 'talent__user__username', 'subject', 'link', 'location')
     list_filter = ('project_type', 'created_at', 'name')
+
+
+@admin.register(DmFromCompany)
+class DmFromCompanyAdmin(admin.ModelAdmin):
+    list_display = ('company', 'name', 'email', 'subject', 'contact', 'created_at')
+    search_fields = ('name', 'email', 'company__name', 'subject', 'location')
+    list_filter = ('contact', 'created_at', 'name')
 
 
 @admin.register(CompanySpecialization)

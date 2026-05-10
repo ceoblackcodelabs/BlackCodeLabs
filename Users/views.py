@@ -28,13 +28,13 @@ from .forms import (
     RegisterForm, EmailLoginForm, SeekerProfileForm,
     SkillForm, CertificationForm, ToolProficiencyForm,
     SpecializationForm, ContactTalentForm, CompanyProfileForm,
-    CompanySpecializationForm, CompanyReviewForm
+    CompanySpecializationForm, CompanyReviewForm, ContactCompanyForm
 )
 from .models import (
     CompanyReview, User, SeekerProfile, SeekerSkill,
     Certification, ToolProficiency, Specialization,
     Skill, Review, DmFromResume, Company, WorkExperience,
-    CompanySpecialization
+    CompanySpecialization, DmFromCompany
 )
 
 User = get_user_model()
@@ -640,6 +640,71 @@ class TalentDetailView(DetailView):
         else:
             context = self.get_context_data()
             context['dmTalentForm'] = form
+            return self.render_to_response(context)
+
+class CompanyDetailView(DetailView):
+    model = Company
+    context_object_name = "company"
+    template_name = "users/company_public_profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        company = self.object
+
+        # Get all related data
+        ratings = CompanyReview.objects.filter(company_name=company)
+        specializations = CompanySpecialization.objects.filter(company=company)
+        reviews = CompanyReview.objects.filter(company_name=company)
+
+        # Generate vCard QR code
+        try:
+            qr_code_data = generate_vcard_qr_code_employer(company)
+            print(f"vCard QR code data length: {len(qr_code_data) if qr_code_data else 'None'}")
+        except Exception as e:
+            print(f"Error generating vCard QR: {e}")
+            qr_code_data = None
+
+        # Calculate company age/years in business
+        current_year = datetime.datetime.now().year
+        experience = current_year - (company.year_founded if company.year_founded else current_year)
+
+        context.update({
+            'ratings': ratings,
+            'qr_code_data': qr_code_data,
+            'experience': experience,
+            'specializations': specializations,
+            'reviews': reviews,
+            'profile': company,
+            'dmCompanyForm': ContactCompanyForm()
+        })
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = ContactCompanyForm(request.POST)
+
+        if form.is_valid():
+            try:
+                dm_message = form.save(commit=False)
+                dm_message.company = self.object
+                dm_message.save()
+                messages.success(request, 'Your message has been sent to the company!')
+                print(f"{Fore.GREEN}Message sent: {dm_message.subject} to {self.object.email}{Style.RESET_ALL}")
+                return redirect('company_public_profile', pk=self.object.pk)
+            except Exception as e:
+                messages.error(request, f'Error sending message: {str(e)}')
+                print(f"{Fore.RED}Error saving message: {e}{Style.RESET_ALL}")
+                return redirect('company_public_profile', pk=self.object.pk)
+        else:
+            # Print form errors for debugging
+            print(f"{Fore.YELLOW}Form errors: {form.errors}{Style.RESET_ALL}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+
+            context = self.get_context_data()
+            context['dmCompanyForm'] = form
             return self.render_to_response(context)
 
 class AddCompanySpecialization(LoginRequiredMixin, View):
