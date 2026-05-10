@@ -6,12 +6,16 @@ from django.views import View
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 import json
+import base64
+from io import BytesIO
+from PIL import Image
 from colorama import Fore, Style
 from django.views import View
 from django.db import transaction
@@ -20,6 +24,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models import Q, Avg
+from django.template.loader import render_to_string
+from django.views.decorators.http import require_http_methods
 from utils.qrgen import generate_vcard_qr_code, digital_card_qr_code
 from utils.empGen import generate_vcard_qr_code_employer, digital_card_qr_code_employer
 import datetime
@@ -757,3 +763,83 @@ class RemoveCompanySpecialization(LoginRequiredMixin, View):
             return JsonResponse({'success': False, 'error': 'Company profile not found'}, status=404)
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+class DownloadBusinessCardView(View):
+    """
+    AJAX view to return business card HTML for downloading as image
+    """
+    def get(self, request, pk):
+        print(f"=== DownloadBusinessCardView called with pk={pk} ===")  # Debug
+        try:
+            company = get_object_or_404(Company, pk=pk)
+            print(f"Found company: {company.name}")  # Debug
+            print(f"Company ID: {company.id}")  # Debug
+
+            # Generate QR codes
+            try:
+                qr_code_data = generate_vcard_qr_code_employer(company)
+                digital_qr_code_data = digital_card_qr_code_employer(company, request)
+                print(f"QR codes generated - vCard: {bool(qr_code_data)}, Digital: {bool(digital_qr_code_data)}")
+            except Exception as e:
+                print(f"QR generation error: {e}")
+                qr_code_data = None
+                digital_qr_code_data = None
+
+            context = {
+                'company': company,
+                'qr_code_data': qr_code_data,
+                'digital_qr_code_data': digital_qr_code_data,
+            }
+
+            html_content = render_to_string('users/Download/business_card_template.html', context)
+            print(f"HTML content length: {len(html_content)}")  # Debug
+
+            return JsonResponse({
+                'success': True,
+                'html': html_content,
+                'company_name': company.name
+            })
+
+        except Company.DoesNotExist:
+            print(f"Company with pk={pk} not found")
+            return JsonResponse({
+                'success': False,
+                'error': f'Company with ID {pk} not found'
+            }, status=404)
+        except Exception as e:
+            print(f"Error in DownloadBusinessCardView: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+
+
+class GenerateBusinessCardView(DetailView):
+    """
+    View to render business card as standalone HTML page
+    """
+    model = Company
+    template_name = 'users/Download/business_card_template.html'
+    context_object_name = 'company'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        company = self.object
+
+        # Generate QR codes
+        try:
+            qr_code_data = generate_vcard_qr_code_employer(company)
+            digital_qr_code_data = digital_card_qr_code_employer(company, self.request)
+        except Exception as e:
+            print(f"QR generation error: {e}")
+            qr_code_data = None
+            digital_qr_code_data = None
+
+        context.update({
+            'qr_code_data': qr_code_data,
+            'digital_qr_code_data': digital_qr_code_data,
+        })
+        return context

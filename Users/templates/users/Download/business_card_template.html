@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Business Card | BlackCode Labs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .viewer-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Card Container - 3D flip effect (view only) */
+        .card-container {
+            perspective: 1500px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .business-card {
+            width: 380px;
+            min-width: 380px;
+            max-width: 380px;
+            position: relative;
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-container:hover .business-card {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: relative;
+            width: 100%;
+            backface-visibility: hidden;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-front {
+            background: linear-gradient(145deg, #0f0f1a 0%, #1a1a2e 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background: linear-gradient(145deg, #0f0f1a 0%, #1a1a2e 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transform: rotateY(180deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-front::before, .card-back::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #f59e0b, #3b82f6);
+            animation: shimmer 3s infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Front Header */
+        .card-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #34d399;
+        }
+
+        .card-status i {
+            font-size: 0.55rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .card-badge {
+            background: rgba(59, 130, 246, 0.2);
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .card-body {
+            padding: 1.8rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-avatar-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #3b82f6;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            border: 4px solid #3b82f6;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .avatar-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 26px;
+            height: 26px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #1a1a2e;
+            color: white;
+            font-size: 0.65rem;
+        }
+
+        .card-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: white;
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+
+        .card-title {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .divider {
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, #f59e0b, #3b82f6, transparent);
+            margin: 0.5rem 0;
+        }
+
+        .card-contact {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.6rem 0;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-row:last-child {
+            border-bottom: none;
+        }
+
+        .contact-row i {
+            width: 22px;
+            color: #3b82f6;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .contact-row span {
+            flex: 1;
+            text-align: left;
+            word-break: break-all;
+            line-height: 1.4;
+        }
+
+        .card-footer {
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        /* BACK PAGE STYLES — ENSURING SAME NATURAL HEIGHT AS FRONT */
+        .back-content {
+            text-align: center;
+            padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+            width: 100%;
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .back-header {
+            margin-bottom: 0.75rem;
+        }
+
+        .back-header h3 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .back-header p {
+            color: #6b7280;
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+        }
+
+        .back-qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0.25rem 0 0.5rem 0;
+        }
+
+        .back-qr-wrapper {
+            width: 170px;
+            height: 170px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom: 0.75rem;
+        }
+
+        .back-qr-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .back-qr-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e1e3a, #0a0a1a);
+            border-radius: 16px;
+        }
+
+        .back-qr-placeholder i {
+            font-size: 3rem;
+            color: #3b82f6;
+        }
+
+        .qr-label {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qr-label i {
+            color: #3b82f6;
+            font-size: 0.9rem;
+        }
+
+        .scan-text {
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-top: 0.3rem;
+        }
+
+        .powered-by {
+            padding: 0.9rem 1.5rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-top: 0;
+            flex-shrink: 0;
+        }
+
+        .powered-by p {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+            margin-bottom: 0.2rem;
+        }
+
+        .powered-by .brand {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .powered-by .brand span {
+            color: #3b82f6;
+        }
+
+        .download-buttons {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .download-btn {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+        }
+
+        .btn-front {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .btn-both {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.05);
+        }
+
+        .download-btn:active {
+            transform: translateY(1px);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .flip-instruction {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #8b8ba7;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 16px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .download-buttons, .flip-instruction, .card-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-wrapper">
+        <div class="card-container">
+            <div class="business-card">
+                <!-- FRONT PAGE -->
+                <div class="card-front" id="visible-front">
+                    <div class="card-header">
+                        <div class="card-status">
+                            <i class="fas fa-circle"></i>
+                            <span>Available</span>
+                        </div>
+                        <div class="card-badge">
+                            <i class="fas fa-certificate"></i>
+                            Verified
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-avatar-wrapper">
+                            {% if company.pfp %}
+                                <img src="{{ company.pfp.url }}" class="card-avatar-img" alt="{{ company.name }}">
+                            {% else %}
+                                <div class="avatar-placeholder">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                            {% endif %}
+                            <div class="avatar-badge">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+
+                        <h2 class="card-name">{{ company.name|default:"BlackCode Labs" }}</h2>
+                        <p class="card-title">{{ company.industry|default:"Digital Innovation" }}</p>
+                        <div class="divider"></div>
+
+                        <div class="card-contact">
+                            <div class="contact-row">
+                                <i class="fas fa-envelope"></i>
+                                <span>{{ company.email|default:"hello@blackcode.com" }}</span>
+                            </div>
+                            <div class="contact-row">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>{{ company.phone|default:"+1 (800) 987-6543" }}</span>
+                            </div>
+                            <div class="contact-row">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ company.location|default:"San Francisco, CA" }}</span>
+                            </div>
+                            {% if company.website %}
+                            <div class="contact-row">
+                                <i class="fas fa-globe"></i>
+                                <span>{{ company.website|truncatechars:35 }}</span>
+                            </div>
+                            {% else %}
+                            <div class="contact-row">
+                                <i class="fas fa-globe"></i>
+                                <span>blackcode.ai</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="social-icons">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BACK PAGE -->
+                <div class="card-back" id="visible-back">
+                    <div class="back-content">
+                        <div class="back-header">
+                            <h3>Scan to Connect</h3>
+                            <p>Digital Business Card</p>
+                        </div>
+
+                        <div class="back-qr-section">
+                            <div class="back-qr-wrapper">
+                                {% if digital_qr_code_data %}
+                                    <img src="{{ digital_qr_code_data }}" class="back-qr-image" alt="QR Code">
+                                {% elif qr_code_data %}
+                                    <img src="{{ qr_code_data }}" class="back-qr-image" alt="QR Code">
+                                {% else %}
+                                    <div class="back-qr-placeholder">
+                                        <i class="fas fa-qrcode"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="qr-label">
+                                <i class="fas fa-camera"></i>
+                                <span>Scan QR Code</span>
+                            </div>
+                            <div class="scan-text">
+                                to view digital profile and contact info
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="powered-by">
+                        <p>POWERED BY</p>
+                        <div class="brand">
+                            <span>BlackCode</span>Labs
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flip-instruction">
+            <i class="fas fa-mouse-pointer"></i> Hover over the card to flip / view back
+        </div>
+    </div>
+
+    <div class="download-buttons">
+        <button class="download-btn btn-front" id="downloadFrontBtn">
+            <i class="fas fa-download"></i> Front Page PDF
+        </button>
+        <button class="download-btn btn-back" id="downloadBackBtn">
+            <i class="fas fa-download"></i> Back Page PDF
+        </button>
+        <button class="download-btn btn-both" id="downloadBothBtn">
+            <i class="fas fa-layer-group"></i> Both Pages PDF
+        </button>
+    </div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        /**
+         * FIXED HEIGHT MATCHING SOLUTION:
+         * Ensures front and back pages have EXACTLY the same rendered height in PDF
+         * by standardizing the capture process and using a unified target width.
+         * Both pages will be centered on A4 with equal margins (top/bottom/left/right).
+         */
+
+        // Get standardized card dimensions (same for both sides)
+        async function captureStandardizedPDF(element, filename, sideName = 'front') {
+            try {
+                const btns = document.querySelectorAll('.download-btn');
+                btns.forEach(btn => btn.disabled = true);
+
+                // Clone the target side
+                const cloneSide = element.cloneNode(true);
+
+                // Reset all transforms and ensure proper layout
+                cloneSide.style.position = 'fixed';
+                cloneSide.style.top = '0';
+                cloneSide.style.left = '0';
+                cloneSide.style.margin = '0';
+                cloneSide.style.padding = '0';
+                cloneSide.style.transform = 'none';
+                cloneSide.style.backfaceVisibility = 'visible';
+                cloneSide.style.width = '380px';
+                cloneSide.style.maxWidth = '380px';
+                cloneSide.style.minWidth = '380px';
+                cloneSide.style.borderRadius = '28px';
+                cloneSide.style.boxShadow = 'none';
+                cloneSide.style.zIndex = '999999';
+                cloneSide.style.opacity = '1';
+                cloneSide.style.visibility = 'visible';
+                cloneSide.style.display = 'flex';
+                cloneSide.style.flexDirection = 'column';
+
+                // Ensure consistent height behavior
+                if (sideName === 'back') {
+                    cloneSide.style.justifyContent = 'space-between';
+                } else {
+                    cloneSide.style.justifyContent = 'flex-start';
+                }
+
+                // Remove any overflow clipping that might cut content
+                const allElements = cloneSide.querySelectorAll('*');
+                allElements.forEach(el => {
+                    el.style.transform = 'none';
+                    el.style.backfaceVisibility = 'visible';
+                    if (el.style.overflow === 'hidden' && !el.classList.contains('card-front') && !el.classList.contains('card-back')) {
+                        el.style.overflow = 'visible';
+                    }
+                });
+
+                // Explicitly ensure powered-by is fully visible
+                const poweredSection = cloneSide.querySelector('.powered-by');
+                if (poweredSection) {
+                    poweredSection.style.display = 'flex';
+                    poweredSection.style.visibility = 'visible';
+                    poweredSection.style.opacity = '1';
+                    poweredSection.style.flexShrink = '0';
+                }
+
+                // Ensure back content doesn't get squashed
+                const backContentDiv = cloneSide.querySelector('.back-content');
+                if (backContentDiv) {
+                    backContentDiv.style.flex = '1 0 auto';
+                }
+
+                document.body.appendChild(cloneSide);
+
+                // Allow rendering
+                await new Promise(resolve => setTimeout(resolve, 150));
+
+                // Capture actual height for consistent sizing
+                const naturalHeight = cloneSide.scrollHeight;
+                cloneSide.style.height = naturalHeight + 'px';
+
+                await new Promise(resolve => setTimeout(resolve, 80));
+
+                // Capture with html2canvas
+                const canvas = await html2canvas(cloneSide, {
+                    scale: 4,
+                    backgroundColor: '#0f0f1a',
+                    useCORS: true,
+                    logging: false,
+                    allowTaint: false,
+                    windowWidth: 380,
+                    windowHeight: naturalHeight
+                });
+
+                document.body.removeChild(cloneSide);
+
+                // A4 dimensions in mm
+                const pageWidthMM = 210;
+                const pageHeightMM = 297;
+
+                // Consistent image width (leaves equal left/right margins)
+                const targetImageWidthMM = 170;
+                const imgWidthMM = targetImageWidthMM;
+                const imgHeightMM = (canvas.height * imgWidthMM) / canvas.width;
+
+                // Perfect centering: equal top and bottom margins
+                const xOffsetMM = (pageWidthMM - imgWidthMM) / 2;
+                const yOffsetMM = (pageHeightMM - imgHeightMM) / 2;
+
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', xOffsetMM, yOffsetMM, imgWidthMM, imgHeightMM);
+                pdf.save(filename);
+
+                btns.forEach(btn => btn.disabled = false);
+
+            } catch (err) {
+                console.error('PDF error:', err);
+                alert('PDF generation failed: ' + err.message);
+                const btns = document.querySelectorAll('.download-btn');
+                btns.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        // Front page download
+        async function downloadFrontPDF() {
+            const frontEl = document.getElementById('visible-front');
+            if (!frontEl) return;
+            await captureStandardizedPDF(frontEl, 'BusinessCard_Front.pdf', 'front');
+        }
+
+        // Back page download
+        async function downloadBackPDF() {
+            const backEl = document.getElementById('visible-back');
+            if (!backEl) return;
+            await captureStandardizedPDF(backEl, 'BusinessCard_Back.pdf', 'back');
+        }
+
+        // Both pages: ensures each page has the SAME consistent height behavior
+        async function downloadBothPDF() {
+            try {
+                const btns = document.querySelectorAll('.download-btn');
+                btns.forEach(btn => btn.disabled = true);
+
+                const frontElement = document.getElementById('visible-front');
+                const backElement = document.getElementById('visible-back');
+
+                // Helper to capture side and return canvas with standardized dimensions
+                async function captureSide(sideElement, sideType) {
+                    const clone = sideElement.cloneNode(true);
+                    clone.style.position = 'fixed';
+                    clone.style.top = '0';
+                    clone.style.left = '0';
+                    clone.style.margin = '0';
+                    clone.style.padding = '0';
+                    clone.style.transform = 'none';
+                    clone.style.backfaceVisibility = 'visible';
+                    clone.style.width = '380px';
+                    clone.style.maxWidth = '380px';
+                    clone.style.borderRadius = '28px';
+                    clone.style.boxShadow = 'none';
+                    clone.style.zIndex = '999999';
+                    clone.style.display = 'flex';
+                    clone.style.flexDirection = 'column';
+
+                    if (sideType === 'back') {
+                        clone.style.justifyContent = 'space-between';
+                    } else {
+                        clone.style.justifyContent = 'flex-start';
+                    }
+
+                    const allKids = clone.querySelectorAll('*');
+                    allKids.forEach(el => {
+                        el.style.transform = 'none';
+                        el.style.backfaceVisibility = 'visible';
+                    });
+
+                    const poweredSec = clone.querySelector('.powered-by');
+                    if (poweredSec) {
+                        poweredSec.style.display = 'flex';
+                        poweredSec.style.visibility = 'visible';
+                        poweredSec.style.opacity = '1';
+                        poweredSec.style.flexShrink = '0';
+                    }
+
+                    document.body.appendChild(clone);
+                    await new Promise(r => setTimeout(r, 120));
+                    const fullH = clone.scrollHeight;
+                    clone.style.height = fullH + 'px';
+                    await new Promise(r => setTimeout(r, 60));
+
+                    const canvas = await html2canvas(clone, {
+                        scale: 4,
+                        backgroundColor: '#0f0f1a',
+                        useCORS: true,
+                        logging: false
+                    });
+                    document.body.removeChild(clone);
+                    return canvas;
+                }
+
+                const frontCanvas = await captureSide(frontElement, 'front');
+                const backCanvas = await captureSide(backElement, 'back');
+
+                const pageW = 210, pageH = 297;
+                const imgWidthMM = 170;
+
+                // Both canvases will have heights that naturally match the content,
+                // but we treat them separately to maintain original aspect ratio
+                const frontImgH = (frontCanvas.height * imgWidthMM) / frontCanvas.width;
+                const backImgH = (backCanvas.height * imgWidthMM) / backCanvas.width;
+
+                const xOff = (pageW - imgWidthMM) / 2;
+                const yOffFront = (pageH - frontImgH) / 2;
+                const yOffBack = (pageH - backImgH) / 2;
+
+                const pdfDoc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                const frontData = frontCanvas.toDataURL('image/png');
+                pdfDoc.addImage(frontData, 'PNG', xOff, yOffFront, imgWidthMM, frontImgH);
+
+                pdfDoc.addPage();
+                const backData = backCanvas.toDataURL('image/png');
+                pdfDoc.addImage(backData, 'PNG', xOff, yOffBack, imgWidthMM, backImgH);
+
+                pdfDoc.save('BusinessCard_Both_Sides.pdf');
+                btns.forEach(btn => btn.disabled = false);
+
+            } catch (err) {
+                console.error('Both pages error:', err);
+                alert('Error generating combined PDF: ' + err.message);
+                const btns = document.querySelectorAll('.download-btn');
+                btns.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        // Attach event listeners
+        document.getElementById('downloadFrontBtn').addEventListener('click', downloadFrontPDF);
+        document.getElementById('downloadBackBtn').addEventListener('click', downloadBackPDF);
+        document.getElementById('downloadBothBtn').addEventListener('click', downloadBothPDF);
+
+        // Touch flip for mobile devices
+        if ('ontouchstart' in window) {
+            const card = document.querySelector('.business-card');
+            const container = document.querySelector('.card-container');
+            let isFlipped = false;
+            container.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isFlipped) {
+                    card.style.transform = 'rotateY(0deg)';
+                    isFlipped = false;
+                } else {
+                    card.style.transform = 'rotateY(180deg)';
+                    isFlipped = true;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

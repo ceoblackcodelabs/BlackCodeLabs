@@ -93,7 +93,7 @@
                             <div class="card-body">
                                 <div class="card-qr-section"><div class="qr-wrapper">{% if digital_qr_code_data %}<img src="{{ digital_qr_code_data }}" class="qr-code-image">{% elif qr_code_data %}<img src="{{ qr_code_data }}" class="qr-code-image">{% else %}<div class="qr-placeholder-alt"><i class="fas fa-qrcode"></i></div>{% endif %}</div><div class="qr-text"><i class="fas fa-camera"></i><span>Scan QR</span></div></div>
                                 <div class="card-divider"></div>
-                                <div class="card-info-section"><div class="card-avatar-wrapper">{% if company.pfp %}<img src="{{ company.pfp.url }}" class="card-avatar-img">{% else %}<div class="card-avatar-placeholder-alt"><i class="fas fa-user-alt"></i></div>{% endif %}<div class="avatar-badge"><i class="fas fa-check"></i></div></div><h3 class="card-name">{{ company.company_name }}</h3><p class="card-title">{{ company.industry|default:"Professional" }}</p><div class="card-contact"><div class="contact-row"><i class="fas fa-envelope"></i><span>{{ company.email }}</span></div><div class="contact-row"><i class="fas fa-phone-alt"></i><span>{{ company.owner.contact|default:"Not provided" }}</span></div><div class="contact-row"><i class="fas fa-map-marker-alt"></i><span>{{ company.location|default:"Remote" }}</span></div></div><button class="btn-download-card-alt" onclick="downloadBusinessCard()"><i class="fas fa-download"></i><span>Download Card</span><i class="fas fa-arrow-right"></i></button></div>
+                                <div class="card-info-section"><div class="card-avatar-wrapper">{% if company.pfp %}<img src="{{ company.pfp.url }}" class="card-avatar-img">{% else %}<div class="card-avatar-placeholder-alt"><i class="fas fa-user-alt"></i></div>{% endif %}<div class="avatar-badge"><i class="fas fa-check"></i></div></div><h3 class="card-name">{{ company.name }}</h3><p class="card-title">{{ company.industry|default:"Professional" }}</p><div class="card-contact"><div class="contact-row"><i class="fas fa-envelope"></i><span>{{ company.email }}</span></div><div class="contact-row"><i class="fas fa-phone-alt"></i><span>{{ company.owner.contact|default:"Not provided" }}</span></div><div class="contact-row"><i class="fas fa-map-marker-alt"></i><span>{{ company.location|default:"Remote" }}</span></div></div><button class="btn-download-card-alt" onclick="downloadBusinessCard()"><i class="fas fa-download"></i><span>Download Card</span><i class="fas fa-arrow-right"></i></button></div>
                             </div>
                             <div class="card-footer"><div class="social-icons"><a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a><a href="#" class="social-icon"><i class="fab fa-twitter"></i></a><a href="#" class="social-icon"><i class="fab fa-github"></i></a><a href="#" class="social-icon"><i class="fab fa-instagram"></i></a></div><div class="card-watermark">BlackCodeLabs</div></div>
                         </div>
@@ -123,7 +123,22 @@
             window.updateMessageCount = function() { const countSpan = document.querySelector('.message-count'); const msgs = document.querySelectorAll('.message-item'); if(countSpan) { if(msgs.length === 0) countSpan.style.display = 'none'; else { countSpan.textContent = msgs.length; countSpan.style.display = 'flex'; } } };
             updateMessageCount();
         });
-        function downloadBusinessCard() { const card = document.querySelector('.business-card'); const btn = event.currentTarget; const original = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.disabled = true; html2canvas(card, { scale: 2, backgroundColor: '#0f0f1a', useCORS: true }).then(canvas => { const link = document.createElement('a'); link.download = `${card.querySelector('.card-name')?.innerText || 'business'}-card.png`; link.href = canvas.toDataURL(); link.click(); btn.innerHTML = original; btn.disabled = false; }).catch(() => { btn.innerHTML = original; btn.disabled = false; alert('Error generating card'); }); }
+        function downloadBusinessCard() {
+            const companyId = {{ company.id }};
+            const businessCardUrl = `/auth/company/business-card/${companyId}/render/`;
+
+            // Open in new tab
+            window.open(businessCardUrl, '_blank');
+
+            // Visual feedback
+            const btn = event.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-external-link-alt"></i> Opening Card...';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+            }, 1500);
+        }
+
     </script>
 </body>
 </html>

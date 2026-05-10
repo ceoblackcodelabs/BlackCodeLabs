@@ -4,7 +4,8 @@ from .views import (BuildProfile, DeleteCertificationView,
                     AddSkillView, RemoveSkillView,RemoveProfilePictureView,
                     UserProfileView, CompanyProfileView, BuildCompanyProfile,
                     auth_view, activate, CompanyDetailView,
-                    AddCompanySpecialization, RemoveCompanySpecialization
+                    AddCompanySpecialization, RemoveCompanySpecialization,
+                    DownloadBusinessCardView, GenerateBusinessCardView
                     )
 
 urlpatterns = [
@@ -30,5 +31,9 @@ urlpatterns = [
     # AJAX URLs for specializations
     path('company/specialization/add/', AddCompanySpecialization.as_view(), name='add_company_specialization'),
     path('company/specialization/remove/<int:spec_id>/', RemoveCompanySpecialization.as_view(), name='remove_company_specialization'),
+
+    # Business card generation URLs
+    path('company/business-card/<int:pk>/html/', DownloadBusinessCardView.as_view(), name='business_card_html'),
+    path('company/business-card/<int:pk>/render/', GenerateBusinessCardView.as_view(), name='business_card_render'),
 ]
 
