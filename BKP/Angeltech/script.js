@@ -138,7 +138,7 @@ const waBtn = document.getElementById('waBtn');
 if (waBtn) {
   waBtn.addEventListener('click', () => {
     const message = encodeURIComponent('Hello AngelTech Computers, I would like to inquire about your products.');
-    window.open(`https://wa.me/1234567890?text=${message}`, '_blank');
+    window.open(`https://wa.me/254799897027?text=${message}`, '_blank');
   });
 }
 
