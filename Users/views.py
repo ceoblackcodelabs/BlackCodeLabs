@@ -10,8 +10,11 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django_ratelimit.decorators import ratelimit
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 import json
 import base64
 from io import BytesIO
@@ -648,6 +651,7 @@ class TalentDetailView(DetailView):
             context['dmTalentForm'] = form
             return self.render_to_response(context)
 
+# public company profile view
 class CompanyDetailView(DetailView):
     model = Company
     context_object_name = "company"
@@ -686,6 +690,7 @@ class CompanyDetailView(DetailView):
 
         return context
 
+    @method_decorator(ratelimit(key='ip', rate='5/h', method='POST', block=True))
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = ContactCompanyForm(request.POST)

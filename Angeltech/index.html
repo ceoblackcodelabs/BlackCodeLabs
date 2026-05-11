@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AngelTech Computers | Premium IT Hardware</title>
+  <meta name="description" content="Premium IT hardware and electronics store. Shop gaming laptops, MacBooks, mechanical keyboards, SSDs, and more. Fast delivery & technical support.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#top" class="logo">⚡ AngelTech Computers</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#top">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="ecommerce.html">Shop</a>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Carousel -->
+  <section id="top" class="hero">
+    <div class="carousel-container">
+      <div class="carousel-slide active" style="background-image: url('https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1600');"></div>
+      <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/2047905/pexels-photo-2047905.jpeg?auto=compress&cs=tinysrgb&w=1600');"></div>
+      <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600');"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="glow-text">Next‑Gen <span>Hardware</span></h1>
+      <p class="hero-sub">Power your digital world with premium IT solutions — gaming, productivity & beyond.</p>
+      <div class="hero-buttons">
+        <a href="ecommerce.html" class="btn btn-primary">Shop Now <i class="fas fa-arrow-right"></i></a>
+        <a href="#contact" class="btn btn-outline">Contact Us</a>
+      </div>
+    </div>
+    <div class="floating-particles" id="particles"></div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about" class="section about">
+    <div class="container about-grid">
+      <div class="about-content" data-aos="fade-right">
+        <span class="badge">Who we are</span>
+        <h2>Beyond limits, <span class="blue-gradient">we deliver</span> the future</h2>
+        <p>AngelTech Computers is a leading IT hardware destination, trusted by professionals and gamers. We provide authentic components, warranty-backed gear, and lightning-fast support with 24/7 technical assistance.</p>
+        <div class="features-grid">
+          <div class="feature-card"><i class="fas fa-truck-fast"></i><h4>Fast Delivery</h4><p>Same-day dispatch</p></div>
+          <div class="feature-card"><i class="fas fa-shield-alt"></i><h4>Genuine Products</h4><p>100% authentic</p></div>
+          <div class="feature-card"><i class="fas fa-headset"></i><h4>Tech Support</h4><p>Expert assistance</p></div>
+          <div class="feature-card"><i class="fas fa-tag"></i><h4>Affordable Prices</h4><p>Best market deals</p></div>
+        </div>
+      </div>
+      <div class="about-image" data-aos="fade-left">
+        <img src="https://images.pexels.com/photos/3768913/pexels-photo-3768913.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Hardware setup">
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section contact">
+    <div class="container">
+      <div class="contact-header">
+        <span class="badge">Get in Touch</span>
+        <h2>Let's talk tech</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="map-col" data-aos="fade-right">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1825!2d-73.9875!3d40.748!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd9c6d3f7f5f0b9!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1610000000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <div class="form-col" data-aos="fade-left">
+          <form id="contactForm">
+            <div class="input-group"><input type="text" id="name" placeholder="Full Name" required><i class="fas fa-user"></i></div>
+            <div class="input-group"><input type="email" id="email" placeholder="Email Address" required><i class="fas fa-envelope"></i></div>
+            <div class="input-group"><input type="tel" id="phone" placeholder="Phone Number" required><i class="fas fa-phone-alt"></i></div>
+            <div class="input-group"><textarea id="message" placeholder="Your message..." rows="4" required></textarea><i class="fas fa-comment"></i></div>
+            <button type="submit" class="btn btn-primary full">Send Message <i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter">
+    <div class="container newsletter-card">
+      <h3>Join the <span class="blue-gradient">Tech Pulse</span></h3>
+      <p>Get exclusive deals, early restock alerts, and tech insights — straight to your inbox.</p>
+      <div class="news-form">
+        <input type="email" id="newsEmail" placeholder="Your email address">
+        <button id="newsBtn">Subscribe <i class="fas fa-bolt"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>AngelTech Computers</h3><p>Redefining hardware excellence since 2024</p><div class="socials"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a></div></div>
+      <div><h4>Quick Links</h4><ul><li><a href="#top">Home</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li><li><a href="ecommerce.html">Shop</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><i class="fas fa-map-marker-alt"></i> 123 Tech Avenue, Silicon Valley</li><li><i class="fas fa-phone"></i> +1 (800) 123-4567</li><li><i class="fas fa-envelope"></i> hello@angeltech.com</li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 AngelTech Computers — <a href="https://blackcodelab.com" target="_blank">Powered by BlackCodeLabs</a></p></div>
+  </footer>
+
+  <!-- Floating WhatsApp & Chatbot -->
+  <div class="floating-wa" id="waBtn"><i class="fab fa-whatsapp"></i></div>
+  <div class="floating-chat" id="chatBtn"><i class="fas fa-comment-dots"></i></div>
+
+  <!-- Chatbot modal -->
+  <div class="chat-modal" id="chatModal">
+    <div class="chat-header"><span>🤖 AngelTech AI <span class="dot"></span></span><i class="fas fa-times" id="closeChat"></i></div>
+    <div class="chat-body" id="chatBody"><div class="bot-message">Hi there! 👋 I'm your tech assistant. Ask me about products, shipping, or anything tech-related!</div></div>
+    <div class="chat-input"><input type="text" id="chatInput" placeholder="Ask me anything..."><button id="sendChatMsg"><i class="fas fa-paper-plane"></i></button></div>
+  </div>
+
+  <!-- Back to Top -->
+  <button id="backToTop" class="back-top"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AngelTech Shop | Premium Hardware Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">⚡ AngelTech Computers</a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html#top">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="ecommerce.html" class="active">Shop</a>
+      </div>
+      <div class="shop-header-right">
+        <div class="cart-icon" id="cartIconBtn">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </div>
+        <div class="hamburger" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Shop Hero Banner -->
+  <section class="shop-hero">
+    <div class="shop-hero-content">
+      <h1>Tech Arsenal<span class="blue-gradient">.</span></h1>
+      <p>Curated components for creators, coders, and champions</p>
+    </div>
+  </section>
+
+  <!-- Shop Controls -->
+  <div class="shop-controls">
+    <div class="container controls-container">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search products...">
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="laptop">Laptops</button>
+        <button class="filter-btn" data-filter="mac">MacBooks</button>
+        <button class="filter-btn" data-filter="keyboard">Keyboards</button>
+        <button class="filter-btn" data-filter="ssd">Storage</button>
+        <button class="filter-btn" data-filter="ram">Memory</button>
+        <button class="filter-btn" data-filter="monitor">Monitors</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <section class="products-section">
+    <div class="container">
+      <div class="products-grid" id="productsGrid">
+        <!-- Products will be injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Quick View Modal -->
+  <div class="product-modal" id="productModal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar Overlay -->
+  <div class="cart-overlay" id="cartOverlay">
+    <div class="cart-sidebar">
+      <div class="cart-header">
+        <h3>Your Cart <i class="fas fa-shopping-bag"></i></h3>
+        <span class="close-cart">&times;</span>
+      </div>
+      <div class="cart-items-container" id="cartItemsContainer">
+        <!-- Cart items injected here -->
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cartTotal">$0.00</span>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>AngelTech Computers</h3><p>Redefining hardware excellence since 2024</p><div class="socials"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a></div></div>
+      <div><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="index.html#about">About</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="ecommerce.html">Shop</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><i class="fas fa-map-marker-alt"></i> 123 Tech Avenue, Silicon Valley</li><li><i class="fas fa-phone"></i> +1 (800) 123-4567</li><li><i class="fas fa-envelope"></i> hello@angeltech.com</li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 AngelTech Computers — <a href="https://blackcodelab.com" target="_blank">Powered by BlackCodeLabs</a></p></div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button id="backToTop" class="back-top"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="script.js"></script>
+</body>
+</html>

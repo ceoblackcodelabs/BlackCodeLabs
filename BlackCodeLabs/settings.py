@@ -207,6 +207,20 @@ LOGIN_URL = 'authenticate'
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://blackcodelabs.com']
 
+# settings.py
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# Optional: Use a specific cache for rate limiting
+RATELIMIT_USE_CACHE = 'default'
+
 # For production, uncomment and configure the following:
 # EMAIL_BACKEND = config('EMAIL_BACKEND')
 # EMAIL_HOST = config('EMAIL_HOST')
