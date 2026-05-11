@@ -110,7 +110,7 @@ def digital_card_qr_code_employer(company_profile, request):
         # Try different possible URL names
         qr_url = None
         possible_url_names = [
-            'company_profile_detail',
+            'company_public_profile',
         ]
 
         for url_name in possible_url_names:
