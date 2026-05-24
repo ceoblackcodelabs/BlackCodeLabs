@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BlackCodeLabs — Elite Software Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{
+  --bg:#000000;
+  --surface:#0a0a0a;
+  --surface2:#111111;
+  --border:#1e1e1e;
+  --accent:#00ff88;
+  --accent2:#00ccff;
+  --accent3:#ff3366;
+  --text:#f0f0f0;
+  --muted:#555;
+  --font-head:'Syne',sans-serif;
+  --font-mono:'Space Mono',monospace;
+  --font-body:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden}
+::selection{background:var(--accent);color:#000}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1.2rem 4rem;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-head);font-weight:800;font-size:1.4rem;letter-spacing:-0.03em;text-decoration:none;color:var(--text)}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;font-family:var(--font-mono);letter-spacing:.05em;transition:color .3s}
+.nav-links a:hover{color:var(--accent)}
+.nav-cta{display:flex;gap:1rem;align-items:center}
+.btn-ghost{padding:.55rem 1.4rem;border:1px solid var(--border);color:var(--text);text-decoration:none;font-family:var(--font-mono);font-size:.8rem;border-radius:3px;transition:all .3s;letter-spacing:.08em}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-solid{padding:.55rem 1.4rem;background:var(--accent);color:#000;text-decoration:none;font-family:var(--font-mono);font-size:.8rem;font-weight:700;border-radius:3px;transition:all .3s;letter-spacing:.08em}
+.btn-solid:hover{background:#00cc70;box-shadow:0 0 20px rgba(0,255,136,.4)}
+
+/* HERO */
+#hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px;padding:2rem}
+.hero-tag{display:inline-block;font-family:var(--font-mono);font-size:.75rem;color:var(--accent);letter-spacing:.15em;margin-bottom:1.5rem;padding:.4rem 1rem;border:1px solid rgba(0,255,136,.3);border-radius:20px;background:rgba(0,255,136,.05)}
+.hero-title{font-family:var(--font-head);font-size:clamp(3rem,7vw,7rem);font-weight:800;line-height:1;letter-spacing:-0.04em;margin-bottom:1.5rem}
+.hero-title .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2)}
+.hero-title .accent{color:var(--accent)}
+.hero-sub{font-size:1.1rem;color:var(--muted);max-width:550px;margin:0 auto 2.5rem;line-height:1.7;font-weight:300}
+.hero-actions{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap}
+.btn-hero{padding:.9rem 2.2rem;font-family:var(--font-mono);font-size:.85rem;font-weight:700;border-radius:4px;text-decoration:none;letter-spacing:.08em;transition:all .35s;display:inline-flex;align-items:center;gap:.6rem}
+.btn-hero.primary{background:var(--accent);color:#000}
+.btn-hero.primary:hover{background:#00cc70;box-shadow:0 0 30px rgba(0,255,136,.5);transform:translateY(-2px)}
+.btn-hero.secondary{border:1px solid var(--border);color:var(--text)}
+.btn-hero.secondary:hover{border-color:var(--accent2);color:var(--accent2);box-shadow:0 0 20px rgba(0,204,255,.2)}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:.4}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,transparent,var(--accent));animation:scrollAnim 2s ease infinite}
+@keyframes scrollAnim{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+
+/* TICKER */
+.ticker{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.7rem 0}
+.ticker-inner{display:flex;animation:tick 30s linear infinite;width:max-content;gap:4rem}
+.ticker-inner span{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);letter-spacing:.1em;white-space:nowrap}
+.ticker-inner span em{color:var(--accent);font-style:normal}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION COMMON */
+section{padding:7rem 4rem}
+.section-label{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);letter-spacing:.2em;margin-bottom:1rem;display:block}
+.section-title{font-family:var(--font-head);font-size:clamp(2rem,4vw,3.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:1.5rem}
+.section-title span{color:var(--accent)}
+
+/* ABOUT */
+#about{background:var(--surface);border-top:1px solid var(--border)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;max-width:1200px;margin:0 auto}
+.about-text p{color:var(--muted);line-height:1.8;margin-bottom:1.2rem;font-weight:300}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.stat h3{font-family:var(--font-head);font-size:2.8rem;font-weight:800;color:var(--accent);line-height:1}
+.stat p{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-top:.4rem}
+.about-visual{position:relative}
+.code-block{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:2rem;font-family:var(--font-mono);font-size:.82rem;line-height:1.8;position:relative;overflow:hidden}
+.code-block::before{content:'blackcodelabs.js';position:absolute;top:0;left:0;right:0;padding:.5rem 1rem;background:var(--border);font-size:.7rem;color:var(--muted)}
+.code-block{padding-top:2.5rem}
+.code-kw{color:#ff79c6}.code-fn{color:var(--accent2)}.code-str{color:var(--accent)}.code-cm{color:var(--muted)}
+
+/* SERVICES */
+#services{max-width:1200px;margin:0 auto;padding:7rem 4rem}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.service-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:2rem;position:relative;overflow:hidden;transition:all .4s;cursor:default}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,136,.05),transparent);opacity:0;transition:opacity .4s}
+.service-card:hover{border-color:rgba(0,255,136,.3);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.service-card:hover::before{opacity:1}
+.service-icon{font-size:2rem;margin-bottom:1.2rem;display:block}
+.service-card h3{font-family:var(--font-head);font-size:1.1rem;font-weight:700;margin-bottom:.8rem}
+.service-card p{font-size:.88rem;color:var(--muted);line-height:1.7}
+.service-card .tag{display:inline-block;font-family:var(--font-mono);font-size:.65rem;color:var(--accent);letter-spacing:.1em;margin-top:1.2rem;padding:.3rem .7rem;border:1px solid rgba(0,255,136,.2);border-radius:20px}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.testimonials-inner{max-width:1200px;margin:0 auto}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.testi-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:2rem;position:relative}
+.testi-card::before{content:'"';position:absolute;top:1rem;right:1.5rem;font-size:4rem;color:var(--accent);opacity:.15;font-family:var(--font-head);line-height:1}
+.testi-stars{color:var(--accent);font-size:.9rem;margin-bottom:1rem;letter-spacing:.1em}
+.testi-card p{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:1.5rem;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:.8rem}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:.85rem;color:#000}
+.testi-info h4{font-family:var(--font-head);font-weight:700;font-size:.9rem}
+.testi-info span{font-size:.75rem;color:var(--muted);font-family:var(--font-mono)}
+
+/* NEWSLETTER */
+#newsletter{max-width:700px;margin:0 auto;padding:7rem 4rem;text-align:center}
+.newsletter-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3.5rem;position:relative;overflow:hidden}
+.newsletter-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(0,255,136,.04),transparent 60%);pointer-events:none}
+.newsletter-box h2{font-family:var(--font-head);font-size:2rem;font-weight:800;margin-bottom:.8rem;letter-spacing:-0.02em}
+.newsletter-box p{color:var(--muted);margin-bottom:2rem;font-size:.95rem}
+.email-form{display:flex;gap:.8rem}
+.email-form input{flex:1;background:var(--bg);border:1px solid var(--border);padding:.9rem 1.2rem;color:var(--text);font-family:var(--font-mono);font-size:.85rem;border-radius:4px;outline:none;transition:border-color .3s}
+.email-form input:focus{border-color:var(--accent)}
+.email-form button{padding:.9rem 1.8rem;background:var(--accent);color:#000;font-family:var(--font-mono);font-weight:700;font-size:.85rem;border:none;border-radius:4px;cursor:pointer;transition:all .3s;white-space:nowrap}
+.email-form button:hover{background:#00cc70;box-shadow:0 0 20px rgba(0,255,136,.4)}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:4rem 4rem 2rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto}
+.footer-brand .nav-logo{display:block;margin-bottom:1rem;font-size:1.3rem}
+.footer-brand p{font-size:.85rem;color:var(--muted);line-height:1.7;max-width:260px}
+.footer-socials{display:flex;gap:.8rem;margin-top:1.5rem}
+.footer-socials a{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--muted);text-decoration:none;border-radius:4px;transition:all .3s}
+.footer-socials a:hover{border-color:var(--accent);color:var(--accent)}
+.footer-col h4{font-family:var(--font-head);font-weight:700;font-size:.85rem;margin-bottom:1.2rem;letter-spacing:.05em}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.footer-col ul a{color:var(--muted);text-decoration:none;font-size:.83rem;transition:color .3s}
+.footer-col ul a:hover{color:var(--accent)}
+.footer-bottom{max-width:1200px;margin:3rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:.78rem;color:var(--muted);font-family:var(--font-mono)}
+.footer-bottom span{color:var(--accent)}
+
+@media(max-width:1024px){
+  nav{padding:1.2rem 2rem}
+  .nav-links{display:none}
+  section,#services,#newsletter{padding:5rem 2rem}
+  .about-grid{grid-template-columns:1fr;gap:3rem}
+  .services-grid{grid-template-columns:1fr 1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:2rem}
+}
+@media(max-width:640px){
+  .services-grid{grid-template-columns:1fr}
+  .email-form{flex-direction:column}
+  .hero-title{font-size:3rem}
+  .footer-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Black<span>Code</span>Labs</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="career.html">Careers</a></li>
+    <li><a href="affiliate.html">Affiliate</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="login.html" class="btn-ghost">Login</a>
+    <a href="register.html" class="btn-solid">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-tag">▸ NEXT-GEN SOFTWARE ENGINEERING</div>
+    <h1 class="hero-title">
+      <div>We Build</div>
+      <div class="line2">Digital</div>
+      <div><span class="accent">Empires.</span></div>
+    </h1>
+    <p class="hero-sub">BlackCodeLabs engineers premium software, APIs, web apps, and mobile experiences that scale. We turn your vision into high-performance digital reality.</p>
+    <div class="hero-actions">
+      <a href="solutions.html" class="btn-hero primary">▸ Explore Solutions</a>
+      <a href="contact.html" class="btn-hero secondary">→ Let's Talk</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span><em>SOFTWARE DEVELOPMENT</em></span>
+    <span>◆</span>
+    <span><em>API ENGINEERING</em></span>
+    <span>◆</span>
+    <span><em>SEO OPTIMIZATION</em></span>
+    <span>◆</span>
+    <span><em>BUG BOUNTY</em></span>
+    <span>◆</span>
+    <span><em>APP DEVELOPMENT</em></span>
+    <span>◆</span>
+    <span><em>WEB APPLICATIONS</em></span>
+    <span>◆</span>
+    <span><em>WEBSITE DEVELOPMENT</em></span>
+    <span>◆</span>
+    <span><em>CLOUD ARCHITECTURE</em></span>
+    <span>◆</span>
+    <span><em>SOFTWARE DEVELOPMENT</em></span>
+    <span>◆</span>
+    <span><em>API ENGINEERING</em></span>
+    <span>◆</span>
+    <span><em>SEO OPTIMIZATION</em></span>
+    <span>◆</span>
+    <span><em>BUG BOUNTY</em></span>
+    <span>◆</span>
+    <span><em>APP DEVELOPMENT</em></span>
+    <span>◆</span>
+    <span><em>WEB APPLICATIONS</em></span>
+    <span>◆</span>
+    <span><em>WEBSITE DEVELOPMENT</em></span>
+    <span>◆</span>
+    <span><em>CLOUD ARCHITECTURE</em></span>
+    <span>◆</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <span class="section-label">// ABOUT US</span>
+      <h2 class="section-title">We don't just write <span>code</span>. We engineer solutions.</h2>
+      <p>BlackCodeLabs is an elite software engineering collective building next-generation digital products. From startups to enterprises, we deliver precision-crafted technology that performs at scale.</p>
+      <p>Our engineers live on the bleeding edge — architecting APIs, building full-stack platforms, crushing SEO metrics, hunting bugs before they hunt you, and deploying apps that users actually love.</p>
+      <div class="stat-row">
+        <div class="stat"><h3>150+</h3><p>PROJECTS SHIPPED</p></div>
+        <div class="stat"><h3>98%</h3><p>CLIENT SATISFACTION</p></div>
+        <div class="stat"><h3>40+</h3><p>ELITE ENGINEERS</p></div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="code-block">
+<span class="code-cm">// BlackCodeLabs stack</span>
+<span class="code-kw">const</span> <span class="code-fn">blackcodelabs</span> = {
+  <span class="code-str">"mission"</span>: <span class="code-str">"Build. Launch. Scale."</span>,
+  <span class="code-str">"services"</span>: [
+    <span class="code-str">"Software Development"</span>,
+    <span class="code-str">"API Engineering"</span>,
+    <span class="code-str">"SEO & Growth"</span>,
+    <span class="code-str">"Bug Bounty"</span>,
+    <span class="code-str">"App Development"</span>,
+  ],
+  <span class="code-str">"uptime"</span>: <span class="code-str">"99.99%"</span>,
+  <span class="code-fn">launch</span>: () =&gt; <span class="code-str">"🚀 Ship it."</span>
+};
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div style="max-width:1200px;margin:0 auto">
+    <span class="section-label">// WHAT WE DO</span>
+    <h2 class="section-title">Our <span>Services</span></h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">⚡</span>
+        <h3>Software Development</h3>
+        <p>Custom enterprise-grade software tailored to your exact requirements. Scalable, secure, and built to last.</p>
+        <span class="tag">FULL-STACK</span>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔌</span>
+        <h3>API Engineering</h3>
+        <p>RESTful and GraphQL APIs built for performance. Seamless integrations, robust documentation, lightning speed.</p>
+        <span class="tag">REST · GraphQL</span>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">📈</span>
+        <h3>SEO Optimization</h3>
+        <p>Technical SEO, content strategy, and performance tuning that dominate search rankings and drive organic growth.</p>
+        <span class="tag">GROWTH</span>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🛡️</span>
+        <h3>Bug Bounty & Security</h3>
+        <p>Ethical hacking, penetration testing, and vulnerability assessment. We find the bugs before attackers do.</p>
+        <span class="tag">SECURITY</span>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">📱</span>
+        <h3>App Development</h3>
+        <p>Native iOS & Android and cross-platform mobile apps that are fast, beautiful, and addictive to use.</p>
+        <span class="tag">iOS · Android</span>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🌐</span>
+        <h3>Web & Web App Dev</h3>
+        <p>Stunning websites and powerful web applications from landing pages to complex SaaS platforms.</p>
+        <span class="tag">WEB · SaaS</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:3rem">
+      <a href="solutions.html" class="btn-hero primary" style="display:inline-flex">View All Solutions →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" style="padding:7rem 4rem">
+  <div class="testimonials-inner">
+    <span class="section-label">// CLIENT VOICES</span>
+    <h2 class="section-title">What our <span>clients</span> say</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"BlackCodeLabs rebuilt our entire backend infrastructure. The API they engineered handles 2 million daily requests flawlessly. Game-changing work."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AO</div>
+          <div class="testi-info"><h4>Amara Osei</h4><span>CTO, NovaTech Ghana</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"From design to deployment in 3 weeks. Our e-commerce web app is now converting at 8.4%. These engineers are the real deal — precise, fast, reliable."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">KM</div>
+          <div class="testi-info"><h4>Kwame Mensah</h4><span>CEO, MarketHub Africa</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Their SEO team took us from page 5 to position 2 in 6 weeks. Organic traffic is up 340%. We've never seen results this fast. Exceptional team."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">ZN</div>
+          <div class="testi-info"><h4>Zara Ndalo</h4><span>Marketing Director, Savanah Brands</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="newsletter-box">
+    <span class="section-label" style="display:block;text-align:center;margin-bottom:.5rem">// STAY IN THE LOOP</span>
+    <h2>Engineering <span style="color:var(--accent)">insights</span>, weekly.</h2>
+    <p>Get our latest articles on software architecture, API design, growth hacking, and security straight to your inbox.</p>
+    <div class="email-form">
+      <input type="email" placeholder="your@email.com"/>
+      <button>Subscribe →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">Black<span style="color:var(--accent)">Code</span>Labs</a>
+      <p>Elite software engineering for the digital age. We build the systems that power tomorrow's businesses.</p>
+      <div class="footer-socials">
+        <a href="#">𝕏</a>
+        <a href="#">in</a>
+        <a href="#">gh</a>
+        <a href="#">ig</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="solutions.html">Solutions</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="career.html">Careers</a></li>
+        <li><a href="affiliate.html">Affiliate</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Software Dev</a></li>
+        <li><a href="#">API Engineering</a></li>
+        <li><a href="#">SEO</a></li>
+        <li><a href="#">Bug Bounty</a></li>
+        <li><a href="#">App Dev</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="contact.html">Get in Touch</a></li>
+        <li><a href="mailto:hello@blackcodelabs.dev">hello@blackcodelabs.dev</a></li>
+        <li><a href="#">+1 (800) BCL-CODE</a></li>
+        <li><a href="login.html">Client Portal</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 <span>BlackCodeLabs</span>. All rights reserved.</p>
+    <p>Built with <span>♥</span> by BlackCodeLabs Engineers</p>
+  </div>
+</footer>
+
+<script>
+// THREE.JS HERO SCENE
+const canvas = document.getElementById('hero-canvas');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.z = 30;
+
+// Particle field
+const particleCount = 3000;
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+for(let i=0;i<particleCount;i++){
+  positions[i*3]   = (Math.random()-0.5)*120;
+  positions[i*3+1] = (Math.random()-0.5)*120;
+  positions[i*3+2] = (Math.random()-0.5)*120;
+  const t = Math.random();
+  colors[i*3]   = t < 0.5 ? 0 : 0;
+  colors[i*3+1] = t < 0.5 ? 1 : 0.8;
+  colors[i*3+2] = t < 0.5 ? 0.53 : 1;
+}
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+pGeo.setAttribute('color', new THREE.BufferAttribute(colors,3));
+const pMat = new THREE.PointsMaterial({size:0.25, vertexColors:true, transparent:true, opacity:0.7});
+const particles = new THREE.Points(pGeo, pMat);
+scene.add(particles);
+
+// Wireframe torus
+const tGeo = new THREE.TorusGeometry(10,3,16,80);
+const tMat = new THREE.MeshBasicMaterial({color:0x00ff88, wireframe:true, opacity:0.06, transparent:true});
+const torus = new THREE.Mesh(tGeo, tMat);
+scene.add(torus);
+
+// Icosahedron
+const iGeo = new THREE.IcosahedronGeometry(6,1);
+const iMat = new THREE.MeshBasicMaterial({color:0x00ccff, wireframe:true, opacity:0.08, transparent:true});
+const ico = new THREE.Mesh(iGeo, iMat);
+scene.add(ico);
+
+let mouseX=0, mouseY=0;
+document.addEventListener('mousemove', e=>{
+  mouseX = (e.clientX/window.innerWidth - 0.5)*2;
+  mouseY = (e.clientY/window.innerHeight - 0.5)*2;
+});
+
+function animate(){
+  requestAnimationFrame(animate);
+  const t = Date.now()*0.001;
+  particles.rotation.y = t*0.04 + mouseX*0.1;
+  particles.rotation.x = t*0.02 + mouseY*0.05;
+  torus.rotation.x = t*0.3;
+  torus.rotation.y = t*0.2;
+  ico.rotation.x = -t*0.15;
+  ico.rotation.y = t*0.25;
+  camera.position.x += (mouseX*3 - camera.position.x)*0.03;
+  camera.position.y += (-mouseY*2 - camera.position.y)*0.03;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Fade in
+document.querySelectorAll('.hero-content > *').forEach((el,i)=>{
+  el.style.opacity='0';el.style.transform='translateY(30px)';el.style.transition=`all .8s ease ${i*0.15}s`;
+  setTimeout(()=>{el.style.opacity='1';el.style.transform='translateY(0)'},100);
+});
+</script>
+</body>
+</html>
