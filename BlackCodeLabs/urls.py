@@ -23,6 +23,7 @@ urlpatterns = [
     path('devAdmin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('projects/', include('Pitchs.urls')),
+    path("BCL/", include("BCL.urls")),
     # path("salespro/", include("SalesPro.urls")),
     path('QRIdentifier/', include('QRIdentifier.urls')),
     path('', include('Home.urls')),
