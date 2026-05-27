@@ -1,496 +1,800 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BlackCodeLabs — Elite Software Engineering</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-:root{
-  --bg:#000000;
-  --surface:#0a0a0a;
-  --surface2:#111111;
-  --border:#1e1e1e;
-  --accent:#00ff88;
-  --accent2:#00ccff;
-  --accent3:#ff3366;
-  --text:#f0f0f0;
-  --muted:#555;
-  --font-head:'Syne',sans-serif;
-  --font-mono:'Space Mono',monospace;
-  --font-body:'Inter',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden}
-::selection{background:var(--accent);color:#000}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:#000}
-::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1.2rem 4rem;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-logo{font-family:var(--font-head);font-weight:800;font-size:1.4rem;letter-spacing:-0.03em;text-decoration:none;color:var(--text)}
-.nav-logo span{color:var(--accent)}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;font-family:var(--font-mono);letter-spacing:.05em;transition:color .3s}
-.nav-links a:hover{color:var(--accent)}
-.nav-cta{display:flex;gap:1rem;align-items:center}
-.btn-ghost{padding:.55rem 1.4rem;border:1px solid var(--border);color:var(--text);text-decoration:none;font-family:var(--font-mono);font-size:.8rem;border-radius:3px;transition:all .3s;letter-spacing:.08em}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
-.btn-solid{padding:.55rem 1.4rem;background:var(--accent);color:#000;text-decoration:none;font-family:var(--font-mono);font-size:.8rem;font-weight:700;border-radius:3px;transition:all .3s;letter-spacing:.08em}
-.btn-solid:hover{background:#00cc70;box-shadow:0 0 20px rgba(0,255,136,.4)}
-
-/* HERO */
-#hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#hero-canvas{position:absolute;inset:0;z-index:0}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:900px;padding:2rem}
-.hero-tag{display:inline-block;font-family:var(--font-mono);font-size:.75rem;color:var(--accent);letter-spacing:.15em;margin-bottom:1.5rem;padding:.4rem 1rem;border:1px solid rgba(0,255,136,.3);border-radius:20px;background:rgba(0,255,136,.05)}
-.hero-title{font-family:var(--font-head);font-size:clamp(3rem,7vw,7rem);font-weight:800;line-height:1;letter-spacing:-0.04em;margin-bottom:1.5rem}
-.hero-title .line2{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2)}
-.hero-title .accent{color:var(--accent)}
-.hero-sub{font-size:1.1rem;color:var(--muted);max-width:550px;margin:0 auto 2.5rem;line-height:1.7;font-weight:300}
-.hero-actions{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap}
-.btn-hero{padding:.9rem 2.2rem;font-family:var(--font-mono);font-size:.85rem;font-weight:700;border-radius:4px;text-decoration:none;letter-spacing:.08em;transition:all .35s;display:inline-flex;align-items:center;gap:.6rem}
-.btn-hero.primary{background:var(--accent);color:#000}
-.btn-hero.primary:hover{background:#00cc70;box-shadow:0 0 30px rgba(0,255,136,.5);transform:translateY(-2px)}
-.btn-hero.secondary{border:1px solid var(--border);color:var(--text)}
-.btn-hero.secondary:hover{border-color:var(--accent2);color:var(--accent2);box-shadow:0 0 20px rgba(0,204,255,.2)}
-.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:.4}
-.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,transparent,var(--accent));animation:scrollAnim 2s ease infinite}
-@keyframes scrollAnim{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
-
-/* TICKER */
-.ticker{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.7rem 0}
-.ticker-inner{display:flex;animation:tick 30s linear infinite;width:max-content;gap:4rem}
-.ticker-inner span{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);letter-spacing:.1em;white-space:nowrap}
-.ticker-inner span em{color:var(--accent);font-style:normal}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* SECTION COMMON */
-section{padding:7rem 4rem}
-.section-label{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);letter-spacing:.2em;margin-bottom:1rem;display:block}
-.section-title{font-family:var(--font-head);font-size:clamp(2rem,4vw,3.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:1.5rem}
-.section-title span{color:var(--accent)}
-
-/* ABOUT */
-#about{background:var(--surface);border-top:1px solid var(--border)}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;max-width:1200px;margin:0 auto}
-.about-text p{color:var(--muted);line-height:1.8;margin-bottom:1.2rem;font-weight:300}
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border)}
-.stat h3{font-family:var(--font-head);font-size:2.8rem;font-weight:800;color:var(--accent);line-height:1}
-.stat p{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-top:.4rem}
-.about-visual{position:relative}
-.code-block{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:2rem;font-family:var(--font-mono);font-size:.82rem;line-height:1.8;position:relative;overflow:hidden}
-.code-block::before{content:'blackcodelabs.js';position:absolute;top:0;left:0;right:0;padding:.5rem 1rem;background:var(--border);font-size:.7rem;color:var(--muted)}
-.code-block{padding-top:2.5rem}
-.code-kw{color:#ff79c6}.code-fn{color:var(--accent2)}.code-str{color:var(--accent)}.code-cm{color:var(--muted)}
-
-/* SERVICES */
-#services{max-width:1200px;margin:0 auto;padding:7rem 4rem}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
-.service-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:2rem;position:relative;overflow:hidden;transition:all .4s;cursor:default}
-.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,136,.05),transparent);opacity:0;transition:opacity .4s}
-.service-card:hover{border-color:rgba(0,255,136,.3);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
-.service-card:hover::before{opacity:1}
-.service-icon{font-size:2rem;margin-bottom:1.2rem;display:block}
-.service-card h3{font-family:var(--font-head);font-size:1.1rem;font-weight:700;margin-bottom:.8rem}
-.service-card p{font-size:.88rem;color:var(--muted);line-height:1.7}
-.service-card .tag{display:inline-block;font-family:var(--font-mono);font-size:.65rem;color:var(--accent);letter-spacing:.1em;margin-top:1.2rem;padding:.3rem .7rem;border:1px solid rgba(0,255,136,.2);border-radius:20px}
-
-/* TESTIMONIALS */
-#testimonials{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.testimonials-inner{max-width:1200px;margin:0 auto}
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
-.testi-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:2rem;position:relative}
-.testi-card::before{content:'"';position:absolute;top:1rem;right:1.5rem;font-size:4rem;color:var(--accent);opacity:.15;font-family:var(--font-head);line-height:1}
-.testi-stars{color:var(--accent);font-size:.9rem;margin-bottom:1rem;letter-spacing:.1em}
-.testi-card p{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:1.5rem;font-style:italic}
-.testi-author{display:flex;align-items:center;gap:.8rem}
-.testi-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:.85rem;color:#000}
-.testi-info h4{font-family:var(--font-head);font-weight:700;font-size:.9rem}
-.testi-info span{font-size:.75rem;color:var(--muted);font-family:var(--font-mono)}
-
-/* NEWSLETTER */
-#newsletter{max-width:700px;margin:0 auto;padding:7rem 4rem;text-align:center}
-.newsletter-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3.5rem;position:relative;overflow:hidden}
-.newsletter-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(0,255,136,.04),transparent 60%);pointer-events:none}
-.newsletter-box h2{font-family:var(--font-head);font-size:2rem;font-weight:800;margin-bottom:.8rem;letter-spacing:-0.02em}
-.newsletter-box p{color:var(--muted);margin-bottom:2rem;font-size:.95rem}
-.email-form{display:flex;gap:.8rem}
-.email-form input{flex:1;background:var(--bg);border:1px solid var(--border);padding:.9rem 1.2rem;color:var(--text);font-family:var(--font-mono);font-size:.85rem;border-radius:4px;outline:none;transition:border-color .3s}
-.email-form input:focus{border-color:var(--accent)}
-.email-form button{padding:.9rem 1.8rem;background:var(--accent);color:#000;font-family:var(--font-mono);font-weight:700;font-size:.85rem;border:none;border-radius:4px;cursor:pointer;transition:all .3s;white-space:nowrap}
-.email-form button:hover{background:#00cc70;box-shadow:0 0 20px rgba(0,255,136,.4)}
-
-/* FOOTER */
-footer{background:var(--surface);border-top:1px solid var(--border);padding:4rem 4rem 2rem}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto}
-.footer-brand .nav-logo{display:block;margin-bottom:1rem;font-size:1.3rem}
-.footer-brand p{font-size:.85rem;color:var(--muted);line-height:1.7;max-width:260px}
-.footer-socials{display:flex;gap:.8rem;margin-top:1.5rem}
-.footer-socials a{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--muted);text-decoration:none;border-radius:4px;transition:all .3s}
-.footer-socials a:hover{border-color:var(--accent);color:var(--accent)}
-.footer-col h4{font-family:var(--font-head);font-weight:700;font-size:.85rem;margin-bottom:1.2rem;letter-spacing:.05em}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
-.footer-col ul a{color:var(--muted);text-decoration:none;font-size:.83rem;transition:color .3s}
-.footer-col ul a:hover{color:var(--accent)}
-.footer-bottom{max-width:1200px;margin:3rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.footer-bottom p{font-size:.78rem;color:var(--muted);font-family:var(--font-mono)}
-.footer-bottom span{color:var(--accent)}
-
-@media(max-width:1024px){
-  nav{padding:1.2rem 2rem}
-  .nav-links{display:none}
-  section,#services,#newsletter{padding:5rem 2rem}
-  .about-grid{grid-template-columns:1fr;gap:3rem}
-  .services-grid{grid-template-columns:1fr 1fr}
-  .testi-grid{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr 1fr;gap:2rem}
-}
-@media(max-width:640px){
-  .services-grid{grid-template-columns:1fr}
-  .email-form{flex-direction:column}
-  .hero-title{font-size:3rem}
-  .footer-grid{grid-template-columns:1fr}
-  .stat-row{grid-template-columns:1fr 1fr}
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BCL Production | Human Art in Motion</title>
+  <meta name="description" content="BCL Production — East Africa's premier human art and dance collective. Where the body becomes the canvas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="index.html" class="nav-logo">Black<span>Code</span>Labs</a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="solutions.html">Solutions</a></li>
-    <li><a href="pricing.html">Pricing</a></li>
-    <li><a href="career.html">Careers</a></li>
-    <li><a href="affiliate.html">Affiliate</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-  <div class="nav-cta">
-    <a href="login.html" class="btn-ghost">Login</a>
-    <a href="register.html" class="btn-solid">Get Started</a>
-  </div>
-</nav>
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
 
-<!-- HERO -->
-<section id="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-tag">▸ NEXT-GEN SOFTWARE ENGINEERING</div>
-    <h1 class="hero-title">
-      <div>We Build</div>
-      <div class="line2">Digital</div>
-      <div><span class="accent">Empires.</span></div>
-    </h1>
-    <p class="hero-sub">BlackCodeLabs engineers premium software, APIs, web apps, and mobile experiences that scale. We turn your vision into high-performance digital reality.</p>
-    <div class="hero-actions">
-      <a href="solutions.html" class="btn-hero primary">▸ Explore Solutions</a>
-      <a href="contact.html" class="btn-hero secondary">→ Let's Talk</a>
-    </div>
-  </div>
-  <div class="hero-scroll"><div class="scroll-line"></div></div>
-</section>
+  <!-- NOISE OVERLAY -->
+  <div class="noise"></div>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span><em>SOFTWARE DEVELOPMENT</em></span>
-    <span>◆</span>
-    <span><em>API ENGINEERING</em></span>
-    <span>◆</span>
-    <span><em>SEO OPTIMIZATION</em></span>
-    <span>◆</span>
-    <span><em>BUG BOUNTY</em></span>
-    <span>◆</span>
-    <span><em>APP DEVELOPMENT</em></span>
-    <span>◆</span>
-    <span><em>WEB APPLICATIONS</em></span>
-    <span>◆</span>
-    <span><em>WEBSITE DEVELOPMENT</em></span>
-    <span>◆</span>
-    <span><em>CLOUD ARCHITECTURE</em></span>
-    <span>◆</span>
-    <span><em>SOFTWARE DEVELOPMENT</em></span>
-    <span>◆</span>
-    <span><em>API ENGINEERING</em></span>
-    <span>◆</span>
-    <span><em>SEO OPTIMIZATION</em></span>
-    <span>◆</span>
-    <span><em>BUG BOUNTY</em></span>
-    <span>◆</span>
-    <span><em>APP DEVELOPMENT</em></span>
-    <span>◆</span>
-    <span><em>WEB APPLICATIONS</em></span>
-    <span>◆</span>
-    <span><em>WEBSITE DEVELOPMENT</em></span>
-    <span>◆</span>
-    <span><em>CLOUD ARCHITECTURE</em></span>
-    <span>◆</span>
-  </div>
-</div>
+  <!-- ░░ NAV ░░ -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-bcl">BCL</span>
+        <span class="logo-prod">PRODUCTION</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#about" data-text="About">About</a></li>
+        <li><a href="#art" data-text="Human Art">Human Art</a></li>
+        <li><a href="#performances" data-text="Performances">Performances</a></li>
+        <li><a href="#crew" data-text="The Crew">The Crew</a></li>
+        <li><a href="#contact" data-text="Book Us">Book Us</a></li>
+      </ul>
+    </div>
+  </nav>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-grid">
-    <div class="about-text">
-      <span class="section-label">// ABOUT US</span>
-      <h2 class="section-title">We don't just write <span>code</span>. We engineer solutions.</h2>
-      <p>BlackCodeLabs is an elite software engineering collective building next-generation digital products. From startups to enterprises, we deliver precision-crafted technology that performs at scale.</p>
-      <p>Our engineers live on the bleeding edge — architecting APIs, building full-stack platforms, crushing SEO metrics, hunting bugs before they hunt you, and deploying apps that users actually love.</p>
-      <div class="stat-row">
-        <div class="stat"><h3>150+</h3><p>PROJECTS SHIPPED</p></div>
-        <div class="stat"><h3>98%</h3><p>CLIENT SATISFACTION</p></div>
-        <div class="stat"><h3>40+</h3><p>ELITE ENGINEERS</p></div>
-      </div>
+  <!-- ░░ HERO ░░ -->
+  <section class="hero" id="hero">
+    <!-- Animated SVG silhouettes -->
+    <div class="hero-silhouettes">
+      <svg class="sil sil-1" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- dancer silhouette - arms wide -->
+        <ellipse cx="50" cy="20" rx="12" ry="13" fill="currentColor"/>
+        <path d="M50 33 C50 33 30 50 10 45 C30 55 50 70 50 80 C50 70 70 55 90 45 C70 50 50 33 50 33Z" fill="currentColor"/>
+        <path d="M50 80 C45 100 30 120 20 140" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <path d="M50 80 C55 100 70 120 80 140" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <path d="M20 140 C15 155 10 170 15 185" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M80 140 C85 155 90 170 85 185" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round"/>
+      </svg>
+      <svg class="sil sil-2" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- dancer in pose -->
+        <ellipse cx="50" cy="18" rx="11" ry="12" fill="currentColor"/>
+        <path d="M50 30 L50 90" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+        <path d="M50 50 L20 35" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M50 50 L80 70" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M50 90 L35 140" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M50 90 L65 135" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M35 140 L25 185" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+        <path d="M65 135 L70 180" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      </svg>
+      <svg class="sil sil-3" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- leaping dancer -->
+        <ellipse cx="50" cy="15" rx="11" ry="12" fill="currentColor"/>
+        <path d="M50 27 C50 27 48 60 45 80" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+        <path d="M48 40 L10 55" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M48 45 L85 30" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M45 80 L20 130" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M45 80 L75 125" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <path d="M20 130 L5 175" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+        <path d="M75 125 L90 165" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      </svg>
     </div>
-    <div class="about-visual">
-      <div class="code-block">
-<span class="code-cm">// BlackCodeLabs stack</span>
-<span class="code-kw">const</span> <span class="code-fn">blackcodelabs</span> = {
-  <span class="code-str">"mission"</span>: <span class="code-str">"Build. Launch. Scale."</span>,
-  <span class="code-str">"services"</span>: [
-    <span class="code-str">"Software Development"</span>,
-    <span class="code-str">"API Engineering"</span>,
-    <span class="code-str">"SEO & Growth"</span>,
-    <span class="code-str">"Bug Bounty"</span>,
-    <span class="code-str">"App Development"</span>,
-  ],
-  <span class="code-str">"uptime"</span>: <span class="code-str">"99.99%"</span>,
-  <span class="code-fn">launch</span>: () =&gt; <span class="code-str">"🚀 Ship it."</span>
-};
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- SERVICES -->
-<section id="services">
-  <div style="max-width:1200px;margin:0 auto">
-    <span class="section-label">// WHAT WE DO</span>
-    <h2 class="section-title">Our <span>Services</span></h2>
-    <div class="services-grid">
-      <div class="service-card">
-        <span class="service-icon">⚡</span>
-        <h3>Software Development</h3>
-        <p>Custom enterprise-grade software tailored to your exact requirements. Scalable, secure, and built to last.</p>
-        <span class="tag">FULL-STACK</span>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">🔌</span>
-        <h3>API Engineering</h3>
-        <p>RESTful and GraphQL APIs built for performance. Seamless integrations, robust documentation, lightning speed.</p>
-        <span class="tag">REST · GraphQL</span>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">📈</span>
-        <h3>SEO Optimization</h3>
-        <p>Technical SEO, content strategy, and performance tuning that dominate search rankings and drive organic growth.</p>
-        <span class="tag">GROWTH</span>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">🛡️</span>
-        <h3>Bug Bounty & Security</h3>
-        <p>Ethical hacking, penetration testing, and vulnerability assessment. We find the bugs before attackers do.</p>
-        <span class="tag">SECURITY</span>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">📱</span>
-        <h3>App Development</h3>
-        <p>Native iOS & Android and cross-platform mobile apps that are fast, beautiful, and addictive to use.</p>
-        <span class="tag">iOS · Android</span>
-      </div>
-      <div class="service-card">
-        <span class="service-icon">🌐</span>
-        <h3>Web & Web App Dev</h3>
-        <p>Stunning websites and powerful web applications from landing pages to complex SaaS platforms.</p>
-        <span class="tag">WEB · SaaS</span>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:3rem">
-      <a href="solutions.html" class="btn-hero primary" style="display:inline-flex">View All Solutions →</a>
-    </div>
-  </div>
-</section>
+    <!-- Kinetic lines -->
+    <canvas class="hero-canvas" id="heroCanvas"></canvas>
 
-<!-- TESTIMONIALS -->
-<section id="testimonials" style="padding:7rem 4rem">
-  <div class="testimonials-inner">
-    <span class="section-label">// CLIENT VOICES</span>
-    <h2 class="section-title">What our <span>clients</span> say</h2>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p>"BlackCodeLabs rebuilt our entire backend infrastructure. The API they engineered handles 2 million daily requests flawlessly. Game-changing work."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">AO</div>
-          <div class="testi-info"><h4>Amara Osei</h4><span>CTO, NovaTech Ghana</span></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        <span>East Africa's Premier Human Art Collective</span>
+        <span class="eyebrow-line"></span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="ht-line" data-delay="0">THE</span>
+        <span class="ht-line accent" data-delay="100">BODY</span>
+        <span class="ht-line" data-delay="200">IS THE</span>
+        <span class="ht-line accent2" data-delay="300">ART</span>
+      </h1>
+
+      <p class="hero-tagline">
+        <em>BCL Production</em> — where movement becomes message,<br/>
+        silence becomes spectacle, and human form defies expectation.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#performances" class="cta-primary">
+          <span class="cta-text">See Our Work</span>
+          <span class="cta-arrow">→</span>
+        </a>
+        <a href="#contact" class="cta-ghost">Book a Show</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hstat">
+          <span class="hstat-n" data-target="8">0</span>
+          <span class="hstat-l">Artists</span>
         </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p>"From design to deployment in 3 weeks. Our e-commerce web app is now converting at 8.4%. These engineers are the real deal — precise, fast, reliable."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">KM</div>
-          <div class="testi-info"><h4>Kwame Mensah</h4><span>CEO, MarketHub Africa</span></div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <span class="hstat-n" data-target="150">0</span><span class="hstat-plus">+</span>
+          <span class="hstat-l">Performances</span>
         </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p>"Their SEO team took us from page 5 to position 2 in 6 weeks. Organic traffic is up 340%. We've never seen results this fast. Exceptional team."</p>
-        <div class="testi-author">
-          <div class="testi-avatar">ZN</div>
-          <div class="testi-info"><h4>Zara Ndalo</h4><span>Marketing Director, Savanah Brands</span></div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <span class="hstat-n" data-target="12">0</span>
+          <span class="hstat-l">Countries</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <span class="hstat-n" data-target="5">0</span>
+          <span class="hstat-l">Years</span>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- NEWSLETTER -->
-<section id="newsletter">
-  <div class="newsletter-box">
-    <span class="section-label" style="display:block;text-align:center;margin-bottom:.5rem">// STAY IN THE LOOP</span>
-    <h2>Engineering <span style="color:var(--accent)">insights</span>, weekly.</h2>
-    <p>Get our latest articles on software architecture, API design, growth hacking, and security straight to your inbox.</p>
-    <div class="email-form">
-      <input type="email" placeholder="your@email.com"/>
-      <button>Subscribe →</button>
+    <div class="hero-scroll">
+      <div class="scroll-track">
+        <div class="scroll-thumb"></div>
+      </div>
+      <span>Scroll</span>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="index.html" class="nav-logo">Black<span style="color:var(--accent)">Code</span>Labs</a>
-      <p>Elite software engineering for the digital age. We build the systems that power tomorrow's businesses.</p>
-      <div class="footer-socials">
-        <a href="#">𝕏</a>
-        <a href="#">in</a>
-        <a href="#">gh</a>
-        <a href="#">ig</a>
+  <!-- ░░ ABOUT / MANIFESTO ░░ -->
+  <section class="manifesto section" id="about">
+    <div class="manifesto-inner">
+      <div class="manifesto-label">Our Manifesto</div>
+      <div class="manifesto-text">
+        <div class="mtext-left">
+          <h2 class="manifesto-title">
+            We do not<br/>
+            <em>perform</em>.<br/>
+            We <em>become</em>.
+          </h2>
+          <p>
+            BCL Production is a collective of boundary-breaking artists who treat the human body
+            as the most powerful artistic medium in existence. No props. No set. Just flesh,
+            breath, rhythm, and intention.
+          </p>
+          <p>
+            Born from the streets, trained on stages, and forged in discipline — we blend
+            contemporary dance, mime, contortion, living statues, body painting, and theatrical
+            movement into a singular art form that transcends genre.
+          </p>
+          <a href="#contact" class="cta-primary">Work With Us</a>
+        </div>
+        <div class="mtext-right">
+          <div class="manifesto-quote">
+            <blockquote>
+              "We strip away everything until only truth remains — and truth,<br/>
+              it turns out, lives inside the body."
+            </blockquote>
+            <cite>— BCL Production</cite>
+          </div>
+          <div class="manifesto-tags">
+            <span>Contemporary Dance</span>
+            <span>Living Statues</span>
+            <span>Body Art</span>
+            <span>Physical Theatre</span>
+            <span>Contortion</span>
+            <span>Mime</span>
+            <span>Formation</span>
+            <span>Acrobatics</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="solutions.html">Solutions</a></li>
-        <li><a href="pricing.html">Pricing</a></li>
-        <li><a href="career.html">Careers</a></li>
-        <li><a href="affiliate.html">Affiliate</a></li>
-      </ul>
+  </section>
+
+  <!-- ░░ HUMAN ART FORMS ░░ -->
+  <section class="artforms section" id="art">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-label">What We Do</div>
+        <h2 class="sec-title">Human Art <em>Forms</em></h2>
+      </div>
+
+      <div class="artforms-grid">
+
+        <div class="artform-card" data-form="01">
+          <div class="artform-visual">
+            <!-- SVG: contemporary dance -->
+            <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" class="af-svg">
+              <ellipse cx="60" cy="22" rx="14" ry="15" fill="currentColor"/>
+              <path d="M60 37 C58 60 55 75 50 90" stroke="currentColor" stroke-width="10" fill="none" stroke-linecap="round"/>
+              <path d="M55 55 L15 40" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M57 50 L95 65" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M50 90 L30 145" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M50 90 L78 138" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M30 145 L15 185" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M78 138 L92 180" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="artform-info">
+            <span class="af-num">01</span>
+            <h3>Contemporary Dance</h3>
+            <p>Fluid, expressive movement that tells stories words cannot. Raw emotion translated into kinetic poetry.</p>
+          </div>
+        </div>
+
+        <div class="artform-card" data-form="02">
+          <div class="artform-visual">
+            <!-- SVG: living statue -->
+            <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" class="af-svg">
+              <ellipse cx="60" cy="20" rx="13" ry="14" fill="currentColor"/>
+              <rect x="52" y="34" width="16" height="50" rx="5" fill="currentColor"/>
+              <rect x="24" y="38" width="12" height="40" rx="6" fill="currentColor"/>
+              <rect x="84" y="38" width="12" height="40" rx="6" fill="currentColor"/>
+              <rect x="48" y="84" width="13" height="60" rx="6" fill="currentColor"/>
+              <rect x="59" y="84" width="13" height="60" rx="6" fill="currentColor"/>
+              <rect x="46" y="144" width="14" height="45" rx="6" fill="currentColor"/>
+              <rect x="60" y="144" width="14" height="45" rx="6" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="artform-info">
+            <span class="af-num">02</span>
+            <h3>Living Statues</h3>
+            <p>Breathtaking stillness that defies the eye. Our artists become indistinguishable from bronze and marble.</p>
+          </div>
+        </div>
+
+        <div class="artform-card large" data-form="03">
+          <div class="artform-visual">
+            <!-- SVG: formation/group -->
+            <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" class="af-svg wide">
+              <!-- 5 figures in formation -->
+              <g transform="translate(10,10)">
+                <ellipse cx="20" cy="12" rx="9" ry="9" fill="currentColor"/>
+                <path d="M20 21 L20 65" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <path d="M20 38 L5 28" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 38 L35 28" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 65 L12 100" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 65 L28 100" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+              </g>
+              <g transform="translate(50,0)">
+                <ellipse cx="20" cy="8" rx="9" ry="9" fill="currentColor"/>
+                <path d="M20 17 L20 61" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <path d="M20 34 L2 50" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 34 L38 50" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 61 L10 96" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 61 L30 96" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+              </g>
+              <g transform="translate(90,5)">
+                <ellipse cx="20" cy="10" rx="10" ry="10" fill="currentColor"/>
+                <path d="M20 20 L20 70" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+                <path d="M20 40 L0 25" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <path d="M20 40 L40 25" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <path d="M20 70 L8 108" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <path d="M20 70 L32 108" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+              </g>
+              <g transform="translate(130,0)">
+                <ellipse cx="20" cy="8" rx="9" ry="9" fill="currentColor"/>
+                <path d="M20 17 L20 61" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <path d="M20 34 L2 50" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 34 L38 50" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 61 L10 96" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 61 L30 96" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+              </g>
+              <g transform="translate(165,10)">
+                <ellipse cx="20" cy="12" rx="9" ry="9" fill="currentColor"/>
+                <path d="M20 21 L20 65" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                <path d="M20 38 L5 28" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 38 L35 28" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 65 L12 100" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                <path d="M20 65 L28 100" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+          <div class="artform-info">
+            <span class="af-num">03</span>
+            <h3>Formation & Ensemble</h3>
+            <p>Synchronized human architecture. Groups of artists forming living sculptures, geometric precision, and cascading movement waves that leave audiences speechless.</p>
+          </div>
+        </div>
+
+        <div class="artform-card" data-form="04">
+          <div class="artform-visual">
+            <!-- SVG: contortion -->
+            <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" class="af-svg">
+              <ellipse cx="60" cy="155" rx="13" ry="14" fill="currentColor"/>
+              <path d="M60 141 C60 120 80 100 90 75 C95 55 75 35 60 30 C45 25 35 40 45 55 C55 70 75 65 72 82" stroke="currentColor" stroke-width="10" fill="none" stroke-linecap="round"/>
+              <path d="M72 82 C68 95 58 100 50 112" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M50 112 L30 135" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M72 82 L100 100" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M30 135 L18 168" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="artform-info">
+            <span class="af-num">04</span>
+            <h3>Contortion & Flexibility</h3>
+            <p>The body bends its own rules. Spine-tingling flexibility that redefines physical possibility.</p>
+          </div>
+        </div>
+
+        <div class="artform-card" data-form="05">
+          <div class="artform-visual">
+            <!-- SVG: body paint/art -->
+            <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" class="af-svg">
+              <ellipse cx="60" cy="20" rx="14" ry="15" fill="currentColor" opacity="0.9"/>
+              <path d="M60 35 L60 95" stroke="currentColor" stroke-width="10" fill="none" stroke-linecap="round"/>
+              <path d="M60 58 L22 45" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M60 58 L98 45" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <!-- paint drips -->
+              <path d="M55 35 C52 50 48 60 50 75" stroke="var(--magenta)" stroke-width="3" fill="none" opacity="0.8"/>
+              <path d="M65 38 C68 55 70 65 68 82" stroke="var(--cyan)" stroke-width="3" fill="none" opacity="0.8"/>
+              <path d="M50 60 C45 70 40 75 38 88" stroke="var(--magenta)" stroke-width="2" fill="none" opacity="0.6"/>
+              <path d="M60 95 L40 150" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M60 95 L80 148" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M40 150 L28 185" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M80 148 L90 182" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="artform-info">
+            <span class="af-num">05</span>
+            <h3>Body Painting</h3>
+            <p>Skin as canvas. Vivid pigments transform artists into living masterpieces right before your eyes.</p>
+          </div>
+        </div>
+
+        <div class="artform-card" data-form="06">
+          <div class="artform-visual">
+            <!-- SVG: mime/theatre -->
+            <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" class="af-svg">
+              <ellipse cx="60" cy="20" rx="14" ry="15" fill="currentColor"/>
+              <!-- expression lines -->
+              <path d="M52 16 C54 13 58 13 60 16" stroke="var(--bg)" stroke-width="2.5" fill="none"/>
+              <path d="M60 16 C62 13 66 13 68 16" stroke="var(--bg)" stroke-width="2.5" fill="none"/>
+              <circle cx="56" cy="22" r="2" fill="var(--bg)"/>
+              <circle cx="64" cy="22" r="2" fill="var(--bg)"/>
+              <path d="M54 27 C57 30 63 30 66 27" stroke="var(--bg)" stroke-width="2" fill="none"/>
+              <!-- body -->
+              <path d="M60 35 L60 90" stroke="currentColor" stroke-width="10" fill="none" stroke-linecap="round"/>
+              <path d="M60 52 C40 45 25 55 15 60" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M60 58 L95 42" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M15 60 C12 68 14 78 18 82" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M60 90 L42 148" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M60 90 L78 145" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M42 148 L30 185" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M78 145 L88 182" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="artform-info">
+            <span class="af-num">06</span>
+            <h3>Physical Theatre & Mime</h3>
+            <p>Complete silence, infinite expression. Stories told without a single word — just the body's infinite language.</p>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <ul>
-        <li><a href="#">Software Dev</a></li>
-        <li><a href="#">API Engineering</a></li>
-        <li><a href="#">SEO</a></li>
-        <li><a href="#">Bug Bounty</a></li>
-        <li><a href="#">App Dev</a></li>
-      </ul>
+  </section>
+
+  <!-- ░░ PERFORMANCES / MARQUEE ░░ -->
+  <section class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-inner" id="marqueeInner">
+        <span>CORPORATE EVENTS</span><span class="mx">✦</span>
+        <span>FASHION SHOWS</span><span class="mx">✦</span>
+        <span>FESTIVALS</span><span class="mx">✦</span>
+        <span>WEDDINGS</span><span class="mx">✦</span>
+        <span>CONCERTS</span><span class="mx">✦</span>
+        <span>ART EXHIBITIONS</span><span class="mx">✦</span>
+        <span>TV PRODUCTIONS</span><span class="mx">✦</span>
+        <span>BRAND ACTIVATIONS</span><span class="mx">✦</span>
+        <span>FILM & VIDEO</span><span class="mx">✦</span>
+        <span>CULTURAL FESTIVALS</span><span class="mx">✦</span>
+        <span>CORPORATE EVENTS</span><span class="mx">✦</span>
+        <span>FASHION SHOWS</span><span class="mx">✦</span>
+        <span>FESTIVALS</span><span class="mx">✦</span>
+        <span>WEDDINGS</span><span class="mx">✦</span>
+        <span>CONCERTS</span><span class="mx">✦</span>
+        <span>ART EXHIBITIONS</span><span class="mx">✦</span>
+        <span>TV PRODUCTIONS</span><span class="mx">✦</span>
+        <span>BRAND ACTIVATIONS</span><span class="mx">✦</span>
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <ul>
-        <li><a href="contact.html">Get in Touch</a></li>
-        <li><a href="mailto:hello@blackcodelabs.dev">hello@blackcodelabs.dev</a></li>
-        <li><a href="#">+1 (800) BCL-CODE</a></li>
-        <li><a href="login.html">Client Portal</a></li>
-      </ul>
+  </section>
+
+  <!-- ░░ PERFORMANCES SHOWCASE ░░ -->
+  <section class="performances section" id="performances">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-label">Showcase</div>
+        <h2 class="sec-title">Where We've <em>Moved</em></h2>
+      </div>
+      <div class="perf-grid">
+        <div class="perf-card perf-main">
+          <div class="perf-bg" style="background:linear-gradient(135deg,#1a0a1e,#2d0d35)">
+            <div class="perf-sil-wrap">
+              <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" class="perf-sil">
+                <g transform="translate(30,10)">
+                  <ellipse cx="40" cy="20" rx="16" ry="17" fill="white" opacity="0.15"/>
+                  <path d="M40 37 L40 110" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.15"/>
+                  <path d="M40 65 L5 45" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.15"/>
+                  <path d="M40 65 L75 45" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.15"/>
+                  <path d="M40 110 L20 170" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.15"/>
+                  <path d="M40 110 L60 170" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.15"/>
+                </g>
+                <g transform="translate(100,30)">
+                  <ellipse cx="40" cy="20" rx="16" ry="17" fill="white" opacity="0.2"/>
+                  <path d="M40 37 L40 110" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.2"/>
+                  <path d="M40 65 L0 80" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.2"/>
+                  <path d="M40 65 L80 80" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.2"/>
+                  <path d="M40 110 L18 170" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.2"/>
+                  <path d="M40 110 L62 170" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.2"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="perf-info">
+            <span class="perf-cat">Corporate</span>
+            <h3>Safaricom Jazz Festival</h3>
+            <p>3,000+ audience. Full ensemble performance spanning 45 minutes of continuous human art fusion.</p>
+            <div class="perf-meta"><span>Nairobi, Kenya</span><span>2024</span></div>
+          </div>
+        </div>
+
+        <div class="perf-card">
+          <div class="perf-bg" style="background:linear-gradient(135deg,#050f1a,#0a1f2e)">
+            <div class="perf-sil-wrap">
+              <svg viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg" class="perf-sil">
+                <ellipse cx="60" cy="18" rx="13" ry="14" fill="white" opacity="0.2"/>
+                <path d="M60 32 C55 55 45 70 35 90" stroke="white" stroke-width="11" stroke-linecap="round" fill="none" opacity="0.2"/>
+                <path d="M52 50 L15 38" stroke="white" stroke-width="10" stroke-linecap="round" opacity="0.2"/>
+                <path d="M55 45 L92 58" stroke="white" stroke-width="10" stroke-linecap="round" opacity="0.2"/>
+                <path d="M35 90 L18 140" stroke="white" stroke-width="10" stroke-linecap="round" opacity="0.2"/>
+                <path d="M35 90 L62 135" stroke="white" stroke-width="10" stroke-linecap="round" opacity="0.2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="perf-info">
+            <span class="perf-cat">Fashion</span>
+            <h3>KFW 2023 Opening</h3>
+            <p>Living statues and body art for Kenya Fashion Week's dramatic opening ceremony.</p>
+            <div class="perf-meta"><span>Nairobi</span><span>2023</span></div>
+          </div>
+        </div>
+
+        <div class="perf-card">
+          <div class="perf-bg" style="background:linear-gradient(135deg,#0d1a08,#152808)">
+            <div class="perf-sil-wrap">
+              <svg viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg" class="perf-sil">
+                <ellipse cx="60" cy="150" rx="13" ry="14" fill="white" opacity="0.2"/>
+                <path d="M60 136 C62 115 80 95 85 70 C90 45 70 25 55 20" stroke="white" stroke-width="11" fill="none" stroke-linecap="round" opacity="0.2"/>
+                <path d="M55 20 C40 15 30 30 38 48" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.2"/>
+                <path d="M85 70 L105 80" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.2"/>
+                <path d="M38 48 L18 58" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="perf-info">
+            <span class="perf-cat">Festival</span>
+            <h3>Lamu Cultural Festival</h3>
+            <p>Heritage-inspired performance blending traditional Swahili movement with contemporary human art.</p>
+            <div class="perf-meta"><span>Lamu, Kenya</span><span>2023</span></div>
+          </div>
+        </div>
+
+        <div class="perf-card">
+          <div class="perf-bg" style="background:linear-gradient(135deg,#1a0808,#2e0f0f)">
+            <div class="perf-sil-wrap">
+              <svg viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg" class="perf-sil">
+                <g>
+                  <ellipse cx="35" cy="15" rx="10" ry="11" fill="white" opacity="0.18"/>
+                  <path d="M35 26 L35 70" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.18"/>
+                  <path d="M35 45 L15 35" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.18"/>
+                  <path d="M35 45 L58 35" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.18"/>
+                  <path d="M35 70 L22 115" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.18"/>
+                  <path d="M35 70 L48 115" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.18"/>
+                </g>
+                <g>
+                  <ellipse cx="85" cy="20" rx="10" ry="11" fill="white" opacity="0.22"/>
+                  <path d="M85 31 L85 75" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.22"/>
+                  <path d="M85 50 L62 65" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.22"/>
+                  <path d="M85 50 L108 40" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.22"/>
+                  <path d="M85 75 L72 120" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.22"/>
+                  <path d="M85 75 L98 120" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.22"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="perf-info">
+            <span class="perf-cat">Brand</span>
+            <h3>Coca-Cola Activation</h3>
+            <p>Iconic brand activation with painted artists forming product shapes in real time.</p>
+            <div class="perf-meta"><span>Nairobi</span><span>2024</span></div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2025 <span>BlackCodeLabs</span>. All rights reserved.</p>
-    <p>Built with <span>♥</span> by BlackCodeLabs Engineers</p>
-  </div>
-</footer>
+  </section>
 
-<script>
-// THREE.JS HERO SCENE
-const canvas = document.getElementById('hero-canvas');
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-renderer.setSize(window.innerWidth, window.innerHeight);
+  <!-- ░░ CREW ░░ -->
+  <section class="crew section" id="crew">
+    <div class="container">
+      <div class="sec-head">
+        <div class="sec-label">The Artists</div>
+        <h2 class="sec-title">Meet the <em>Crew</em></h2>
+      </div>
+      <div class="crew-grid">
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 30;
+        <div class="crew-card" style="--ci:0">
+          <div class="crew-art">
+            <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="18" rx="13" ry="14" fill="currentColor"/>
+              <path d="M50 32 C48 55 45 68 40 85" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M44 50 L12 38" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M46 46 L82 60" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M40 85 L22 130" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M40 85 L62 128" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="crew-info">
+            <h4>Jayden K.</h4>
+            <span>Lead Choreographer</span>
+            <p>Contemporary fusion specialist. 8 years mastering the art of narrative movement.</p>
+          </div>
+        </div>
 
-// Particle field
-const particleCount = 3000;
-const positions = new Float32Array(particleCount * 3);
-const colors = new Float32Array(particleCount * 3);
-for(let i=0;i<particleCount;i++){
-  positions[i*3]   = (Math.random()-0.5)*120;
-  positions[i*3+1] = (Math.random()-0.5)*120;
-  positions[i*3+2] = (Math.random()-0.5)*120;
-  const t = Math.random();
-  colors[i*3]   = t < 0.5 ? 0 : 0;
-  colors[i*3+1] = t < 0.5 ? 1 : 0.8;
-  colors[i*3+2] = t < 0.5 ? 0.53 : 1;
-}
-const pGeo = new THREE.BufferGeometry();
-pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
-pGeo.setAttribute('color', new THREE.BufferAttribute(colors,3));
-const pMat = new THREE.PointsMaterial({size:0.25, vertexColors:true, transparent:true, opacity:0.7});
-const particles = new THREE.Points(pGeo, pMat);
-scene.add(particles);
+        <div class="crew-card" style="--ci:1">
+          <div class="crew-art">
+            <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="100" rx="13" ry="14" fill="currentColor"/>
+              <path d="M50 86 C52 65 68 48 72 30 C76 12 58 5 50 8 C42 11 38 22 44 34" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M72 30 L88 40" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M44 34 L20 45" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="crew-info">
+            <h4>Amira N.</h4>
+            <span>Contortion Artist</span>
+            <p>East Africa's most flexible performer. Trained in gymnastics and aerial arts since age 7.</p>
+          </div>
+        </div>
 
-// Wireframe torus
-const tGeo = new THREE.TorusGeometry(10,3,16,80);
-const tMat = new THREE.MeshBasicMaterial({color:0x00ff88, wireframe:true, opacity:0.06, transparent:true});
-const torus = new THREE.Mesh(tGeo, tMat);
-scene.add(torus);
+        <div class="crew-card" style="--ci:2">
+          <div class="crew-art">
+            <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="18" rx="13" ry="14" fill="currentColor"/>
+              <rect x="43" y="32" width="14" height="45" rx="4" fill="currentColor"/>
+              <rect x="20" y="36" width="10" height="36" rx="5" fill="currentColor"/>
+              <rect x="70" y="36" width="10" height="36" rx="5" fill="currentColor"/>
+              <rect x="42" y="77" width="12" height="50" rx="5" fill="currentColor"/>
+              <rect x="54" y="77" width="12" height="50" rx="5" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="crew-info">
+            <h4>Marcus O.</h4>
+            <span>Living Statue Expert</span>
+            <p>Stillness perfected. Marcus can hold impossible poses for up to 2 hours without breaking character.</p>
+          </div>
+        </div>
 
-// Icosahedron
-const iGeo = new THREE.IcosahedronGeometry(6,1);
-const iMat = new THREE.MeshBasicMaterial({color:0x00ccff, wireframe:true, opacity:0.08, transparent:true});
-const ico = new THREE.Mesh(iGeo, iMat);
-scene.add(ico);
+        <div class="crew-card" style="--ci:3">
+          <div class="crew-art">
+            <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="18" rx="13" ry="14" fill="currentColor"/>
+              <!-- paint drips -->
+              <path d="M50 32 L50 85" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M50 55 L18 42" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M50 55 L82 42" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M44 38 C40 52 36 60 38 72" stroke="var(--magenta)" stroke-width="3" fill="none" opacity="0.9"/>
+              <path d="M56 35 C60 50 62 58 60 70" stroke="var(--cyan)" stroke-width="3" fill="none" opacity="0.9"/>
+              <path d="M50 85 L32 130" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M50 85 L68 128" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="crew-info">
+            <h4>Zara M.</h4>
+            <span>Body Paint Artist</span>
+            <p>Award-winning body painter whose work has appeared in international fashion publications.</p>
+          </div>
+        </div>
 
-let mouseX=0, mouseY=0;
-document.addEventListener('mousemove', e=>{
-  mouseX = (e.clientX/window.innerWidth - 0.5)*2;
-  mouseY = (e.clientY/window.innerHeight - 0.5)*2;
-});
+        <div class="crew-card" style="--ci:4">
+          <div class="crew-art">
+            <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="18" rx="13" ry="14" fill="currentColor"/>
+              <path d="M50 32 L50 85" stroke="currentColor" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M50 52 C28 44 14 56 8 62" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M50 58 L85 42" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M8 62 C6 70 8 78 12 80" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <path d="M50 85 L35 130" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M50 85 L65 128" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="crew-info">
+            <h4>Deon A.</h4>
+            <span>Physical Theatre Director</span>
+            <p>Theatre graduate and mime artist. Brings narrative structure to every performance.</p>
+          </div>
+        </div>
 
-function animate(){
-  requestAnimationFrame(animate);
-  const t = Date.now()*0.001;
-  particles.rotation.y = t*0.04 + mouseX*0.1;
-  particles.rotation.x = t*0.02 + mouseY*0.05;
-  torus.rotation.x = t*0.3;
-  torus.rotation.y = t*0.2;
-  ico.rotation.x = -t*0.15;
-  ico.rotation.y = t*0.25;
-  camera.position.x += (mouseX*3 - camera.position.x)*0.03;
-  camera.position.y += (-mouseY*2 - camera.position.y)*0.03;
-  renderer.render(scene, camera);
-}
-animate();
+        <div class="crew-card recruit" style="--ci:5">
+          <div class="crew-art recruit-art">
+            <span>?</span>
+          </div>
+          <div class="crew-info">
+            <h4>You?</h4>
+            <span>Join the Collective</span>
+            <p>We're always looking for extraordinary artists. Raw talent welcome.</p>
+            <a href="#contact" class="cta-ghost sm">Apply Now</a>
+          </div>
+        </div>
 
-window.addEventListener('resize', ()=>{
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+      </div>
+    </div>
+  </section>
 
-// Fade in
-document.querySelectorAll('.hero-content > *').forEach((el,i)=>{
-  el.style.opacity='0';el.style.transform='translateY(30px)';el.style.transition=`all .8s ease ${i*0.15}s`;
-  setTimeout(()=>{el.style.opacity='1';el.style.transform='translateY(0)'},100);
-});
-</script>
+  <!-- ░░ TESTIMONIALS ░░ -->
+  <section class="reviews section">
+    <div class="container">
+      <div class="sec-head center">
+        <div class="sec-label">Reception</div>
+        <h2 class="sec-title">What People <em>Feel</em></h2>
+      </div>
+      <div class="review-grid">
+        <div class="review-card" style="--ri:0">
+          <div class="review-q">"</div>
+          <p>BCL Production didn't just perform at our gala — they transformed the entire atmosphere. Guests were completely mesmerized. I've seen entertainment, but this was art.</p>
+          <div class="review-who">
+            <div class="rev-init">TK</div>
+            <div>
+              <strong>Tanya Kamau</strong>
+              <span>Events Director, Strathmore University</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-card featured" style="--ri:1">
+          <div class="review-q">"</div>
+          <p>The living statue act stopped the entire show. People thought they were props until they moved. The scream from the crowd — priceless. Book them for everything.</p>
+          <div class="review-who">
+            <div class="rev-init">BM</div>
+            <div>
+              <strong>Brian Mwangi</strong>
+              <span>Brand Manager, Safaricom</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-card" style="--ri:2">
+          <div class="review-q">"</div>
+          <p>As a fashion designer, I need artists who understand aesthetics. BCL's body art work for our runway show was breathtaking. Collaboration of a lifetime.</p>
+          <div class="review-who">
+            <div class="rev-init">AL</div>
+            <div>
+              <strong>Akello Lux</strong>
+              <span>Fashion Designer, Nairobi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ CONTACT ░░ -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-left">
+          <div class="sec-label">Book a Show</div>
+          <h2 class="sec-title">Let's Create<br/><em>Together</em></h2>
+          <p>Every event is a blank canvas. Tell us your vision and we'll breathe life into it.</p>
+
+          <div class="contact-channels">
+            <a href="mailto:bookings@bclproduction.com" class="channel">
+              <span class="ch-icon">✉</span>
+              <div>
+                <strong>Email</strong>
+                <span>bookings@bclproduction.com</span>
+              </div>
+            </a>
+            <a href="https://wa.me/254700000000" class="channel">
+              <span class="ch-icon">📱</span>
+              <div>
+                <strong>WhatsApp</strong>
+                <span>+254 700 000 000</span>
+              </div>
+            </a>
+            <div class="channel">
+              <span class="ch-icon">📍</span>
+              <div>
+                <strong>Based In</strong>
+                <span>Nairobi, Kenya — Available Worldwide</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-socials">
+            <a href="#" class="csoc" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" class="csoc" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.21 8.21 0 004.79 1.53V6.77a4.85 4.85 0 01-1.02-.08z"/></svg>
+            </a>
+            <a href="#" class="csoc" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <form class="contact-form" id="bookingForm">
+          <div class="fg">
+            <label>Your Name</label>
+            <input type="text" placeholder="Full name" required />
+          </div>
+          <div class="fg">
+            <label>Email</label>
+            <input type="email" placeholder="your@email.com" required />
+          </div>
+          <div class="fg-row">
+            <div class="fg">
+              <label>Event Type</label>
+              <select required>
+                <option value="" disabled selected>Select type</option>
+                <option>Corporate Event</option>
+                <option>Wedding</option>
+                <option>Fashion Show</option>
+                <option>Festival / Concert</option>
+                <option>Brand Activation</option>
+                <option>TV / Film Production</option>
+                <option>Art Exhibition</option>
+                <option>Private Party</option>
+                <option>Workshop</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Event Date</label>
+              <input type="date" />
+            </div>
+          </div>
+          <div class="fg">
+            <label>Art Forms Required</label>
+            <div class="checkbox-group">
+              <label class="cb"><input type="checkbox"/><span>Contemporary Dance</span></label>
+              <label class="cb"><input type="checkbox"/><span>Living Statues</span></label>
+              <label class="cb"><input type="checkbox"/><span>Body Painting</span></label>
+              <label class="cb"><input type="checkbox"/><span>Contortion</span></label>
+              <label class="cb"><input type="checkbox"/><span>Physical Theatre</span></label>
+              <label class="cb"><input type="checkbox"/><span>Formation</span></label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Tell Us Your Vision</label>
+            <textarea rows="4" placeholder="Describe your event, audience size, duration, theme, or any special requirements..." required></textarea>
+          </div>
+          <button type="submit" class="cta-primary full">
+            <span class="cta-text">Send Booking Request</span>
+            <span class="cta-arrow">→</span>
+          </button>
+          <div class="form-ok" id="formOk">
+            ✦ Message received. We'll reach out within 24 hours.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <span class="logo-bcl">BCL</span>
+        <span class="logo-prod">PRODUCTION</span>
+      </div>
+      <p class="footer-tagline">Where the Body Becomes the Art</p>
+      <div class="footer-links-row">
+        <a href="#about">About</a>
+        <a href="#art">Human Art</a>
+        <a href="#performances">Performances</a>
+        <a href="#crew">The Crew</a>
+        <a href="#contact">Book Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 BCL Production. All rights reserved.</p>
+      <p class="powered">Powered by <strong>BlackCodeLabs</strong> ⚡</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>
