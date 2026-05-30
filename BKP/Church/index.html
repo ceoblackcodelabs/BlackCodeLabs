@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grace & Glory Church</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A843;
+    --deep-gold: #B8891F;
+    --crimson: #8B1A1A;
+    --navy: #0D1B3E;
+    --cream: #FDF6E3;
+    --white: #FFFFFF;
+    --gray: #6B7280;
+    --light-gray: #F9F4ED;
+    --shadow: 0 10px 40px rgba(13,27,62,0.15);
+    --radius: 16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 14px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.4s ease;
+    background: transparent;
+  }
+  nav.scrolled {
+    background: rgba(13,27,62,0.97);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 44px; height: 44px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+  .nav-logo span {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .nav-logo small {
+    display: block;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.88);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold) !important;
+    color: var(--navy) !important;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 800 !important;
+    transition: background 0.3s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--deep-gold) !important; transform: translateY(-2px); }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2.5px;
+    background: var(--white);
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--navy);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('home.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.35);
+    transform: scale(1.05);
+    transition: transform 8s ease;
+  }
+  .hero:hover .hero-bg { transform: scale(1.0); }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(13,27,62,0.7) 0%, rgba(139,26,26,0.4) 50%, rgba(212,168,67,0.2) 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+    padding: 0 24px;
+    animation: fadeInUp 1.2s ease both;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(212,168,67,0.25);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: rgba(255,255,255,0.85);
+    max-width: 560px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+    letter-spacing: 0.5px;
+  }
+  .btn-primary:hover { background: var(--deep-gold); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212,168,67,0.4); }
+  .btn-outline {
+    border: 2px solid rgba(255,255,255,0.6);
+    color: var(--white);
+    padding: 14px 34px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
+  .hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+  .hero-scroll span { color: rgba(255,255,255,0.6); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
+  .scroll-dot {
+    width: 28px; height: 46px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+  }
+  .scroll-dot::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: scrollDown 1.5s infinite;
+  }
+  @keyframes scrollDown {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(14px); opacity: 0; }
+  }
+
+  /* ===== SECTION COMMON ===== */
+  section { padding: 90px 5%; }
+  .section-tag {
+    display: inline-block;
+    background: rgba(212,168,67,0.15);
+    color: var(--deep-gold);
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .section-title span { color: var(--crimson); }
+  .section-sub {
+    font-size: 1.05rem;
+    color: var(--gray);
+    max-width: 560px;
+    line-height: 1.75;
+  }
+
+  /* ===== ABOUT ===== */
+  #about { background: var(--white); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 28px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 60px auto 0;
+  }
+  .about-img-wrap {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .about-img-wrap img {
+    width: 100%; height: 380px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .about-img-wrap:hover img { transform: scale(1.04); }
+  .about-img-placeholder {
+    width: 100%; height: 380px;
+    background: linear-gradient(135deg, #e8d9bf, #c9b088);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .about-img-placeholder span { font-size: 3rem; }
+  .about-img-placeholder p { color: var(--navy); font-weight: 600; opacity: 0.6; font-size: 0.85rem; text-align: center; padding: 0 16px; }
+  .about-center { text-align: center; padding: 20px; }
+  .about-center .section-sub { max-width: 100%; margin: 0 auto; }
+  .about-verse {
+    margin-top: 28px;
+    padding: 20px 24px;
+    background: var(--cream);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    text-align: left;
+  }
+  .about-verse p { font-style: italic; color: var(--crimson); font-size: 1rem; line-height: 1.6; font-weight: 600; }
+  .about-verse cite { display: block; margin-top: 8px; font-size: 0.8rem; color: var(--gray); font-style: normal; font-weight: 700; letter-spacing: 1px; }
+  .about-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    justify-content: center;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--crimson);
+  }
+  .stat-label { font-size: 0.75rem; color: var(--gray); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ===== PROJECTS CAROUSEL ===== */
+  #projects { background: var(--navy); overflow: hidden; }
+  #projects .section-title { color: var(--white); }
+  #projects .section-tag { background: rgba(212,168,67,0.2); color: var(--gold); }
+  .carousel-outer { overflow: hidden; margin-top: 50px; }
+  .carousel-wrapper { overflow: visible; position: relative; }
+  .carousel-track {
+    display: flex;
+    gap: 24px;
+    transition: transform 0.5s ease;
+    padding: 10px 0 16px;
+    will-change: transform;
+  }
+  .carousel-card {
+    min-width: calc(33.33% - 16px);
+    width: calc(33.33% - 16px);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .carousel-card:hover { transform: translateY(-6px); border-color: var(--gold); }
+  .carousel-card img {
+    width: 100%; height: 200px;
+    object-fit: cover;
+  }
+  .carousel-placeholder {
+    width: 100%; height: 200px;
+    background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(139,26,26,0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+  .carousel-card-body { padding: 22px; }
+  .carousel-card-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .carousel-card-body p { color: rgba(255,255,255,0.65); font-size: 0.88rem; line-height: 1.6; }
+  .carousel-tag {
+    display: inline-block;
+    background: rgba(212,168,67,0.2);
+    color: var(--gold);
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .carousel-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    justify-content: center;
+  }
+  .carousel-btn {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+
+  /* ===== UPCOMING SERVICE ===== */
+  #service { background: var(--cream); }
+  .service-card {
+    max-width: 900px;
+    margin: 50px auto 0;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .service-left {
+    background: linear-gradient(135deg, var(--navy), var(--crimson));
+    padding: 50px 40px;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .service-date-badge {
+    background: var(--gold);
+    color: var(--navy);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 1rem;
+    display: inline-block;
+    margin-bottom: 24px;
+    width: fit-content;
+  }
+  .service-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .service-left p { color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 28px; }
+  .service-details { display: flex; flex-direction: column; gap: 14px; }
+  .service-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .service-detail-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .service-right {
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+  .service-right h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .sermon-series {
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 20px;
+    border-left: 4px solid var(--gold);
+  }
+  .sermon-series p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; color: var(--deep-gold); margin-bottom: 8px; }
+  .sermon-series h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy); font-weight: 700; }
+  .program-list { display: flex; flex-direction: column; gap: 10px; }
+  .program-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--light-gray);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .program-time { color: var(--gray); font-size: 0.78rem; margin-left: auto; font-weight: 700; }
+
+  /* ===== CONTRIBUTION ===== */
+  #contribution { background: var(--white); }
+  .contribution-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+    margin-top: 50px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .contrib-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 6px 30px rgba(13,27,62,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: var(--cream);
+  }
+  .contrib-card:hover { transform: translateY(-8px); box-shadow: 0 16px 50px rgba(13,27,62,0.2); }
+  .contrib-img {
+    width: 100%; height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  .contrib-placeholder {
+    width: 100%; height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #f0e4c8, #dcc898);
+  }
+  .contrib-placeholder p { font-size: 0.8rem; color: var(--navy); font-weight: 600; opacity: 0.6; }
+  .contrib-body { padding: 22px; }
+  .contrib-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--deep-gold); margin-bottom: 8px; }
+  .contrib-body h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .contrib-body p { font-size: 0.88rem; color: var(--gray); line-height: 1.6; margin-bottom: 18px; }
+  .progress-bar { background: #e8dcc8; border-radius: 50px; height: 8px; overflow: hidden; margin-bottom: 10px; }
+  .progress-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--deep-gold), var(--gold)); }
+  .progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: var(--gray); }
+  .progress-info span:first-child { color: var(--crimson); }
+
+  /* ===== CONTACT ===== */
+  #contact { background: var(--light-gray); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 50px;
+    max-width: 1100px;
+    margin: 50px auto 0;
+    align-items: start;
+  }
+  .contact-info { display: flex; flex-direction: column; gap: 24px; }
+  .contact-info-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(13,27,62,0.07);
+  }
+  .contact-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--navy), var(--crimson));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .contact-info-item h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gray); font-weight: 800; margin-bottom: 4px; }
+  .contact-info-item p { font-size: 0.95rem; color: var(--navy); font-weight: 600; line-height: 1.5; }
+  .contact-form {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 40px;
+    box-shadow: var(--shadow);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .form-group label { font-size: 0.82rem; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; }
+  .form-group input, .form-group textarea, .form-group select {
+    padding: 14px 18px;
+    border: 2px solid #e8dcc8;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.92rem;
+    color: var(--navy);
+    background: var(--cream);
+    transition: border-color 0.3s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--navy), var(--crimson));
+    color: var(--white);
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13,27,62,0.3); }
+
+  /* ===== PRAYER REQUESTS ===== */
+  #prayer { background: var(--navy); position: relative; overflow: hidden; }
+  #prayer::before {
+    content: '✝';
+    position: absolute;
+    font-size: 400px;
+    color: rgba(255,255,255,0.02);
+    right: -80px;
+    top: -80px;
+    line-height: 1;
+  }
+  #prayer .section-title { color: var(--white); }
+  #prayer .section-tag { background: rgba(212,168,67,0.2); color: var(--gold); }
+  #prayer .section-sub { color: rgba(255,255,255,0.65); }
+  .prayer-carousel-outer { overflow: hidden; margin-top: 50px; }
+  .prayer-carousel-wrapper { overflow: visible; position: relative; }
+  .prayer-track { display: flex; gap: 24px; transition: transform 0.5s ease; padding: 10px 0 16px; will-change: transform; }
+  .prayer-card {
+    min-width: calc(33.33% - 16px);
+    width: calc(33.33% - 16px);
+    box-sizing: border-box;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 32px;
+    flex-shrink: 0;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+  }
+  .prayer-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .prayer-quote { font-size: 3rem; color: var(--gold); line-height: 0.8; margin-bottom: 16px; font-family: 'Playfair Display', serif; }
+  .prayer-card p {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.92rem;
+    line-height: 1.75;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+  .prayer-person { display: flex; align-items: center; gap: 14px; }
+  .prayer-avatar {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--deep-gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: var(--navy);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .prayer-person-info h4 { color: var(--white); font-size: 0.9rem; font-weight: 700; }
+  .prayer-person-info span { color: rgba(255,255,255,0.5); font-size: 0.78rem; }
+  .prayer-status {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(212,168,67,0.2);
+    color: var(--gold);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .prayer-form-wrap {
+    max-width: 600px;
+    margin: 50px auto 0;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 40px;
+  }
+  .prayer-form-wrap h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .prayer-form-wrap .form-group label { color: rgba(255,255,255,0.8); }
+  .prayer-form-wrap .form-group input, .prayer-form-wrap .form-group textarea {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.15);
+    color: var(--white);
+  }
+  .prayer-form-wrap .form-group input:focus, .prayer-form-wrap .form-group textarea:focus { border-color: var(--gold); }
+  .prayer-form-wrap .form-group input::placeholder, .prayer-form-wrap .form-group textarea::placeholder { color: rgba(255,255,255,0.4); }
+  .btn-pray {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s;
+  }
+  .btn-pray:hover { background: var(--deep-gold); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,168,67,0.3); }
+
+  /* ===== TITHE ===== */
+  #tithe { background: var(--cream); }
+  .tithe-intro {
+    max-width: 600px;
+    margin-bottom: 50px;
+  }
+  .tithe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .tithe-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    text-align: center;
+    box-shadow: 0 6px 30px rgba(13,27,62,0.08);
+    transition: all 0.3s;
+    border: 2px solid transparent;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .tithe-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--navy), var(--crimson));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tithe-card:hover { transform: translateY(-8px); border-color: var(--gold); box-shadow: 0 16px 50px rgba(13,27,62,0.2); }
+  .tithe-card:hover::before { opacity: 0.05; }
+  .tithe-card.featured { border-color: var(--gold); background: linear-gradient(135deg, var(--navy), var(--crimson)); }
+  .tithe-card.featured * { color: var(--white) !important; }
+  .tithe-card.featured .tithe-tag { background: rgba(212,168,67,0.3); color: var(--gold) !important; }
+  .tithe-icon {
+    width: 70px; height: 70px;
+    background: rgba(212,168,67,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .tithe-card.featured .tithe-icon { background: rgba(212,168,67,0.2); }
+  .tithe-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--deep-gold); margin-bottom: 10px; position: relative; z-index: 1; }
+  .tithe-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; position: relative; z-index: 1; }
+  .tithe-card p { font-size: 0.88rem; color: var(--gray); line-height: 1.6; margin-bottom: 24px; position: relative; z-index: 1; }
+  .tithe-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 1;
+  }
+  .tithe-btn:hover, .tithe-card.featured .tithe-btn { background: var(--gold); color: var(--navy); }
+  .tithe-verse {
+    text-align: center;
+    margin-top: 50px;
+    padding: 30px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(13,27,62,0.07);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 4px solid var(--gold);
+  }
+  .tithe-verse p { font-style: italic; font-size: 1.05rem; color: var(--navy); line-height: 1.7; }
+  .tithe-verse cite { display: block; margin-top: 10px; font-size: 0.82rem; font-weight: 800; color: var(--deep-gold); letter-spacing: 1px; font-style: normal; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: #060D1F;
+    color: var(--white);
+    padding: 70px 5% 0;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .footer-brand .nav-logo-icon { width: 52px; height: 52px; font-size: 26px; }
+  .footer-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-top: 14px;
+    margin-bottom: 4px;
+  }
+  .footer-brand-sub { font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; font-weight: 700; }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 1.7; margin-top: 16px; }
+  .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+  .social-btn {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    color: var(--white);
+  }
+  .social-btn:hover { background: var(--gold); color: var(--navy); transform: translateY(-3px); }
+  .footer-col h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-links a::before { content: '→'; color: var(--gold); font-size: 0.75rem; }
+  .footer-links a:hover { color: var(--gold); }
+  .service-times { display: flex; flex-direction: column; gap: 10px; }
+  .service-time {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.85rem;
+  }
+  .service-time span:first-child { color: rgba(255,255,255,0.6); }
+  .service-time span:last-child { color: var(--gold); font-weight: 700; }
+  .footer-bottom {
+    padding: 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-bottom p { color: rgba(255,255,255,0.4); font-size: 0.82rem; }
+  .footer-bottom a { color: var(--gold); text-decoration: none; }
+  .back-to-top {
+    background: var(--gold);
+    color: var(--navy);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 900;
+    transition: all 0.3s;
+  }
+  .back-to-top:hover { background: var(--deep-gold); transform: translateY(-3px); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .about-grid { grid-template-columns: 1fr 1.4fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .carousel-card { min-width: calc(50% - 12px); width: calc(50% - 12px); }
+    .prayer-card { min-width: calc(50% - 12px); width: calc(50% - 12px); }
+    .service-card { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    section { padding: 60px 5%; }
+    nav { padding: 12px 5%; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-img-wrap:first-child, .about-img-wrap:last-child { display: none; }
+    .about-center { padding: 0; }
+    .about-stats { gap: 16px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .carousel-card { min-width: calc(85% - 12px); width: calc(85% - 12px); }
+    .prayer-card { min-width: calc(85% - 12px); width: calc(85% - 12px); }
+    .form-row { grid-template-columns: 1fr; }
+    .service-left, .service-right { padding: 30px 24px; }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 2.2rem; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .footer-top { grid-template-columns: 1fr; }
+    .tithe-grid { grid-template-columns: 1fr; }
+    .footer-bottom { justify-content: center; text-align: center; }
+    .carousel-card { min-width: calc(92% - 0px); width: calc(92%); }
+    .prayer-card { min-width: calc(92% - 0px); width: calc(92%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">✝</div>
+    <div>
+      <span>Grace & Glory</span>
+      <small>Church</small>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Ministry</a></li>
+    <li><a href="#service">Services</a></li>
+    <li><a href="#contribution">Give</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#tithe" class="nav-cta">Tithe Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#projects" onclick="toggleMenu()">Ministry</a>
+  <a href="#service" onclick="toggleMenu()">Services</a>
+  <a href="#contribution" onclick="toggleMenu()">Give</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="#prayer" onclick="toggleMenu()">Prayer</a>
+  <a href="#tithe" onclick="toggleMenu()">Tithe</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🕊️ Welcome to Grace &amp; Glory Church</div>
+    <h1>Where <span>Faith</span> Meets<br>Community &amp; Love</h1>
+    <p>A place of hope, healing, and belonging. Come as you are and experience the transforming power of God's grace in a vibrant, welcoming community.</p>
+    <div class="hero-btns">
+      <a href="#service" class="btn-primary">Join Us This Sabbath</a>
+      <a href="#about" class="btn-outline">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-dot"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <!-- Replace 'about-left.jpg' with your image filename -->
+      <img src="cross.jpg" alt="Our Church Community" />
+    </div>
+    <div class="about-center">
+      <div class="section-tag">About Our Church</div>
+      <h2 class="section-title">A Family Built on <span>Faith &amp; Love</span></h2>
+      <p class="section-sub">For over two decades, Grace &amp; Glory Church has been a beacon of hope in our community — nurturing spiritual growth, fostering deep relationships, and serving those in need with love and compassion.</p>
+      <div class="about-verse">
+        <p>"For I know the plans I have for you, plans to prosper you and not to harm you, plans to give you hope and a future."</p>
+        <cite>— Jeremiah 29:11</cite>
+      </div>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num">1,200+</div>
+          <div class="stat-label">Members</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">25+</div>
+          <div class="stat-label">Years</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">40+</div>
+          <div class="stat-label">Ministries</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-img-wrap">
+      <!-- Replace 'about-right.jpg' with your image filename -->
+      <img src="nun.jpg" alt="Church Worship" />
+    </div>
+  </div>
+</section>
+
+<!-- CHURCH PROJECTS CAROUSEL -->
+<section id="projects">
+  <div class="section-tag">Our Ministry</div>
+  <h2 class="section-title" style="color:var(--white)">Church <span style="color:var(--gold)">Projects</span> &amp; Programs</h2>
+  <p class="section-sub" style="color:rgba(255,255,255,0.65)">Discover the many ways we are making a difference in our community and beyond through the grace of God.</p>
+  <div class="carousel-outer">
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="projectTrack">
+      <div class="carousel-card">
+        <!-- Replace 'project-bible-school.jpg' with your image filename -->
+        <img src="project-bible-school.jpg" alt="Community Bible School" style="width:100%;height:200px;object-fit:cover;display:block;" />
+        <div class="carousel-card-body">
+          <div class="carousel-tag">Education</div>
+          <h3>Community Bible School</h3>
+          <p>Free weekly Bible study classes for all ages, deepening faith and biblical understanding throughout the community.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <!-- Replace 'project-food-drive.jpg' with your image filename -->
+        <img src="project-food-drive.jpg" alt="Bread of Life Food Drive" style="width:100%;height:200px;object-fit:cover;display:block;" />
+        <div class="carousel-card-body">
+          <div class="carousel-tag">Outreach</div>
+          <h3>Bread of Life Food Drive</h3>
+          <p>Monthly food distribution serving over 300 families in need, embodying Christ's command to love our neighbours.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <!-- Replace 'project-kids-ministry.jpg' with your image filename -->
+        <img src="project-kids-ministry.jpg" alt="Joyful Kids Ministry" style="width:100%;height:200px;object-fit:cover;display:block;" />
+        <div class="carousel-card-body">
+          <div class="carousel-tag">Children</div>
+          <h3>Joyful Kids Ministry</h3>
+          <p>Dynamic children's ministry programs designed to nurture faith, creativity, and character from an early age.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <!-- Replace 'project-worship.jpg' with your image filename -->
+        <img src="project-worship.jpg" alt="Praise and Worship Team" style="width:100%;height:200px;object-fit:cover;display:block;" />
+        <div class="carousel-card-body">
+          <div class="carousel-tag">Worship</div>
+          <h3>Praise &amp; Worship Team</h3>
+          <p>Our vibrant music ministry leading the congregation in heartfelt worship through songs of praise and adoration.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <!-- Replace 'project-sanctuary.jpg' with your image filename -->
+        <img src="project-sanctuary.jpg" alt="New Sanctuary Project" style="width:100%;height:200px;object-fit:cover;display:block;" />
+        <div class="carousel-card-body">
+          <div class="carousel-tag">Infrastructure</div>
+          <h3>New Sanctuary Project</h3>
+          <p>Building a larger worship space to accommodate our growing congregation and serve the community better.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <!-- Replace 'project-health-clinic.jpg' with your image filename -->
+        <img src="project-health-clinic.jpg" alt="Community Health Clinic" style="width:100%;height:200px;object-fit:cover;display:block;" />
+        <div class="carousel-card-body">
+          <div class="carousel-tag">Health</div>
+          <h3>Community Health Clinic</h3>
+          <p>Free medical outreach bringing healthcare to underserved families in our community with compassion and care.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="carousel-controls">
+    <button class="carousel-btn" onclick="slideCarousel('projectTrack', -1)">&#8592;</button>
+    <button class="carousel-btn" onclick="slideCarousel('projectTrack', 1)">&#8594;</button>
+  </div>
+</section>
+
+<!-- UPCOMING SERVICE -->
+<section id="service">
+  <div class="section-tag">Next Sabbath</div>
+  <h2 class="section-title">Upcoming <span>Service</span></h2>
+  <p class="section-sub">Join us this Sabbath as we gather in the presence of God to worship, learn, and grow together as a community.</p>
+  <div class="service-card">
+    <div class="service-left">
+      <div class="service-date-badge">📅 This Sabbath — Saturday</div>
+      <h2>Morning of Renewal &amp; Worship</h2>
+      <p>Come with an open heart and experience the joy of Sabbath worship with your church family. All are welcome — bring a friend!</p>
+      <div class="service-details">
+        <div class="service-detail">
+          <div class="service-detail-icon">🕒</div>
+          <span>Sabbath School: 9:30 AM — 11:00 AM</span>
+        </div>
+        <div class="service-detail">
+          <div class="service-detail-icon">🎵</div>
+          <span>Divine Service: 11:00 AM — 1:00 PM</span>
+        </div>
+        <div class="service-detail">
+          <div class="service-detail-icon">📍</div>
+          <span>Main Sanctuary, 123 Grace Avenue</span>
+        </div>
+        <div class="service-detail">
+          <div class="service-detail-icon">🌐</div>
+          <span>Also streaming live online</span>
+        </div>
+      </div>
+    </div>
+    <div class="service-right">
+      <h3>This Week's Program</h3>
+      <div class="sermon-series">
+        <p>📖 Sermon Series</p>
+        <h4>"Walking in His Light: A Journey Through Psalms"</h4>
+      </div>
+      <div class="program-list">
+        <div class="program-item">🎶 Opening Praise &amp; Worship<span class="program-time">9:30</span></div>
+        <div class="program-item">📖 Sabbath School Study<span class="program-time">9:45</span></div>
+        <div class="program-item">🎵 Special Music<span class="program-time">11:10</span></div>
+        <div class="program-item">✝️ Sermon: Rev. Emmanuel<span class="program-time">11:30</span></div>
+        <div class="program-item">🙏 Altar Call &amp; Prayer<span class="program-time">12:30</span></div>
+        <div class="program-item">🍽️ Potluck Fellowship Lunch<span class="program-time">1:00</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS & CONTRIBUTION -->
+<section id="contribution">
+  <div class="section-tag">Projects &amp; Giving</div>
+  <h2 class="section-title">Make a <span>Difference</span> Today</h2>
+  <p class="section-sub">Your generosity empowers our ministry to touch lives, build community, and spread the love of Christ far and wide.</p>
+  <div class="contribution-grid">
+    <div class="contrib-card">
+      <div class="contrib-placeholder"><span>🏗️</span><p>Upload project photo</p></div>
+      <div class="contrib-body">
+        <div class="contrib-tag">Infrastructure</div>
+        <h3>New Sanctuary Building</h3>
+        <p>Help us build a larger worship center that will serve generations to come.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:68%"></div></div>
+        <div class="progress-info"><span>KSh 680,000 raised</span><span>Goal: KSh 1,000,000</span></div>
+      </div>
+    </div>
+    <div class="contrib-card">
+      <div class="contrib-placeholder"><span>🎓</span><p>Upload project photo</p></div>
+      <div class="contrib-body">
+        <div class="contrib-tag">Education</div>
+        <h3>Scholarship Fund</h3>
+        <p>Supporting bright young students from our congregation to achieve their educational dreams.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>
+        <div class="progress-info"><span>KSh 135,000 raised</span><span>Goal: KSh 300,000</span></div>
+      </div>
+    </div>
+    <div class="contrib-card">
+      <div class="contrib-placeholder"><span>🍞</span><p>Upload project photo</p></div>
+      <div class="contrib-body">
+        <div class="contrib-tag">Outreach</div>
+        <h3>Hunger Relief Program</h3>
+        <p>Feeding hundreds of hungry families in our community with nutritious meals and the Word of God.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div>
+        <div class="progress-info"><span>KSh 82,000 raised</span><span>Goal: KSh 100,000</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-tag">Get In Touch</div>
+  <h2 class="section-title">We'd Love to <span>Hear</span> From You</h2>
+  <p class="section-sub">Whether you have questions, prayer requests, or just want to connect — our doors and hearts are always open.</p>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-info-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <h4>Location</h4>
+          <p>123 Grace Avenue, Nairobi<br>Kenya, 00100</p>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <h4>Phone</h4>
+          <p>+254 700 000 000<br>+254 720 000 000</p>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <h4>Email</h4>
+          <p>hello@graceandglory.church<br>pastor@graceandglory.church</p>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">🕒</div>
+        <div>
+          <h4>Office Hours</h4>
+          <p>Monday – Friday: 9am – 5pm<br>Saturday: 9am – 1pm</p>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="John">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="john@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+254 700 000 000">
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <select>
+          <option>General Inquiry</option>
+          <option>Prayer Request</option>
+          <option>Membership</option>
+          <option>Pastoral Counseling</option>
+          <option>Volunteering</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="How can we help you?"></textarea>
+      </div>
+      <button class="btn-submit">Send Message ✉️</button>
+    </div>
+  </div>
+</section>
+
+<!-- PRAYER REQUESTS -->
+<section id="prayer">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">Prayer Wall</div>
+    <h2 class="section-title">Prayer <span style="color:var(--gold)">Requests</span></h2>
+    <p class="section-sub">Share your prayer needs and join hands with our congregation. We believe in the power of united prayer.</p>
+    <div class="prayer-carousel-outer">
+      <div class="prayer-carousel-wrapper">
+        <div class="prayer-track" id="prayerTrack">
+        <div class="prayer-card">
+          <div class="prayer-status">🙏 Praying</div>
+          <div class="prayer-quote">"</div>
+          <p>Please pray for my mother who is recovering from surgery. We trust in God's healing power and His perfect timing. Thank you, church family.</p>
+          <div class="prayer-person">
+            <div class="prayer-avatar">SM</div>
+            <div class="prayer-person-info">
+              <h4>Sarah M.</h4>
+              <span>2 days ago</span>
+            </div>
+          </div>
+        </div>
+        <div class="prayer-card">
+          <div class="prayer-status">🙏 Praying</div>
+          <div class="prayer-quote">"</div>
+          <p>Seeking God's guidance as I navigate a major career decision. I need wisdom and clarity to know which path He has prepared for me.</p>
+          <div class="prayer-person">
+            <div class="prayer-avatar">DK</div>
+            <div class="prayer-person-info">
+              <h4>David K.</h4>
+              <span>5 days ago</span>
+            </div>
+          </div>
+        </div>
+        <div class="prayer-card">
+          <div class="prayer-status">✅ Answered</div>
+          <div class="prayer-quote">"</div>
+          <p>Praising God — my business loan was approved! Thank you all for standing in prayer with me. God is faithful and He never fails!</p>
+          <div class="prayer-person">
+            <div class="prayer-avatar">JN</div>
+            <div class="prayer-person-info">
+              <h4>Joy N.</h4>
+              <span>1 week ago</span>
+            </div>
+          </div>
+        </div>
+        <div class="prayer-card">
+          <div class="prayer-status">🙏 Praying</div>
+          <div class="prayer-quote">"</div>
+          <p>Please pray for peace and reconciliation in my family. There has been division for too long and I believe God can restore what is broken.</p>
+          <div class="prayer-person">
+            <div class="prayer-avatar">GW</div>
+            <div class="prayer-person-info">
+              <h4>Grace W.</h4>
+              <span>3 days ago</span>
+            </div>
+          </div>
+        </div>
+        <div class="prayer-card">
+          <div class="prayer-status">🙏 Praying</div>
+          <div class="prayer-quote">"</div>
+          <p>Lifting up our youth group as they prepare for their mission trip next month. May God protect them and use them mightily for His glory.</p>
+          <div class="prayer-person">
+            <div class="prayer-avatar">PM</div>
+            <div class="prayer-person-info">
+              <h4>Pastor Mike</h4>
+              <span>1 day ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-controls">
+      <button class="carousel-btn" onclick="slideCarousel('prayerTrack', -1)">&#8592;</button>
+      <button class="carousel-btn" onclick="slideCarousel('prayerTrack', 1)">&#8594;</button>
+    </div>
+    <div class="prayer-form-wrap">
+      <h3>🙏 Submit Your Prayer Request</h3>
+      <div class="form-group">
+        <label>Your Name (Optional)</label>
+        <input type="text" placeholder="Anonymous">
+      </div>
+      <div class="form-group">
+        <label>Your Prayer Request</label>
+        <textarea placeholder="Share your prayer need with our church family..." style="min-height:120px;"></textarea>
+      </div>
+      <button class="btn-pray">🕊️ Submit Prayer Request</button>
+    </div>
+  </div>
+</section>
+
+<!-- TITHE -->
+<section id="tithe">
+  <div class="tithe-intro">
+    <div class="section-tag">Give &amp; Tithe</div>
+    <h2 class="section-title">Give with a <span>Cheerful</span> Heart</h2>
+    <p class="section-sub">Your faithfulness in giving enables us to carry out God's work. Choose your preferred way to give and be a blessing.</p>
+  </div>
+  <div class="tithe-grid">
+    <div class="tithe-card">
+      <div class="tithe-icon">📱</div>
+      <div class="tithe-tag">Mobile Money</div>
+      <h3>M-Pesa / Airtel</h3>
+      <p>Quick and easy giving via mobile money. Pay bill number 123456, Account: TITHE or OFFERING.</p>
+      <button class="tithe-btn">Give via M-Pesa</button>
+    </div>
+    <div class="tithe-card featured">
+      <div class="tithe-icon">💳</div>
+      <div class="tithe-tag">Recommended</div>
+      <h3>Online Giving</h3>
+      <p>Secure card payments via our online portal. Set up recurring tithe for consistent, worry-free giving.</p>
+      <button class="tithe-btn">Give Online Now</button>
+    </div>
+    <div class="tithe-card">
+      <div class="tithe-icon">🏦</div>
+      <div class="tithe-tag">Bank Transfer</div>
+      <h3>Bank Deposit</h3>
+      <p>Transfer directly to our church account. Bank: Equity Bank, A/C: 1234567890, Grace &amp; Glory Church.</p>
+      <button class="tithe-btn">Bank Details</button>
+    </div>
+    <div class="tithe-card">
+      <div class="tithe-icon">💵</div>
+      <div class="tithe-tag">In Person</div>
+      <h3>Offering Basket</h3>
+      <p>Give during Sabbath service using our offering envelopes. Tithe envelopes available at the entrance.</p>
+      <button class="tithe-btn">Learn More</button>
+    </div>
+  </div>
+  <div class="tithe-verse">
+    <p>"Bring the whole tithe into the storehouse, that there may be food in my house. Test me in this,' says the Lord Almighty, 'and see if I will not throw open the floodgates of heaven and pour out so much blessing that there will not be room enough to store it."</p>
+    <cite>— Malachi 3:10 (NIV)</cite>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo-icon">✝</div>
+      <div class="footer-brand-name">Grace &amp; Glory Church</div>
+      <div class="footer-brand-sub">A Community of Faith</div>
+      <p>A vibrant community where faith grows, lives are transformed, and God's love is shared with all. Come and be part of something eternal.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">f</a>
+        <a href="#" class="social-btn">𝕏</a>
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">▶</a>
+        <a href="#" class="social-btn">📸</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#projects">Ministries</a></li>
+        <li><a href="#service">Upcoming Service</a></li>
+        <li><a href="#contribution">Give / Donate</a></li>
+        <li><a href="#prayer">Prayer Requests</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Service Times</h4>
+      <div class="service-times">
+        <div class="service-time"><span>Sabbath School</span><span>9:30 AM</span></div>
+        <div class="service-time"><span>Divine Service</span><span>11:00 AM</span></div>
+        <div class="service-time"><span>Youth Service</span><span>Fri 7:00 PM</span></div>
+        <div class="service-time"><span>Midweek Prayer</span><span>Wed 6:00 PM</span></div>
+        <div class="service-time"><span>Live Stream</span><span>All Services</span></div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul class="footer-links">
+        <li><a href="#">📍 123 Grace Avenue, Nairobi</a></li>
+        <li><a href="#">📞 +254 700 000 000</a></li>
+        <li><a href="#">✉️ hello@church.co.ke</a></li>
+        <li><a href="#">🌐 www.graceandglory.church</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Grace &amp; Glory Church. All rights reserved. Made with ❤️ for God's Kingdom.</p>
+    <a href="#home" class="back-to-top">↑</a>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile menu
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const burger = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    burger.classList.toggle('open');
+  }
+
+  // Hero background
+  const heroBg = document.getElementById('heroBg');
+  heroBg.style.backgroundImage = "url('home.jpg')";
+
+  // Carousel logic
+  const carouselStates = {};
+  function getCardWidth(trackId) {
+    const track = document.getElementById(trackId);
+    const card = track.querySelector('.carousel-card, .prayer-card');
+    if (!card) return 0;
+    const cardRect = card.getBoundingClientRect();
+    const trackStyle = window.getComputedStyle(track);
+    const gap = parseFloat(trackStyle.gap) || 24;
+    return cardRect.width + gap;
+  }
+
+  function getVisibleCount(trackId) {
+    const track = document.getElementById(trackId);
+    const outer = track.closest('.carousel-outer, .prayer-carousel-outer');
+    if (!outer) return 3;
+    const outerWidth = outer.offsetWidth;
+    const cardWidth = getCardWidth(trackId) || 1;
+    return Math.max(1, Math.round(outerWidth / cardWidth));
+  }
+
+  function slideCarousel(trackId, direction) {
+    const track = document.getElementById(trackId);
+    const cards = track.querySelectorAll('.carousel-card, .prayer-card');
+    if (!carouselStates[trackId]) carouselStates[trackId] = 0;
+    const visibleCount = getVisibleCount(trackId);
+    const maxIndex = Math.max(0, cards.length - visibleCount);
+    carouselStates[trackId] = Math.min(maxIndex, Math.max(0, carouselStates[trackId] + direction));
+    const offset = carouselStates[trackId] * getCardWidth(trackId);
+    track.style.transform = `translateX(-${offset}px)`;
+  }
+
+  // Reset carousels on resize
+  window.addEventListener('resize', () => {
+    ['projectTrack', 'prayerTrack'].forEach(id => {
+      carouselStates[id] = 0;
+      const track = document.getElementById(id);
+      if (track) track.style.transform = 'translateX(0)';
+    });
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.carousel-card, .prayer-card, .contrib-card, .tithe-card, .contact-info-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Form submission feedback
+  document.querySelectorAll('.btn-submit, .btn-pray').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const original = this.textContent;
+      this.textContent = '✅ Submitted! God bless you.';
+      this.style.background = 'linear-gradient(135deg, #1a7a3c, #2d9e56)';
+      setTimeout(() => {
+        this.textContent = original;
+        this.style.background = '';
+      }, 3000);
+    });
+  });
+
+  // Tithe card hover text swap
+  document.querySelectorAll('.tithe-card').forEach(card => {
+    card.addEventListener('click', function() {
+      const btn = this.querySelector('.tithe-btn');
+      const original = btn.textContent;
+      btn.textContent = '✅ Details Copied!';
+      setTimeout(() => { btn.textContent = original; }, 2000);
+    });
+  });
+</script>
+</body>
+</html>
