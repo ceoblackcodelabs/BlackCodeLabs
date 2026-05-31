@@ -156,6 +156,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'Home' / 'static',
     BASE_DIR / 'SalesPro' / 'static',
+    BASE_DIR / 'BCL' / 'static',
 ]
 
 MEDIA_URL = '/media/'
