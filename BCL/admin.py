@@ -1,82 +1,152 @@
-# """
-# core/admin.py
-# """
+from django.contrib import admin
+from .models import ContactMessage, ContactSettings, AboutSection, Merch
 
-# from django.contrib import admin
-# from django.utils.html import format_html
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'subject_display', 'status_badge', 'created_at']
+    list_filter = ['status', 'subject', 'created_at']
+    search_fields = ['name', 'email', 'message']
+    readonly_fields = ['created_at', 'updated_at', 'ip_address', 'user_agent', 'responded_at']
 
-# from .models import (
-#     SiteSettings,
-#     HeroContent,
-#     PerspectiveSection,
-#     Service,
-#     SocialStat,
-# )
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('name', 'email', 'phone')
+        }),
+        ('Message Details', {
+            'fields': ('subject', 'subject_other', 'message')
+        }),
+        ('Status & Response', {
+            'fields': ('status', 'responded_at')
+        }),
+        ('Metadata', {
+            'fields': ('ip_address', 'user_agent', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
 
+    def subject_display(self, obj):
+        return obj.full_subject
+    subject_display.short_description = 'Subject'
 
-# @admin.register(SiteSettings)
-# class SiteSettingsAdmin(admin.ModelAdmin):
-#     fieldsets = (
-#         ('Branding', {'fields': ('site_name', 'tagline', 'founded_year', 'base_city')}),
-#         ('Contact', {'fields': ('email_general', 'email_booking', 'phone', 'address_line1', 'address_line2')}),
-#         ('Social Links', {'fields': ('instagram_url', 'tiktok_url', 'youtube_url', 'facebook_url')}),
-#         ('Footer', {'fields': ('footer_about', 'powered_by')}),
-#     )
+    def status_badge(self, obj):
+        colors = {
+            'new': 'red',
+            'read': 'orange',
+            'replied': 'green',
+            'archived': 'gray'
+        }
+        from django.utils.html import format_html
+        return format_html(
+            '<span style="color: {}; font-weight: bold;">{}</span>',
+            colors.get(obj.status, 'black'),
+            obj.get_status_display()
+        )
+    status_badge.short_description = 'Status'
 
-#     def has_add_permission(self, request):
-#         # Only one record ever
-#         return not SiteSettings.objects.exists()
+    actions = ['mark_as_read', 'mark_as_replied', 'archive_messages']
 
-#     def has_delete_permission(self, request, obj=None):
-#         return False
+    def mark_as_read(self, request, queryset):
+        updated = queryset.exclude(status='read').update(status='read')
+        self.message_user(request, f'{updated} message(s) marked as read.')
+    mark_as_read.short_description = 'Mark selected messages as read'
 
+    def mark_as_replied(self, request, queryset):
+        updated = queryset.update(status='replied')
+        self.message_user(request, f'{updated} message(s) marked as replied.')
+    mark_as_replied.short_description = 'Mark selected messages as replied'
 
-# @admin.register(HeroContent)
-# class HeroContentAdmin(admin.ModelAdmin):
-#     fieldsets = (
-#         ('Text', {'fields': ('eyebrow', 'headline', 'subtext')}),
-#         ('Calls to Action', {'fields': (
-#             'cta_primary_label', 'cta_primary_url',
-#             'cta_outline_label', 'cta_outline_url',
-#         )}),
-#     )
-
-#     def has_add_permission(self, request):
-#         return not HeroContent.objects.exists()
-
-#     def has_delete_permission(self, request, obj=None):
-#         return False
-
-
-# @admin.register(PerspectiveSection)
-# class PerspectiveSectionAdmin(admin.ModelAdmin):
-#     def has_add_permission(self, request):
-#         return not PerspectiveSection.objects.exists()
-
-#     def has_delete_permission(self, request, obj=None):
-#         return False
-
-
-# @admin.register(Service)
-# class ServiceAdmin(admin.ModelAdmin):
-#     list_display  = ('order', 'title', 'is_active', 'image_preview')
-#     list_editable = ('order', 'is_active')
-#     list_display_links = ('title',)
-#     ordering      = ('order',)
-
-#     def image_preview(self, obj):
-#         if obj.image:
-#             return format_html(
-#                 '<img src="{}" style="height:50px;border-radius:4px;" />',
-#                 obj.image.url,
-#             )
-#         return '—'
-#     image_preview.short_description = 'Preview'
+    def archive_messages(self, request, queryset):
+        updated = queryset.update(status='archived')
+        self.message_user(request, f'{updated} message(s) archived.')
+    archive_messages.short_description = 'Archive selected messages'
 
 
-# @admin.register(SocialStat)
-# class SocialStatAdmin(admin.ModelAdmin):
-#     list_display  = ('order', 'label', 'value', 'show_in_marquee', 'show_in_community')
-#     list_editable = ('order', 'show_in_marquee', 'show_in_community')
-#     list_display_links = ('label',)
-#     ordering      = ('order',)
+@admin.register(ContactSettings)
+class ContactSettingsAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('email_general', 'email_booking', 'phone', 'address')
+        }),
+        ('Social Media', {
+            'fields': ('instagram', 'tiktok', 'youtube', 'facebook', 'twitter')
+        }),
+        ('Business Hours', {
+            'fields': ('business_hours',)
+        }),
+        ('Auto-Reply Settings', {
+            'fields': ('auto_reply_enabled', 'auto_reply_subject', 'auto_reply_message')
+        }),
+        ('Map Settings', {
+            'fields': ('google_maps_api_key', 'map_latitude', 'map_longitude'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def has_add_permission(self, request):
+        # Prevent adding multiple instances (singleton pattern)
+        return not ContactSettings.objects.exists()
+
+
+@admin.register(AboutSection)
+class AboutSectionAdmin(admin.ModelAdmin):
+    list_display = ['title', 'created_at', 'updated_at']
+    fieldsets = (
+        ('Content', {
+            'fields': ('title', 'content', 'image', 'video')
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    readonly_fields = ['created_at', 'updated_at']
+
+@admin.register(Merch)
+class MerchAdmin(admin.ModelAdmin):
+    list_display = ['name', 'price', 'created_at', 'updated_at']
+    list_filter = ['created_at']
+    search_fields = ['name', 'description']
+    list_editable = ['price']  # Allows inline editing of price
+    readonly_fields = ['created_at', 'updated_at', 'image_preview']
+
+    fieldsets = (
+        ('Product Information', {
+            'fields': ('name', 'description', 'price', 'image')
+        }),
+        ('Preview', {
+            'fields': ('image_preview',),
+            'classes': ('collapse',)
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def price_display(self, obj):
+        """Display price with currency symbol"""
+        return f"€{obj.price}"
+    price_display.short_description = 'Price'
+
+    def image_preview(self, obj):
+        """Display image preview in admin"""
+        if obj.image:
+            from django.utils.html import format_html
+            return format_html(
+                '<img src="{}" style="max-height: 200px; max-width: 200px;" />',
+                obj.image.url
+            )
+        return "No image uploaded"
+    image_preview.short_description = 'Image Preview'
+
+    actions = ['duplicate_items']
+
+    def duplicate_items(self, request, queryset):
+        """Duplicate selected merchandise items"""
+        for item in queryset:
+            item.pk = None  # Create new instance
+            item.name = f"{item.name} (Copy)"
+            item.save()
+        count = queryset.count()
+        self.message_user(request, f'{count} item(s) duplicated successfully.')
+    duplicate_items.short_description = 'Duplicate selected items'

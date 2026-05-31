@@ -1,103 +1,49 @@
-# """
-# core/views.py
+from django.views.generic import ListView
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import ContactForm
+from django.shortcuts import redirect
+from .models import ContactSettings, ContactMessage, AboutSection, Merch
 
-# All class-based views for the core / homepage functionality.
-# """
+class landing(ListView):
+    template_name = 'BCL/index.html'
+    model = ContactMessage
+    context_object_name = "testimonials"
 
-from django.views.generic import TemplateView, DetailView, ListView
-# from django.utils.decorators import method_decorator
-# from django.views.decorators.cache import cache_page
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add contact settings to template
+        context['settings'] = ContactSettings.get_settings()
+        about_section = AboutSection.objects.first()
+        context['about_section_img'] = about_section.image if about_section else None
+        context['about_section_video'] = about_section.video if about_section else None
 
-# from .models import (
-#     SiteSettings,
-#     HeroContent,
-#     PerspectiveSection,
-#     Service,
-#     SocialStat,
-# )
-# from .models import MerchItem
-# # from .models import Testimonial
-# # from .models import Collaborator
+        # merch
+        context['merch_items'] = Merch.objects.all()
+        return context
 
-
-# # ─── Homepage ─────────────────────────────────────────────────────────────────
-
-# @method_decorator(cache_page(60 * 5), name='dispatch')   # cache 5 minutes
-# class HomeView(TemplateView):
-#     """
-#     Renders the single-page marketing site.
-#     Aggregates data from every app into one template context.
-#     """
-
-#     template_name = 'core/home.html'
-
-#     def get_context_data(self, **kwargs):
-#         ctx = super().get_context_data(**kwargs)
-
-#         # Singletons
-#         ctx['hero']        = HeroContent.load()
-#         ctx['perspective'] = PerspectiveSection.load()
-
-#         # Merchandise — only published items, up to 6
-#         # ctx['merch_items'] = (
-#         #     MerchItem.objects
-#         #     .filter(is_published=True)
-#         #     .order_by('order')[:6]
-#         # )
-
-#         # Services / What We Do — active, ordered
-#         ctx['services'] = Service.objects.filter(is_active=True)
-
-#         # Testimonials — featured ones first, then by order
-#         # ctx['testimonials'] = (
-#         #     Testimonial.objects
-#         #     .filter(is_active=True)
-#         #     .order_by('-is_featured', 'order')
-#         # )
-
-#         # Community stats (marquee)
-#         ctx['social_stats'] = SocialStat.objects.filter(show_in_marquee=True)
-
-#         # The one stat that powers the animated counter
-#         ctx['community_stat'] = (
-#             SocialStat.objects
-#             .filter(show_in_community=True)
-#             .first()
-#         )
-
-#         # Collaborators / logos
-#         # ctx['collaborators'] = (
-#         #     Collaborator.objects
-#         #     .filter(is_active=True)
-#         #     .order_by('order')
-#         # )
-
-#         return ctx
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_message = form.save()
+            # Send auto-reply email if enabled
+            # settings = ContactSettings.get_settings()
+            # if settings.auto_reply_enabled:
+            #     send_mail(
+            #         subject=settings.auto_reply_subject,
+            #         message=settings.auto_reply_message,
+            #         from_email=settings.email_general,
+            #         recipient_list=[contact_message.email],
+            #         fail_silently=True,
+            #     )
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect(reverse_lazy('landing'))
+        else:
+            messages.error(request, "There was an error with your submission. Please check the form and try again.")
+            return self.get(request, *args, **kwargs)
 
 
-# # ─── Service Detail ───────────────────────────────────────────────────────────
-
-# class ServiceDetailView(DetailView):
-#     """
-#     Optional detail page for a single service.
-#     Reached via /service/<pk>/ or linked from the What We Do grid.
-#     """
-
-#     model               = Service
-#     template_name       = 'core/service_detail.html'
-#     context_object_name = 'service'
-#     queryset            = Service.objects.filter(is_active=True)
-
-
-# # ─── Service List ─────────────────────────────────────────────────────────────
-
-# class ServiceListView(ListView):
-#     """Standalone page listing all services (useful for SEO / sharing)."""
-
-#     model               = Service
-#     template_name       = 'core/service_list.html'
-#     context_object_name = 'services'
-#     queryset            = Service.objects.filter(is_active=True)
-
-class landing(TemplateView):
-    template_name = "BCL/index.html"
+    def send_admin_notification(self, message):
+        pass
