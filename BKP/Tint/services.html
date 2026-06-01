@@ -5,7 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Services — Tint Studio Nairobi</title>
   <meta name="description" content="Automotive & commercial window tinting in Nairobi. Ceramic films, safety films, LLumar, 3M, Ultrafit, New Vision. Tint Studio Parklands." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- SERVICE SECTION GRID ---- */
+    .service-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(36px, 6vw, 72px);
+      align-items: center;
+    }
+    .service-img-wrap {
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .service-img-wrap img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      filter: brightness(0.8) saturate(0.7);
+      transition: transform .6s, filter .4s;
+      display: block;
+    }
+    .service-img-wrap:hover img {
+      transform: scale(1.04);
+      filter: brightness(0.92) saturate(0.9);
+    }
+    .service-checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .service-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .service-check span.tick {
+      color: var(--gold);
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ---- THREE PILLARS ---- */
+    .pillar-card {
+      border: 1px solid var(--border);
+      padding: clamp(28px, 4vw, 44px) clamp(22px, 3.5vw, 32px);
+      background: var(--card);
+      text-align: center;
+      transition: border-color .3s, transform .3s;
+    }
+    .pillar-card:hover {
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-4px);
+    }
+    .pillar-card.featured {
+      border-color: var(--gold);
+      background: linear-gradient(160deg,#1c1800,var(--card));
+    }
+    .pillar-icon { font-size: clamp(36px, 5vw, 48px); margin-bottom: 18px; }
+
+    /* ---- CTA ROW ---- */
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+
+    /* ---- DIVIDER ---- */
+    .service-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.25;
+      margin: 0 var(--gutter);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      .service-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+      /* Service 2: text first on mobile */
+      .service-grid.reverse > .service-img-wrap { order: 2; }
+      .service-img-wrap img { aspect-ratio: 4/3; }
+    }
+  </style>
 </head>
 <body>
 
@@ -14,11 +106,14 @@
   <div class="topbar-left"><span>Wambugu Road, Parklands, Nairobi</span></div>
   <div class="topbar-right">
     <div class="topbar-social">
-      <a href="http://tiktok.com/@tintstudio_ke" target="_blank">
+      <a href="http://tiktok.com/@tintstudio_ke" target="_blank" aria-label="TikTok">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.31 6.31 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
       </a>
-      <a href="https://www.instagram.com/tintstudio_ke" target="_blank">
+      <a href="https://www.instagram.com/tintstudio_ke" target="_blank" aria-label="Instagram">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://youtube.com/@tintstudio_ke" target="_blank" aria-label="YouTube">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       </a>
     </div>
     <a href="tel:+254720759342" class="topbar-call">☎ Call Now</a>
@@ -40,8 +135,13 @@
   <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
 </nav>
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html">Home</a><a href="services.html">Services</a><a href="pricing.html">Pricing</a>
-  <a href="ppf.html">Paint Protection Film</a><a href="faqs.html">FAQs</a><a href="blog.html">Blog</a><a href="contact.html">Contact Us</a>
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="ppf.html">Paint Protection Film</a>
+  <a href="faqs.html">FAQs</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact Us</a>
 </div>
 
 <!-- PAGE HERO -->
@@ -49,39 +149,28 @@
   <div class="page-hero-bg"></div>
   <div class="page-hero-eyebrow">What We Do</div>
   <h1>OUR<br>SERVICES</h1>
-  <p>Automotive & Commercial Tinting | Ceramic, Safety & Security Film</p>
+  <p>Automotive &amp; Commercial Tinting | Ceramic, Safety &amp; Security Film</p>
 </div>
 
-
-<!-- SERVICE 1 -->
+<!-- SERVICE 1 — AUTOMOTIVE -->
 <section class="section">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;">
-      <div class="reveal" style="overflow:hidden;border:1px solid var(--border);">
-        <img src="img/service1.jpeg" alt="Automotive Tinting" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.8) saturate(0.7);transition:transform .6s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+    <div class="service-grid">
+      <div class="service-img-wrap reveal">
+        <img src="img/service1.jpeg" alt="Automotive Tinting Nairobi" loading="lazy" />
       </div>
       <div class="reveal reveal-delay-2">
         <div class="eyebrow">Service 01</div>
         <h2>AUTOMOTIVE<br>WINDOW TINTING</h2>
-        <p style="font-family:var(--font-serif);font-size:18px;font-style:italic;color:var(--white);margin-bottom:16px;">Nairobi's Luxury Ceramic Tint Experts</p>
-        <p style="margin-bottom:20px;">We install only premium ceramic window tints for car owners who demand the best. Using world-class brands like LLumar, Ultrafit, and New Vision, we deliver tints that never fade, provide superior heat rejection, and maintain perfect optical clarity from inside your vehicle — day or night.</p>
-        <p style="margin-bottom:32px;">Our dust-free installation process ensures every tint is flawless, with zero shortcuts. Perfect for luxury sedans, SUVs, and performance vehicles.</p>
-        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:36px;">
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Premium ceramic films — never fade
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Superior heat rejection up to 96%
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> UV blocking to protect interior & skin
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Perfect optical clarity inside
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Dust-free controlled bay installation
-          </div>
+        <p style="font-family:var(--font-serif);font-size:clamp(16px,2.2vw,18px);font-style:italic;color:var(--white);margin-bottom:14px;">Nairobi's Luxury Ceramic Tint Experts</p>
+        <p style="margin-bottom:16px;">We install only premium ceramic window tints for car owners who demand the best. Using world-class brands like LLumar, Ultrafit, and New Vision, we deliver tints that never fade, provide superior heat rejection, and maintain perfect optical clarity — day or night.</p>
+        <p style="margin-bottom:26px;">Our dust-free installation process ensures every tint is flawless, with zero shortcuts. Perfect for luxury sedans, SUVs, and performance vehicles.</p>
+        <div class="service-checklist">
+          <div class="service-check"><span class="tick">✓</span> Premium ceramic films — never fade</div>
+          <div class="service-check"><span class="tick">✓</span> Superior heat rejection up to 96%</div>
+          <div class="service-check"><span class="tick">✓</span> UV blocking to protect interior &amp; skin</div>
+          <div class="service-check"><span class="tick">✓</span> Perfect optical clarity inside</div>
+          <div class="service-check"><span class="tick">✓</span> Dust-free controlled bay installation</div>
         </div>
         <a href="pricing.html" class="btn btn-gold">
           View Pricing
@@ -92,49 +181,38 @@
   </div>
 </section>
 
-<hr class="gold-rule" style="margin:0 40px;" />
+<hr class="service-divider" />
 
-
-<!-- SERVICE 2 -->
+<!-- SERVICE 2 — COMMERCIAL -->
 <section class="section">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;">
+    <div class="service-grid reverse">
       <div class="reveal reveal-delay-2">
         <div class="eyebrow">Service 02</div>
         <h2>COMMERCIAL<br>WINDOW TINTING</h2>
-        <p style="font-family:var(--font-serif);font-size:18px;font-style:italic;color:var(--white);margin-bottom:16px;">Trusted by Foreign Missions in Nairobi</p>
-        <p style="margin-bottom:20px;">We provide specialised commercial window tinting and safety/security film installations for foreign missions, embassies, United Nations offices, 5-star hotels and other high-security facilities in Nairobi.</p>
-        <p style="margin-bottom:32px;">Our solutions include heat-reducing films that cut glare and lower cooling costs, as well as blast-mitigation and anti-shatter safety films to help protect people and property.</p>
-        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:36px;">
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Anti-shatter & blast-mitigation films
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Heat rejection — reduces cooling costs
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Forced-entry resistance
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Professional & discreet installation
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);">
-            <span style="color:var(--gold);">✓</span> Meets international security standards
-          </div>
+        <p style="font-family:var(--font-serif);font-size:clamp(16px,2.2vw,18px);font-style:italic;color:var(--white);margin-bottom:14px;">Trusted by Foreign Missions in Nairobi</p>
+        <p style="margin-bottom:16px;">We provide specialised commercial window tinting and safety/security film installations for foreign missions, embassies, United Nations offices, 5-star hotels and other high-security facilities in Nairobi.</p>
+        <p style="margin-bottom:26px;">Our solutions include heat-reducing films that cut glare and lower cooling costs, as well as blast-mitigation and anti-shatter safety films to help protect people and property.</p>
+        <div class="service-checklist">
+          <div class="service-check"><span class="tick">✓</span> Anti-shatter &amp; blast-mitigation films</div>
+          <div class="service-check"><span class="tick">✓</span> Heat rejection — reduces cooling costs</div>
+          <div class="service-check"><span class="tick">✓</span> Forced-entry resistance</div>
+          <div class="service-check"><span class="tick">✓</span> Professional &amp; discreet installation</div>
+          <div class="service-check"><span class="tick">✓</span> Meets international security standards</div>
         </div>
         <a href="contact.html" class="btn btn-outline">
           Enquire Now
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
-      <div class="reveal" style="overflow:hidden;border:1px solid var(--border);">
-        <img src="img/service2.jpeg" alt="Commercial Tinting" style="width:100%;aspect-ratio:1;object-fit:cover;filter:brightness(0.8) saturate(0.7);transition:transform .6s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+      <div class="service-img-wrap reveal">
+        <img src="img/service2.jpeg" alt="Commercial Window Tinting Nairobi" loading="lazy" />
       </div>
     </div>
   </div>
 </section>
 
-<!-- BRANDS ROW -->
+<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
     <span class="marquee-item">LLumar Certified</span>
@@ -152,30 +230,30 @@
   </div>
 </div>
 
-<!-- 3 PILLARS -->
+<!-- THREE PILLARS -->
 <section class="section" style="background:var(--dark);border-top:1px solid var(--border);">
   <div class="container">
-    <div style="text-align:center;margin-bottom:56px;" class="reveal">
+    <div style="text-align:center;margin-bottom:clamp(36px,5vw,56px);" class="reveal">
       <div class="eyebrow" style="justify-content:center;">The Tint Studio Difference</div>
       <h2>THREE PILLARS OF<br>EVERY INSTALL</h2>
     </div>
     <div class="grid-3">
-      <div class="tilt-card reveal" style="border:1px solid var(--border);padding:44px 32px;background:var(--card);text-align:center;">
-        <div style="font-size:48px;margin-bottom:20px;">🔬</div>
+      <div class="tilt-card pillar-card reveal">
+        <div class="pillar-icon">🔬</div>
         <div class="tilt-inner">
           <h4>OCD Preparation</h4>
           <p style="font-size:14px;">Glass cleaned meticulously. Dust sealed out. Every surface prepped before a single millimetre of film is applied.</p>
         </div>
       </div>
-      <div class="tilt-card reveal reveal-delay-1" style="border:1px solid var(--gold);padding:44px 32px;background:linear-gradient(160deg,#1c1800,var(--card));text-align:center;">
-        <div style="font-size:48px;margin-bottom:20px;">✂️</div>
+      <div class="tilt-card pillar-card featured reveal reveal-delay-1">
+        <div class="pillar-icon">✂️</div>
         <div class="tilt-inner">
           <h4>Precision Cutting</h4>
           <p style="font-size:14px;">Every film pre-cut or CAD-cut to exact panel dimensions. No blade touches the glass. No scratched windows. Ever.</p>
         </div>
       </div>
-      <div class="tilt-card reveal reveal-delay-2" style="border:1px solid var(--border);padding:44px 32px;background:var(--card);text-align:center;">
-        <div style="font-size:48px;margin-bottom:20px;">🔎</div>
+      <div class="tilt-card pillar-card reveal reveal-delay-2">
+        <div class="pillar-icon">🔎</div>
         <div class="tilt-inner">
           <h4>Pane by Pane QC</h4>
           <p style="font-size:14px;">We inspect every window after install. If we think it can be done better, we remove and redo it. No excuses, no "settle."</p>
@@ -185,14 +263,43 @@
   </div>
 </section>
 
+<!-- BRANDS ROW -->
+<section class="section" style="padding-top:var(--space-lg);padding-bottom:var(--space-lg);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:clamp(28px,4vw,40px);" class="reveal">
+      <div class="eyebrow" style="justify-content:center;">Films We Use</div>
+      <h2>WORLD-CLASS BRANDS</h2>
+      <p style="max-width:520px;margin:0 auto;">The same films the entire industry stocks. The difference is our hands.</p>
+    </div>
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
+      <div style="background:var(--card);border:1px solid var(--border);padding:clamp(20px,3vw,32px);text-align:center;">
+        <div style="font-family:var(--font-display);font-size:clamp(20px,3.5vw,28px);letter-spacing:0.12em;color:var(--white);margin-bottom:6px;">LLumar</div>
+        <div style="font-size:11px;color:var(--muted);">IRX &amp; CTX Ceramic</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);padding:clamp(20px,3vw,32px);text-align:center;">
+        <div style="font-family:var(--font-display);font-size:clamp(20px,3.5vw,28px);letter-spacing:0.12em;color:var(--white);margin-bottom:6px;">3M</div>
+        <div style="font-size:11px;color:var(--muted);">Crystalline &amp; CS Series</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);padding:clamp(20px,3vw,32px);text-align:center;">
+        <div style="font-family:var(--font-display);font-size:clamp(20px,3.5vw,28px);letter-spacing:0.12em;color:var(--white);margin-bottom:6px;">Ultrafit</div>
+        <div style="font-size:11px;color:var(--muted);">Vivid Comfort Ceramic</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);padding:clamp(20px,3vw,32px);text-align:center;">
+        <div style="font-family:var(--font-display);font-size:clamp(20px,3.5vw,28px);letter-spacing:0.12em;color:var(--white);margin-bottom:6px;">New Vision</div>
+        <div style="font-size:11px;color:var(--muted);">HD 100 Ceramic Series</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA SECTION -->
-<section class="section">
+<section class="section" style="background:var(--dark);border-top:1px solid var(--border);">
   <div class="container" style="text-align:center;">
     <div class="reveal">
       <div class="eyebrow" style="justify-content:center;">Ready?</div>
       <h2>WHICH SERVICE<br>IS RIGHT FOR YOU?</h2>
-      <p style="max-width:480px;margin:0 auto 40px;">Talk to us. We'll walk you through options and recommend exactly what your vehicle needs — no upselling, no pressure.</p>
-      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <p style="max-width:480px;margin:0 auto 8px;">Talk to us. We'll walk you through options and recommend exactly what your vehicle needs — no upselling, no pressure.</p>
+      <div class="cta-row">
         <a href="pricing.html" class="btn btn-gold">See Pricing</a>
         <a href="contact.html" class="btn btn-outline">Get a Free Quote</a>
       </div>
@@ -218,23 +325,26 @@
       <li><a href="faqs.html">FAQs</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li>
     </ul></div>
     <div class="footer-col"><h5>Services</h5><ul>
-      <li><a href="services.html">Automotive Tinting</a></li><li><a href="services.html">Commercial Tinting</a></li>
-      <li><a href="ppf.html">Paint Protection Film</a></li><li><a href="pricing.html">Windshield Film</a></li>
+      <li><a href="services.html">Automotive Tinting</a></li>
+      <li><a href="services.html">Commercial Tinting</a></li>
+      <li><a href="ppf.html">Paint Protection Film</a></li>
+      <li><a href="pricing.html">Windshield Film</a></li>
     </ul></div>
     <div class="footer-col"><h5>Contact Info</h5>
       <div class="footer-contact-item"><span class="icon">📍</span><span>Wambugu Road, Parklands, Nairobi</span></div>
       <div class="footer-contact-item"><span class="icon">📞</span><span>+254 720 759 342</span></div>
       <div class="footer-contact-item"><span class="icon">✉</span><span>info@tintstudio.co.ke</span></div>
+      <div class="footer-contact-item"><span class="icon">🕐</span><span>Mon – Sat: 8am – 6pm</span></div>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Tint Studio. All rights reserved.</span>
-    <span><a href="tel:+254720759342">+254 720 759 342</a></span>
+    <a href="tel:+254720759342">+254 720 759 342</a>
     <a href="#">Privacy Policy</a>
   </div>
 </footer>
 
-<a href="https://wa.me/254720759342?text=Hi%2C%20I'd%20like%20a%20quote" class="whatsapp-float" target="_blank">
+<a href="https://wa.me/254720759342?text=Hi%2C%20I'd%20like%20a%20quote" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 <script src="main.js"></script>
