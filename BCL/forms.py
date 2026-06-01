@@ -37,19 +37,16 @@ class ContactForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Your full name'
             }),
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'your@email.com'
             }),
-            'subject': forms.Select(attrs={
+            'subject': forms.TextInput(attrs={
                 'class': 'form-control'
             }),
             'message': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 6,
-                'placeholder': 'Tell us about your project or inquiry...'
             }),
         }
 

@@ -6,6 +6,7 @@ from django.conf import settings
 from .forms import ContactForm
 from django.shortcuts import redirect
 from .models import ContactSettings, ContactMessage, AboutSection, Merch
+from colorama import Fore, Style
 
 class landing(ListView):
     template_name = 'BCL/index.html'
@@ -19,10 +20,19 @@ class landing(ListView):
         about_section = AboutSection.objects.first()
         context['about_section_img'] = about_section.image if about_section else None
         context['about_section_video'] = about_section.video if about_section else None
+        socials = ContactSettings.get_settings()
+        print(f"{Fore.GREEN}ContactSettings socials: {socials.instagram}, {socials.tiktok}, {socials.youtube}, {socials.facebook}, {socials.twitter}{Style.RESET_ALL}")
+        context['instagram'] = socials.instagram
+        context['tiktok'] = socials.tiktok
+        context['youtube'] = socials.youtube
+        context['facebook'] = socials.facebook
+        context['twitter'] = socials.twitter
+        context['form'] = ContactForm()
 
         # merch
         context['merch_items'] = Merch.objects.all()
         return context
+
 
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
@@ -38,12 +48,9 @@ class landing(ListView):
             #         recipient_list=[contact_message.email],
             #         fail_silently=True,
             #     )
+            form.save()
             messages.success(request, "Your message has been sent successfully!")
-            return redirect(reverse_lazy('landing'))
+            return redirect(reverse_lazy('bcl_home'))
         else:
             messages.error(request, "There was an error with your submission. Please check the form and try again.")
             return self.get(request, *args, **kwargs)
-
-
-    def send_admin_notification(self, message):
-        pass
