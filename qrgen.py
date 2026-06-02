@@ -52,6 +52,11 @@ def generate_random_colors():
 
 # Get URL from user input
 url = input("Enter the URL: ")
+name = input("Enter a name for the QR code (optional): ")
+if name:
+    name = name.strip().replace(" ", "_")
+else:
+    name = f"qr_{random.randint(1000, 9999)}"
 
 # Generate random colors
 primary_color, secondary_color = generate_random_colors()
@@ -94,7 +99,7 @@ final = Image.alpha_composite(background, qr_base)
 final = final.filter(ImageFilter.SMOOTH)
 
 # Save
-output_filename = f"supreme_qr_{random.randint(1000, 9999)}.png"
+output_filename = f"./QRs/{name}.png"
 final.save(output_filename, "PNG")
 
 print(f"✨ Supreme-style QR code saved as '{output_filename}'")
