@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eric Omondi — East Africa's Premier Entertainer</title>
+  <meta name="description" content="East Africa's most dynamic entertainer — influencer, TV host, MC, and content creator."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">A</div>
+      <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+      <div class="loader-text" id="loaderText">Loading…</div>
+    </div>
+  </div>
+
+  <!-- NOISE OVERLAY -->
+  <div class="noise-overlay"></div>
+
+  <!-- ░░ NAVBAR ░░ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="logo-a">Eric</span><span class="logo-b">Omondi</span>
+      </a>
+      <div class="nav-center">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#about" data-text="About">About</a></li>
+          <li><a href="#gallery" data-text="Gallery">Gallery</a></li>
+          <li><a href="#services" data-text="Services">Services</a></li>
+          <li><a href="#media" data-text="Media">Media</a></li>
+          <li><a href="#brands" data-text="Brands">Brands</a></li>
+          <li><a href="#press" data-text="Press">Press</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <a href="#contact" class="nav-book-btn">
+          <span>Book Now</span>
+          <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+        <button class="nav-toggle" id="navToggle">
+          <span class="bar b1"></span>
+          <span class="bar b2"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#media">Media</a></li>
+      <li><a href="#brands">Brands</a></li>
+      <li><a href="#press">Press</a></li>
+      <li><a href="#contact">Book Now</a></li>
+    </ul>
+    <div class="mm-footer">
+      <span>© 2025 Eric Omondi</span>
+    </div>
+  </div>
+
+  <!-- ░░ HERO ░░ -->
+  <section class="hero" id="hero">
+    <div class="hero-parallax-bg" id="heroBg"></div>
+
+    <!-- MARQUEE STRIP TOP -->
+    <div class="marquee-strip top">
+      <div class="marquee-track">
+        <span>TV Host</span><span class="dot">✦</span>
+        <span>Content Creator</span><span class="dot">✦</span>
+        <span>Brand Ambassador</span><span class="dot">✦</span>
+        <span>Comedian</span><span class="dot">✦</span>
+        <span>Influencer</span><span class="dot">✦</span>
+        <span>MC &amp; Host</span><span class="dot">✦</span>
+        <span>TV Host</span><span class="dot">✦</span>
+        <span>Content Creator</span><span class="dot">✦</span>
+        <span>Brand Ambassador</span><span class="dot">✦</span>
+        <span>Comedian</span><span class="dot">✦</span>
+        <span>Influencer</span><span class="dot">✦</span>
+        <span>MC &amp; Host</span><span class="dot">✦</span>
+      </div>
+    </div>
+
+    <div class="hero-layout">
+      <!-- LEFT TEXT COLUMN -->
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-line"></span>
+          <span>East Africa's #1 Entertainer</span>
+        </div>
+
+        <h1 class="hero-name">
+          <span class="hn-line">
+            <span class="hn-word" data-parallax="0.05">Eric</span>
+          </span>
+          <span class="hn-line italic-line">
+            <span class="hn-word" data-parallax="0.08">Omondi</span>
+          </span>
+        </h1>
+
+        <p class="hero-tagline">Bold. Magnetic. Unapologetic.</p>
+
+        <div class="hero-stats-row">
+          <div class="hstat">
+            <div class="hstat-num"><span class="count" data-target="500">0</span>K+</div>
+            <div class="hstat-lbl">Followers</div>
+          </div>
+          <div class="hstat-div"></div>
+          <div class="hstat">
+            <div class="hstat-num"><span class="count" data-target="300">0</span>+</div>
+            <div class="hstat-lbl">Live Events</div>
+          </div>
+          <div class="hstat-div"></div>
+          <div class="hstat">
+            <div class="hstat-num"><span class="count" data-target="13">0</span>+</div>
+            <div class="hstat-lbl">Years</div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#contact" class="cta-primary">
+            <span class="cta-bg"></span>
+            <span class="cta-label">Book Eric</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+          <a href="#media" class="cta-ghost">Watch Content</a>
+        </div>
+      </div>
+
+      <!-- CENTER IMAGE -->
+      <div class="hero-center">
+        <div class="hero-img-ring"></div>
+        <div class="hero-img-container" id="heroImgContainer">
+          <img src="img.jpg" onerror="this.src='https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80'"/>
+          <div class="hero-img-overlay"></div>
+          <div class="hero-img-caption">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.06 4.17L15 6.18l-3.5 3.41.83 4.82L8 12.23l-4.33 2.18.83-4.82L1 6.18l4.94-.01L8 1z"/></svg>
+            Premier Entertainer
+          </div>
+        </div>
+
+        <!-- FLOATING PILLS -->
+        <div class="fpill fp1" data-depth="0.04">🎤 TV Host</div>
+        <div class="fpill fp2" data-depth="0.06">📱 1M+ YouTube</div>
+        <div class="fpill fp3" data-depth="0.03">🏆 Award Winner</div>
+        <div class="fpill fp4" data-depth="0.05">😂 Content Creator</div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="hero-right">
+        <div class="hero-desc">
+          <p>Africa's most celebrated comedian and digital content creator. Bringing laughter, culture, and authenticity to millions across the continent and beyond.</p>
+        </div>
+        <div class="hero-scrolldown">
+          <div class="scroll-wheel">
+            <div class="scroll-dot"></div>
+          </div>
+          <span>Scroll to explore</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARQUEE BOTTOM -->
+    <div class="marquee-strip bottom">
+      <div class="marquee-track reverse">
+        <span>Nairobi</span><span class="dot">◈</span>
+        <span>Kenya</span><span class="dot">◈</span>
+        <span>East Africa</span><span class="dot">◈</span>
+        <span>Digital Icon</span><span class="dot">◈</span>
+        <span>Reality TV</span><span class="dot">◈</span>
+        <span>Being Bahati</span><span class="dot">◈</span>
+        <span>Nairobi</span><span class="dot">◈</span>
+        <span>Kenya</span><span class="dot">◈</span>
+        <span>East Africa</span><span class="dot">◈</span>
+        <span>Digital Icon</span><span class="dot">◈</span>
+        <span>Reality TV</span><span class="dot">◈</span>
+        <span>Being Bahati</span><span class="dot">◈</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ ABOUT ░░ -->
+  <section class="about section" id="about">
+    <div class="about-bg-text" aria-hidden="true">Eric</div>
+    <div class="container">
+
+      <!-- SECTION LABEL -->
+      <div class="sec-label-row">
+        <div class="sec-label">01 — Biography</div>
+        <div class="sec-rule"></div>
+      </div>
+
+      <div class="about-grid">
+        <!-- IMAGE COLLAGE -->
+        <div class="about-images">
+          <div class="ai-main reveal-left">
+            <img src="about.jpg" alt="Eric" onerror="this.src='https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80'"/>
+            <div class="ai-main-label">Main Feature</div>
+          </div>
+          <div class="ai-col2">
+            <div class="ai-img2 reveal-up" style="--d:.1s">
+              <img src="about.jpg" onerror="this.src='https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80'"/>
+              <div class="img-tag">TV Host</div>
+            </div>
+            <div class="ai-img3 reveal-up" style="--d:.2s">
+              <img src="about.jpg" alt="Eric Event" onerror="this.src='https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80'"/>
+              <div class="img-tag">Brand Icon</div>
+            </div>
+          </div>
+          <!-- PORTRAIT VIDEO EMBED -->
+          <div class="about-video-wrap reveal-up" style="--d:.3s">
+            <div class="avw-label">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14"><path d="M8 5v14l11-7z"/></svg>
+              Featured Reel
+            </div>
+            <div class="avw-inner">
+              <!-- Embed YouTube shorts / portrait video -->
+              <iframe
+                src=""
+                title="Eric Portrait Reel"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+              <div class="avw-overlay">
+                <button class="avw-play" id="avwPlay" onclick="this.closest('.avw-inner').querySelector('iframe').src += '&autoplay=1'; this.style.display='none'">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TEXT CONTENT -->
+        <div class="about-text">
+          <h2 class="about-title reveal-right">
+            The Man Behind<br/><em>The Laughter</em><br/>
+          </h2>
+          <div class="about-body reveal-right" style="--d:.15s">
+            <p>
+              <strong>Eric Omondi</strong>is Kenya's most recognisable entertainer — a comedian, actor, social media powerhouse, and cultural icon who has redefined African digital comedy and content creation for a new generation.
+            </p>
+            <p>
+              From his early breakout on Churchill Live to becoming <strong>Africa's highest-followed comedian on Instagram</strong>,  Eric has consistently pushed the boundaries of entertainment, blending sharp wit, satire, and boundless creativity.
+            </p>
+            <p>
+                His work spans viral comedy skits, reality television, brand partnerships, live stand-up tours, and passionate advocacy for the Kenyan creative economy. He is not just an entertainer — he is a movement.
+            </p>
+          </div>
+
+          <div class="about-pillars reveal-right" style="--d:.25s">
+            <div class="ap-item">
+              <div class="ap-num">01</div>
+              <div class="ap-info">
+                <strong>Digital Icon</strong>
+                <span>YouTube Pioneer</span>
+              </div>
+            </div>
+            <div class="ap-item">
+              <div class="ap-num">02</div>
+              <div class="ap-info">
+                <strong>Comedian</strong>
+                <span>Stand Up Comedian</span>
+              </div>
+            </div>
+            <div class="ap-item">
+              <div class="ap-num">03</div>
+              <div class="ap-info">
+                <strong>Reality TV Star</strong>
+                <span>Being Bahati &amp; More</span>
+              </div>
+            </div>
+            <div class="ap-item">
+              <div class="ap-num">04</div>
+              <div class="ap-info">
+                <strong>Brand Ambassador</strong>
+                <span>Beauty, Lifestyle &amp; Major Brands</span>
+              </div>
+            </div>
+          </div>
+
+          <blockquote class="about-quote reveal-right" style="--d:.35s">
+            "Entertainment is my language — I speak it fluently."
+            <cite>— Eric Omondi</cite>
+          </blockquote>
+
+          <a href="#contact" class="cta-primary reveal-right" style="--d:.4s">
+            <span class="cta-bg"></span>
+            <span class="cta-label">Work With Eric</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ GALLERY ░░ --
+  <section class="gallery section" id="gallery">
+    <div class="container">
+      <div class="sec-label-row">
+        <div class="sec-label">02 — Gallery</div>
+        <div class="sec-rule"></div>
+        <h2 class="sec-title-inline">In the <em>Frame</em></h2>
+      </div>
+
+      <div class="gallery-masonry">
+        <div class="gm-item gm-tall reveal-up" style="--d:0s">
+          <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/661452511_18459520993109902_7395991139142088681_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=105&ig_cache_key=Mzg3MDkwMTgxNTQ1Mzk1Mzg3Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=NtroTqkP9UQQ7kNvwGgVXZk&_nc_oc=AdrQnJgZe9sUgUvjk5E6ab4k1utm8jNBvdJI_pkciuDCy6_8CvpbGHDYtno3BOhKJB0&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=bbNaoGJlCAIeW3s6dGoVDA&_nc_ss=7a22e&oh=00_Af8CEYSKQXBUltZc-BRTAqKM8z5AuXPj6cze1rxXLZOOKA&oe=6A23BBA6" alt="Eric" onerror="this.src='https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&q=80'"/>
+          <div class="gm-hover">
+            <span>Live Performance</span>
+          </div>
+        </div>
+        <div class="gm-item reveal-up" style="--d:.08s">
+          <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/658104155_18456861358109902_4283494201978169098_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ig_cache_key=Mzg2MDcxMDg0NjQ0ODMyMTU4OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=d0ukOCZqMsIQ7kNvwE_bLHl&_nc_oc=AdoczedPwzizBBbbDWOwZ-dNmJ4x1F1pDrPdUzniUWSNKtExq2PJL_t8wItGBG5058o&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=bbNaoGJlCAIeW3s6dGoVDA&_nc_ss=7a22e&oh=00_Af9ljWE6RcX70PcNDkXOtgxNOenU52viRahleZyIqRVtcA&oe=6A23C64F" alt="Eric" onerror="this.src='https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=500&q=80'"/>
+          <div class="gm-hover"><span>Studio Session</span></div>
+        </div>
+        <div class="gm-item gm-wide reveal-up" style="--d:.16s">
+          <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/662157923_18457621054109902_7652986431080802179_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ig_cache_key=Mzg2MzUzMjk1NTE4ODg3NzA4Mg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=rmclMYUg-E8Q7kNvwGd9qYn&_nc_oc=AdpEj21ctHyl9toyzzi_73lO4mO-ZfRB0eqNTfxOtYCkvz3zwUINLioDoMl5ijEaZGE&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=bbNaoGJlCAIeW3s6dGoVDA&_nc_ss=7a22e&oh=00_Af-TUT2hS74DoFItVrrbFAfyZIFL7yyYFK2t3rLOz7JJbQ&oe=6A23C7BE" alt="Eric" onerror="this.src='https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80'"/>
+          <div class="gm-hover"><span>Brand Campaign</span></div>
+        </div>
+        <div class="gm-item reveal-up" style="--d:.24s">
+          <img src="about.jpg" alt="Eric" onerror="this.src='https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=500&q=80'"/>
+          <div class="gm-hover"><span>TV Appearance</span></div>
+        </div>
+        <div class="gm-item gm-tall reveal-up" style="--d:.32s">
+          <img src="Eric.jpg" alt="Eric" onerror="this.src='https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&q=80'"/>
+          <div class="gm-hover"><span>Red Carpet</span></div>
+        </div>
+        <div class="gm-item reveal-up" style="--d:.4s">
+          <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/660428080_18458795281109902_6372917600686797181_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=Mzg2ODUyNzc5NjQ0ODY3Nzg4MQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=1Q9HdIqlBt4Q7kNvwEXSKqV&_nc_oc=AdpaZkU2IOeOttu3T-xUstJCREBmMsOxWgQx_lA9QrZ6vGgAGHqMVppEKSrRBfogjtk&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=bbNaoGJlCAIeW3s6dGoVDA&_nc_ss=7a22e&oh=00_Af_Efa6rpjgqIYZaG1CJ-XcLLTnh1nsUrQ3GDbyBEJQqNQ&oe=6A23C9BB" alt="Eric" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80'"/>
+          <div class="gm-hover"><span>Behind the Scenes</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+-->
+
+  <!-- ░░ NUMBERS PARALLAX BAND ░░ -->
+  <div class="numbers-band" id="numbersBand">
+    <div class="nb-parallax" data-parallax-speed="0.3">
+      <div class="nb-item">
+        <div class="nb-num">500<span>K+</span></div>
+        <div class="nb-desc">Total Followers</div>
+      </div>
+      <div class="nb-div">✦</div>
+      <div class="nb-item">
+        <div class="nb-num">300<span>+</span></div>
+        <div class="nb-desc">Live Events Hosted</div>
+      </div>
+      <div class="nb-div">✦</div>
+      <div class="nb-item">
+        <div class="nb-num">1<span>M+</span></div>
+        <div class="nb-desc">YouTube Milestone</div>
+      </div>
+      <div class="nb-div">✦</div>
+      <div class="nb-item">
+        <div class="nb-num">13<span>+</span></div>
+        <div class="nb-desc">Years in Industry</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░ SERVICES ░░ -->
+  <section class="services section" id="services">
+    <div class="container">
+      <div class="sec-label-row">
+        <div class="sec-label">03 — What He Does</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="services-header">
+        <h2 class="services-title reveal-up">Premium <em>Services</em></h2>
+        <p class="services-sub reveal-up" style="--d:.1s">Professional entertainment that elevates every experience</p>
+      </div>
+
+      <div class="services-list">
+        <div class="sv-row reveal-up" style="--d:0s">
+          <div class="sv-num">01</div>
+          <div class="sv-icon">🎙️</div>
+          <div class="sv-content">
+            <h3>TV &amp; Radio Hosting</h3>
+            <p>Magnetic on-air personality with years of engaging TV &amp; radio shows captivating East African audiences daily.</p>
+          </div>
+          <div class="sv-tag">Media</div>
+          <div class="sv-arrow">→</div>
+        </div>
+        <div class="sv-row reveal-up" style="--d:.06s">
+          <div class="sv-num">02</div>
+          <div class="sv-icon">🎬</div>
+          <div class="sv-content">
+            <h3>Content Creation</h3>
+            <p>Viral digital content — YouTube, TikTok, Instagram — engineered for maximum engagement and authentic reach.</p>
+          </div>
+          <div class="sv-tag">Digital</div>
+          <div class="sv-arrow">→</div>
+        </div>
+        <div class="sv-row featured reveal-up" style="--d:.12s">
+          <div class="sv-num">03</div>
+          <div class="sv-icon">🎤</div>
+          <div class="sv-content">
+            <h3>Event MC</h3>
+            <p>Premium MC services for corporate galas, weddings, and entertainment shows across the region.</p>
+          </div>
+          <div class="sv-tag popular">Most Popular</div>
+          <div class="sv-arrow">→</div>
+        </div>
+        <div class="sv-row reveal-up" style="--d:.18s">
+          <div class="sv-num">04</div>
+          <div class="sv-icon">🤝</div>
+          <div class="sv-content">
+            <h3>Brand Endorsements</h3>
+            <p>Authentic partnerships with top companies delivering real ROI and genuine audience engagement.</p>
+          </div>
+          <div class="sv-tag">Brand</div>
+          <div class="sv-arrow">→</div>
+        </div>
+        <div class="sv-row reveal-up" style="--d:.24s">
+          <div class="sv-num">05</div>
+          <div class="sv-icon">💌</div>
+          <div class="sv-content">
+            <h3>Personalised Video Messages</h3>
+            <p>Custom video messages, birthday shoutouts, and personalised content for fans and corporate clients.</p>
+          </div>
+          <div class="sv-tag">Unique</div>
+          <div class="sv-arrow">→</div>
+        </div>
+        <div class="sv-row reveal-up" style="--d:.30s">
+          <div class="sv-num">06</div>
+          <div class="sv-icon">⭐</div>
+          <div class="sv-content">
+            <h3>Meet &amp; Greet / Appearances</h3>
+            <p>Exclusive personal sessions for fans, clients, and partners — an unforgettable VIP experience.</p>
+          </div>
+          <div class="sv-tag">VIP</div>
+          <div class="sv-arrow">→</div>
+        </div>
+        <div class="sv-row reveal-up" style="--d:.36s">
+          <div class="sv-num">07</div>
+          <div class="sv-icon">📸</div>
+          <div class="sv-content">
+            <h3>Photography &amp; Production</h3>
+            <p>High-quality photography &amp; video production coverage for campaigns, events, and editorial projects.</p>
+          </div>
+          <div class="sv-tag">Visual</div>
+          <div class="sv-arrow">→</div>
+        </div>
+        <div class="sv-row reveal-up" style="--d:.42s">
+          <div class="sv-num">08</div>
+          <div class="sv-icon">🎵</div>
+          <div class="sv-content">
+            <h3>DJ &amp; Sound Services</h3>
+            <p>Professional sound system and DJ services curated through a premium entertainment network.</p>
+          </div>
+          <div class="sv-tag">Audio</div>
+          <div class="sv-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ MEDIA ░░ -->
+  <section class="media section" id="media">
+    <div class="container">
+      <div class="sec-label-row">
+        <div class="sec-label">04 — Content</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="media-head">
+        <h2 class="media-title reveal-left">Media <em>Highlights</em></h2>
+        <div class="media-social-row reveal-right">
+          <a href="https://instagram.com/EricB" target="_blank" class="ms-pill ig">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @EricB
+          </a>
+          <a href="https://www.youtube.com/@Ericofficial" target="_blank" class="ms-pill yt">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+            YouTube
+          </a>
+        </div>
+      </div>
+
+      <div class="media-grid">
+        <a href="https://www.youtube.com/@Ericofficial" target="_blank" class="mc reveal-up" style="--d:0s;--grad:linear-gradient(135deg,#ff6b35,#f72585)">
+          <div class="mc-thumb">
+            <div class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="mc-cat">Content</span>
+          </div>
+          <div class="mc-info">
+            <h4>Latest Content Special</h4>
+            <p>Hilarious stand-up from Nairobi Comedy Club</p>
+            <span class="mc-ch">Eric Official</span>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/@africanproblemsunfiltered" target="_blank" class="mc reveal-up" style="--d:.08s;--grad:linear-gradient(135deg,#7209b7,#3a0ca3)">
+          <div class="mc-thumb">
+            <div class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="mc-cat">TV</span>
+          </div>
+          <div class="mc-info">
+            <h4>TV Show Highlights</h4>
+            <p>Best moments from the morning show</p>
+            <span class="mc-ch">African Problems Unfiltered</span>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/@EricExtra" target="_blank" class="mc reveal-up" style="--d:.16s;--grad:linear-gradient(135deg,#4cc9f0,#4361ee)">
+          <div class="mc-thumb">
+            <div class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="mc-cat">BTS</span>
+          </div>
+          <div class="mc-info">
+            <h4>Behind the Scenes</h4>
+            <p>Exclusive look at content creation</p>
+            <span class="mc-ch">Eric Extra</span>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/@tonightlivewithB" target="_blank" class="mc reveal-up" style="--d:.24s;--grad:linear-gradient(135deg,#f72585,#7209b7)">
+          <div class="mc-thumb">
+            <div class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="mc-cat">Talk Show</span>
+          </div>
+          <div class="mc-info">
+            <h4>Tonight Live with Eric</h4>
+            <p>Late night talk show magic</p>
+            <span class="mc-ch">Tonight Live</span>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/@zabe_254" target="_blank" class="mc reveal-up" style="--d:.32s;--grad:linear-gradient(135deg,#06d6a0,#118ab2)">
+          <div class="mc-thumb">
+            <div class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="mc-cat">Brand</span>
+          </div>
+          <div class="mc-info">
+            <h4>Brand Collaborations</h4>
+            <p>Working with East Africa's top brands</p>
+            <span class="mc-ch">Zabe 254</span>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/@theBz" target="_blank" class="mc reveal-up" style="--d:.40s;--grad:linear-gradient(135deg,#ffd60a,#fb8500)">
+          <div class="mc-thumb">
+            <div class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="mc-cat">Culture</span>
+          </div>
+          <div class="mc-info">
+            <h4>Cultural Content</h4>
+            <p>Bridging Kenyan and Nigerian cultures</p>
+            <span class="mc-ch">The Bahatis</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ PARALLAX QUOTE ░░ -->
+  <div class="quote-band" id="quoteBand">
+    <div class="qb-inner">
+      <div class="qb-text" data-parallax-speed="0.2">"I don't chase trends.<br/>I <em>set</em> them."</div>
+      <cite>— Eric Omondi</cite>
+    </div>
+    <div class="qb-bg" id="qbBg"></div>
+  </div>
+
+  <!-- ░░ BRANDS ░░ -->
+  <section class="brands section" id="brands">
+    <div class="container">
+      <div class="sec-label-row">
+        <div class="sec-label">05 — Partnerships</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="brands-head">
+        <h2 class="brands-title reveal-up">Trusted by <em>Leading</em><br/>Brands</h2>
+        <p class="brands-sub reveal-up" style="--d:.1s">Authentic partnerships delivering real impact across East Africa</p>
+      </div>
+      <div class="brands-grid">
+        <div class="brand-item reveal-up" style="--d:0s">
+          <img src="https://www.EricB.com/img/zinco%20mbati.jpeg" alt="Zinco Mabati" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="brand-name-fb" style="display:none">Zinco Mabati</div>
+          <p>Premium Roofing Solutions</p>
+        </div>
+        <div class="brand-item reveal-up" style="--d:.08s">
+          <img src="https://www.EricB.com/img/mozzart-logo.svg" alt="Mozzart" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="brand-name-fb" style="display:none">Mozzart</div>
+          <p>Entertainment Platform</p>
+        </div>
+        <div class="brand-item brand-cta-item reveal-up" style="--d:.16s">
+          <div class="bci-plus">+</div>
+          <h4>Your Brand Here</h4>
+          <p>Join East Africa's top brands partnering with Eric</p>
+          <a href="#contact" class="cta-ghost sm">Partner Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ PRESS / AWARDS ░░ -->
+  <section class="press section" id="press">
+    <div class="container">
+      <div class="sec-label-row">
+        <div class="sec-label">06 — Press &amp; Awards</div>
+        <div class="sec-rule"></div>
+      </div>
+      <h2 class="press-title reveal-up">Recognition &amp; <em>Accolades</em></h2>
+      <div class="press-grid">
+        <div class="press-item reveal-up" style="--d:0s">
+          <div class="pi-icon">🏆</div>
+          <div class="pi-content">
+            <h4>Digital Pioneer Award</h4>
+            <p>Recognised as one of Kenya's foremost digital content creators and influencers shaping the next generation.</p>
+            <span class="pi-year">2023</span>
+          </div>
+        </div>
+        <div class="press-item reveal-up" style="--d:.1s">
+          <div class="pi-icon">📺</div>
+          <div class="pi-content">
+            <h4>1 Million YouTube Subscribers</h4>
+            <p>First Kenyan female content creator to achieve this milestone on YouTube — a landmark in East African digital media.</p>
+            <span class="pi-year">2022</span>
+          </div>
+        </div>
+        <div class="press-item reveal-up" style="--d:.2s">
+          <div class="pi-icon">🌍</div>
+          <div class="pi-content">
+            <h4>East Africa Media Personality</h4>
+            <p>Featured and profiled across regional and international media outlets for her cultural impact and digital influence.</p>
+            <span class="pi-year">2021–Present</span>
+          </div>
+        </div>
+        <div class="press-item reveal-up" style="--d:.3s">
+          <div class="pi-icon">🎭</div>
+          <div class="pi-content">
+            <h4>Being Bahati – Reality TV</h4>
+            <p>Starred in Kenya's premier reality TV show, bringing a massive cross-audience following to digital platforms.</p>
+            <span class="pi-year">2020</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ TESTIMONIALS ░░ -->
+  <section class="testimonials section" id="testimonials">
+    <div class="testi-bg-word" aria-hidden="true">REVIEWS</div>
+    <div class="container">
+      <div class="sec-label-row">
+        <div class="sec-label">07 — Testimonials</div>
+        <div class="sec-rule"></div>
+      </div>
+      <h2 class="testi-head reveal-up">What <em>Clients</em> Say</h2>
+      <div class="testi-grid">
+        <div class="tc reveal-up" style="--d:0s">
+          <div class="tc-stars">★★★★★</div>
+          <p>"Eric transformed our corporate event into an unforgettable experience. Her professionalism and energy created the perfect atmosphere."</p>
+          <div class="tc-author">
+            <div class="tc-av">SK</div>
+            <div>
+              <strong>Sarah Kimani</strong>
+              <span>Event Director, Nairobi Events Co.</span>
+            </div>
+          </div>
+        </div>
+        <div class="tc featured reveal-up" style="--d:.12s">
+          <div class="tc-stars">★★★★★</div>
+          <p>"Working with Eric exceeded all expectations. Her authentic connection with audiences delivered results far beyond our KPIs."</p>
+          <div class="tc-author">
+            <div class="tc-av">MO</div>
+            <div>
+              <strong>Michael Ochieng</strong>
+              <span>Brand Manager, East Africa Marketing</span>
+            </div>
+          </div>
+        </div>
+        <div class="tc reveal-up" style="--d:.24s">
+          <div class="tc-stars">★★★★★</div>
+          <p>"Her TV presence is magnetic. He brings intelligence, humor, and genuine entertainment that keeps audiences completely engaged."</p>
+          <div class="tc-author">
+            <div class="tc-av">GW</div>
+            <div>
+              <strong>Grace Wanjiku</strong>
+              <span>TV Producer, Capital FM Kenya</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ CONTACT ░░ -->
+  <section class="contact section" id="contact">
+    <div class="contact-bg-img" id="contactBg"></div>
+    <div class="container">
+      <div class="sec-label-row">
+        <div class="sec-label">08 — Bookings</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-left">
+          <h2 class="contact-title reveal-left">Let's Create<br/><em>Something</em><br/>Extraordinary.</h2>
+          <p class="contact-sub reveal-left" style="--d:.1s">Ready to elevate your event? Fill out the form and we'll respond within 24 hours.</p>
+          <div class="contact-details reveal-left" style="--d:.2s">
+            <div class="cd-item">
+              <div class="cd-icon">📍</div>
+              <div>
+                <strong>Location</strong>
+                <span>Westlands, Nairobi, Kenya</span>
+              </div>
+            </div>
+            <div class="cd-item">
+              <div class="cd-icon">✉️</div>
+              <div>
+                <strong>Email</strong>
+                <a href="mailto:bookings@Ericstudios.com">bookings@Ericstudios.com</a>
+              </div>
+            </div>
+            <div class="cd-item">
+              <div class="cd-icon">📱</div>
+              <div>
+                <strong>WhatsApp</strong>
+                <a href="https://wa.me/254798663936">+254 712 345 678</a>
+              </div>
+            </div>
+            <div class="cd-item">
+              <div class="cd-icon">🕐</div>
+              <div>
+                <strong>Office Hours</strong>
+                <span>Mon–Fri 9AM–4:30PM · Sat 10AM–4PM</span>
+              </div>
+            </div>
+          </div>
+          <div class="contact-socials reveal-left" style="--d:.3s">
+            <a href="https://instagram.com/Eric" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/@Ericofficial" target="_blank">YouTube</a>
+            <a href="https://wa.me/254712345678" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+
+        <form class="contact-form reveal-right" id="contactForm">
+          <div class="cf-row">
+            <div class="cf-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Your full name" required/>
+            </div>
+            <div class="cf-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="your@email.com" required/>
+            </div>
+          </div>
+          <div class="cf-row">
+            <div class="cf-group">
+              <label>Event Type</label>
+              <select required>
+                <option value="" disabled selected>Select event type</option>
+                <option>Corporate Event</option>
+                <option>Wedding</option>
+                <option>Content Creation</option>
+                <option>Brand Endorsement</option>
+                <option>Personalised Video</option>
+                <option>TV Appearance</option>
+                <option>Meet &amp; Greet</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="cf-group">
+              <label>Event Date</label>
+              <input type="date"/>
+            </div>
+          </div>
+          <div class="cf-group full">
+            <label>Event Details</label>
+            <textarea rows="5" placeholder="Tell us about your event, location, audience size, and any special requirements..." required></textarea>
+          </div>
+          <button type="submit" class="cta-primary full-btn">
+            <span class="cta-bg"></span>
+            <span class="cta-label">Send Booking Request</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+          <div class="cf-success" id="cfSuccess">✅ Message sent! We'll get back to you within 24 hours.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="ft-logo">Eric<span>Omondi</span></div>
+      <div class="ft-tagline">East Africa's Premier Entertainer</div>
+      <div class="ft-social">
+        <a href="https://instagram.com/Eric" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@Ericofficial" target="_blank" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        </a>
+        <a href="https://wa.me/254712345678" target="_blank" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-links-row">
+      <div class="fl-group">
+        <h6>Navigation</h6>
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#services">Services</a>
+        <a href="#media">Media</a>
+      </div>
+      <div class="fl-group">
+        <h6>Services</h6>
+        <a href="#contact">TV &amp; Radio Hosting</a>
+        <a href="#contact">Event MC</a>
+        <a href="#contact">Brand Endorsements</a>
+        <a href="#contact">Meet &amp; Greet</a>
+      </div>
+      <div class="fl-group">
+        <h6>Contact</h6>
+        <a href="mailto:bookings@Ericstudios.com">bookings@Ericstudios.com</a>
+        <a href="https://wa.me/254712345678">+254 712 345 678</a>
+        <span>Westlands, Nairobi, Kenya</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Eric Omondi. All rights reserved.</p>
+      <p>Powered by <strong>BlackCodeLabs</strong> ⚡</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
