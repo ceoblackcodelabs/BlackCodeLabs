@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>{% block title %}{% endblock title %} — We Build Digital Empires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="{% static "assets/css/shared.css" %}"/>
+{% block injectcss %}{% endblock injectcss %}
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="page-veil"></div>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer">
+  <a href="{% url "home" %}">Home</a>
+  <a href="{% url "solutions" %}">Solutions</a>
+  <a href="{% url "pricing" %}">Pricing</a>
+  {% comment %} <a href="{% url "careers" %}">Careers</a> {% endcomment %}
+  <a href="{% url "affiliate" %}">Affiliate</a>
+  <a href="{% url "contact" %}">Contact</a>
+  <div class="drawer-actions">
+    <a href="login.html" class="btn btn-outline btn-full">Sign In</a>
+    <a href="register.html" class="btn btn-red btn-full">Get Started</a>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <ul class="nav-links">
+    <li><a href="{% url "home" %}" class="active">Home</a></li>
+    <li><a href="{% url "solutions" %}">Solutions</a></li>
+    <li><a href="{% url "pricing" %}">Pricing</a></li>
+    {% comment %} <li><a href="{% url "careers" %}">Careers</a></li> {% endcomment %}
+    <li><a href="{% url "affiliate" %}">Affiliate</a></li>
+    <li><a href="{% url "contact" %}">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+    <a href="register.html" class="btn btn-red btn-sm">Get Started</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+{% block content %}{% endblock content %}
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+        <p>Elite software engineering for the digital age. We build systems that power tomorrow's most ambitious businesses.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="career.html">Careers</a></li>
+          <li><a href="affiliate.html">Affiliate</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="contact.html">Get in Touch</a></li>
+          <li><a href="mailto:ceoblackcodelabs@gmail.com">ceoblackcodelabs@gmail.com</a></li>
+          <li><a href="login.html">Client Portal</a></li>
+          <li><a href="register.html">Register</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <em>BlackCodeLabs</em>. All rights reserved.</p>
+      <p>Built with precision by <em>BlackCodeLabs</em> engineers.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{% static "assets/js/shared.js" %}"></script>
+{% block extra_js %}{% endblock extra_js %}
+</body>
+</html>
