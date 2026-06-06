@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator, validate_email
 import re
 from decimal import Decimal
 from .models import (
-    ContactInquiry, DemoBooking, 
+    ContactInquiry, DemoBooking,
     CourseEnrollment, Course
 )
 from django.utils import timezone
@@ -21,20 +21,19 @@ class ContactForm(forms.ModelForm):
         }),
         validators=[RegexValidator(r'^\+?1?\d{9,15}$', 'Enter a valid phone number.')]
     )
-    
+
     # Add honeypot field for spam protection
     honeypot = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={'style': 'display:none;'}),
         label='Leave this field empty'
     )
-    
+
     class Meta:
         model = ContactInquiry
         fields = [
             'first_name', 'last_name', 'email', 'phone',
-            'company', 'department', 'subject', 'message',
-            'newsletter_subscribed'
+            'company', 'subject', 'message',
         ]
         widgets = {
             'first_name': forms.TextInput(attrs={
@@ -60,26 +59,20 @@ class ContactForm(forms.ModelForm):
                 'placeholder': 'Please provide details about your inquiry...',
                 'rows': 6
             }),
-            'department': forms.Select(attrs={
-                'class': 'form-select'
-            }),
-            'newsletter_subscribed': forms.CheckboxInput(attrs={
-                'class': 'form-checkbox'
-            }),
         }
-    
+
     def clean_honeypot(self):
         """Check if honeypot field was filled (spam detection)"""
         honeypot = self.cleaned_data.get('honeypot')
         if honeypot:
             raise forms.ValidationError("Spam detected.")
         return honeypot
-    
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         # Add any additional email validation here
         return email.lower()  # Store emails in lowercase
-    
+
     def clean_message(self):
         message = self.cleaned_data.get('message')
         # Check for suspicious content
@@ -88,7 +81,7 @@ class ContactForm(forms.ModelForm):
             # Could mark as potential spam or raise validation error
             pass
         return message
-    
+
 class DemoBookingForm(forms.ModelForm):
     # Hidden honeypot field for spam protection
     website = forms.CharField(
@@ -96,7 +89,7 @@ class DemoBookingForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'honeypot'}),
         label='Leave this field empty'
     )
-    
+
     class Meta:
         model = DemoBooking
         fields = [
@@ -151,40 +144,40 @@ class DemoBookingForm(forms.ModelForm):
                 'class': 'form-checkbox'
             }),
         }
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Set minimum date to tomorrow
         tomorrow = timezone.now() + timedelta(days=1)
         self.fields['demo_date'].widget.attrs['min'] = tomorrow.strftime('%Y-%m-%d')
-    
+
     def clean_website(self):
         """Honeypot validation"""
         website = self.cleaned_data.get('website')
         if website:
             raise ValidationError("Spam detected.")
         return website
-    
+
     def clean_demo_date(self):
         demo_date = self.cleaned_data.get('demo_date')
-        
+
         if demo_date:
             # Ensure date is in the future
             today = timezone.now().date()
             if demo_date <= today:
                 raise ValidationError("Please select a future date for the demo.")
-            
+
             # Optional: Restrict to business days
             if demo_date.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
                 raise ValidationError("Demos are only available on weekdays.")
-            
+
             # Optional: Restrict to next 90 days
             max_date = today + timedelta(days=90)
             if demo_date > max_date:
                 raise ValidationError("Please select a date within the next 90 days.")
-        
+
         return demo_date
-    
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         # Check if this email has too many pending demos
@@ -194,17 +187,17 @@ class DemoBookingForm(forms.ModelForm):
                 status__in=['pending', 'confirmed'],
                 demo_date__gte=timezone.now().date()
             ).count()
-            
+
             if pending_count >= 3:
                 raise ValidationError("You have too many pending demos. Please wait for confirmation on existing bookings.")
-        
+
         return email.lower()
-    
+
     def clean(self):
         cleaned_data = super().clean()
         demo_date = cleaned_data.get('demo_date')
         demo_time = cleaned_data.get('demo_time')
-        
+
         # Check for time slot availability
         if demo_date and demo_time:
             existing_bookings = DemoBooking.objects.filter(
@@ -212,18 +205,18 @@ class DemoBookingForm(forms.ModelForm):
                 demo_time=demo_time,
                 status__in=['pending', 'confirmed']
             ).count()
-            
+
             if existing_bookings >= 2:  # Limit 2 demos per time slot
                 raise ValidationError(f"This time slot ({demo_time}) is already booked. Please choose another time.")
-        
+
         return cleaned_data
-    
-    
+
+
 class CourseEnrollmentForm(forms.ModelForm):
     """Form for course enrollment."""
-    
+
     course_id = forms.IntegerField(widget=forms.HiddenInput())
-    
+
     class Meta:
         model = CourseEnrollment
         fields = [
@@ -260,7 +253,7 @@ class CourseEnrollmentForm(forms.ModelForm):
                 'rows': 4
             }),
         }
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Customize country choices if needed
@@ -294,7 +287,7 @@ class CourseEnrollmentForm(forms.ModelForm):
             ('MG', 'Madagascar'),
             ('CM', 'Cameroon'),
         ]
-    
+
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name', '').strip()
         if not first_name:
@@ -304,7 +297,7 @@ class CourseEnrollmentForm(forms.ModelForm):
         if not re.match(r'^[A-Za-z\s\-]+$', first_name):
             raise ValidationError('First name can only contain letters, spaces, and hyphens.')
         return first_name
-    
+
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name', '').strip()
         if not last_name:
@@ -314,7 +307,7 @@ class CourseEnrollmentForm(forms.ModelForm):
         if not re.match(r'^[A-Za-z\s\-]+$', last_name):
             raise ValidationError('Last name can only contain letters, spaces, and hyphens.')
         return last_name
-    
+
     def clean_email(self):
         email = self.cleaned_data.get('email', '').strip().lower()
         if not email:
@@ -324,37 +317,37 @@ class CourseEnrollmentForm(forms.ModelForm):
         except ValidationError:
             raise ValidationError('Please enter a valid email address.')
         return email
-    
+
     def clean_phone(self):
         phone = self.cleaned_data.get('phone', '').strip()
         if not phone:
             raise ValidationError('Phone number is required.')
-        
+
         # Allow various phone formats
         phone_regex = r'^[\+]?[1-9][\d]{0,15}$'
         if not re.match(phone_regex, phone.replace(' ', '').replace('-', '').replace('(', '').replace(')', '')):
             raise ValidationError('Please enter a valid phone number.')
         return phone
-    
+
     def clean_country(self):
         country = self.cleaned_data.get('country')
         if not country:
             raise ValidationError('Please select your country.')
         return country
-    
+
     def clean_experience_level(self):
         experience_level = self.cleaned_data.get('experience_level')
         if not experience_level:
             raise ValidationError('Please select your experience level.')
         return experience_level
-    
+
     def clean(self):
         cleaned_data = super().clean()
-        
+
         # Additional cross-field validation
         email = cleaned_data.get('email')
         course_id = cleaned_data.get('course_id')
-        
+
         # Check if email is already enrolled in this course
         if email and course_id:
             from .models import Course, CourseEnrollment
@@ -364,14 +357,14 @@ class CourseEnrollmentForm(forms.ModelForm):
                     self.add_error('email', 'This email is already enrolled in this course.')
             except Course.DoesNotExist:
                 self.add_error('course_id', 'Invalid course selected.')
-        
+
         return cleaned_data
 
 # Additional Forms for Admin
 
 class CourseForm(forms.ModelForm):
     """Form for creating/editing courses."""
-    
+
     class Meta:
         model = Course
         fields = '__all__'
@@ -389,7 +382,7 @@ class CourseForm(forms.ModelForm):
             }),
             'color': forms.TextInput(attrs={'type': 'color'}),
         }
-    
+
     def clean_details(self):
         details = self.cleaned_data.get('details')
         if details:
@@ -399,7 +392,7 @@ class CourseForm(forms.ModelForm):
             except json.JSONDecodeError:
                 raise ValidationError('Details must be valid JSON format.')
         return details
-    
+
     def clean_curriculum(self):
         curriculum = self.cleaned_data.get('curriculum')
         if curriculum:
@@ -414,7 +407,7 @@ class CourseForm(forms.ModelForm):
 
 class EnrollmentStatusForm(forms.ModelForm):
     """Form for updating enrollment status."""
-    
+
     class Meta:
         model = CourseEnrollment
         fields = ['status', 'payment_status', 'notes']

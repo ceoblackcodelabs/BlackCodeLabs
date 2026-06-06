@@ -1,0 +1,321 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block title %}Solutions | BlackCodeLabs{% endblock %}
+
+{% block injectcss %}
+<style>
+.page-hero{position:relative;padding:calc(var(--nav-h) + 4rem) 5vw 4rem;min-height:60svh;display:flex;align-items:center;overflow:hidden}
+#sol-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ph-inner{position:relative;z-index:2;max-width:720px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-m);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4rem;opacity:0;animation:fUp .9s var(--ease) .2s forwards}
+.hero-eyebrow::before{content:'';width:18px;height:1px;background:var(--accent)}
+.ph-inner h1{font-family:var(--font-d);font-size:clamp(2.5rem,9vw,5.5rem);font-weight:900;line-height:1.03;letter-spacing:-.02em;opacity:0;animation:fUp 1s var(--ease) .35s forwards}
+.ph-inner h1 em{font-style:italic;color:var(--accent)}
+.ph-inner p{margin-top:1.3rem;font-size:clamp(.88rem,2.2vw,1rem);color:var(--text2);max-width:480px;line-height:1.8;opacity:0;animation:fUp 1s var(--ease) .5s forwards}
+@keyframes fUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* STICKY PILL NAV */
+.sol-nav{position:sticky;top:var(--nav-h);z-index:500;background:rgba(5,5,5,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:.7rem 5vw}
+.sol-nav-scroll{display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sol-nav-scroll::-webkit-scrollbar{display:none}
+.sol-pill{font-family:var(--font-m);font-size:.65rem;letter-spacing:.09em;text-transform:uppercase;padding:.4rem .9rem;border:1px solid var(--border);border-radius:20px;color:var(--text3);text-decoration:none;white-space:nowrap;cursor:pointer;transition:all .25s;flex-shrink:0}
+.sol-pill:hover,.sol-pill.active{border-color:rgba(192,57,43,.4);color:var(--accent);background:var(--accent-g)}
+
+/* SERVICE SECTIONS */
+.sol-section{padding:clamp(3rem,7vw,6rem) 5vw;border-bottom:1px solid var(--border)}
+.sol-section:last-child{border-bottom:none}
+.sol-inner{display:grid;grid-template-columns:1fr;gap:2.5rem;align-items:start;max-width:1200px;margin:0 auto}
+.sol-num-label{font-family:var(--font-m);font-size:.63rem;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:.7rem}
+.sol-section h2{font-family:var(--font-d);font-size:clamp(1.7rem,4vw,2.7rem);font-weight:700;line-height:1.12;letter-spacing:-.01em}
+.sol-section h2 em{font-style:italic;color:var(--accent)}
+.sol-section p{font-size:.88rem;color:var(--text2);line-height:1.85;margin-bottom:.8rem}
+.sol-features{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin:1.2rem 0 1.6rem}
+.sol-features li{display:flex;align-items:flex-start;gap:.7rem;font-size:.85rem;color:var(--text2);line-height:1.5}
+.sol-features li::before{content:'—';color:var(--accent);flex-shrink:0;font-family:var(--font-m);font-size:.72rem;margin-top:.15rem}
+.sol-cta-link{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--accent);text-decoration:none;font-family:var(--font-m);letter-spacing:.07em;border-bottom:1px solid rgba(192,57,43,.25);padding-bottom:.1rem;transition:gap .3s,border-color .3s}
+.sol-cta-link:hover{gap:.8rem;border-color:var(--accent)}
+
+/* VISUAL CARD */
+.sol-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .3s}
+.sol-card:hover{border-color:rgba(192,57,43,.22)}
+.sol-card-head{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.9rem}
+.sol-card-icon{width:42px;height:42px;background:var(--accent-g);border:1px solid rgba(192,57,43,.18);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.sol-card-head h4{font-family:var(--font-d);font-size:.9rem;font-weight:700}
+.sol-card-head span{font-family:var(--font-m);font-size:.62rem;color:var(--text3);display:block;margin-top:.15rem}
+.sol-card-body{padding:1.5rem}
+.tech-cloud{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.4rem}
+.t-chip{font-family:var(--font-m);font-size:.62rem;letter-spacing:.07em;padding:.28rem .65rem;border:1px solid var(--border);border-radius:20px;color:var(--text3);cursor:default;transition:all .22s}
+.t-chip:hover{border-color:rgba(192,57,43,.3);color:var(--accent);background:var(--accent-g)}
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.ms{background:var(--bg3);padding:1rem;text-align:center}
+.ms h5{font-family:var(--font-d);font-size:1.5rem;font-weight:900;color:var(--accent);line-height:1}
+.ms p{font-family:var(--font-m);font-size:.58rem;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-top:.25rem}
+
+/* PROCESS */
+.process-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.process-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2.5rem}
+.p-step{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1.6rem 1.3rem;transition:all .35s}
+.p-step:hover{border-color:rgba(192,57,43,.22);transform:translateY(-3px)}
+.p-num{width:40px;height:40px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:.7rem;color:var(--accent);margin-bottom:1rem;transition:all .35s}
+.p-step:hover .p-num{background:var(--accent);color:#fff;border-color:transparent}
+.p-step h3{font-family:var(--font-d);font-size:.95rem;font-weight:700;margin-bottom:.5rem}
+.p-step p{font-size:.8rem;color:var(--text2);line-height:1.7}
+
+/* STACK CLOUD */
+.stack-section{text-align:center}
+.stack-section p{font-size:.88rem;color:var(--text2);margin-top:.8rem;margin-bottom:2rem;line-height:1.75;max-width:600px;margin-left:auto;margin-right:auto}
+.stack-cloud{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
+.s-tag{font-family:var(--font-m);font-size:.68rem;letter-spacing:.07em;padding:.45rem .9rem;border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:default;transition:all .25s}
+.s-tag:hover{border-color:rgba(192,57,43,.3);color:var(--text);background:var(--accent-g)}
+
+/* CTA STRIP */
+.final-cta{background:var(--bg2);border-top:1px solid var(--border);text-align:center}
+.final-cta h2{font-family:var(--font-d);font-size:clamp(1.8rem,5vw,3.5rem);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:1rem}
+.final-cta h2 em{font-style:italic;color:var(--accent)}
+.final-cta p{color:var(--text2);max-width:440px;margin:0 auto 2rem;font-size:.9rem;line-height:1.75}
+.cta-btns{display:flex;flex-direction:column;gap:.8rem;align-items:center}
+
+/* alternating section BG */
+.sol-section:nth-child(even){background:var(--bg2)}
+
+@media(min-width:640px){.process-grid{grid-template-columns:repeat(4,1fr)}.cta-btns{flex-direction:row;justify-content:center}}
+@media(min-width:1024px){.sol-inner{grid-template-columns:1fr 1fr;gap:5rem}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <canvas id="sol-canvas"></canvas>
+  <div class="ph-inner">
+    <div class="hero-eyebrow">Our Solutions</div>
+    <h1>Built for the <em>ambitious.</em></h1>
+    <p>Every solution we deliver is engineered with craft, precision, and a relentless focus on results — whether you're a startup or an enterprise.</p>
+  </div>
+</div>
+
+<div class="sol-nav">
+  <div class="sol-nav-scroll">
+    <a class="sol-pill active" href="#software">Software Dev</a>
+    <a class="sol-pill" href="#api">API Engineering</a>
+    <a class="sol-pill" href="#seo">SEO</a>
+    <a class="sol-pill" href="#security">Security</a>
+    <a class="sol-pill" href="#apps">App Dev</a>
+    <a class="sol-pill" href="#web">Web &amp; Apps</a>
+  </div>
+</div>
+
+<!-- 01 SOFTWARE -->
+<div class="sol-section" id="software">
+  <div class="sol-inner">
+    <div class="reveal">
+      <span class="sol-num-label">// 01 — Software Development</span>
+      <h2>Custom software,<br>engineered <em>to last.</em></h2>
+      <div class="s-div"></div>
+      <p>We build software that solves real problems — from internal productivity tools to full enterprise platforms. Clean architecture, continuous delivery, no surprises.</p>
+      <ul class="sol-features">
+        <li>End-to-end product architecture and system design</li>
+        <li>Microservices, APIs, and event-driven systems</li>
+        <li>Automated testing and CI/CD pipelines</li>
+        <li>Cloud deployment on AWS, GCP, and Azure</li>
+        <li>Ongoing maintenance and performance tuning</li>
+      </ul>
+      <a href="contact.html" class="sol-cta-link">Start a project →</a>
+    </div>
+    <div class="sol-card reveal" data-delay="150">
+      <div class="sol-card-head"><div class="sol-card-icon">⚡</div><div><h4>Core Stack</h4><span>Languages &amp; infrastructure</span></div></div>
+      <div class="sol-card-body"><div class="tech-cloud"><span class="t-chip">Node.js</span><span class="t-chip">Python</span><span class="t-chip">Go</span><span class="t-chip">React</span><span class="t-chip">Next.js</span><span class="t-chip">TypeScript</span><span class="t-chip">PostgreSQL</span><span class="t-chip">Redis</span><span class="t-chip">Docker</span><span class="t-chip">Kubernetes</span><span class="t-chip">AWS</span><span class="t-chip">GCP</span></div><div class="mini-stats"><div class="ms"><h5>99.9%</h5><p>Uptime SLA</p></div><div class="ms"><h5>&lt;50ms</h5><p>API Response</p></div><div class="ms"><h5>150+</h5><p>Projects</p></div><div class="ms"><h5>100%</h5><p>Code Ownership</p></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 API -->
+<div class="sol-section" id="api">
+  <div class="sol-inner">
+    <div class="sol-card reveal">
+      <div class="sol-card-head"><div class="sol-card-icon">🔌</div><div><h4>API Capabilities</h4><span>Protocols &amp; integrations</span></div></div>
+      <div class="sol-card-body"><div class="tech-cloud"><span class="t-chip">REST</span><span class="t-chip">GraphQL</span><span class="t-chip">gRPC</span><span class="t-chip">WebSockets</span><span class="t-chip">OAuth 2.0</span><span class="t-chip">JWT</span><span class="t-chip">OpenAPI</span><span class="t-chip">Stripe</span><span class="t-chip">Twilio</span><span class="t-chip">Firebase</span></div><div class="mini-stats"><div class="ms"><h5>2M+</h5><p>Daily Requests</p></div><div class="ms"><h5>100%</h5><p>Doc Coverage</p></div><div class="ms"><h5>&lt;30ms</h5><p>P95 Latency</p></div><div class="ms"><h5>∞</h5><p>Scalable</p></div></div></div>
+    </div>
+    <div class="reveal" data-delay="150">
+      <span class="sol-num-label">// 02 — API Engineering</span>
+      <h2>APIs that <em>power</em> everything.</h2>
+      <div class="s-div"></div>
+      <p>We design and build REST and GraphQL APIs that are fast, secure, and a pleasure to work with. Every API ships with full OpenAPI documentation and versioning.</p>
+      <ul class="sol-features">
+        <li>RESTful API design and GraphQL schema architecture</li>
+        <li>OAuth 2.0, JWT, and API key authentication</li>
+        <li>Rate limiting, caching layers, and auto-scaling</li>
+        <li>Webhook systems and real-time event streams</li>
+        <li>Third-party integrations — Stripe, Twilio, Firebase &amp; more</li>
+      </ul>
+      <a href="contact.html" class="sol-cta-link">Build an API →</a>
+    </div>
+  </div>
+</div>
+
+<!-- 03 SEO -->
+<div class="sol-section" id="seo">
+  <div class="sol-inner">
+    <div class="reveal">
+      <span class="sol-num-label">// 03 — SEO Optimisation</span>
+      <h2>Dominate search.<br><em>Own</em> your traffic.</h2>
+      <div class="s-div"></div>
+      <p>We engineer search dominance through technical auditing, content architecture, and authority building. Clients see measurable ranking movement within 6 weeks.</p>
+      <ul class="sol-features">
+        <li>Technical SEO audit and Core Web Vitals fixes</li>
+        <li>Keyword architecture and content strategy</li>
+        <li>On-page and off-page optimisation</li>
+        <li>Link building and domain authority growth</li>
+        <li>Monthly dashboards and competitor tracking</li>
+      </ul>
+      <a href="contact.html" class="sol-cta-link">Boost my rankings →</a>
+    </div>
+    <div class="sol-card reveal" data-delay="150">
+      <div class="sol-card-head"><div class="sol-card-icon">📈</div><div><h4>SEO Performance</h4><span>Real results from real campaigns</span></div></div>
+      <div class="sol-card-body"><div class="tech-cloud"><span class="t-chip">Google Search Console</span><span class="t-chip">Ahrefs</span><span class="t-chip">SEMrush</span><span class="t-chip">Screaming Frog</span><span class="t-chip">Core Web Vitals</span><span class="t-chip">Schema Markup</span><span class="t-chip">PageSpeed</span></div><div class="mini-stats"><div class="ms"><h5>340%</h5><p>Avg Traffic Growth</p></div><div class="ms"><h5>#1–3</h5><p>Target Rankings</p></div><div class="ms"><h5>6 wks</h5><p>Avg Time to Rank</p></div><div class="ms"><h5>98</h5><p>PageSpeed Score</p></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 SECURITY -->
+<div class="sol-section" id="security">
+  <div class="sol-inner">
+    <div class="sol-card reveal">
+      <div class="sol-card-head"><div class="sol-card-icon">🛡️</div><div><h4>Security Arsenal</h4><span>Tools &amp; methodologies</span></div></div>
+      <div class="sol-card-body"><div class="tech-cloud"><span class="t-chip">OWASP Top 10</span><span class="t-chip">Burp Suite</span><span class="t-chip">Nmap</span><span class="t-chip">Metasploit</span><span class="t-chip">SAST</span><span class="t-chip">DAST</span><span class="t-chip">ZAP</span><span class="t-chip">GDPR</span><span class="t-chip">ISO 27001</span></div><div class="mini-stats"><div class="ms"><h5>500+</h5><p>Bugs Found</p></div><div class="ms"><h5>0</h5><p>Data Breaches</p></div><div class="ms"><h5>48hr</h5><p>Turnaround</p></div><div class="ms"><h5>A+</h5><p>SSL Rating</p></div></div></div>
+    </div>
+    <div class="reveal" data-delay="150">
+      <span class="sol-num-label">// 04 — Bug Bounty &amp; Security</span>
+      <h2>Find the cracks<br>before <em>they do.</em></h2>
+      <div class="s-div"></div>
+      <p>Our ethical hackers run structured assessments to find vulnerabilities in your web apps, APIs, and mobile platforms before bad actors ever get the chance.</p>
+      <ul class="sol-features">
+        <li>Penetration testing — web, mobile, API, and infrastructure</li>
+        <li>OWASP Top 10 vulnerability assessment</li>
+        <li>Source code security review and static analysis</li>
+        <li>Bug bounty program design and ongoing management</li>
+        <li>GDPR and ISO 27001 compliance advisory</li>
+      </ul>
+      <a href="contact.html" class="sol-cta-link">Run a security audit →</a>
+    </div>
+  </div>
+</div>
+
+<!-- 05 APPS -->
+<div class="sol-section" id="apps">
+  <div class="sol-inner">
+    <div class="reveal">
+      <span class="sol-num-label">// 05 — App Development</span>
+      <h2>Mobile apps people <em>come back to.</em></h2>
+      <div class="s-div"></div>
+      <p>Native iOS and Android apps and cross-platform solutions that are fast, beautiful, and intuitive. We handle everything from wireframe to App Store submission.</p>
+      <ul class="sol-features">
+        <li>Native iOS development in Swift</li>
+        <li>Native Android development in Kotlin</li>
+        <li>Cross-platform apps with Flutter and React Native</li>
+        <li>App Store and Google Play submission support</li>
+        <li>Push notifications, in-app purchases, offline-first</li>
+      </ul>
+      <a href="contact.html" class="sol-cta-link">Build my app →</a>
+    </div>
+    <div class="sol-card reveal" data-delay="150">
+      <div class="sol-card-head"><div class="sol-card-icon">📱</div><div><h4>Mobile Stack</h4><span>Frameworks &amp; platforms</span></div></div>
+      <div class="sol-card-body"><div class="tech-cloud"><span class="t-chip">Flutter</span><span class="t-chip">React Native</span><span class="t-chip">Swift</span><span class="t-chip">Kotlin</span><span class="t-chip">Firebase</span><span class="t-chip">Supabase</span><span class="t-chip">RevenueCat</span><span class="t-chip">App Store</span><span class="t-chip">Play Store</span></div><div class="mini-stats"><div class="ms"><h5>4.9★</h5><p>Avg App Rating</p></div><div class="ms"><h5>60fps</h5><p>Smooth UI</p></div><div class="ms"><h5>iOS+</h5><p>Android Both</p></div><div class="ms"><h5>48hr</h5><p>Store Review</p></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 WEB -->
+<div class="sol-section" id="web">
+  <div class="sol-inner">
+    <div class="sol-card reveal">
+      <div class="sol-card-head"><div class="sol-card-icon">🌐</div><div><h4>Web Stack</h4><span>Frontend, CMS &amp; deployment</span></div></div>
+      <div class="sol-card-body"><div class="tech-cloud"><span class="t-chip">Next.js</span><span class="t-chip">React</span><span class="t-chip">Vue.js</span><span class="t-chip">Nuxt</span><span class="t-chip">Tailwind CSS</span><span class="t-chip">Sanity</span><span class="t-chip">Contentful</span><span class="t-chip">Shopify</span><span class="t-chip">Vercel</span><span class="t-chip">Cloudflare</span></div><div class="mini-stats"><div class="ms"><h5>100</h5><p>PageSpeed Score</p></div><div class="ms"><h5>&lt;1s</h5><p>Load Time</p></div><div class="ms"><h5>WCAG</h5><p>AA Compliant</p></div><div class="ms"><h5>SEO</h5><p>Optimised</p></div></div></div>
+    </div>
+    <div class="reveal" data-delay="150">
+      <span class="sol-num-label">// 06 — Web &amp; Web App Development</span>
+      <h2>Websites that <em>work</em> as hard as you do.</h2>
+      <div class="s-div"></div>
+      <p>From high-converting landing pages to full-featured SaaS platforms — we build it right the first time. Fast, accessible, and optimised for search from day one.</p>
+      <ul class="sol-features">
+        <li>Marketing sites, portfolios, and corporate web presence</li>
+        <li>SaaS platforms and internal web tools</li>
+        <li>E-commerce storefronts and checkout optimisation</li>
+        <li>CMS integration — Sanity, Contentful, WordPress</li>
+        <li>WCAG accessibility and Core Web Vitals compliance</li>
+      </ul>
+      <a href="contact.html" class="sol-cta-link">Start a web project →</a>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
+      <span class="s-label">How We Work</span>
+      <h2 class="s-title">A process built for <em>clarity.</em></h2>
+    </div>
+    <div class="process-grid" data-stagger>
+      <div class="p-step reveal" data-stagger-item><div class="p-num">01</div><h3>Discovery</h3><p>A deep session to understand your goals, constraints, and definition of success.</p></div>
+      <div class="p-step reveal" data-stagger-item><div class="p-num">02</div><h3>Architecture</h3><p>System design, wireframes, tech stack selection, and a clear project roadmap.</p></div>
+      <div class="p-step reveal" data-stagger-item><div class="p-num">03</div><h3>Build &amp; Iterate</h3><p>Focused sprints with regular demos. You see progress every week and give feedback.</p></div>
+      <div class="p-step reveal" data-stagger-item><div class="p-num">04</div><h3>Launch &amp; Grow</h3><p>Deployment, handover, documentation. We stay with you long after launch day.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="stack-section">
+  <div class="container reveal">
+    <span class="s-label" style="text-align:center">Full Technology Stack</span>
+    <h2 class="s-title" style="text-align:center">The right tool for every <em>challenge.</em></h2>
+    <p>We're not locked into any vendor. We pick the best technology for your specific project and we're fluent in all of them.</p>
+    <div class="stack-cloud">
+      <span class="s-tag">React</span><span class="s-tag">Next.js</span><span class="s-tag">Vue.js</span><span class="s-tag">Node.js</span><span class="s-tag">Python</span><span class="s-tag">Django</span><span class="s-tag">Go</span><span class="s-tag">TypeScript</span><span class="s-tag">Flutter</span><span class="s-tag">Swift</span><span class="s-tag">Kotlin</span><span class="s-tag">React Native</span><span class="s-tag">GraphQL</span><span class="s-tag">REST API</span><span class="s-tag">PostgreSQL</span><span class="s-tag">MongoDB</span><span class="s-tag">Redis</span><span class="s-tag">AWS</span><span class="s-tag">GCP</span><span class="s-tag">Azure</span><span class="s-tag">Docker</span><span class="s-tag">Kubernetes</span><span class="s-tag">Terraform</span><span class="s-tag">CI/CD</span><span class="s-tag">Stripe</span><span class="s-tag">Twilio</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="final-cta">
+  <div class="container reveal">
+    <h2>Ready to build something <em>extraordinary?</em></h2>
+    <p>Our team responds within 24 hours with a clear plan and honest estimate.</p>
+    <div class="cta-btns">
+      <a href="contact.html" class="btn btn-red btn-lg">Start Your Project →</a>
+      <a href="pricing.html" class="btn btn-outline btn-lg">View Pricing</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  const c=document.getElementById('sol-canvas');
+  const R=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  R.setPixelRatio(Math.min(devicePixelRatio,2));
+  R.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);
+  const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(55,c.parentElement.offsetWidth/c.parentElement.offsetHeight,.1,200);
+  C.position.z=36;
+  const N=2000,pos=new Float32Array(N*3),col=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*110;pos[i*3+2]=(Math.random()-.5)*120;const t=Math.random();col[i*3]=t>.6?.75:.12;col[i*3+1]=.07;col[i*3+2]=.07;}
+  const pG=new THREE.BufferGeometry();pG.setAttribute('position',new THREE.BufferAttribute(pos,3));pG.setAttribute('color',new THREE.BufferAttribute(col,3));
+  S.add(new THREE.Points(pG,new THREE.PointsMaterial({size:.2,vertexColors:true,transparent:true,opacity:.55})));
+  const tG=new THREE.TorusGeometry(12,.4,8,70);const tM=new THREE.Mesh(tG,new THREE.MeshBasicMaterial({color:0x8a1010,wireframe:true,transparent:true,opacity:.05}));tM.rotation.x=Math.PI/2.6;S.add(tM);
+  const iG=new THREE.IcosahedronGeometry(6,1);const iM=new THREE.Mesh(iG,new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.07}));iM.position.set(14,3,-4);S.add(iM);
+  let mx=0,my=0;document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
+  (function a(){requestAnimationFrame(a);tM.rotation.z+=.003;iM.rotation.y+=.005;C.position.x+=(mx*3-C.position.x)*.02;C.position.y+=(-my*2-C.position.y)*.02;R.render(S,C);})();
+  addEventListener('resize',()=>{C.aspect=c.parentElement.offsetWidth/c.parentElement.offsetHeight;C.updateProjectionMatrix();R.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);});
+})();
+/* sticky pill highlight */
+(function(){
+  const pills=document.querySelectorAll('.sol-pill');
+  const ids=['software','api','seo','security','apps','web'];
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)pills.forEach(p=>p.classList.toggle('active',p.getAttribute('href')==='#'+e.target.id));}),{threshold:.35});
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  pills.forEach(p=>p.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(p.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}));
+})();
+</script>
+{% endblock %}

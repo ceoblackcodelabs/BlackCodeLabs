@@ -1,0 +1,202 @@
+<!-- Home/templates/Home/contact.html -->
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block title %}Contact | BlackCodeLabs{% endblock %}
+
+{% block injectcss %}
+<style>
+.page-hero{position:relative;padding:calc(var(--nav-h) + 3.5rem) 5vw 3.5rem;text-align:center;overflow:hidden;min-height:44svh;display:flex;align-items:center;justify-content:center}
+#ph-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ph-inner{position:relative;z-index:2}
+.ph-inner h1{font-family:var(--font-d);font-size:clamp(2.2rem,8vw,4.8rem);font-weight:900;line-height:1.05;letter-spacing:-.02em;opacity:0;animation:fUp 1s var(--ease) .2s forwards}
+.ph-inner h1 em{font-style:italic;color:var(--accent)}
+.ph-inner p{margin-top:1rem;color:var(--text2);font-size:clamp(.85rem,2.2vw,.98rem);max-width:460px;margin-left:auto;margin-right:auto;line-height:1.75;opacity:0;animation:fUp 1s var(--ease) .4s forwards}
+@keyframes fUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* BILLING TOGGLE */
+.billing-row{display:flex;align-items:center;justify-content:center;gap:1rem;padding:.5rem 0 2.5rem;font-size:.8rem;color:var(--text2);font-family:var(--font-m)}
+.t-sw{width:46px;height:24px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0}
+.t-sw.on{background:var(--accent)}
+.t-knob{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .3s var(--ease);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.t-sw.on .t-knob{transform:translateX(22px)}
+.save-pill{background:var(--accent-g);color:var(--accent);font-family:var(--font-m);font-size:.6rem;padding:.2rem .5rem;border-radius:3px;letter-spacing:.06em;border:1px solid rgba(192,57,43,.22)}
+
+/* PRICING CARDS */
+.pricing-section{max-width:1200px;margin:0 auto;padding:0 5vw clamp(3rem,7vw,6rem)}
+.pricing-grid{display:grid;grid-template-columns:1fr;gap:1.2rem}
+.price-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:clamp(1.5rem,4vw,2.5rem);position:relative;overflow:hidden;transition:transform .4s var(--ease),box-shadow .4s}
+.price-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;transition:background .4s}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px rgba(0,0,0,.45)}
+.price-card.featured{border-color:rgba(192,57,43,.22);background:var(--bg3)}
+.price-card.featured::after{background:var(--accent)}
+.feat-badge{display:inline-block;font-family:var(--font-m);font-size:.6rem;padding:.22rem .65rem;background:var(--accent-g);color:var(--accent);border:1px solid rgba(192,57,43,.28);border-radius:20px;letter-spacing:.09em;margin-bottom:1.2rem}
+.plan-name{font-family:var(--font-d);font-size:1.3rem;font-weight:700;margin-bottom:.4rem}
+.plan-desc{font-size:.82rem;color:var(--text2);line-height:1.65;margin-bottom:1.6rem}
+.price-display{display:flex;align-items:baseline;gap:.3rem;margin-bottom:.3rem}
+.price-display .cur{font-family:var(--font-m);font-size:1rem;color:var(--text2)}
+.price-display .amt{font-family:var(--font-d);font-size:clamp(2.5rem,8vw,3.5rem);font-weight:900;line-height:1}
+.price-display .per{font-family:var(--font-m);font-size:.75rem;color:var(--text2)}
+.price-note{font-family:var(--font-m);font-size:.68rem;color:var(--accent);min-height:1.1em;margin-bottom:1.8rem}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem}
+.feat-list li{display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:var(--text2);line-height:1.45}
+.feat-list li .y{color:var(--accent);flex-shrink:0;font-size:.78rem;margin-top:.1rem}
+.feat-list li .n{color:var(--text3);flex-shrink:0;font-size:.78rem;margin-top:.1rem}
+.feat-list li.dim{opacity:.35}
+.plan-btn{display:block;width:100%;padding:.9rem;text-align:center;font-family:var(--font-b);font-size:.84rem;font-weight:500;border-radius:var(--r);text-decoration:none;cursor:pointer;border:none;transition:all .3s var(--ease)}
+.pb-border{border:1px solid var(--border);background:transparent;color:var(--text)}
+.pb-border:hover{border-color:rgba(192,57,43,.4);color:var(--accent)}
+.pb-red{background:var(--accent);color:#fff}
+.pb-red:hover{background:var(--accent-h);box-shadow:0 0 20px rgba(192,57,43,.35)}
+.pb-ghost{border:1px solid rgba(192,57,43,.28);background:transparent;color:var(--accent)}
+.pb-ghost:hover{background:var(--accent-g)}
+
+/* FAQ */
+.faq-section{max-width:720px;margin:0 auto;padding:2rem 5vw clamp(3rem,7vw,6rem)}
+.faq-section h2{font-family:var(--font-d);font-size:clamp(1.6rem,4vw,2rem);font-weight:700;text-align:center;margin-bottom:2rem}
+.faq-section h2 em{color:var(--accent);font-style:italic}
+.faq-item{border-bottom:1px solid var(--border);padding:1.2rem 0}
+.faq-q{font-size:.88rem;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;user-select:none;transition:color .3s}
+.faq-q:hover{color:var(--accent)}
+.faq-ic{color:var(--accent);font-size:1.1rem;transition:transform .32s var(--ease);flex-shrink:0;line-height:1}
+.faq-item.open .faq-ic{transform:rotate(45deg)}
+.faq-a{font-size:.83rem;color:var(--text2);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .42s var(--ease),margin .3s}
+.faq-item.open .faq-a{max-height:220px;margin-top:.7rem}
+
+/* CTA STRIP */
+.cta-strip{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:clamp(3rem,7vw,5.5rem) 5vw}
+.cta-strip h2{font-family:var(--font-d);font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:700;margin-bottom:.8rem}
+.cta-strip h2 em{color:var(--accent);font-style:italic}
+.cta-strip p{color:var(--text2);margin-bottom:1.8rem;font-size:.88rem}
+.cta-row{display:flex;flex-direction:column;gap:.8rem;align-items:center}
+
+@media(min-width:640px){.pricing-grid{grid-template-columns:1fr 1fr}.cta-row{flex-direction:row;justify-content:center}}
+@media(min-width:1024px){.pricing-grid{grid-template-columns:repeat(3,1fr);align-items:start}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <canvas id="ph-canvas"></canvas>
+  <div class="ph-inner reveal">
+    <span class="s-label" style="display:block;margin-bottom:.7rem">Pricing</span>
+    <h1>Simple pricing.<br><em>Serious results.</em></h1>
+    <p>No hidden fees, no surprises. Pick the plan that fits your ambitions and scale whenever you're ready.</p>
+  </div>
+</div>
+
+<div class="billing-row">
+  <span>Monthly</span>
+  <div class="t-sw" id="billSwitch" onclick="toggleBilling()"><div class="t-knob"></div></div>
+  <span>Annual <span class="save-pill">SAVE 20%</span></span>
+</div>
+
+<div class="pricing-section">
+  <div class="pricing-grid">
+    <div class="price-card reveal" data-delay="0">
+      <div style="min-height:28px"></div>
+      <div class="plan-name">Starter</div>
+      <p class="plan-desc">For entrepreneurs and small teams launching their first digital product.</p>
+      <div class="price-display"><span class="cur">$</span><span class="amt" id="s-amt">499</span><span class="per">/mo</span></div>
+      <div class="price-note" id="s-note"></div>
+      <ul class="feat-list">
+        <li><span class="y">✓</span>One active project</li>
+        <li><span class="y">✓</span>Website development (up to 10 pages)</li>
+        <li><span class="y">✓</span>Basic SEO setup</li>
+        <li><span class="y">✓</span>REST API integration (1 API)</li>
+        <li><span class="y">✓</span>Mobile-responsive design</li>
+        <li><span class="y">✓</span>3 revision rounds</li>
+        <li><span class="y">✓</span>Email support (48 hr)</li>
+        <li class="dim"><span class="n">✗</span>App development</li>
+        <li class="dim"><span class="n">✗</span>Bug bounty program</li>
+        <li class="dim"><span class="n">✗</span>Dedicated account manager</li>
+      </ul>
+      <a href="register.html" class="plan-btn pb-border">Get Started →</a>
+    </div>
+    <div class="price-card featured reveal" data-delay="120">
+      <div class="feat-badge">Most Popular</div>
+      <div class="plan-name">Premium</div>
+      <p class="plan-desc">For growing companies that need serious engineering and rapid delivery.</p>
+      <div class="price-display"><span class="cur">$</span><span class="amt" id="p-amt">1,499</span><span class="per">/mo</span></div>
+      <div class="price-note" id="p-note"></div>
+      <ul class="feat-list">
+        <li><span class="y">✓</span>Up to 3 active projects</li>
+        <li><span class="y">✓</span>Full-stack web application</li>
+        <li><span class="y">✓</span>Advanced SEO + monthly report</li>
+        <li><span class="y">✓</span>Custom API engineering (up to 5)</li>
+        <li><span class="y">✓</span>iOS or Android app development</li>
+        <li><span class="y">✓</span>Bug bounty security audit</li>
+        <li><span class="y">✓</span>Unlimited revisions</li>
+        <li><span class="y">✓</span>Priority support (4 hr)</li>
+        <li><span class="y">✓</span>Dedicated account manager</li>
+        <li><span class="y">✓</span>Monthly strategy call</li>
+      </ul>
+      <a href="register.html" class="plan-btn pb-red">Upgrade to Premium →</a>
+    </div>
+    <div class="price-card reveal" data-delay="240">
+      <div style="min-height:28px"><span style="font-family:var(--font-m);font-size:.6rem;padding:.22rem .65rem;border:1px solid var(--border);border-radius:20px;color:var(--text3)">Enterprise</span></div>
+      <div class="plan-name">Custom</div>
+      <p class="plan-desc">Fully tailored solutions for enterprises building complex, large-scale platforms.</p>
+      <div style="font-family:var(--font-d);font-size:clamp(1.8rem,5vw,2.5rem);font-weight:900;line-height:1;margin-bottom:.3rem">Let's Talk</div>
+      <div class="price-note">Scoped &amp; quoted per project</div>
+      <ul class="feat-list">
+        <li><span class="y">✓</span>Unlimited active projects</li>
+        <li><span class="y">✓</span>Full platform engineering</li>
+        <li><span class="y">✓</span>Enterprise SEO strategy</li>
+        <li><span class="y">✓</span>Unlimited API development</li>
+        <li><span class="y">✓</span>iOS + Android apps</li>
+        <li><span class="y">✓</span>Full bug bounty program</li>
+        <li><span class="y">✓</span>24/7 dedicated support</li>
+        <li><span class="y">✓</span>Dedicated engineering team</li>
+        <li><span class="y">✓</span>Weekly sprint calls</li>
+        <li><span class="y">✓</span>SLA guarantee</li>
+      </ul>
+      <a href="{% url "contact" %}" class="plan-btn pb-ghost">Request a Quote →</a>
+    </div>
+  </div>
+</div>
+
+<div class="faq-section">
+  <h2>Common <em>questions</em></h2>
+  <div class="faq-item"><div class="faq-q">What happens after I sign up?<span class="faq-ic">+</span></div><div class="faq-a">You'll be assigned a project manager within 24 hours who schedules a kickoff call. Development begins within 48 hours of the kickoff.</div></div>
+  <div class="faq-item"><div class="faq-q">Do I own the code and assets?<span class="faq-ic">+</span></div><div class="faq-a">Yes — 100%. Upon final payment, all source code, assets, and intellectual property transfer entirely to you. We sign an IP transfer agreement on every project.</div></div>
+  <div class="faq-item"><div class="faq-q">Can I switch plans later?<span class="faq-ic">+</span></div><div class="faq-a">Absolutely. Upgrades take effect immediately. Downgrades apply at the start of your next billing cycle. No penalties.</div></div>
+  <div class="faq-item"><div class="faq-q">What technologies do you work with?<span class="faq-ic">+</span></div><div class="faq-a">We work across the full stack — React, Next.js, Node.js, Python, Flutter, Swift, Kotlin, AWS, PostgreSQL, and much more. We choose the right tool for the job.</div></div>
+</div>
+
+<div class="cta-strip">
+  <h2>Still not sure? <em>Let's chat.</em></h2>
+  <p>Our team will help you figure out exactly what you need — no pressure, no commitment.</p>
+  <div class="cta-row">
+    <a href="contact.html" class="btn btn-red btn-lg">Talk to Our Team →</a>
+    <a href="solutions.html" class="btn btn-outline btn-lg">Browse Solutions</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  const c=document.getElementById('ph-canvas');
+  const R=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  R.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);
+  const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(55,c.parentElement.offsetWidth/c.parentElement.offsetHeight,.1,200);C.position.z=32;
+  const N=1600,pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*90;pos[i*3+2]=(Math.random()-.5)*110;}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  S.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xc0392b,size:.17,transparent:true,opacity:.3})));
+  const oG=new THREE.OctahedronGeometry(9,0);const oM=new THREE.Mesh(oG,new THREE.MeshBasicMaterial({color:0x8a0000,wireframe:true,transparent:true,opacity:.05}));S.add(oM);
+  (function a(){requestAnimationFrame(a);oM.rotation.y+=.003;oM.rotation.x+=.002;R.render(S,C);})();
+})();
+let annual=false;
+function toggleBilling(){
+  annual=!annual;
+  document.getElementById('billSwitch').classList.toggle('on',annual);
+  document.getElementById('s-amt').textContent=annual?'399':'499';
+  document.getElementById('p-amt').textContent=annual?'1,199':'1,499';
+  document.getElementById('s-note').textContent=annual?'You save $1,200/year':'';
+  document.getElementById('p-note').textContent=annual?'You save $3,600/year':'';
+}
+document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
+</script>
+{% endblock %}
