@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KJSEA | Quality Interactive Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --red-dark: #8B0000;
+    --red-light: #E8324A;
+    --cream: #FAF7F2;
+    --charcoal: #1A1A1A;
+    --mid: #3A3A3A;
+    --muted: #888;
+    --gold: #D4AF37;
+    --white: #fff;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--charcoal);
+    color: var(--cream);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed; width: 10px; height: 10px; background: var(--red);
+    border-radius: 50%; pointer-events: none; z-index: 10000;
+    transition: transform 0.15s ease; mix-blend-mode: normal;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px; border: 1.5px solid rgba(200,16,46,0.5);
+    border-radius: 50%; pointer-events: none; z-index: 9999;
+    transition: all 0.25s ease;
+  }
+
+  /* Canvas */
+  #bg-canvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(26,26,26,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(200,16,46,0.2);
+    transition: all 0.3s ease;
+  }
+
+  .logo-mark {
+    display: flex; align-items: center; gap: 14px; text-decoration: none;
+  }
+  .logo-badge {
+    width: 46px; height: 46px; background: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 1rem; color: #fff; letter-spacing: 0.05em;
+    clip-path: polygon(8% 0%, 92% 0%, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0% 92%, 0% 8%);
+  }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .logo-text .name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.3rem; letter-spacing: 0.1em; color: #fff; }
+  .logo-text .tagline { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: rgba(255,255,255,0.7); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--red-light); }
+
+  .nav-cta {
+    padding: 0.6rem 1.6rem; background: var(--red); color: #fff;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: pointer;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--red-light); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: #fff; transition: all 0.3s; }
+
+  /* HERO */
+  #hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    padding: 8rem 4rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.0;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title .red { color: var(--red); font-style: italic; }
+
+  .hero-desc {
+    font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.65);
+    max-width: 440px; margin-bottom: 2.5rem; font-weight: 300;
+  }
+
+  .hero-actions { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    padding: 0.9rem 2.2rem; background: var(--red);
+    color: #fff; text-decoration: none; font-size: 0.8rem;
+    font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--red-light); transform: translateY(-2px); }
+
+  .btn-ghost {
+    padding: 0.9rem 2.2rem;
+    color: #fff; text-decoration: none; font-size: 0.8rem;
+    font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.3);
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--red); color: var(--red-light); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 3rem; padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat-item { }
+  .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; font-weight: 700; color: var(--red); line-height: 1; }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  .hero-visual {
+    position: relative; display: flex; align-items: center; justify-content: center;
+  }
+
+  .hero-img-wrap {
+    position: relative; width: 480px; height: 580px;
+  }
+  .hero-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0% 85%);
+  }
+  .hero-img-accent {
+    position: absolute; bottom: -20px; left: -20px;
+    width: 180px; height: 180px;
+    border: 2px solid var(--red); opacity: 0.4;
+    clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0% 85%);
+  }
+  .hero-img-badge {
+    position: absolute; top: 30px; right: -30px;
+    background: var(--red); padding: 1rem 1.2rem;
+    text-align: center; z-index: 5;
+  }
+  .hero-img-badge .b1 { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 700; color: #fff; line-height: 1; }
+  .hero-img-badge .b2 { font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.8); text-transform: uppercase; }
+
+  /* TICKER */
+  .ticker {
+    position: relative; z-index: 2;
+    background: var(--red); padding: 0.8rem 0; overflow: hidden;
+  }
+  .ticker-inner {
+    display: flex; gap: 0; white-space: nowrap;
+    animation: ticker 25s linear infinite;
+  }
+  .ticker-item {
+    display: flex; align-items: center; gap: 1rem; padding: 0 2rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: #fff;
+  }
+  .ticker-item .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; flex-shrink: 0; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* SECTION BASE */
+  section { position: relative; z-index: 1; }
+
+  .section-header {
+    text-align: center; margin-bottom: 4rem;
+  }
+  .section-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-eyebrow::before, .section-eyebrow::after { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 900; color: #fff; line-height: 1.1;
+  }
+  .section-title .red { color: var(--red); font-style: italic; }
+  .section-sub { font-size: 1rem; color: rgba(255,255,255,0.5); margin-top: 0.8rem; font-weight: 300; }
+
+  /* ABOUT */
+  #about {
+    padding: 7rem 4rem;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+  }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-imgs { position: relative; height: 520px; }
+  .about-img-main {
+    position: absolute; top: 0; left: 0; width: 75%; height: 80%;
+    object-fit: cover;
+    clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 10% 100%, 0 90%);
+  }
+  .about-img-sec {
+    position: absolute; bottom: 0; right: 0; width: 55%; height: 55%;
+    object-fit: cover; border: 4px solid var(--charcoal);
+    clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 10% 100%, 0 90%);
+  }
+  .about-red-block {
+    position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
+    width: 6px; height: 100px; background: var(--red);
+  }
+  .about-text .eyebrow { color: var(--gold); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+  .about-text .eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; line-height: 1.1; color: #fff; margin-bottom: 1.5rem; }
+  .about-text h2 em { color: var(--red); font-style: italic; }
+  .about-text p { color: rgba(255,255,255,0.6); line-height: 1.9; font-weight: 300; margin-bottom: 1rem; }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+  .about-tag { padding: 0.4rem 1rem; border: 1px solid rgba(200,16,46,0.4); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red-light); }
+  .tiktok-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 1.5rem; color: var(--gold); font-size: 0.8rem; letter-spacing: 0.1em; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .tiktok-link:hover { color: #fff; }
+  .tiktok-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+  /* SERVICES */
+  #services {
+    padding: 7rem 4rem;
+    background: #111;
+  }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5px;
+    margin-top: 4rem; background: rgba(200,16,46,0.15);
+  }
+  .service-card {
+    background: #111; padding: 2.5rem 2rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--red);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .service-card:hover { background: #161616; }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-num {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 3.5rem; font-weight: 700;
+    color: rgba(200,16,46,0.12); line-height: 1; margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-num { color: rgba(200,16,46,0.25); }
+  .service-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .service-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.05em; color: #fff; margin-bottom: 0.6rem; text-transform: uppercase; }
+  .service-desc { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.7; font-weight: 300; }
+
+  /* PORTFOLIO */
+  #portfolio {
+    padding: 7rem 4rem;
+    background: var(--charcoal);
+  }
+  .portfolio-filter {
+    display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 3rem; flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 0.5rem 1.2rem; background: transparent;
+    border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s; font-family: 'Barlow', sans-serif; font-weight: 500;
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--red); border-color: var(--red); color: #fff; }
+
+  .portfolio-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px;
+  }
+  .p-item { position: relative; overflow: hidden; }
+  .p-item:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+  .p-item:nth-child(2) { grid-column: span 4; }
+  .p-item:nth-child(3) { grid-column: span 3; }
+  .p-item:nth-child(4) { grid-column: span 4; }
+  .p-item:nth-child(5) { grid-column: span 3; }
+  .p-item:nth-child(6) { grid-column: span 5; }
+  .p-item:nth-child(7) { grid-column: span 4; }
+  .p-item:nth-child(8) { grid-column: span 3; }
+
+  .p-item img { width: 100%; height: 100%; object-fit: cover; min-height: 180px; display: block; transition: transform 0.5s ease; }
+  .p-item:nth-child(1) img { min-height: 380px; }
+
+  .p-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(200,16,46,0.9) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 1.5rem;
+  }
+  .p-item:hover .p-overlay { opacity: 1; }
+  .p-item:hover img { transform: scale(1.05); }
+  .p-label { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: #fff; letter-spacing: 0.05em; }
+
+  /* COMPLIANCE SECTION */
+  #compliance {
+    padding: 5rem 4rem;
+    background: var(--red);
+    position: relative; overflow: hidden;
+  }
+  #compliance::before {
+    content: 'DTFC'; position: absolute; right: -2rem; top: 50%; transform: translateY(-50%);
+    font-family: 'Playfair Display', serif; font-size: 15rem; font-weight: 900;
+    color: rgba(0,0,0,0.1); line-height: 1; pointer-events: none; white-space: nowrap;
+  }
+  .compliance-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+  .compliance-text h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 1rem; }
+  .compliance-text p { color: rgba(255,255,255,0.8); line-height: 1.8; font-weight: 300; font-size: 1rem; }
+  .compliance-badges { display: flex; flex-direction: column; gap: 1rem; }
+  .comp-badge {
+    background: rgba(0,0,0,0.25); padding: 1.2rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    border-left: 4px solid rgba(255,255,255,0.4);
+  }
+  .comp-badge-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .comp-badge-text .bt1 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: #fff; letter-spacing: 0.05em; }
+  .comp-badge-text .bt2 { font-size: 0.78rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+  /* PROCESS */
+  #process {
+    padding: 7rem 4rem;
+    background: #0f0f0f;
+  }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; margin-top: 4rem; }
+  .process-steps::before {
+    content: ''; position: absolute; top: 42px; left: 10%; right: 10%;
+    height: 1px; background: linear-gradient(to right, transparent, var(--red) 20%, var(--red) 80%, transparent);
+  }
+  .step { text-align: center; padding: 0 1.5rem; }
+  .step-num {
+    width: 85px; height: 85px; background: var(--charcoal);
+    border: 2px solid var(--red); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--red);
+    margin: 0 auto 1.5rem; position: relative; z-index: 1;
+  }
+  .step-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; color: #fff; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
+  .step-desc { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; }
+
+  /* TESTIMONIALS */
+  #testimonials {
+    padding: 7rem 4rem;
+    background: var(--charcoal);
+  }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem; }
+  .testimonial-card {
+    background: #111; padding: 2rem;
+    border-top: 3px solid var(--red);
+    position: relative;
+  }
+  .t-stars { color: var(--gold); font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 1rem; }
+  .t-quote { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.8; font-weight: 300; margin-bottom: 1.5rem; font-style: italic; }
+  .t-author { display: flex; align-items: center; gap: 0.8rem; }
+  .t-avatar { width: 40px; height: 40px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; color: #fff; flex-shrink: 0; }
+  .t-name { font-weight: 600; font-size: 0.88rem; color: #fff; }
+  .t-role { font-size: 0.72rem; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; }
+
+  /* CTA */
+  #cta {
+    padding: 7rem 4rem;
+    background: #111;
+    text-align: center;
+  }
+  .cta-inner { max-width: 640px; margin: 0 auto; }
+  .cta-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 1rem; }
+  .cta-inner h2 em { color: var(--red); font-style: italic; }
+  .cta-inner p { color: rgba(255,255,255,0.5); font-size: 1rem; line-height: 1.8; margin-bottom: 2.5rem; font-weight: 300; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .whatsapp-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.9rem 2rem; background: #25D366; color: #fff;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s;
+  }
+  .whatsapp-btn:hover { background: #1fba5a; }
+  .tiktok-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.9rem 2rem; background: transparent; color: #fff;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; border: 1px solid rgba(255,255,255,0.2);
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: border-color 0.2s;
+  }
+  .tiktok-btn:hover { border-color: var(--red); }
+
+  /* FOOTER */
+  footer {
+    background: #0a0a0a; padding: 4rem 4rem 2rem;
+    border-top: 1px solid rgba(200,16,46,0.2);
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-brand .logo-badge { margin-bottom: 1rem; }
+  .footer-brand p { color: rgba(255,255,255,0.4); font-size: 0.83rem; line-height: 1.8; font-weight: 300; max-width: 260px; margin-top: 0.8rem; }
+  .footer-heading { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1.2rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.83rem; transition: color 0.2s; font-weight: 300; }
+  .footer-links a:hover { color: var(--cream); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
+  .footer-tiktok { display: flex; align-items: center; gap: 6px; text-decoration: none; color: rgba(255,255,255,0.4); font-size: 0.75rem; transition: color 0.2s; }
+  .footer-tiktok:hover { color: var(--gold); }
+
+  /* Mobile */
+  @media (max-width: 1024px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    #hero { grid-template-columns: 1fr; padding: 6rem 2rem 4rem; }
+    .hero-visual { display: none; }
+    .hero-title { font-size: 3rem; }
+    #about, #services, #portfolio, #process, #compliance, #testimonials, #cta { padding: 4rem 2rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-imgs { height: 260px; margin-bottom: 0; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    .p-item { grid-column: span 1 !important; grid-row: span 1 !important; }
+    .process-steps { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .process-steps::before { display: none; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .compliance-inner { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { gap: 1.5rem; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.2rem; }
+    #hero { padding: 5rem 1.2rem 3rem; }
+    #about, #services, #portfolio, #process, #compliance, #testimonials, #cta { padding: 3rem 1.2rem; }
+    .footer-grid { grid-template-columns: 1fr; }
+    footer { padding: 2rem 1.2rem; }
+    .cta-inner h2 { font-size: 2rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Animations */
+  .fade-up {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* Mobile nav */
+  .mobile-nav {
+    position: fixed; inset: 0; background: rgba(10,10,10,0.98); z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 2rem;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .mobile-nav.open { opacity: 1; pointer-events: all; }
+  .mobile-nav a { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #fff; text-decoration: none; font-weight: 700; transition: color 0.2s; }
+  .mobile-nav a:hover { color: var(--red); }
+  .mobile-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#portfolio" onclick="closeMobile()">Portfolio</a>
+  <a href="#compliance" onclick="closeMobile()">Compliance</a>
+  <a href="#cta" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo-mark">
+    <div class="logo-badge">KJ<br>SEA</div>
+    <div class="logo-text">
+      <span class="name">KJSEA</span>
+      <span class="tagline">Quality Interactive Solutions</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#compliance">Compliance</a></li>
+    <li><a href="#process">Process</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Get Quote</a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Quality Interactive Solutions</div>
+    <h1 class="hero-title">
+      Print That<br><span class="red">Speaks</span><br>Volumes.
+    </h1>
+    <p class="hero-desc">Premium printing, DTFC & CBC-compliant educational materials, and bespoke design solutions that elevate your brand and communicate with impact.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#portfolio" class="btn-ghost">View Portfolio</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Projects Done</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">CBC Compliant</div></div>
+      <div class="stat-item"><div class="stat-num">5★</div><div class="stat-label">Client Rating</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-wrap">
+      <img src="https://images.unsplash.com/photo-1567581935884-3349723552ca?w=700&q=80" alt="Premium Printing">
+      <div class="hero-img-accent"></div>
+      <div class="hero-img-badge">
+        <div class="b1">CBC</div>
+        <div class="b2">Compliant</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-imgs fade-up">
+      <img class="about-img-main" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80" alt="Design Studio">
+      <img class="about-img-sec" src="https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&q=80" alt="Books">
+      <div class="about-red-block"></div>
+    </div>
+    <div class="about-text fade-up">
+      <div class="eyebrow">Who We Are</div>
+      <h2>Crafting <em>Stories</em> Through Print</h2>
+      <p>KJSEA is a full-service quality interactive solutions provider specializing in premium printing, compliant educational resources, and compelling visual communication materials.</p>
+      <p>From CBC & DTFC-compliant educational books to high-impact business collateral, we transform ideas into tangible works of art that leave lasting impressions.</p>
+      <div class="about-tags">
+        <span class="about-tag">DTFC Compliant</span>
+        <span class="about-tag">CBC Aligned</span>
+        <span class="about-tag">Premium Print</span>
+        <span class="about-tag">Fast Turnaround</span>
+        <span class="about-tag">Custom Design</span>
+      </div>
+      <a href="https://www.tiktok.com/@orioncraft4" target="_blank" class="tiktok-link">
+        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.75a8.27 8.27 0 0 0 4.84 1.55V6.86a4.85 4.85 0 0 1-1.07-.17z"/></svg>
+        Follow @orioncraft4 on TikTok
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">What We Do</div>
+    <h2 class="section-title">Our <span class="red">Services</span></h2>
+    <p class="section-sub">End-to-end print and design solutions for every need</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-num">01</div>
+      <div class="service-icon">📚</div>
+      <div class="service-name">DTFC / CBC Books</div>
+      <div class="service-desc">Fully compliant educational books aligned to CBC and DTFC curriculum standards. Precision-crafted for learners at every level.</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-num">02</div>
+      <div class="service-icon">🗂️</div>
+      <div class="service-name">Brochures & Catalogues</div>
+      <div class="service-desc">Elegant multi-page brochures and full-color catalogues that showcase your brand and products with authority.</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-num">03</div>
+      <div class="service-icon">🖼️</div>
+      <div class="service-name">Posters & Fliers</div>
+      <div class="service-desc">Eye-catching posters and promotional fliers designed to stop traffic and drive action — in print and digital formats.</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-num">04</div>
+      <div class="service-icon">📰</div>
+      <div class="service-name">Magazines</div>
+      <div class="service-desc">Professional magazine layout and print production for corporate publications, school magazines, and lifestyle titles.</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-num">05</div>
+      <div class="service-icon">🕊️</div>
+      <div class="service-name">Funeral Programs</div>
+      <div class="service-desc">Tasteful, dignified memorial programs and order-of-service booklets printed with care and respect for every occasion.</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-num">06</div>
+      <div class="service-icon">🧾</div>
+      <div class="service-name">Receipt & Invoice Books</div>
+      <div class="service-desc">Custom-numbered receipt books, invoice pads, and delivery books with your branding for professional day-to-day operations.</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-num">07</div>
+      <div class="service-icon">💼</div>
+      <div class="service-name">Business Cards</div>
+      <div class="service-desc">Premium business cards in standard, square, and die-cut formats — matte, gloss, soft-touch laminate, and spot UV finishes.</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-num">08</div>
+      <div class="service-icon">🎨</div>
+      <div class="service-name">Custom Design</div>
+      <div class="service-desc">Full graphic design service for any print project — logos, brand identity, layout, and pre-press production ready for print.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">Our Work</div>
+    <h2 class="section-title">Print <span class="red">Portfolio</span></h2>
+    <p class="section-sub">A selection of our finest print and design productions</p>
+  </div>
+  <div class="portfolio-filter fade-up">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Books</button>
+    <button class="filter-btn">Brochures</button>
+    <button class="filter-btn">Magazines</button>
+    <button class="filter-btn">Cards</button>
+  </div>
+  <div class="portfolio-grid fade-up">
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&q=80" alt="Books">
+      <div class="p-overlay"><div class="p-label">CBC Textbooks</div></div>
+    </div>
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500&q=80" alt="Brochure">
+      <div class="p-overlay"><div class="p-label">Corporate Brochure</div></div>
+    </div>
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1498612753354-772a30629934?w=400&q=80" alt="Business Cards">
+      <div class="p-overlay"><div class="p-label">Business Cards</div></div>
+    </div>
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&q=80" alt="Magazine">
+      <div class="p-overlay"><div class="p-label">Magazine Layout</div></div>
+    </div>
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Poster">
+      <div class="p-overlay"><div class="p-label">Event Poster</div></div>
+    </div>
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80" alt="Catalogue">
+      <div class="p-overlay"><div class="p-label">Product Catalogue</div></div>
+    </div>
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1468779036391-52341f60b55d?w=500&q=80" alt="Funeral Program">
+      <div class="p-overlay"><div class="p-label">Memorial Program</div></div>
+    </div>
+    <div class="p-item">
+      <img src="https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=400&q=80" alt="Flier">
+      <div class="p-overlay"><div class="p-label">Promo Flier</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section id="compliance">
+  <div class="compliance-inner">
+    <div class="compliance-text fade-up">
+      <h2>DTFC & CBC Compliant Printing</h2>
+      <p>We understand the stringent requirements of the Kenyan curriculum framework. Every educational title we produce meets DTFC and CBC standards — from paper weight and binding to content layout and accessibility guidelines.</p>
+      <br>
+      <p>Schools, publishers, and learning institutions trust KJSEA to deliver materials that pass regulatory review and serve learners effectively.</p>
+    </div>
+    <div class="compliance-badges fade-up">
+      <div class="comp-badge">
+        <div class="comp-badge-icon">✅</div>
+        <div class="comp-badge-text">
+          <div class="bt1">DTFC Compliant</div>
+          <div class="bt2">Meets all Design & Technical Format Criteria standards</div>
+        </div>
+      </div>
+      <div class="comp-badge">
+        <div class="comp-badge-icon">🎓</div>
+        <div class="comp-badge-text">
+          <div class="bt1">CBC Aligned</div>
+          <div class="bt2">Competency Based Curriculum layout & content standards</div>
+        </div>
+      </div>
+      <div class="comp-badge">
+        <div class="comp-badge-icon">🏆</div>
+        <div class="comp-badge-text">
+          <div class="bt1">Quality Assured</div>
+          <div class="bt2">Every print run inspected for colour accuracy & binding integrity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">Our <span class="red">Process</span></h2>
+    <p class="section-sub">Simple, transparent, and results-driven from start to finish</p>
+  </div>
+  <div class="process-steps fade-up">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-name">Brief & Quote</div>
+      <div class="step-desc">Share your requirements. We assess scope and provide a fast, transparent quote.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-name">Design & Proof</div>
+      <div class="step-desc">Our designers create layouts. You review and approve a digital proof before print.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-name">Print Production</div>
+      <div class="step-desc">High-quality press production with quality checks at every stage of the run.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-name">Delivery</div>
+      <div class="step-desc">Finished products packaged and delivered to you on time, every time.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">Client Love</div>
+    <h2 class="section-title">What People <span class="red">Say</span></h2>
+  </div>
+  <div class="testimonials-grid fade-up">
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"KJSEA delivered our school textbooks on time and fully CBC compliant. The quality was outstanding — parents and teachers were genuinely impressed."</div>
+      <div class="t-author"><div class="t-avatar">MK</div><div><div class="t-name">Margaret Kimani</div><div class="t-role">School Principal, Nairobi</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"Our product catalogues came out looking absolutely premium. KJSEA understood our brand from day one and executed flawlessly. Will keep coming back."</div>
+      <div class="t-author"><div class="t-avatar">JO</div><div><div class="t-name">James Otieno</div><div class="t-role">Brand Manager, Retail Co.</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"The funeral programs were beautiful and dignified. In a difficult time they made the process smooth and professional. Deeply grateful for their care."</div>
+      <div class="t-author"><div class="t-avatar">FW</div><div><div class="t-name">Faith Wanjiku</div><div class="t-role">Client, Nairobi</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner fade-up">
+    <h2>Ready to <em>Print</em> Something Great?</h2>
+    <p>Whether it's a single business card or a full run of CBC textbooks, we're here to make it happen — beautifully, on time, and within budget.</p>
+    <div class="cta-actions">
+      <a href="https://wa.me/?text=Hi%20KJSEA%2C%20I%27d%20like%20to%20discuss%20a%20print%20project." target="_blank" class="whatsapp-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp Us
+      </a>
+      <a href="https://www.tiktok.com/@orioncraft4" target="_blank" class="tiktok-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.75a8.27 8.27 0 0 0 4.84 1.55V6.86a4.85 4.85 0 0 1-1.07-.17z"/></svg>
+        @orioncraft4
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-badge" style="width:50px;height:50px;font-size:1rem;">KJ<br>SEA</div>
+      <p>Quality Interactive Solutions — premium printing, compliant educational materials, and bespoke design in Kenya.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">DTFC/CBC Books</a></li>
+        <li><a href="#services">Brochures & Fliers</a></li>
+        <li><a href="#services">Magazines</a></li>
+        <li><a href="#services">Business Cards</a></li>
+        <li><a href="#services">Funeral Programs</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#compliance">Compliance</a></li>
+        <li><a href="#process">Our Process</a></li>
+        <li><a href="#cta">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Connect</div>
+      <ul class="footer-links">
+        <li><a href="https://www.tiktok.com/@orioncraft4" target="_blank">TikTok @orioncraft4</a></li>
+        <li><a href="#cta">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 KJSEA Quality Interactive Solutions. All rights reserved.</div>
+    <a href="https://www.tiktok.com/@orioncraft4" target="_blank" class="footer-tiktok">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.75a8.27 8.27 0 0 0 4.84 1.55V6.86a4.85 4.85 0 0 1-1.07-.17z"/></svg>
+      @orioncraft4
+    </a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ── THREE.JS BACKGROUND ──
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.z = 3;
+
+// Floating paper sheets
+const geometry = new THREE.PlaneGeometry(0.4, 0.55);
+const papers = [];
+for (let i = 0; i < 30; i++) {
+  const mat = new THREE.MeshBasicMaterial({
+    color: i % 5 === 0 ? 0xC8102E : (i % 3 === 0 ? 0x333333 : 0x222222),
+    transparent: true,
+    opacity: i % 5 === 0 ? 0.15 : 0.07,
+    side: THREE.DoubleSide
+  });
+  const mesh = new THREE.Mesh(geometry, mat);
+  mesh.position.set(
+    (Math.random() - 0.5) * 14,
+    (Math.random() - 0.5) * 10,
+    (Math.random() - 0.5) * 6
+  );
+  mesh.rotation.set(
+    Math.random() * Math.PI,
+    Math.random() * Math.PI,
+    Math.random() * Math.PI
+  );
+  mesh.userData = {
+    vx: (Math.random() - 0.5) * 0.002,
+    vy: (Math.random() - 0.5) * 0.001,
+    rx: (Math.random() - 0.5) * 0.003,
+    ry: (Math.random() - 0.5) * 0.003,
+  };
+  scene.add(mesh);
+  papers.push(mesh);
+}
+
+// Particles
+const pGeo = new THREE.BufferGeometry();
+const pCount = 200;
+const positions = new Float32Array(pCount * 3);
+for (let i = 0; i < pCount * 3; i++) positions[i] = (Math.random() - 0.5) * 20;
+pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const pMat = new THREE.PointsMaterial({ color: 0xC8102E, size: 0.015, transparent: true, opacity: 0.4 });
+scene.add(new THREE.Points(pGeo, pMat));
+
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', e => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  papers.forEach(p => {
+    p.position.x += p.userData.vx;
+    p.position.y += p.userData.vy;
+    p.rotation.x += p.userData.rx;
+    p.rotation.y += p.userData.ry;
+    if (p.position.x > 8) p.position.x = -8;
+    if (p.position.x < -8) p.position.x = 8;
+    if (p.position.y > 6) p.position.y = -6;
+    if (p.position.y < -6) p.position.y = 6;
+  });
+  camera.position.x += (mouseX - camera.position.x) * 0.02;
+  camera.position.y += (-mouseY - camera.position.y) * 0.02;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ── TICKER ──
+const items = ['Quality Printing','DTFC Compliant Books','CBC Educational Materials','Business Cards','Brochures & Fliers','Magazines','Funeral Programs','Receipt & Invoice Books','Posters & Catalogues','@orioncraft4 on TikTok'];
+const ticker = document.getElementById('ticker');
+const repeated = [...items, ...items].map(t => `<div class="ticker-item"><span class="dot"></span>${t}</div>`).join('');
+ticker.innerHTML = repeated;
+
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+(function cursorLoop() {
+  requestAnimationFrame(cursorLoop);
+  cursor.style.left = cx - 5 + 'px'; cursor.style.top = cy - 5 + 'px';
+  rx += (cx - rx) * 0.12; ry += (cy - ry) * 0.12;
+  ring.style.left = rx - 18 + 'px'; ring.style.top = ry - 18 + 'px';
+})();
+document.querySelectorAll('a, button, .service-card, .filter-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2.5)'; ring.style.transform = 'scale(1.5)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
+});
+
+// ── SCROLL ANIMATIONS ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.style.background = scrollY > 50 ? 'rgba(10,10,10,0.97)' : 'rgba(26,26,26,0.85)';
+});
+
+// ── PORTFOLIO FILTER ──
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// ── MOBILE NAV ──
+document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click', () => document.getElementById('mobileNav').classList.remove('open'));
+function closeMobile() { document.getElementById('mobileNav').classList.remove('open'); }
+</script>
+</body>
+</html>
