@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOVA | Dance Influencer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#000;--bg1:#050505;--bg2:#0a0a0a;--bg3:#111;
+  --white:#fff;--off:#e8e0d8;--muted:#888;--dim:#333;
+  --accent:#ff3d5a;--accent2:#ff7a52;--accentg:linear-gradient(135deg,#ff3d5a,#ff7a52);
+  --gold:#e8c94c;
+  --f-display:'Bebas Neue',sans-serif;
+  --f-body:'Syne',sans-serif;
+  --f-mono:'Space Mono',monospace;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--f-body);background:var(--black);color:var(--white);overflow-x:hidden}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--accent)}
+
+/* CURSOR */
+.cur{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference}
+.cur-trail{position:fixed;width:36px;height:36px;border:1px solid rgba(255,61,90,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .08s ease-out,top .08s ease-out}
+body.on-hover .cur{width:20px;height:20px}
+@media(pointer:coarse){.cur,.cur-trail{display:none}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:28px 60px;display:flex;justify-content:space-between;align-items:center;transition:all .5s}
+nav.stuck{padding:16px 60px;background:rgba(0,0,0,.9);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,61,90,.12)}
+.nav-logo{font-family:var(--f-display);font-size:28px;letter-spacing:6px;color:var(--white);text-decoration:none;position:relative}
+.nav-logo span{color:var(--accent)}
+.nav-logo::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s}
+.nav-logo:hover::after{width:100%}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-family:var(--f-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--accent)}
+.nav-links a:hover::after{width:100%}
+.nav-btn{padding:10px 26px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:var(--f-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
+.nav-btn:hover{background:var(--accent);color:var(--black)}
+.ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.ham span{display:block;width:22px;height:1.5px;background:var(--white);transition:all .3s}
+.ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);background:var(--accent)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);background:var(--accent)}
+.mob-nav{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:32px;opacity:0;pointer-events:none;transition:opacity .4s}
+.mob-nav.open{opacity:1;pointer-events:all}
+.mob-nav a{font-family:var(--f-display);font-size:clamp(36px,9vw,72px);letter-spacing:4px;color:var(--white);text-decoration:none;transition:color .3s}
+.mob-nav a:hover{color:var(--accent)}
+
+/* ── HERO 3D ── */
+#hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+
+/* 3D perspective scene */
+.hero-scene{position:absolute;inset:0;perspective:800px;perspective-origin:50% 40%}
+.hero-stage{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+
+/* bg layers for parallax */
+.hero-layer{position:absolute;inset:-20%;width:140%;height:140%;will-change:transform}
+.hero-layer-img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+
+/* gradient overlays */
+.hero-over1{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.92) 0%,rgba(0,0,0,.5) 55%,rgba(0,0,0,.15) 100%);z-index:2}
+.hero-over2{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,1) 0%,transparent 50%);z-index:2}
+
+/* diagonal accent */
+.hero-diag{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.hero-diag::before{content:'';position:absolute;left:-10%;top:-10%;width:3px;height:130%;background:linear-gradient(to bottom,transparent 0%,var(--accent) 30%,transparent 100%);opacity:.35;transform:rotate(8deg)}
+.hero-diag::after{content:'';position:absolute;right:15%;top:-10%;width:1px;height:130%;background:linear-gradient(to bottom,transparent,rgba(255,61,90,.2),transparent);opacity:.6;transform:rotate(8deg)}
+
+/* 3d floating shapes */
+.hero-shape{position:absolute;z-index:3;pointer-events:none;will-change:transform}
+.shape-ring{width:320px;height:320px;border:1px solid rgba(255,61,90,.15);border-radius:50%;top:50%;right:10%;transform:translate(0,-50%);animation:ringFloat 6s ease-in-out infinite}
+.shape-ring2{width:220px;height:220px;border:1px solid rgba(255,61,90,.08);border-radius:50%;top:50%;right:10%;transform:translate(0,-50%);animation:ringFloat 6s ease-in-out infinite reverse}
+.shape-line{width:2px;height:180px;background:linear-gradient(to bottom,var(--accent),transparent);top:15%;left:calc(50% + 280px);animation:linePulse 3s ease-in-out infinite}
+@keyframes ringFloat{0%,100%{transform:translate(0,-50%) scale(1)}50%{transform:translate(0,-53%) scale(1.03)}}
+@keyframes linePulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:.8;transform:scaleY(1.1)}}
+
+/* HERO CONTENT */
+.hero-content{position:relative;z-index:10;padding:0 60px;max-width:1400px;width:100%}
+.hero-tag{display:flex;align-items:center;gap:12px;margin-bottom:20px;overflow:hidden}
+.hero-tag-line{width:40px;height:1px;background:var(--accent)}
+.hero-tag-text{font-family:var(--f-mono);font-size:10px;letter-spacing:5px;color:var(--accent);text-transform:uppercase;animation:fadeSlide .8s .3s both}
+@keyframes fadeSlide{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+
+.hero-name{font-family:var(--f-display);font-size:clamp(80px,16vw,260px);line-height:.82;letter-spacing:2px;animation:heroReveal .9s .1s both}
+@keyframes heroReveal{from{opacity:0;transform:translateY(40px) skewY(3deg)}to{opacity:1;transform:none}}
+.hero-name .line2{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(255,61,90,.4);letter-spacing:clamp(4px,2vw,16px)}
+.hero-name .accent-word{color:var(--accent)}
+
+.hero-desc{font-size:clamp(13px,1.4vw,16px);color:var(--muted);letter-spacing:1px;line-height:1.7;max-width:380px;margin:24px 0 36px;font-weight:400;animation:fadeSlide .9s .5s both}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeSlide .9s .7s both}
+
+/* BTN */
+.btn-red{padding:14px 38px;background:var(--accent);color:var(--white);font-family:var(--f-mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));position:relative;overflow:hidden}
+.btn-red::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .3s}
+.btn-red:hover::after{transform:translateX(0)}
+.btn-outline{padding:13px 38px;border:1px solid rgba(255,255,255,.2);color:var(--white);font-family:var(--f-mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;background:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+
+/* floating stat pills */
+.hero-pills{position:absolute;right:60px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:10}
+.h-pill{display:flex;flex-direction:column;gap:2px;text-align:right;opacity:0;animation:pillIn .6s both}
+.h-pill:nth-child(1){animation-delay:.9s}
+.h-pill:nth-child(2){animation-delay:1.1s}
+.h-pill:nth-child(3){animation-delay:1.3s}
+@keyframes pillIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.pill-num{font-family:var(--f-display);font-size:clamp(24px,3vw,48px);color:var(--accent);line-height:1}
+.pill-lbl{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+
+/* scroll indicator */
+.hero-scroll{position:absolute;bottom:36px;left:60px;z-index:10;display:flex;align-items:center;gap:14px;animation:fadeSlide 1s 1.4s both}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scrollGrow 2s ease-in-out infinite}
+@keyframes scrollGrow{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(0);transform-origin:bottom}}
+.scroll-txt{font-family:var(--f-mono);font-size:8px;letter-spacing:4px;color:var(--dim);text-transform:uppercase;writing-mode:vertical-rl}
+
+/* ── TICKER ── */
+.ticker{overflow:hidden;background:var(--accent);padding:11px 0}
+.ticker-track{display:flex;width:max-content;animation:tickMove 20s linear infinite}
+.tick-item{display:flex;align-items:center;gap:20px;padding:0 28px;font-family:var(--f-display);font-size:16px;letter-spacing:5px;color:var(--black);white-space:nowrap}
+.tick-sep{font-size:10px;opacity:.5}
+@keyframes tickMove{to{transform:translateX(-50%)}}
+
+/* ── SECTION UTILS ── */
+.sec-lbl{font-family:var(--f-mono);font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-lbl::before{content:'';width:28px;height:1px;background:var(--accent)}
+.sec-h{font-family:var(--f-display);font-size:clamp(48px,8vw,130px);line-height:.88;letter-spacing:2px}
+.sec-h .ghost{color:transparent;-webkit-text-stroke:1px rgba(255,61,90,.2)}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .85s ease,transform .85s ease}
+.reveal.vis{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-32px);transition:opacity .85s,transform .85s}
+.reveal-l.vis{opacity:1;transform:none}
+.reveal-r{opacity:0;transform:translateX(32px);transition:opacity .85s,transform .85s}
+.reveal-r.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* ── ABOUT ── */
+.about-section{padding:130px 60px;background:var(--bg1);position:relative;overflow:hidden}
+.about-section::after{content:'DANCE';position:absolute;right:-40px;top:50%;transform:translateY(-50%) rotate(90deg);font-family:var(--f-display);font-size:clamp(120px,20vw,300px);color:transparent;-webkit-text-stroke:1px rgba(255,61,90,.04);pointer-events:none;white-space:nowrap;letter-spacing:20px}
+.about-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:90px;align-items:center}
+
+/* 3D photo frame */
+.about-photo{position:relative;perspective:600px}
+.photo-wrap{position:relative;transform-style:preserve-3d;transition:transform .6s ease;cursor:default}
+.photo-wrap:hover{transform:rotateY(-8deg) rotateX(3deg)}
+.photo-frame{aspect-ratio:3/4;overflow:hidden;clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px))}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:contrast(1.1) brightness(.95);display:block;transition:filter .5s}
+.photo-wrap:hover .photo-frame img{filter:contrast(1.15) brightness(1)}
+/* decorative borders */
+.photo-dec-1{position:absolute;top:-12px;left:-12px;right:12px;bottom:12px;border:1px solid rgba(255,61,90,.2);clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px));pointer-events:none;z-index:2;transition:all .6s}
+.photo-wrap:hover .photo-dec-1{top:-18px;left:-18px;border-color:rgba(255,61,90,.45)}
+/* corner accents */
+.p-corner{position:absolute;width:36px;height:36px;z-index:3}
+.p-corner.tl{top:-12px;left:-12px;border-top:2px solid var(--accent);border-left:2px solid var(--accent)}
+.p-corner.br{bottom:-12px;right:-12px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent)}
+/* floating badge */
+.photo-badge{position:absolute;bottom:-20px;right:-24px;background:var(--accent);padding:18px 22px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);z-index:5}
+.badge-num{font-family:var(--f-display);font-size:40px;color:var(--black);line-height:1}
+.badge-lbl{font-family:var(--f-mono);font-size:9px;letter-spacing:2px;color:rgba(0,0,0,.7)}
+
+.about-text{display:flex;flex-direction:column;gap:28px}
+.about-quote{font-family:var(--f-display);font-size:clamp(22px,3vw,42px);letter-spacing:2px;line-height:1.15;color:var(--white);border-left:3px solid var(--accent);padding-left:24px}
+.about-body{font-size:15px;color:var(--muted);line-height:1.9;font-weight:400;letter-spacing:.3px}
+.about-body strong{color:var(--off);font-weight:600}
+
+/* stats strip */
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--dim);border:1px solid var(--dim);margin-top:8px}
+.a-stat{background:var(--bg1);padding:20px 18px}
+.a-stat-val{font-family:var(--f-display);font-size:34px;color:var(--accent);line-height:1}
+.a-stat-lbl{font-family:var(--f-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ── MOVES / SPECIALTIES ── */
+.moves-section{padding:130px 60px;background:var(--black);position:relative;overflow:hidden}
+.moves-grid{max-width:1300px;margin:70px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--dim);border:1px solid var(--dim)}
+.move-card{background:var(--black);padding:48px 36px;position:relative;overflow:hidden;cursor:default;transition:background .4s}
+.move-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--accentg);transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.move-card:hover{background:var(--bg1)}
+.move-card:hover::before{transform:scaleX(1)}
+.move-num{font-family:var(--f-display);font-size:80px;color:rgba(255,61,90,.06);position:absolute;top:10px;right:16px;line-height:1;letter-spacing:0}
+.move-icon{width:52px;height:52px;border:1px solid var(--dim);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:border-color .3s;font-size:24px}
+.move-card:hover .move-icon{border-color:var(--accent)}
+.move-title{font-family:var(--f-body);font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;color:var(--white)}
+.move-desc{font-size:13px;color:var(--muted);line-height:1.8;font-weight:400}
+.move-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.move-tag{padding:4px 10px;border:1px solid var(--dim);font-family:var(--f-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);transition:all .3s}
+.move-card:hover .move-tag{border-color:rgba(255,61,90,.3);color:rgba(255,61,90,.6)}
+
+/* ── GALLERY ── */
+.gallery-section{padding:130px 60px;background:var(--bg1)}
+.gallery-inner{max-width:1400px;margin:0 auto}
+.gallery-header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:50px}
+.gal-filters{display:flex;gap:8px;flex-wrap:wrap}
+.gf-btn{padding:8px 20px;border:1px solid var(--dim);background:none;color:var(--muted);font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.gf-btn.on,.gf-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,61,90,.06)}
+
+/* 3-column bento gallery */
+.gal-bento{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto;gap:10px}
+.gal-cell{position:relative;overflow:hidden;cursor:pointer}
+.gal-cell.wide{grid-column:span 2}
+.gal-cell.tall{grid-row:span 2}
+.gal-cell img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(15%) contrast(1.05);transition:all .5s}
+.gal-cell::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 50%);opacity:0;transition:opacity .4s;z-index:2}
+.gal-cell:hover::before{opacity:1}
+.gal-cell:hover img{filter:grayscale(0%) contrast(1.1);transform:scale(1.05)}
+.gal-cell-info{position:absolute;bottom:0;left:0;right:0;padding:20px;z-index:3;transform:translateY(100%);transition:transform .4s ease}
+.gal-cell:hover .gal-cell-info{transform:none}
+.gal-cell-info span{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+.gal-cell-info p{font-family:var(--f-body);font-size:14px;font-weight:600;color:var(--white);margin-top:3px}
+
+/* min-heights for bento cells */
+.gal-cell{min-height:240px}
+.gal-cell.tall{min-height:490px}
+
+/* ── COLLAB / RATES ── */
+.collab-section{padding:130px 60px;background:var(--black)}
+.collab-inner{max-width:1200px;margin:0 auto}
+.rates-grid{margin-top:70px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rate-card{border:1px solid var(--dim);padding:44px 32px;position:relative;background:var(--black);transition:all .4s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.rate-card:hover{border-color:rgba(255,61,90,.4);transform:translateY(-6px);background:var(--bg1)}
+.rate-card.hot{border-color:var(--accent);background:rgba(255,61,90,.04)}
+.rate-card.hot::after{content:'TRENDING';position:absolute;top:-1px;right:24px;padding:5px 14px;background:var(--accent);color:var(--black);font-family:var(--f-mono);font-size:9px;letter-spacing:3px}
+.rate-tier{font-family:var(--f-mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.rate-name{font-family:var(--f-display);font-size:28px;letter-spacing:3px;color:var(--white);margin-bottom:8px}
+.rate-price{font-family:var(--f-display);font-size:clamp(38px,5vw,66px);color:var(--white);line-height:1;margin:16px 0}
+.rate-price sup{font-size:.38em;vertical-align:top;margin-top:14px;display:inline-block;color:var(--accent)}
+.rate-price sub{font-family:var(--f-mono);font-size:11px;color:var(--muted);vertical-align:bottom;margin-bottom:8px}
+.rate-div{width:100%;height:1px;background:var(--dim);margin:20px 0}
+.rate-items{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.rate-items li{font-size:13px;color:var(--muted);display:flex;align-items:flex-start;gap:10px;font-weight:400}
+.rate-items li::before{content:'▸';color:var(--accent);font-size:10px;flex-shrink:0;margin-top:3px}
+.rate-items li.off{color:var(--dim)}
+.rate-items li.off::before{color:var(--dim)}
+.rate-cta{display:block;text-align:center;padding:13px;border:1px solid rgba(255,61,90,.4);color:var(--accent);font-family:var(--f-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .3s;cursor:pointer}
+.rate-cta:hover,.rate-card.hot .rate-cta{background:var(--accent);color:var(--black);border-color:var(--accent)}
+
+/* ── MARQUEE STATEMENT ── */
+.statement-section{padding:110px 60px;text-align:center;position:relative;overflow:hidden;background:var(--bg1)}
+.statement-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(255,61,90,.05) 0%,transparent 70%)}
+.state-big{font-family:var(--f-display);font-size:clamp(52px,12vw,180px);letter-spacing:4px;line-height:.86;position:relative;display:inline-block}
+.state-big .s1{display:block;color:var(--white)}
+.state-big .s2{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(255,61,90,.35);letter-spacing:clamp(6px,3vw,22px)}
+.state-big .s3{display:block;background:var(--accentg);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.state-sub{font-family:var(--f-mono);font-size:12px;letter-spacing:8px;text-transform:uppercase;color:var(--muted);margin-top:28px}
+.state-line{width:80px;height:2px;background:var(--accentg);margin:16px auto}
+
+/* ── CONTACT ── */
+.contact-section{padding:130px 60px;background:var(--black)}
+.contact-inner{max-width:1200px;margin:60px auto 0;display:grid;grid-template-columns:1fr 1.2fr;gap:90px;align-items:start}
+.contact-left{display:flex;flex-direction:column;gap:28px}
+.c-block{border-bottom:1px solid var(--dim);padding-bottom:20px}
+.c-block:last-of-type{border:none}
+.c-label{font-family:var(--f-mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.c-val{font-size:15px;color:var(--off);font-weight:400}
+.c-val a{color:var(--white);text-decoration:none;transition:color .3s}
+.c-val a:hover{color:var(--accent)}
+.c-socials{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.c-soc{padding:10px 16px;border:1px solid var(--dim);color:var(--muted);font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .3s}
+.c-soc:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,61,90,.06)}
+
+/* FORM */
+.c-form{display:flex;flex-direction:column;gap:22px}
+.cf{position:relative;border-bottom:1px solid var(--dim);transition:border-color .3s}
+.cf:focus-within{border-color:var(--accent)}
+.cf input,.cf textarea,.cf select{width:100%;padding:14px 0 10px;background:transparent;border:none;color:var(--white);font-family:var(--f-body);font-size:14px;font-weight:400;outline:none;letter-spacing:.3px}
+.cf textarea{resize:vertical;min-height:100px}
+.cf select option{background:var(--bg1);color:var(--white)}
+.cf label{position:absolute;top:14px;left:0;font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);pointer-events:none;transition:all .3s}
+.cf input:focus~label,.cf input:not(:placeholder-shown)~label,.cf textarea:focus~label,.cf textarea:not(:placeholder-shown)~label{top:-10px;font-size:8px;color:var(--accent)}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.c-submit{padding:16px 42px;background:var(--accent);color:var(--white);font-family:var(--f-mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;border:none;cursor:pointer;align-self:flex-start;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));position:relative;overflow:hidden}
+.c-submit::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.2);transform:translateX(-100%);transition:transform .3s}
+.c-submit:hover::after{transform:translateX(0)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg1);border-top:1px solid var(--dim)}
+.footer-main{max-width:1300px;margin:0 auto;padding:70px 60px 40px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px}
+.f-brand{display:flex;flex-direction:column;gap:14px}
+.f-logo{font-family:var(--f-display);font-size:36px;letter-spacing:5px;color:var(--white)}
+.f-logo span{color:var(--accent)}
+.f-tagline{font-family:var(--f-mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--accent)}
+.f-desc{font-size:12px;color:var(--muted);line-height:1.8;max-width:280px;margin-top:4px}
+.f-socs{display:flex;gap:8px;margin-top:8px}
+.f-soc{width:36px;height:36px;border:1px solid var(--dim);display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--f-mono);font-size:9px;font-weight:700;text-decoration:none;transition:all .3s}
+.f-soc:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.f-col-title{font-family:var(--f-mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.f-col ul li a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:400;transition:color .3s}
+.f-col ul li a:hover{color:var(--accent)}
+.footer-bottom{max-width:1300px;margin:0 auto;padding:20px 60px;border-top:1px solid var(--dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.f-copy,.f-by{font-family:var(--f-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.f-by strong{color:var(--accent)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .moves-grid{grid-template-columns:1fr 1fr}
+  .about-inner{gap:60px}
+  .rates-grid{grid-template-columns:1fr 1fr}
+  .footer-main{grid-template-columns:1fr 1fr;gap:40px}
+}
+@media(max-width:900px){
+  .about-inner{grid-template-columns:1fr}
+  .about-photo{max-width:500px;margin:0 auto}
+  .contact-inner{grid-template-columns:1fr;gap:50px}
+  .cf-row{grid-template-columns:1fr}
+  .rates-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  nav.stuck{padding:12px 20px}
+  .nav-links,.nav-btn{display:none}
+  .ham{display:flex}
+  .hero-content,.about-section,.moves-section,.gallery-section,.collab-section,.statement-section,.contact-section{padding-left:20px;padding-right:20px}
+  .about-section::after{display:none}
+  .hero-pills{display:none}
+  .hero-scroll{left:20px}
+  .footer-main{grid-template-columns:1fr;padding:40px 20px}
+  .footer-bottom{padding:16px 20px;flex-direction:column;text-align:center}
+  .gal-bento{grid-template-columns:1fr 1fr}
+  .gal-cell.wide{grid-column:span 1}
+  .gal-cell.tall{grid-row:span 1}
+}
+@media(max-width:540px){
+  .hero-btns{flex-direction:column}
+  .btn-red,.btn-outline{width:100%;justify-content:center}
+  .about-stats{grid-template-columns:1fr 1fr}
+  .moves-grid{grid-template-columns:1fr}
+  .gal-bento{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-trail" id="curTrail"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#hero">NOV<span>A</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#moves">Style</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#collab">Collabs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Book Now</a>
+  <button class="ham" id="ham" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mob-nav" id="mobNav">
+  <a href="#about">About</a>
+  <a href="#moves">Style</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#collab">Collabs</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-scene" id="heroScene">
+    <div class="hero-stage">
+      <div class="hero-layer" id="heroLayer">
+        <img class="hero-layer-img" src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=1800&q=80" alt="Dancer">
+      </div>
+    </div>
+  </div>
+  <div class="hero-over1"></div>
+  <div class="hero-over2"></div>
+  <div class="hero-diag"></div>
+
+  <!-- 3D decorative shapes -->
+  <div class="hero-shape shape-ring"></div>
+  <div class="hero-shape shape-ring2"></div>
+  <div class="hero-shape shape-line"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">
+      <div class="hero-tag-line"></div>
+      <span class="hero-tag-text">Dance Influencer · Nairobi</span>
+    </div>
+    <h1 class="hero-name">
+      NOV<span class="accent-word">A</span>
+      <span class="line2">MOVES</span>
+    </h1>
+    <p class="hero-desc">Where movement becomes art. Afro-fusion, street styles, and high-energy choreography that breaks the internet.</p>
+    <div class="hero-btns">
+      <a href="#gallery" class="btn-red">See The Work</a>
+      <a href="#contact" class="btn-outline">Book A Session</a>
+    </div>
+  </div>
+
+  <div class="hero-pills">
+    <div class="h-pill"><span class="pill-num">2.4M</span><span class="pill-lbl">Followers</span></div>
+    <div class="h-pill"><span class="pill-num">850+</span><span class="pill-lbl">Videos</span></div>
+    <div class="h-pill"><span class="pill-num">200M</span><span class="pill-lbl">Views</span></div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-txt">Scroll</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="tick-item">AFRO FUSION <span class="tick-sep">✦</span></div>
+    <div class="tick-item">STREET STYLE <span class="tick-sep">✦</span></div>
+    <div class="tick-item">NOVA MOVES <span class="tick-sep">✦</span></div>
+    <div class="tick-item">NAIROBI BORN <span class="tick-sep">✦</span></div>
+    <div class="tick-item">DANCE INFLUENCER <span class="tick-sep">✦</span></div>
+    <div class="tick-item">CHOREOGRAPHER <span class="tick-sep">✦</span></div>
+    <div class="tick-item">VIRAL CONTENT <span class="tick-sep">✦</span></div>
+    <div class="tick-item">AFRO FUSION <span class="tick-sep">✦</span></div>
+    <div class="tick-item">STREET STYLE <span class="tick-sep">✦</span></div>
+    <div class="tick-item">NOVA MOVES <span class="tick-sep">✦</span></div>
+    <div class="tick-item">NAIROBI BORN <span class="tick-sep">✦</span></div>
+    <div class="tick-item">DANCE INFLUENCER <span class="tick-sep">✦</span></div>
+    <div class="tick-item">CHOREOGRAPHER <span class="tick-sep">✦</span></div>
+    <div class="tick-item">VIRAL CONTENT <span class="tick-sep">✦</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-photo reveal-l">
+      <div class="photo-wrap" id="photoWrap">
+        <div class="photo-frame">
+          <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/687658831_18078375704540538_3284461587042301328_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=104&ig_cache_key=Mzg5NTQ0ODg4NzYwOTEyNDIzMg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=FGp85D6szZAQ7kNvwFf7_7v&_nc_oc=AdoKE1vyO8yAsGFQ9lcqhDWTAinO5_HOg-qa66u2kfqpxnFrgoJV9CP7emfpyXGE_1c&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=xDUfiaBeUAgEHfy58lCuMA&_nc_ss=7a22e&oh=00_Af-laI4sGCPzDD7t2TYutxOriE971582QLmPC6IsE-L6Gg&oe=6A276A5F" alt="Nova">
+        </div>
+        <div class="photo-dec-1"></div>
+        <div class="p-corner tl"></div>
+        <div class="p-corner br"></div>
+        <div class="photo-badge">
+          <div class="badge-num">8+</div>
+          <div class="badge-lbl">Yrs Dancing</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text">
+      <div class="sec-lbl reveal">The Dancer</div>
+      <h2 class="sec-h reveal d1">BUILT ON<br><span class="ghost">THE</span><br>RHYTHM</h2>
+      <blockquote class="about-quote reveal d2">"Every step I take is a story only my body can tell."</blockquote>
+      <p class="about-body reveal d2">
+        Born and raised in Nairobi, <strong>Nova</strong> has been moving to her own beat since she could walk. Blending Afro-fusion, street styles, and contemporary movement, she creates choreography that goes beyond dance — it's culture, identity, and pure electric energy.<br><br>
+        From viral TikTok challenges to brand campaigns, music video features, and live workshops — if it moves, Nova owns it.
+      </p>
+      <div class="about-stats reveal d3">
+        <div class="a-stat"><div class="a-stat-val">2.4M</div><div class="a-stat-lbl">Followers</div></div>
+        <div class="a-stat"><div class="a-stat-val">200M</div><div class="a-stat-lbl">Total Views</div></div>
+        <div class="a-stat"><div class="a-stat-val">50+</div><div class="a-stat-lbl">Brands</div></div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px" class="reveal d4">
+        <a href="#gallery" class="btn-red">View Gallery</a>
+        <a href="#collab" class="btn-outline">Collab Rates</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOVES / STYLE -->
+<section class="moves-section" id="moves">
+  <div style="max-width:1300px;margin:0 auto">
+    <div class="sec-lbl reveal">What I Do</div>
+    <h2 class="sec-h reveal">STYLE <span class="ghost">&amp; CRAFT</span></h2>
+  </div>
+  <div class="moves-grid" style="max-width:1300px;margin:70px auto 0">
+
+    <div class="move-card reveal d1">
+      <span class="move-num">01</span>
+      <div class="move-icon">💃</div>
+      <div class="move-title">Afro Fusion</div>
+      <p class="move-desc">A high-energy blend of Afrobeats, Amapiano, and traditional East African movement. This is where roots meet rhythm.</p>
+      <div class="move-tags"><span class="move-tag">Afrobeats</span><span class="move-tag">Amapiano</span><span class="move-tag">Culture</span></div>
+    </div>
+
+    <div class="move-card reveal d2">
+      <span class="move-num">02</span>
+      <div class="move-icon">🕺</div>
+      <div class="move-title">Street Style</div>
+      <p class="move-desc">From Locking & Popping to Waacking and Krump. Raw street-born movement with attitude and technical precision.</p>
+      <div class="move-tags"><span class="move-tag">Hip-Hop</span><span class="move-tag">Locking</span><span class="move-tag">Waacking</span></div>
+    </div>
+
+    <div class="move-card reveal d3">
+      <span class="move-num">03</span>
+      <div class="move-icon">🎬</div>
+      <div class="move-title">Choreography</div>
+      <p class="move-desc">Custom choreography for music videos, brand campaigns, and live performances. Concept-to-stage full production.</p>
+      <div class="move-tags"><span class="move-tag">Music Video</span><span class="move-tag">Campaign</span><span class="move-tag">Live</span></div>
+    </div>
+
+    <div class="move-card reveal d1">
+      <span class="move-num">04</span>
+      <div class="move-icon">📱</div>
+      <div class="move-title">Content Creation</div>
+      <p class="move-desc">Viral dance challenges, tutorials, and trend-setting content across TikTok, Instagram Reels, and YouTube Shorts.</p>
+      <div class="move-tags"><span class="move-tag">TikTok</span><span class="move-tag">Reels</span><span class="move-tag">Trending</span></div>
+    </div>
+
+    <div class="move-card reveal d2">
+      <span class="move-num">05</span>
+      <div class="move-icon">🏫</div>
+      <div class="move-title">Workshops</div>
+      <p class="move-desc">Intensive dance workshops for all levels. Corporate team-building, youth programs, and private masterclasses.</p>
+      <div class="move-tags"><span class="move-tag">Group</span><span class="move-tag">Private</span><span class="move-tag">Corporate</span></div>
+    </div>
+
+    <div class="move-card reveal d3">
+      <span class="move-num">06</span>
+      <div class="move-icon">🌍</div>
+      <div class="move-title">Brand Deals</div>
+      <p class="move-desc">Brand ambassador, product campaigns, and long-term partnerships. Reach Gen-Z across East Africa and the diaspora.</p>
+      <div class="move-tags"><span class="move-tag">Ambassador</span><span class="move-tag">Sponsored</span><span class="move-tag">UGC</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-header">
+      <div>
+        <div class="sec-lbl reveal">In Motion</div>
+        <h2 class="sec-h reveal">GALLERY</h2>
+      </div>
+      <div class="gal-filters reveal">
+        <button class="gf-btn on" onclick="galFilter(this,'all')">All</button>
+        <button class="gf-btn" onclick="galFilter(this,'stage')">Stage</button>
+        <button class="gf-btn" onclick="galFilter(this,'studio')">Studio</button>
+        <button class="gf-btn" onclick="galFilter(this,'street')">Street</button>
+      </div>
+    </div>
+
+    <!-- 3x2 bento grid — 6 images -->
+    <div class="gal-bento" id="galBento">
+
+      <div class="gal-cell wide" data-cat="stage">
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=900&q=80" alt="Stage">
+        <div class="gal-cell-info"><span>Stage</span><p>Main Stage · Carnivore Grounds</p></div>
+      </div>
+
+      <div class="gal-cell tall" data-cat="studio">
+        <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?w=600&q=80" alt="Studio">
+        <div class="gal-cell-info"><span>Studio</span><p>The Process</p></div>
+      </div>
+
+      <div class="gal-cell" data-cat="street">
+        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&q=80" alt="Street">
+        <div class="gal-cell-info"><span>Street</span><p>Downtown Nairobi Session</p></div>
+      </div>
+
+      <div class="gal-cell" data-cat="stage">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Stage 2">
+        <div class="gal-cell-info"><span>Stage</span><p>Festival Headline</p></div>
+      </div>
+
+      <div class="gal-cell" data-cat="studio">
+        <img src="https://images.unsplash.com/photo-1598387846419-a765ed4e0caa?w=600&q=80" alt="Studio 2">
+        <div class="gal-cell-info"><span>Studio</span><p>Late Night Choreo</p></div>
+      </div>
+
+      <div class="gal-cell" data-cat="street">
+        <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=600&q=80" alt="Street 2">
+        <div class="gal-cell-info"><span>Street</span><p>Urban Movement</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STATEMENT -->
+<section class="statement-section">
+  <div class="state-big reveal">
+    <span class="s1">FEEL THE</span>
+    <span class="s2">BEAT</span>
+    <span class="s3">BECOME IT</span>
+  </div>
+  <div class="state-line reveal d2"></div>
+  <p class="state-sub reveal d2">Dance Is Not A Performance. It Is A Presence.</p>
+</section>
+
+<!-- COLLAB / RATES -->
+<section class="collab-section" id="collab">
+  <div class="collab-inner">
+    <div class="sec-lbl reveal">Work With Nova</div>
+    <h2 class="sec-h reveal">COLLAB <span class="ghost">PACKAGES</span></h2>
+    <div class="rates-grid">
+
+      <div class="rate-card reveal d1">
+        <div class="rate-tier">Starter</div>
+        <div class="rate-name">The Spark</div>
+        <div class="rate-price"><sup>KES</sup>45K<sub>/post</sub></div>
+        <div class="rate-div"></div>
+        <ul class="rate-items">
+          <li>1 sponsored Reel / TikTok</li>
+          <li>Story mentions (3 frames)</li>
+          <li>Brand tag + link in bio</li>
+          <li class="off">Custom choreography</li>
+          <li class="off">Workshop feature</li>
+        </ul>
+        <a href="#contact" class="rate-cta">Inquire Now</a>
+      </div>
+
+      <div class="rate-card hot reveal d2">
+        <div class="rate-tier">Signature</div>
+        <div class="rate-name">The Viral Pack</div>
+        <div class="rate-price"><sup>KES</sup>150K<sub>/campaign</sub></div>
+        <div class="rate-div"></div>
+        <ul class="rate-items">
+          <li>3 branded dance Reels</li>
+          <li>1 custom choreography video</li>
+          <li>Dance challenge creation</li>
+          <li>Story + bio link (7 days)</li>
+          <li>Brand ambassador tag</li>
+          <li class="off">Live event appearance</li>
+        </ul>
+        <a href="#contact" class="rate-cta">Book Nova</a>
+      </div>
+
+      <div class="rate-card reveal d3">
+        <div class="rate-tier">Premium</div>
+        <div class="rate-name">The Full Experience</div>
+        <div class="rate-price"><sup>KES</sup>500K<sub>+</sub></div>
+        <div class="rate-div"></div>
+        <ul class="rate-items">
+          <li>Unlimited content (negotiated)</li>
+          <li>Live event / workshop appearance</li>
+          <li>Custom brand choreography</li>
+          <li>Long-term ambassador deal</li>
+          <li>Dedicated BTS content</li>
+          <li>Social campaign strategy</li>
+        </ul>
+        <a href="#contact" class="rate-cta">Let's Talk</a>
+      </div>
+
+    </div>
+    <p style="text-align:center;margin-top:28px;font-family:var(--f-mono);font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase">All rates are starting figures · Scope, exclusivity &amp; timeline affect final pricing · Custom quotes available</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="sec-lbl reveal">Let's Create</div>
+    <h2 class="sec-h reveal">CONTACT <span class="ghost">NOVA</span></h2>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-left reveal-l">
+      <div class="c-block">
+        <div class="c-label">General</div>
+        <div class="c-val"><a href="mailto:hello@novamoves.co.ke">hello@novamoves.co.ke</a></div>
+      </div>
+      <div class="c-block">
+        <div class="c-label">Bookings &amp; Collabs</div>
+        <div class="c-val"><a href="mailto:bookings@novamoves.co.ke">bookings@novamoves.co.ke</a></div>
+      </div>
+      <div class="c-block">
+        <div class="c-label">Management</div>
+        <div class="c-val"><a href="tel:+254712000000">+254 712 000 000</a></div>
+      </div>
+      <div class="c-block">
+        <div class="c-label">Based In</div>
+        <div class="c-val">Nairobi, Kenya<br><span style="color:var(--muted);font-size:13px">Available Worldwide</span></div>
+      </div>
+      <div class="c-socials">
+        <a href="#" class="c-soc">TikTok</a>
+        <a href="#" class="c-soc">Instagram</a>
+        <a href="#" class="c-soc">YouTube</a>
+        <a href="#" class="c-soc">Twitter</a>
+      </div>
+    </div>
+
+    <div class="reveal-r">
+      <div class="c-form">
+        <div class="cf-row">
+          <div class="cf"><input type="text" id="cn" placeholder=" " required><label for="cn">Your Name</label></div>
+          <div class="cf"><input type="email" id="ce" placeholder=" " required><label for="ce">Email</label></div>
+        </div>
+        <div class="cf">
+          <select id="ct">
+            <option value="" disabled selected></option>
+            <option>Brand Deal / Sponsorship</option>
+            <option>Choreography Commission</option>
+            <option>Workshop / Masterclass</option>
+            <option>Music Video Feature</option>
+            <option>Content Collaboration</option>
+            <option>Live Performance</option>
+            <option>Other</option>
+          </select>
+          <label for="ct">Type of Collab</label>
+        </div>
+        <div class="cf"><input type="text" id="cb" placeholder=" "><label for="cb">Budget Range (KES)</label></div>
+        <div class="cf"><textarea id="cm" placeholder=" " required></textarea><label for="cm">Tell Me About Your Project</label></div>
+        <button class="c-submit" onclick="submitForm(event)">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="f-brand">
+      <div class="f-logo">NOV<span>A</span></div>
+      <div class="f-tagline">Feel The Beat · Become It</div>
+      <p class="f-desc">Dance influencer, choreographer, and content creator based in Nairobi. Moving the world one step at a time.</p>
+      <div class="f-socs">
+        <a href="#" class="f-soc">TK</a>
+        <a href="#" class="f-soc">IG</a>
+        <a href="#" class="f-soc">YT</a>
+        <a href="#" class="f-soc">TW</a>
+      </div>
+    </div>
+    <div class="f-col">
+      <div class="f-col-title">Navigate</div>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#moves">Style</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#collab">Collabs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <div class="f-col-title">Platforms</div>
+      <ul>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">YouTube</a></li>
+        <li><a href="#">Spotify (Playlist)</a></li>
+        <li><a href="#">Press Kit</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="f-copy">© 2025 Nova · All Rights Reserved</span>
+    <span class="f-by">Designed by <strong>blackcodelabs</strong></span>
+  </div>
+</footer>
+
+<script>
+/* CURSOR */
+const cur=document.getElementById('cur'),trail=document.getElementById('curTrail');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+let tx=0,ty=0;
+(function loop(){tx+=(mx-tx)*.1;ty+=(my-ty)*.1;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.move-card,.rate-card,.gal-cell').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('on-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('on-hover'));
+});
+
+/* NAV */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',window.scrollY>60));
+const ham=document.getElementById('ham'),mob=document.getElementById('mobNav');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open');});
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open');}));
+
+/* PARALLAX HERO */
+const heroLayer=document.getElementById('heroLayer');
+let ticking=false;
+window.addEventListener('scroll',()=>{
+  if(!ticking){
+    requestAnimationFrame(()=>{
+      const sy=window.scrollY;
+      heroLayer.style.transform=`translateY(${sy*0.45}px)`;
+      ticking=false;
+    });
+    ticking=true;
+  }
+});
+
+/* MOUSE TILT HERO */
+const heroScene=document.getElementById('heroScene');
+document.addEventListener('mousemove',e=>{
+  if(window.scrollY>window.innerHeight)return;
+  const cx=window.innerWidth/2,cy=window.innerHeight/2;
+  const dx=(e.clientX-cx)/cx,dy=(e.clientY-cy)/cy;
+  heroScene.style.transform=`rotateX(${-dy*3}deg) rotateY(${dx*4}deg)`;
+});
+
+/* PHOTO 3D TILT on mousemove */
+const photoWrap=document.getElementById('photoWrap');
+if(photoWrap){
+  photoWrap.addEventListener('mousemove',e=>{
+    const r=photoWrap.getBoundingClientRect();
+    const dx=(e.clientX-r.left)/r.width-.5,dy=(e.clientY-r.top)/r.height-.5;
+    photoWrap.style.transform=`rotateY(${dx*16}deg) rotateX(${-dy*10}deg) scale(1.02)`;
+  });
+  photoWrap.addEventListener('mouseleave',()=>{photoWrap.style.transform='';});
+}
+
+/* REVEAL on scroll */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+
+/* GALLERY FILTER */
+function galFilter(btn,cat){
+  document.querySelectorAll('.gf-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.gal-cell').forEach(c=>{
+    const show=cat==='all'||c.getAttribute('data-cat')===cat;
+    c.style.opacity=show?'1':'0.1';
+    c.style.pointerEvents=show?'':'none';
+  });
+}
+
+/* FORM */
+function submitForm(e){
+  e.preventDefault();
+  const btn=e.target;
+  btn.textContent='Sent ✓';
+  btn.style.background='#1a1a1a';
+  btn.style.color='#555';
+  setTimeout(()=>{btn.textContent='Send Message →';btn.style.cssText='';},3000);
+}
+document.querySelectorAll('.cf select').forEach(sel=>{
+  sel.addEventListener('change',()=>{
+    const lbl=sel.nextElementSibling;
+    if(sel.value)lbl.style.cssText='top:-10px;font-size:8px;color:var(--accent)';
+    else lbl.style.cssText='';
+  });
+});
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+</body>
+</html>
