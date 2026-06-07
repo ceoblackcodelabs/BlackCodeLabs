@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azeezah Hashim — Media Messiah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-pale: #F5E6B8;
+    --black: #080808;
+    --deep: #0E0C0A;
+    --charcoal: #1A1714;
+    --smoke: #2A2520;
+    --mist: #8A7F72;
+    --cream: #F0E8D8;
+    --white: #FAF8F4;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor {
+    position: fixed; top: 0; left: 0;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s, background .2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 40px; height: 40px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform .12s ease, width .2s, height .2s, opacity .3s;
+    opacity: .6;
+  }
+  body:hover .cursor-ring { opacity: 1; }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9997; opacity: .4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(8,8,8,.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: .15em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--white); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--mist);
+    text-decoration: none;
+    transition: color .3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+    padding: .6rem 1.8rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    background: transparent;
+    text-decoration: none;
+    transition: background .3s, color .3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--black); }
+
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-hamburger span { width: 26px; height: 2px; background: var(--gold); display: block; transition: .3s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0 4rem;
+    gap: 2rem;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 60% 50%, #1A140A 0%, var(--black) 70%);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle 1px at 20% 30%, var(--gold) 0%, transparent 100%),
+      radial-gradient(circle 1px at 80% 70%, var(--gold) 0%, transparent 100%);
+    animation: starPulse 4s infinite alternate;
+    opacity: .3;
+  }
+  @keyframes starPulse { from{opacity:.2} to{opacity:.5} }
+
+  /* HERO LEFT */
+  .hero-left {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; gap: 1.5rem;
+    padding-top: 6rem;
+  }
+  .hero-eyebrow {
+    font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: .8rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 40px; height: 1px; background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: .95;
+    color: var(--white);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--mist);
+    letter-spacing: .05em;
+  }
+  .hero-tagline {
+    font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--gold-pale);
+    border-left: 2px solid var(--gold);
+    padding-left: 1rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: .5rem; }
+  .btn-primary {
+    padding: .9rem 2.4rem;
+    background: var(--gold);
+    color: var(--black);
+    font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .3s, transform .2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    padding: .9rem 2.4rem;
+    border: 1px solid var(--mist);
+    color: var(--mist);
+    font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color .3s, color .3s, transform .2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* HERO RIGHT — image + floating tags */
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    padding-top: 5rem;
+    height: 100vh;
+  }
+
+  .hero-image-wrap {
+    position: relative;
+    width: 380px; height: 520px;
+    will-change: transform;
+    transition: transform .08s ease-out;
+  }
+
+  .hero-image-frame {
+    position: relative;
+    width: 100%; height: 100%;
+    overflow: hidden;
+  }
+  .hero-image-frame::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(201,168,76,.15) 0%, transparent 50%, rgba(201,168,76,.08) 100%);
+    z-index: 1; pointer-events: none;
+  }
+  .hero-image-frame::after {
+    content: '';
+    position: absolute;
+    top: 16px; left: 16px;
+    right: -16px; bottom: -16px;
+    border: 1px solid var(--gold);
+    opacity: .4;
+    z-index: 0;
+  }
+
+  .hero-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform .12s ease-out;
+    will-change: transform;
+  }
+
+  /* placeholder if image not found */
+  .hero-img-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, #1A1410 0%, #2A1F14 50%, #1A1410 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1rem;
+  }
+  .hero-img-placeholder .initials {
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem; font-weight: 900;
+    color: var(--gold); opacity: .6;
+    line-height: 1;
+  }
+
+  /* FLOATING ROLE TAGS */
+  .float-tag {
+    position: absolute;
+    background: rgba(8,8,8,.88);
+    border: 1px solid var(--gold);
+    color: var(--gold-pale);
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    padding: .55rem 1rem;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    will-change: transform;
+    transition: transform .1s ease-out, box-shadow .3s;
+    z-index: 10;
+    cursor: default;
+  }
+  .float-tag:hover {
+    background: var(--gold);
+    color: var(--black);
+    box-shadow: 0 0 20px rgba(201,168,76,.5);
+  }
+  .float-tag::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-right: .6rem;
+    vertical-align: middle;
+  }
+  .float-tag:hover::before { background: var(--black); }
+
+  /* tag positions */
+  .ft-tv    { top: 8%;   left: -30%; }
+  .ft-radio { top: 22%;  right: -28%; }
+  .ft-mc    { top: 42%;  left: -35%; }
+  .ft-dj    { top: 58%;  right: -25%; }
+  .ft-vo    { top: 74%;  left: -28%; }
+  .ft-model { top: 86%;  right: -22%; }
+
+  /* AWARD BADGE */
+  .award-badge {
+    position: absolute;
+    bottom: -20px; left: -40px;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: .15rem;
+    z-index: 10;
+    animation: badgeSpin 12s linear infinite;
+  }
+  @keyframes badgeSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .award-badge .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; line-height: 1;
+    color: var(--black);
+    animation: badgeSpin 12s linear infinite reverse;
+  }
+  .award-badge .label {
+    font-size: .5rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--black); font-weight: 700;
+    animation: badgeSpin 12s linear infinite reverse;
+    text-align: center; padding: 0 10px;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--gold);
+    padding: .6rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex; gap: 0;
+    animation: tickerScroll 28s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem; letter-spacing: .2em;
+    color: var(--black);
+    padding: 0 2rem;
+  }
+  .ticker-sep { color: rgba(0,0,0,.4); }
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  .section-eyebrow {
+    font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .section-eyebrow::before, .section-eyebrow::after {
+    content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: .5;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.05;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 8rem 4rem;
+    background: var(--deep);
+    position: relative;
+  }
+  #about::before {
+    content: 'MEDIA\AMESSIAH';
+    position: absolute; left: -2rem; top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 8rem;
+    color: rgba(201,168,76,.04);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .about-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 6rem; align-items: center;
+  }
+  .about-img-col { position: relative; }
+  .about-img-wrap {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+  }
+  .about-img-wrap::after {
+    content: '';
+    position: absolute; bottom: -20px; right: -20px;
+    width: 70%; height: 70%;
+    border: 1px solid var(--gold);
+    opacity: .35; z-index: 0; pointer-events: none;
+  }
+  .about-img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top;
+    position: relative; z-index: 1;
+    transition: transform .6s ease;
+  }
+  .about-img-wrap:hover .about-img { transform: scale(1.04); }
+
+  .about-img-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, #151210 0%, #251C14 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem; color: var(--gold); opacity: .5;
+  }
+
+  .about-stat-strip {
+    display: flex; gap: 1.5rem; margin-top: 2rem;
+  }
+  .about-stat {
+    flex: 1;
+    background: var(--smoke);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-top: 2px solid var(--gold);
+  }
+  .about-stat .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    color: var(--gold); line-height: 1;
+  }
+  .about-stat .small {
+    font-size: .6rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--mist); margin-top: .3rem;
+  }
+
+  .about-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-style: italic;
+    color: var(--gold); letter-spacing: .08em;
+    margin-bottom: 1.2rem;
+  }
+  .about-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 900;
+    color: var(--white); line-height: 1.1;
+    margin-bottom: 1.8rem;
+  }
+  .about-text p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; line-height: 1.85;
+    color: var(--mist); margin-bottom: 1.2rem;
+  }
+  .about-text p strong { color: var(--cream); font-weight: 600; }
+  .about-roles { display: flex; flex-wrap: wrap; gap: .7rem; margin: 2rem 0; }
+  .about-role-pill {
+    padding: .4rem 1rem;
+    border: 1px solid rgba(201,168,76,.4);
+    font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--gold-pale);
+  }
+
+  /* ── WHAT I DO ── */
+  #services {
+    padding: 8rem 4rem;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .services-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: rgba(201,168,76,.15);
+  }
+  .service-card {
+    background: var(--black);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background .4s;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform .4s;
+    transform-origin: left;
+  }
+  .service-card:hover { background: var(--charcoal); }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-icon {
+    font-size: 2.5rem; margin-bottom: 1.5rem;
+    display: block;
+  }
+  .service-num {
+    position: absolute; top: 2rem; right: 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem; line-height: 1;
+    color: rgba(201,168,76,.06);
+    pointer-events: none;
+  }
+  .service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--white); margin-bottom: 1rem;
+  }
+  .service-card p {
+    font-size: .85rem; line-height: 1.8;
+    color: var(--mist);
+  }
+
+  /* ── GALLERY ── */
+  #gallery {
+    padding: 8rem 4rem;
+    background: var(--charcoal);
+  }
+  .gallery-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 280px 280px;
+    gap: 1rem;
+  }
+  .gallery-item {
+    position: relative; overflow: hidden;
+    cursor: pointer;
+  }
+  .gallery-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 2; }
+  .gallery-item:nth-child(2) { grid-column: 3; grid-row: 1 / 3; }
+  .gallery-item:nth-child(3) { grid-column: 4; grid-row: 1; }
+  .gallery-item:nth-child(4) { grid-column: 1; grid-row: 2; }
+
+  .gallery-placeholder {
+    width: 100%; height: 100%;
+    background: var(--smoke);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1rem;
+    transition: transform .6s;
+  }
+  .gallery-item:nth-child(1) .gallery-placeholder { background: linear-gradient(135deg, #1A1510, #2A1E12); }
+  .gallery-item:nth-child(2) .gallery-placeholder { background: linear-gradient(135deg, #120E0A, #221A10); }
+  .gallery-item:nth-child(3) .gallery-placeholder { background: linear-gradient(135deg, #1E1812, #2E2418); }
+  .gallery-item:nth-child(4) .gallery-placeholder { background: linear-gradient(135deg, #161210, #261E16); }
+
+  .gallery-placeholder img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top;
+    display: block;
+  }
+
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,.85) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity .4s;
+    display: flex; align-items: flex-end;
+    padding: 1.5rem;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-item:hover .gallery-placeholder { transform: scale(1.04); }
+  .gallery-caption {
+    font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--gold-pale);
+  }
+
+  /* ── AWARDS ── */
+  #awards {
+    padding: 8rem 4rem;
+    background: var(--black);
+  }
+  .awards-marquee {
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .awards-inner {
+    display: inline-flex; gap: 2rem;
+    animation: tickerScroll 30s linear infinite;
+  }
+  .award-chip {
+    background: var(--smoke);
+    border: 1px solid rgba(201,168,76,.3);
+    padding: 1rem 1.5rem;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: .8rem;
+  }
+  .award-chip .star { color: var(--gold); font-size: 1rem; }
+  .award-chip span {
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  .awards-count {
+    text-align: center;
+    padding: 5rem 0 2rem;
+  }
+  .awards-count .big-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(8rem, 18vw, 16rem);
+    line-height: .85;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--gold);
+    opacity: .15;
+    letter-spacing: -.02em;
+  }
+  .awards-count .label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-style: italic;
+    color: var(--mist);
+    margin-top: -2rem;
+  }
+
+  /* ── RATE CARD ── */
+  #rates {
+    padding: 8rem 4rem;
+    background: var(--deep);
+  }
+  .rates-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .rate-card {
+    background: var(--smoke);
+    padding: 3rem 2.5rem;
+    border: 1px solid rgba(201,168,76,.2);
+    position: relative;
+    overflow: hidden;
+    transition: border-color .3s, transform .3s;
+  }
+  .rate-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-6px);
+  }
+  .rate-card.featured {
+    background: var(--charcoal);
+    border-color: var(--gold);
+  }
+  .rate-card.featured::before {
+    content: 'POPULAR';
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: var(--gold);
+    color: var(--black);
+    font-size: .55rem; font-weight: 700; letter-spacing: .2em;
+    padding: .3rem .7rem;
+  }
+  .rate-icon { font-size: 2rem; margin-bottom: 1.5rem; display: block; }
+  .rate-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--white); margin-bottom: .5rem;
+  }
+  .rate-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: var(--gold); line-height: 1;
+    margin: 1rem 0;
+  }
+  .rate-price sub { font-size: 1rem; letter-spacing: .1em; }
+  .rate-desc {
+    font-size: .82rem; line-height: 1.8; color: var(--mist);
+    margin-bottom: 1.5rem;
+  }
+  .rate-features { list-style: none; }
+  .rate-features li {
+    font-size: .78rem; letter-spacing: .05em;
+    color: var(--mist);
+    padding: .5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    display: flex; align-items: center; gap: .7rem;
+  }
+  .rate-features li::before { content: '◆'; color: var(--gold); font-size: .5rem; }
+  .rate-note {
+    max-width: 700px; margin: 3rem auto 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-style: italic;
+    color: var(--mist); line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    padding: 8rem 4rem;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  #contact::before {
+    content: 'BOOK\A NOW';
+    position: absolute; right: 4rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10rem; line-height: .85;
+    color: rgba(201,168,76,.03);
+    white-space: pre; text-align: right;
+    pointer-events: none;
+  }
+  .contact-wrap {
+    max-width: 900px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.5fr;
+    gap: 6rem; align-items: start;
+  }
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .contact-info p {
+    font-size: .85rem; line-height: 1.9; color: var(--mist);
+    margin-bottom: 2rem;
+  }
+  .contact-detail {
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .c-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+  .c-icon {
+    font-size: 1.2rem;
+    background: var(--smoke);
+    padding: .6rem; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(201,168,76,.3);
+    flex-shrink: 0;
+  }
+  .c-text { font-size: .8rem; line-height: 1.7; color: var(--mist); }
+  .c-text strong { color: var(--cream); display: block; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .2rem; }
+  .c-text a { color: var(--gold); text-decoration: none; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: .5rem; }
+  .form-group label {
+    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--smoke);
+    border: 1px solid rgba(201,168,76,.25);
+    color: var(--cream);
+    padding: .85rem 1.1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: .83rem;
+    outline: none;
+    transition: border-color .3s;
+    width: 100%;
+    resize: none;
+    -webkit-appearance: none;
+  }
+  .form-group select option { background: var(--smoke); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--gold);
+    background: var(--charcoal);
+  }
+  .form-submit {
+    padding: 1rem 3rem;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: .72rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase;
+    cursor: pointer;
+    transition: background .3s, transform .2s;
+    align-self: flex-start;
+    margin-top: .5rem;
+  }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    padding: 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(201,168,76,.15);
+    gap: 2rem; flex-wrap: wrap;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: .15em;
+    color: var(--gold); text-decoration: none;
+  }
+  .footer-logo span { color: var(--white); }
+  .footer-social { display: flex; gap: 1.2rem; }
+  .footer-social a {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(201,168,76,.3);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--mist); font-size: .9rem; text-decoration: none;
+    transition: border-color .3s, color .3s, background .3s;
+  }
+  .footer-social a:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,.1); }
+  .footer-copy {
+    font-size: .68rem; letter-spacing: .1em; color: var(--mist);
+    text-align: center;
+  }
+  .footer-copy a { color: var(--gold); text-decoration: none; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--gold);
+    color: var(--black);
+    padding: 1rem 2rem;
+    font-size: .78rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+    z-index: 9000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform .4s, opacity .4s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2.5rem; }
+    .nav-links { gap: 1.8rem; }
+    #hero { padding: 0 2.5rem; gap: 1rem; }
+    .hero-image-wrap { width: 320px; height: 440px; }
+    .ft-tv { left: -10%; }
+    .ft-radio { right: -8%; }
+    .ft-mc { left: -12%; }
+    .ft-dj { right: -6%; }
+    .ft-vo { left: -10%; }
+    .ft-model { right: -5%; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .rates-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-grid { gap: 3rem; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+
+    #hero {
+      grid-template-columns: 1fr;
+      padding: 0 1.5rem;
+      padding-top: 5rem;
+      min-height: auto;
+      padding-bottom: 3rem;
+    }
+    .hero-right {
+      height: auto; padding-top: 2rem;
+      order: -1;
+    }
+    .hero-image-wrap { width: 260px; height: 360px; }
+    .float-tag { font-size: .58rem; padding: .4rem .7rem; }
+    .ft-tv    { left: -5%; top: 5%; }
+    .ft-radio { right: -2%; top: 20%; }
+    .ft-mc    { left: -3%; top: 40%; }
+    .ft-dj    { right: -1%; top: 58%; }
+    .ft-vo    { left: -2%; top: 74%; }
+    .ft-model { right: 0; top: 86%; }
+    .award-badge { width: 80px; height: 80px; left: -20px; bottom: -15px; }
+    .award-badge .num { font-size: 1.6rem; }
+    .hero-title { font-size: 2.8rem; }
+
+    #about, #services, #gallery, #awards, #rates, #contact { padding: 5rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px 200px 200px;
+    }
+    .gallery-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+    .gallery-item:nth-child(2) { grid-column: 1; grid-row: 2; }
+    .gallery-item:nth-child(3) { grid-column: 2; grid-row: 2; }
+    .gallery-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
+
+    .services-grid { grid-template-columns: 1fr; }
+    .rates-grid { grid-template-columns: 1fr; }
+    .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; align-items: flex-start; padding: 3rem 1.5rem; }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MOBILE NAV ── */
+  .mobile-nav {
+    position: fixed; inset: 0;
+    background: rgba(8,8,8,.97);
+    z-index: 900;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2.5rem;
+    transform: translateX(100%);
+    transition: transform .4s ease;
+  }
+  .mobile-nav.open { transform: translateX(0); }
+  .mobile-nav a {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 900;
+    color: var(--white); text-decoration: none;
+    transition: color .3s;
+  }
+  .mobile-nav a:hover { color: var(--gold); }
+  .mobile-nav-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    font-size: 2rem; color: var(--gold); cursor: pointer; background: none; border: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#services" onclick="closeMobileNav()">Services</a>
+  <a href="#gallery" onclick="closeMobileNav()">Gallery</a>
+  <a href="#rates" onclick="closeMobileNav()">Rates</a>
+  <a href="#contact" onclick="closeMobileNav()">Book Me</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Azeezah<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#rates">Rates</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Me</a>
+  <div class="nav-hamburger" onclick="openMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ██████ HERO ██████ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-left">
+    <p class="hero-eyebrow">East Africa's Queen of Hype</p>
+    <h1 class="hero-title">
+      Azeezah<br>
+      <em>Hashim</em>
+    </h1>
+    <p class="hero-subtitle">The Media Messiah</p>
+    <p class="hero-tagline">#NoAzeezahNoParty</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Book Now</a>
+      <a href="#about" class="btn-outline">Discover More</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-wrap" id="heroImageWrap">
+      <!-- floating tags -->
+      <span class="float-tag ft-tv"   data-depth="1.8">📺 TV Host</span>
+      <span class="float-tag ft-radio" data-depth="1.4">🎙️ Radio Host</span>
+      <span class="float-tag ft-mc"   data-depth="2.2">🎤 MC &amp; Emcee</span>
+      <span class="float-tag ft-dj"   data-depth="1.6">🎧 DJ</span>
+      <span class="float-tag ft-vo"   data-depth="1.9">🔊 Voice-Over Artist</span>
+      <span class="float-tag ft-model" data-depth="1.3">✨ Influencer</span>
+
+      <div class="hero-image-frame">
+        <img
+          src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/707348810_18589872970048059_1581447808494710868_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ig_cache_key=MzkwNjkzNjI3NTI5Nzc1MDUwMw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMjQwMC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=MLZWEhCd6eAQ7kNvwHg5aen&_nc_oc=AdrNchar_Kx-AClFwzCTu9pk8rPIm4lPa3zZ8Dx8v0c5C3_yZWBlC4PfiQS9Kuj2kg8&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=3iUSj6y3YCKslcjcztDG8A&_nc_ss=7a22e&oh=00_Af9w_Tuik2GsugV2lUOMYkM_vTd0cFYuhRYLf0cTGWigGg&oe=6A2B86BF"
+          alt="Azeezah Hashim"
+          class="hero-img"
+          id="heroImg"
+          onerror="this.style.display='none'; document.getElementById('heroPh').style.display='flex';"
+        />
+        <div class="hero-img-placeholder" id="heroPh" style="display:none">
+          <span class="initials">AH</span>
+          <span style="font-size:.7rem;letter-spacing:.2em;color:var(--mist);text-transform:uppercase">Media Messiah</span>
+        </div>
+      </div>
+
+      <div class="award-badge">
+        <span class="num">20+</span>
+        <span class="label">Awards Won</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- ██████ ABOUT ██████ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-col reveal">
+      <div class="about-img-wrap">
+        <img
+          src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/707270397_18589873300048059_80918858163190662_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzkwNjkzNjMxOTExMTQ3NTE3Nw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMzAwMC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=L3wcvo90vN0Q7kNvwH9qY1P&_nc_oc=Ado1kmPNEeG56zcemRn2Hlw1eR6wiEWn25WjZy1xNZ0byCR_vuchq7F50x_p82HHVyg&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=3iUSj6y3YCKslcjcztDG8A&_nc_ss=7a22e&oh=00_Af9poGUY2A7gpWeeYxJhp_5GcKPoikeXPJN5EQ9rbRy5mA&oe=6A2BAA4A"
+          alt="Azeezah Hashim"
+          class="about-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <div class="about-img-placeholder" style="display:none;aspect-ratio:3/4;">AH</div>
+      </div>
+      <div class="about-stat-strip">
+        <div class="about-stat"><div class="big">200+</div><div class="small">Events Hosted</div></div>
+        <div class="about-stat"><div class="big">20+</div><div class="small">Awards</div></div>
+        <div class="about-stat"><div class="big">5+</div><div class="small">Countries</div></div>
+      </div>
+    </div>
+
+    <div class="about-text reveal">
+      <h3>Meet the Media Messiah</h3>
+      <h2>Born to Command<br>Every Room</h2>
+      <p>
+        Azeezah Wanjiru Hashim is <strong>Kenya's most electric multi-hyphenate media personality</strong> — TV host, radio queen, international MC, DJ, voice-over artist, and influencer, all in one.
+      </p>
+      <p>
+        Born and raised in Nairobi's Eastleigh — from a bold mix of <strong>Bajuni Swahili and Kikuyu heritage</strong> — she balanced academic excellence at Kenya High School with an unshakeable passion for media. She followed that fire to the University of Nairobi, earning her BA and launching one of East Africa's most meteoric careers.
+      </p>
+      <p>
+        Today she hosts <strong>10 over 10 on Citizen TV</strong> (Friday nights) and <strong>The Breakout on Hot 96 FM</strong> (10AM–1PM weekdays), with dreams pointed squarely at the global stage: BET Awards, E! News, and beyond.
+      </p>
+      <div class="about-roles">
+        <span class="about-role-pill">Citizen TV · 10 over 10</span>
+        <span class="about-role-pill">Hot 96 FM · The Breakout</span>
+        <span class="about-role-pill">International MC</span>
+        <span class="about-role-pill">Xiaomi Kenya Spokesperson</span>
+        <span class="about-role-pill">Miss Intercontinental 2026</span>
+        <span class="about-role-pill">Future Awards Africa</span>
+      </div>
+      <a href="#contact" class="btn-primary">Book Azeezah</a>
+    </div>
+  </div>
+</section>
+
+<!-- ██████ SERVICES ██████ -->
+<section id="services">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">What I Do</p>
+    <h2 class="section-title">Every Stage.<br><em>Every Medium.</em></h2>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">📺</span>
+      <span class="service-num">01</span>
+      <h3>TV Hosting</h3>
+      <p>Host of Citizen TV's flagship Friday entertainment show <em>10 over 10</em>, bringing youthful energy and electric charisma to prime-time screens across East Africa.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🎙️</span>
+      <span class="service-num">02</span>
+      <h3>Radio Personality</h3>
+      <p>Mid-morning queen on Hot 96 FM Kenya with <em>The Breakout</em> (10AM–1PM, Mon–Fri). Previously rocked NRG Radio in Kenya and Uganda. Deep voice. Magnetic presence.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🎤</span>
+      <span class="service-num">03</span>
+      <h3>MC &amp; Events</h3>
+      <p>The <em>"Queen of Hype"</em> — 200+ major events including Davido, Ayra Starr concerts, Miss Intercontinental 2026 in Egypt, The Future Awards Africa, and top corporate gigs.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🎧</span>
+      <span class="service-num">04</span>
+      <h3>Professional DJ</h3>
+      <p>From headline concerts to private events, Azeezah commands the decks with the same electric energy she brings to every room she enters.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🔊</span>
+      <span class="service-num">05</span>
+      <h3>Voice-Over Artist</h3>
+      <p>A deep, captivating voice that sells. Available for brand commercials, campaigns, documentaries, and digital content across all platforms.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">✨</span>
+      <span class="service-num">06</span>
+      <h3>Brand Partnerships</h3>
+      <p>Official spokesperson for Xiaomi Kenya. Open to brand ambassadorships, commercial modelling, social media campaigns, and influencer collaborations across Africa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ██████ GALLERY ██████ -->
+<section id="gallery">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Gallery</p>
+    <h2 class="section-title">Moments &amp;<br><em>Memories</em></h2>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <div class="gallery-placeholder">
+        <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/707270397_18589873300048059_80918858163190662_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzkwNjkzNjMxOTExMTQ3NTE3Nw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMzAwMC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=L3wcvo90vN0Q7kNvwH9qY1P&_nc_oc=Ado1kmPNEeG56zcemRn2Hlw1eR6wiEWn25WjZy1xNZ0byCR_vuchq7F50x_p82HHVyg&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=3iUSj6y3YCKslcjcztDG8A&_nc_ss=7a22e&oh=00_Af9poGUY2A7gpWeeYxJhp_5GcKPoikeXPJN5EQ9rbRy5mA&oe=6A2BAA4A"
+          alt="Azeezah on stage"
+          onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#1A1510,#2A1E12);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem\'><span style=\'font-family:Bebas Neue,sans-serif;font-size:4rem;color:rgba(201,168,76,.3)\'>ON STAGE</span></div>'">
+        </img>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-caption">Stage Queen · Nairobi</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <div class="gallery-placeholder">
+        <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/715177976_18591795664048059_3769346207996308372_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ig_cache_key=MzkxMTI4OTg5NjU3OTY1NzA2OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuNDA5Ni5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=iou5PXOU6CwQ7kNvwEN-vD-&_nc_oc=Adqf_FWmbLI8zXwRy529rhLgHvu_gkRG5ubIR90GTohp5vfjVtkE2007I998qj3LxqQ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=3iUSj6y3YCKslcjcztDG8A&_nc_ss=7a22e&oh=00_Af-Q6YMQm2qU2ynKRcilsYYdQOlFwNtHA7LE1ICo6GAtAg&oe=6A2B9F8E"
+          alt="Azeezah radio"
+          onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#120E0A,#221A10);display:flex;align-items:center;justify-content:center;\'><span style=\'font-family:Bebas Neue,sans-serif;font-size:3rem;color:rgba(201,168,76,.3)\'>HOT 96 FM</span></div>'">
+        </img>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-caption">Hot 96 FM · The Breakout</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <div class="gallery-placeholder">
+        <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/687665584_18583160581048059_3297885747819344947_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=Mzg5MDMwNzc0NTk0MDA5MDYxMA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=Cu1XTa8sccAQ7kNvwHtipIh&_nc_oc=AdqofzddMJDaAEYYShBZ9QocjjVShvTpkBtx2bQPST_1iiNFMFKUX8YUdV9QNoK-ci4&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=RTmnV26xu6sLTqFZs6M7Ng&_nc_ss=7a22e&oh=00_Af_A7rJ-1B8ewNVUZ6BBGs05jmZHeDGcMJHmhi3UnxqfvQ&oe=6A2B9AA0"
+          alt="Azeezah Citizen TV"
+          onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#1E1812,#2E2418);display:flex;align-items:center;justify-content:center;\'><span style=\'font-family:Bebas Neue,sans-serif;font-size:2.5rem;color:rgba(201,168,76,.3)\'>CITIZEN TV</span></div>'">
+        </img>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-caption">10 over 10 · Citizen TV</span></div>
+    </div>
+    <div class="gallery-item reveal">
+      <div class="gallery-placeholder">
+        <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/675320507_18579976492048059_9107122558031961258_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=Mzg4MjM4Njc0NTYyMzE1NDczOQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=XC1fEol7YM4Q7kNvwFLamtv&_nc_oc=Adrfl-m-QMweRhjGCinWUAxNDeeOLrULd-Bd7sk9eKKaqy1p3y6ua2rK53Txvikqpic&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=RTmnV26xu6sLTqFZs6M7Ng&_nc_ss=7a22e&oh=00_Af9cMhKTsnV_XqP7wRNia1ThkxiGVAPUrtl1Hp-SXQ8x2A&oe=6A2BA99C"
+          alt="Azeezah awards"
+          onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#161210,#261E16);display:flex;align-items:center;justify-content:center;\'><span style=\'font-family:Bebas Neue,sans-serif;font-size:3rem;color:rgba(201,168,76,.3)\'>AWARDS</span></div>'">
+        </img>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-caption">Award Season · Pan-Africa</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ██████ AWARDS ██████ -->
+<section id="awards">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Recognition</p>
+    <h2 class="section-title">Multi-Award<br><em>Winning</em></h2>
+  </div>
+
+  <div class="awards-marquee">
+    <div class="awards-inner" id="awardsInner"></div>
+  </div>
+
+  <div class="awards-count reveal">
+    <div class="big-num">20+</div>
+    <p class="label">awards and counting across Africa</p>
+  </div>
+</section>
+
+<!-- ██████ RATE CARD ██████ -->
+<section id="rates">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Rate Card</p>
+    <h2 class="section-title">Investment in<br><em>Excellence</em></h2>
+  </div>
+
+  <div class="rates-grid">
+    <div class="rate-card reveal">
+      <span class="rate-icon">🎙️</span>
+      <h3>Voice-Over</h3>
+      <div class="rate-price">KES 25K<sub>+</sub></div>
+      <p class="rate-desc">Studio-quality recordings for commercials, campaigns, and digital content.</p>
+      <ul class="rate-features">
+        <li>Radio / TV commercial</li>
+        <li>Up to 60 seconds</li>
+        <li>1 revision round</li>
+        <li>Broadcast-ready delivery</li>
+        <li>Turnaround 48hrs</li>
+      </ul>
+    </div>
+
+    <div class="rate-card featured reveal">
+      <span class="rate-icon">🎤</span>
+      <h3>MC / Emcee</h3>
+      <div class="rate-price">KES 80K<sub>+</sub></div>
+      <p class="rate-desc">Full event MC experience — from corporate galas to headline concerts.</p>
+      <ul class="rate-features">
+        <li>Corporate events &amp; galas</li>
+        <li>Concerts &amp; festivals</li>
+        <li>Beauty pageants</li>
+        <li>Award ceremonies</li>
+        <li>Pre-event consultation included</li>
+      </ul>
+    </div>
+
+    <div class="rate-card reveal">
+      <span class="rate-icon">🎧</span>
+      <h3>DJ Set</h3>
+      <div class="rate-price">KES 50K<sub>+</sub></div>
+      <p class="rate-desc">Live DJ performances for private events, club nights, and corporate functions.</p>
+      <ul class="rate-features">
+        <li>2–4 hour sets</li>
+        <li>Corporate &amp; private events</li>
+        <li>Club &amp; festival bookings</li>
+        <li>Custom playlist curation</li>
+        <li>Equipment negotiable</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rates-grid" style="margin-top:1.5rem">
+    <div class="rate-card reveal">
+      <span class="rate-icon">📺</span>
+      <h3>Brand Partnership</h3>
+      <div class="rate-price">KES 150K<sub>+</sub></div>
+      <p class="rate-desc">Full brand ambassador packages, social campaigns, and spokesperson deals.</p>
+      <ul class="rate-features">
+        <li>Social media integration</li>
+        <li>Event appearances</li>
+        <li>Campaign shoots</li>
+        <li>Long-term retainer available</li>
+      </ul>
+    </div>
+
+    <div class="rate-card reveal">
+      <span class="rate-icon">✈️</span>
+      <h3>International Bookings</h3>
+      <div class="rate-price">Custom</div>
+      <p class="rate-desc">Available across East Africa and internationally — Egypt, Uganda, Tanzania, and beyond.</p>
+      <ul class="rate-features">
+        <li>Pan-African events</li>
+        <li>Travel + accommodation extra</li>
+        <li>Flexible scheduling</li>
+        <li>Enquire for full package</li>
+      </ul>
+    </div>
+
+    <div class="rate-card reveal" style="background:var(--smoke);border-color:rgba(201,168,76,.2)">
+      <span class="rate-icon">💬</span>
+      <h3>Custom Package</h3>
+      <div class="rate-price">Bespoke</div>
+      <p class="rate-desc">Need a combination? MC + DJ? Voice-over + campaign? Let's build something tailored.</p>
+      <ul class="rate-features">
+        <li>Mix of any services</li>
+        <li>Multi-day bookings</li>
+        <li>Charity &amp; cultural events</li>
+        <li>Direct negotiation</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="rate-note reveal">
+    All rates are starting points and vary by scope, location, and event type.<br>
+    International bookings exclude travel, accommodation, and visa costs.<br>
+    For confirmed bookings, a 50% deposit is required to secure the date.
+  </p>
+</section>
+
+<!-- ██████ CONTACT ██████ -->
+<section id="contact">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Get in Touch</p>
+    <h2 class="section-title">Let's Create<br><em>Magic Together</em></h2>
+  </div>
+
+  <div class="contact-wrap">
+    <div class="contact-info reveal">
+      <h3>Book Azeezah</h3>
+      <p>Ready to take your event, campaign, or project to the next level? Reach out and let's make it happen.</p>
+      <div class="contact-detail">
+        <div class="c-item">
+          <div class="c-icon">🌐</div>
+          <div class="c-text">
+            <strong>Official Website</strong>
+            <a href="https://iamazeezah.com" target="_blank">iamazeezah.com</a>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">📸</div>
+          <div class="c-text">
+            <strong>Instagram</strong>
+            <a href="https://www.instagram.com/azeezah_h/" target="_blank">@azeezah_h</a>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">📍</div>
+          <div class="c-text">
+            <strong>Base</strong>
+            Nairobi, Kenya · Available Internationally
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">📺</div>
+          <div class="c-text">
+            <strong>On Air</strong>
+            Hot 96 FM · 10AM–1PM Mon–Fri<br>
+            Citizen TV · 10 over 10 · Fridays
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Full name" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" placeholder="+254...">
+        </div>
+        <div class="form-group">
+          <label>Service Needed</label>
+          <select required>
+            <option value="" disabled selected>Select service</option>
+            <option>MC / Emcee</option>
+            <option>DJ Set</option>
+            <option>Voice-Over</option>
+            <option>Brand Partnership</option>
+            <option>International Booking</option>
+            <option>Custom Package</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Event / Project Details</label>
+        <textarea rows="5" placeholder="Tell me about your event or project — date, location, audience size, vision..."></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Enquiry →</button>
+    </form>
+  </div>
+</section>
+
+<!-- ██████ FOOTER ██████ -->
+<footer>
+  <a href="#" class="footer-logo">Azeezah<span>.</span></a>
+  <p class="footer-copy">
+    © 2026 Azeezah Hashim. All rights reserved.<br>
+    Bookings via <a href="https://iamazeezah.com" target="_blank">iamazeezah.com</a>
+  </p>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/azeezah_h/" target="_blank" title="Instagram">📸</a>
+    <a href="https://iamazeezah.com" target="_blank" title="Website">🌐</a>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Enquiry sent! Azeezah's team will be in touch.</div>
+
+<script>
+// ── CUSTOM CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor(){
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * .12; ry += (my - ry) * .12;
+  ring.style.left = rx + 'px'; ring.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a, button, .float-tag, .service-card, .gallery-item, .rate-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px'; cursor.style.height = '20px';
+    ring.style.width = '60px'; ring.style.height = '60px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px'; cursor.style.height = '12px';
+    ring.style.width = '40px'; ring.style.height = '40px';
+  });
+});
+
+// ── HERO PARALLAX ──
+const heroWrap = document.getElementById('heroImageWrap');
+const heroImg  = document.getElementById('heroImg');
+const floatTags = document.querySelectorAll('.float-tag');
+document.addEventListener('mousemove', e => {
+  if (!heroWrap) return;
+  const r = heroWrap.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const dx = (e.clientX - cx) / window.innerWidth;
+  const dy = (e.clientY - cy) / window.innerHeight;
+  heroWrap.style.transform = `rotateY(${dx * 8}deg) rotateX(${-dy * 6}deg)`;
+  if (heroImg) heroImg.style.transform = `scale(1.04) translate(${dx * 8}px, ${dy * 6}px)`;
+  floatTags.forEach(tag => {
+    const d = parseFloat(tag.dataset.depth) || 1.5;
+    tag.style.transform = `translate(${dx * d * 18}px, ${dy * d * 12}px)`;
+  });
+});
+
+// ── TICKER ──
+const tickerItems = [
+  '#NoAzeezahNoParty', '⬥', 'Media Messiah', '⬥',
+  'Citizen TV', '⬥', 'Hot 96 FM', '⬥',
+  '200+ Events', '⬥', '20+ Awards', '⬥',
+  'Queen of Hype', '⬥', 'East Africa\'s Finest', '⬥',
+  '#NoAzeezahNoParty', '⬥', 'Book Now', '⬥',
+];
+const ti = document.getElementById('tickerInner');
+const html = tickerItems.map(t =>
+  t === '⬥' ? `<span class="ticker-item ticker-sep">✦</span>` : `<span class="ticker-item">${t}</span>`
+).join('');
+ti.innerHTML = html + html; // duplicate for loop
+
+// ── AWARDS MARQUEE ──
+const awards = [
+  'Best Radio Personality', 'Media Personality of the Year',
+  'Influencer of the Year', 'Outstanding Media Excellence',
+  'Best TV Host — East Africa', 'Top 40 Under 40',
+  'Pan-African Media Award', 'Best Female Radio Presenter',
+  'Digital Influencer Award', 'Brand Ambassador of the Year',
+];
+const ai = document.getElementById('awardsInner');
+const awHtml = awards.map(a =>
+  `<div class="award-chip"><span class="star">✦</span><span>${a}</span></div>`
+).join('');
+ai.innerHTML = awHtml + awHtml;
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal');
+const observer  = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .12 });
+revealEls.forEach(el => observer.observe(el));
+
+// ── MOBILE NAV ──
+function openMobileNav()  { document.getElementById('mobileNav').classList.add('open'); }
+function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+// ── FORM ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+  e.target.reset();
+}
+
+// ── NAV SCROLL BG ──
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(8,8,8,.97)';
+    nav.style.backdropFilter = 'blur(12px)';
+    nav.style.borderBottom = '1px solid rgba(201,168,76,.12)';
+  } else {
+    nav.style.background = 'linear-gradient(to bottom, rgba(8,8,8,.95), transparent)';
+    nav.style.borderBottom = 'none';
+  }
+});
+</script>
+</body>
+</html>

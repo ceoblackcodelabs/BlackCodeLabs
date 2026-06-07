@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manyatta Boys High School – Migori County</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #87CEEB;
+    --sky-dark: #5aA9CC;
+    --sky-light: #c9e8f5;
+    --grey: #3a3f47;
+    --grey-light: #6b7280;
+    --grey-dark: #1e2228;
+    --white: #f9fafb;
+    --accent: #c9a84c;
+    --accent-light: #f0d98a;
+    --bg: #f4f7fa;
+    --card-bg: #ffffff;
+    --section-alt: #edf4f9;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--grey-dark);
+    overflow-x: hidden;
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(30, 34, 40, 0.95);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    height: 70px;
+    border-bottom: 2px solid var(--sky-dark);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-logo-badge {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sky), var(--sky-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: var(--grey-dark);
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .nav-logo-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-logo-text span:first-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .nav-logo-text span:last-child {
+    font-size: 10px;
+    color: var(--sky);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(249,250,251,0.75);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 2px;
+    background: var(--sky);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--sky); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--white);
+    transition: all 0.3s;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 70px; left: 0; right: 0;
+    background: rgba(30, 34, 40, 0.98);
+    padding: 20px 5%;
+    z-index: 999;
+    flex-direction: column;
+    gap: 0;
+    border-bottom: 2px solid var(--sky-dark);
+  }
+
+  .mobile-menu.open { display: flex; }
+
+  .mobile-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    letter-spacing: 0.5px;
+  }
+
+  .mobile-menu a:hover { color: var(--sky); }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--grey-dark) 0%, #2a3140 100%);
+    padding-top: 70px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2387CEEB' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 5%;
+    gap: 40px;
+  }
+
+  .hero-text {
+    flex: 0 0 42%;
+    max-width: 42%;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: var(--sky-dark);
+    color: var(--grey-dark);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 4.5vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .hero-text h1 span {
+    color: var(--sky);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(249,250,251,0.7);
+    margin-bottom: 32px;
+    max-width: 400px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--sky-dark), var(--sky));
+    color: var(--grey-dark);
+    padding: 13px 28px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(90,169,204,0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(90,169,204,0.55);
+  }
+
+  .btn-outline {
+    border: 2px solid rgba(249,250,251,0.3);
+    color: var(--white);
+    padding: 11px 28px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 13px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--sky);
+    background: rgba(135,206,235,0.1);
+  }
+
+  /* Hero Carousel */
+  .hero-carousel {
+    flex: 0 0 54%;
+    max-width: 54%;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    aspect-ratio: 16/10;
+    z-index: 2;
+  }
+
+  .hero-carousel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(30,34,40,0.6) 0%, transparent 40%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .carousel-slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.77,0,0.175,1);
+  }
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carousel-slide img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Placeholder slides using gradients */
+  .slide-ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+    position: relative;
+  }
+
+  .slide-ph-1 { background: linear-gradient(135deg, #1a3a5c 0%, #2b6cb0 50%, #87ceeb 100%); }
+  .slide-ph-2 { background: linear-gradient(135deg, #2a3140 0%, #3a5068 50%, #5aa9cc 100%); }
+  .slide-ph-3 { background: linear-gradient(135deg, #1e2228 0%, #2d4a3e 50%, #48b07a 100%); }
+  .slide-ph-4 { background: linear-gradient(135deg, #3a2a1e 0%, #6b4c2a 50%, #c9a84c 100%); }
+
+  .slide-ph-label {
+    position: absolute;
+    bottom: 20px; left: 20px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: 1px;
+  }
+
+  .slide-icon {
+    width: 80px; height: 80px;
+    opacity: 0.15;
+    margin-bottom: 12px;
+  }
+
+  .carousel-controls {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .carousel-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+
+  .carousel-btn:hover { background: rgba(135,206,235,0.5); }
+
+  .carousel-dots {
+    position: absolute;
+    bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+  }
+
+  .c-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .c-dot.active {
+    background: var(--sky);
+    width: 20px;
+    border-radius: 4px;
+  }
+
+  /* ===== STATS BAR ===== */
+  .stats-bar {
+    background: linear-gradient(135deg, var(--sky-dark), var(--sky));
+    padding: 28px 5%;
+  }
+
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .stat-item {
+    text-align: center;
+    color: var(--grey-dark);
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-top: 4px;
+  }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 90px 5%; }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sky-dark);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--grey-dark);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .section-title span { color: var(--sky-dark); }
+
+  .section-line {
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, var(--sky-dark), var(--accent));
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  /* ===== ABOUT ===== */
+  #about {
+    background: var(--card-bg);
+  }
+
+  .about-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px;
+    align-items: center;
+  }
+
+  .about-text p {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--grey-light);
+    margin-bottom: 16px;
+  }
+
+  .about-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .about-feat {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 8px;
+    background: var(--section-alt);
+    border-left: 3px solid var(--sky-dark);
+  }
+
+  .feat-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: var(--sky-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .feat-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-dark);
+  }
+
+  .feat-text span {
+    font-size: 12px;
+    color: var(--grey-light);
+  }
+
+  .about-image-wrap {
+    position: relative;
+  }
+
+  .about-img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  .about-img-ph {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, #1a3a5c 0%, #2b6cb0 45%, #87ceeb 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+  }
+
+  .about-img-ph svg {
+    width: 70px; height: 70px;
+    opacity: 0.3;
+    margin-bottom: 12px;
+  }
+
+  .about-badge {
+    position: absolute;
+    bottom: -20px; left: -20px;
+    background: var(--grey-dark);
+    color: var(--white);
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border: 2px solid var(--sky-dark);
+    z-index: 2;
+  }
+
+  .about-badge strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    display: block;
+    color: var(--sky);
+  }
+
+  .about-badge span { font-size: 11px; color: rgba(249,250,251,0.6); }
+
+  .about-decor {
+    position: absolute;
+    top: -16px; right: -16px;
+    width: 90px; height: 90px;
+    border: 3px solid var(--sky-light);
+    border-radius: 12px;
+    z-index: -1;
+  }
+
+  /* ===== EVENTS ===== */
+  #events { background: var(--section-alt); }
+
+  .events-inner { max-width: 1200px; margin: 0 auto; }
+
+  .events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .events-carousel-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .events-track {
+    display: flex;
+    gap: 24px;
+    transition: transform 0.5s cubic-bezier(0.77,0,0.175,1);
+    will-change: transform;
+  }
+
+  .event-card {
+    flex: 0 0 calc(33.333% - 16px);
+    background: var(--card-bg);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+  }
+
+  .event-img {
+    height: 170px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .event-img-ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+  }
+
+  .ev-1 { background: linear-gradient(135deg, #1a3a5c, #87ceeb); }
+  .ev-2 { background: linear-gradient(135deg, #2d4a3e, #48b07a); }
+  .ev-3 { background: linear-gradient(135deg, #3a2a1e, #c9a84c); }
+  .ev-4 { background: linear-gradient(135deg, #3a1a3a, #9b59b6); }
+  .ev-5 { background: linear-gradient(135deg, #1a2a3a, #2980b9); }
+  .ev-6 { background: linear-gradient(135deg, #2a1a1a, #e74c3c); }
+
+  .event-date-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--grey-dark);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .event-status {
+    position: absolute;
+    top: 12px; right: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .status-upcoming { background: var(--sky); color: var(--grey-dark); }
+  .status-past { background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.8); }
+
+  .event-body {
+    padding: 20px;
+  }
+
+  .event-category {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sky-dark);
+    margin-bottom: 6px;
+  }
+
+  .event-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--grey-dark);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .event-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--grey-light);
+    flex-wrap: wrap;
+  }
+
+  .event-meta span { display: flex; align-items: center; gap: 4px; }
+
+  .ev-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .ev-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--sky-dark);
+    background: transparent;
+    color: var(--sky-dark);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .ev-btn:hover {
+    background: var(--sky-dark);
+    color: var(--white);
+  }
+
+  /* ===== GALLERY ===== */
+  #gallery { background: var(--grey-dark); }
+
+  #gallery .section-title { color: var(--white); }
+  #gallery .section-tag { color: var(--sky); }
+
+  .gallery-inner { max-width: 1200px; margin: 0 auto; }
+
+  .gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .gallery-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .gal-filter {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    transition: all 0.2s;
+  }
+
+  .gal-filter.active, .gal-filter:hover {
+    background: var(--sky-dark);
+    border-color: var(--sky-dark);
+    color: var(--grey-dark);
+  }
+
+  /* Masonry-style gallery */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 12px;
+  }
+
+  .gal-item {
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .gal-item:hover { transform: scale(1.02); }
+
+  .gal-item.tall { grid-row: span 2; }
+  .gal-item.wide { grid-column: span 2; }
+
+  .gal-ph {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: filter 0.3s;
+  }
+
+  .gal-ph::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
+  }
+
+  .gal-item:hover .gal-ph { filter: brightness(1.1); }
+
+  .gal-label {
+    position: absolute;
+    bottom: 10px; left: 12px;
+    color: rgba(255,255,255,0.9);
+    font-size: 11px;
+    font-weight: 500;
+    z-index: 2;
+  }
+
+  .g1 { background: linear-gradient(160deg, #1a3a5c, #5aa9cc); }
+  .g2 { background: linear-gradient(160deg, #2d4a3e, #48b07a); }
+  .g3 { background: linear-gradient(160deg, #3a2a1e, #c9a84c); }
+  .g4 { background: linear-gradient(160deg, #3a1a3a, #9b59b6); }
+  .g5 { background: linear-gradient(160deg, #1a1a3a, #2980b9); }
+  .g6 { background: linear-gradient(160deg, #2a1a1a, #e74c3c); }
+  .g7 { background: linear-gradient(160deg, #1a3a2a, #27ae60); }
+  .g8 { background: linear-gradient(160deg, #2a2a1a, #f39c12); }
+
+  /* ===== CONTACT ===== */
+  #contact { background: var(--card-bg); }
+
+  .contact-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .contact-info { }
+
+  .contact-map {
+    width: 100%;
+    height: 280px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    border: 2px solid var(--sky-light);
+  }
+
+  .contact-map iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .map-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #c9e8f5, #87ceeb);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--grey-dark);
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .map-placeholder svg { width: 40px; height: 40px; opacity: 0.6; }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 10px;
+    background: var(--section-alt);
+    border-left: 3px solid var(--sky-dark);
+  }
+
+  .contact-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: var(--sky-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .contact-item-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-dark);
+    margin-bottom: 2px;
+  }
+
+  .contact-item-text span {
+    font-size: 13px;
+    color: var(--grey-light);
+    line-height: 1.5;
+  }
+
+  /* Contact Form */
+  .contact-form-wrap { }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--grey-dark);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--grey-dark);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--sky-dark);
+    box-shadow: 0 0 0 3px rgba(90,169,204,0.15);
+  }
+
+  .form-group textarea { min-height: 110px; }
+
+  .btn-submit {
+    background: linear-gradient(135deg, var(--grey-dark), #3a4558);
+    color: var(--white);
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(30,34,40,0.3);
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30,34,40,0.4);
+  }
+
+  /* ===== ALUMNI ===== */
+  #alumni { background: var(--section-alt); }
+
+  .alumni-inner { max-width: 1200px; margin: 0 auto; }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .testimonial-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+  }
+
+  .testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: 16px; right: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    color: var(--sky-light);
+    line-height: 1;
+  }
+
+  .testimonial-stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 14px;
+  }
+
+  .star { color: var(--accent); font-size: 14px; }
+
+  .testimonial-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--grey-light);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f4f8;
+  }
+
+  .author-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    color: var(--grey-dark);
+    flex-shrink: 0;
+    border: 2px solid var(--sky-dark);
+  }
+
+  .av1 { background: linear-gradient(135deg, #87ceeb, #5aa9cc); }
+  .av2 { background: linear-gradient(135deg, #c9a84c, #f0d98a); }
+  .av3 { background: linear-gradient(135deg, #48b07a, #2d9a5f); }
+  .av4 { background: linear-gradient(135deg, #9b59b6, #c77ddd); }
+  .av5 { background: linear-gradient(135deg, #e74c3c, #f08080); }
+  .av6 { background: linear-gradient(135deg, #2980b9, #5dade2); }
+
+  .author-info strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--grey-dark);
+  }
+
+  .author-info span {
+    font-size: 12px;
+    color: var(--sky-dark);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--grey-dark);
+    color: rgba(249,250,251,0.7);
+    padding: 60px 5% 30px;
+  }
+
+  .footer-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand { }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    text-decoration: none;
+  }
+
+  .footer-logo-badge {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sky), var(--sky-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 15px;
+    color: var(--grey-dark);
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .footer-logo-text {
+    display: flex; flex-direction: column;
+  }
+
+  .footer-logo-text span:first-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .footer-logo-text span:last-child {
+    font-size: 10px;
+    color: var(--sky);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .footer-brand p {
+    font-size: 13px;
+    line-height: 1.8;
+    max-width: 260px;
+    margin-bottom: 20px;
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 10px;
+  }
+
+  .social-link {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .social-link:hover { background: var(--sky-dark); }
+
+  .footer-col h4 {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .footer-col ul a {
+    color: rgba(249,250,251,0.6);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul a:hover { color: var(--sky); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .footer-bottom span { color: var(--sky); }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-text > * {
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .hero-text .hero-tag { animation-delay: 0.1s; }
+  .hero-text h1 { animation-delay: 0.2s; }
+  .hero-text .hero-sub { animation-delay: 0.3s; }
+  .hero-text .hero-desc { animation-delay: 0.4s; }
+  .hero-text .hero-btns { animation-delay: 0.5s; }
+
+  .hero-carousel {
+    animation: fadeUp 0.9s 0.3s ease both;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1100px) {
+    .hero-text { flex: 0 0 46%; max-width: 46%; }
+    .hero-carousel { flex: 0 0 50%; max-width: 50%; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+
+    .hero-inner {
+      flex-direction: column;
+      padding: 40px 5%;
+      text-align: center;
+    }
+
+    .hero-text { flex: none; max-width: 100%; }
+    .hero-desc { margin: 0 auto 32px; }
+    .hero-btns { justify-content: center; }
+    .hero-carousel { flex: none; max-width: 100%; width: 100%; }
+
+    .about-inner { grid-template-columns: 1fr; gap: 50px; }
+    .about-image-wrap { order: -1; max-width: 480px; margin: 0 auto; }
+
+    .contact-inner { grid-template-columns: 1fr; }
+
+    .event-card { flex: 0 0 calc(50% - 12px); }
+
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gal-item.wide { grid-column: span 1; }
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 60px 5%; }
+    .hero-text h1 { font-size: 2rem; }
+
+    .stats-inner { gap: 30px; }
+    .stat-num { font-size: 1.8rem; }
+
+    .about-features { grid-template-columns: 1fr; }
+
+    .event-card { flex: 0 0 calc(85% - 0px); }
+
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
+
+    .testimonials-grid { grid-template-columns: 1fr; }
+
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+
+    .form-row { grid-template-columns: 1fr; }
+
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-badge">MB</div>
+    <div class="nav-logo-text">
+      <span>Manyatta Boys</span>
+      <span>High School</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#alumni">Alumni</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#events" onclick="closeMobile()">Events</a>
+  <a href="#gallery" onclick="closeMobile()">Gallery</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+  <a href="#alumni" onclick="closeMobile()">Alumni</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">Est. Migori County, Kenya</div>
+      <h1>Manyatta Boys <span>High School</span></h1>
+      <p class="hero-sub">Shaping Tomorrow's Leaders</p>
+      <p class="hero-desc">A premier boys' boarding school in Migori County committed to academic excellence, discipline, and holistic character development. Nurturing Kenya's next generation of leaders.</p>
+      <div class="hero-btns">
+        <a href="#about" class="btn-primary">Discover More</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+    </div>
+
+    <!-- Hero Image Carousel -->
+    <div class="hero-carousel">
+      <div class="carousel-slides" id="heroSlides">
+        <div class="carousel-slide">
+          <div class="slide-ph slide-ph-1">
+            <svg class="slide-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+            <span class="slide-label">🏫 School Campus</span>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <div class="slide-ph slide-ph-2">
+            <svg class="slide-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span class="slide-label">📚 Library & Academics</span>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <div class="slide-ph slide-ph-3">
+            <svg class="slide-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M11 4.07V2h2v2.07C16.39 4.56 19 7.47 19 11v1l1 5H4l1-5v-1c0-3.53 2.61-6.44 6-6.93zM12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"/></svg>
+            <span class="slide-label">⚽ Sports & Athletics</span>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <div class="slide-ph slide-ph-4">
+            <svg class="slide-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+            <span class="slide-label">🎓 Graduation & Awards</span>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-dots" id="heroDots">
+        <div class="c-dot active" onclick="goHeroSlide(0)"></div>
+        <div class="c-dot" onclick="goHeroSlide(1)"></div>
+        <div class="c-dot" onclick="goHeroSlide(2)"></div>
+        <div class="c-dot" onclick="goHeroSlide(3)"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn" onclick="prevHero()">&#8592;</button>
+        <button class="carousel-btn" onclick="nextHero()">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">1,200+</div>
+      <div class="stat-label">Students Enrolled</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">80+</div>
+      <div class="stat-label">Teaching Staff</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">35+</div>
+      <div class="stat-label">Years of Excellence</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">95%</div>
+      <div class="stat-label">University Placement</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24+</div>
+      <div class="stat-label">Co-curricular Clubs</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <span class="section-tag">Who We Are</span>
+      <h2 class="section-title">About <span>Manyatta Boys</span> High School</h2>
+      <div class="section-line"></div>
+      <p>Manyatta Boys High School is a distinguished government-sponsored national school nestled in the heart of Migori County, Kenya. Since its founding, the school has stood as a beacon of academic excellence and moral uprightness in the Nyanza region.</p>
+      <p>Our institution is dedicated to the holistic development of young men — intellectually, physically, spiritually, and socially. With a rich tradition of producing Kenya's finest leaders, engineers, doctors, and professionals, we take pride in our legacy and the bright futures we help shape.</p>
+      <p>Guided by our motto <em>"Knowledge, Discipline, Service"</em>, Manyatta Boys stands firm in the pursuit of greatness for every student who walks through our gates.</p>
+
+      <div class="about-features">
+        <div class="about-feat">
+          <div class="feat-icon">📖</div>
+          <div class="feat-text">
+            <strong>Academic Excellence</strong>
+            <span>Consistently top KCSE results nationally</span>
+          </div>
+        </div>
+        <div class="about-feat">
+          <div class="feat-icon">⚽</div>
+          <div class="feat-text">
+            <strong>Sports Champions</strong>
+            <span>County & national sports titles</span>
+          </div>
+        </div>
+        <div class="about-feat">
+          <div class="feat-icon">🔬</div>
+          <div class="feat-text">
+            <strong>Science Labs</strong>
+            <span>Fully equipped modern laboratories</span>
+          </div>
+        </div>
+        <div class="about-feat">
+          <div class="feat-icon">🏠</div>
+          <div class="feat-text">
+            <strong>Boarding Facility</strong>
+            <span>Comfortable, secure dormitories</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-image-wrap">
+      <div class="about-img">
+        <div class="about-img-ph">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+          <span>School Building Photo</span>
+        </div>
+      </div>
+      <div class="about-badge">
+        <strong>A</strong>
+        <span>National School</span>
+      </div>
+      <div class="about-decor"></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="events-inner">
+    <div class="events-header">
+      <div>
+        <span class="section-tag">School Calendar</span>
+        <h2 class="section-title">Upcoming &amp; <span>Recent Events</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <a href="#" class="btn-primary" style="white-space:nowrap; font-size:12px; padding:10px 22px;">View All Events</a>
+    </div>
+
+    <div class="events-carousel-wrap">
+      <div class="events-track" id="eventsTrack">
+
+        <div class="event-card">
+          <div class="event-img"><div class="event-img-ph ev-1">🏆</div>
+            <div class="event-date-badge">Aug 14, 2025</div>
+            <div class="event-status status-upcoming">Upcoming</div>
+          </div>
+          <div class="event-body">
+            <div class="event-category">Academics</div>
+            <div class="event-title">Inter-School Science Congress</div>
+            <div class="event-meta">
+              <span>📅 August 14–16</span>
+              <span>📍 School Hall</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-img"><div class="event-img-ph ev-2">⚽</div>
+            <div class="event-date-badge">Sep 2, 2025</div>
+            <div class="event-status status-upcoming">Upcoming</div>
+          </div>
+          <div class="event-body">
+            <div class="event-category">Sports</div>
+            <div class="event-title">County Football Championship Finals</div>
+            <div class="event-meta">
+              <span>📅 September 2</span>
+              <span>📍 School Grounds</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-img"><div class="event-img-ph ev-3">🎓</div>
+            <div class="event-date-badge">Oct 10, 2025</div>
+            <div class="event-status status-upcoming">Upcoming</div>
+          </div>
+          <div class="event-body">
+            <div class="event-category">Ceremony</div>
+            <div class="event-title">2025 Graduation & Prize Giving Day</div>
+            <div class="event-meta">
+              <span>📅 October 10</span>
+              <span>📍 School Parade</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-img"><div class="event-img-ph ev-4">🎤</div>
+            <div class="event-date-badge">Nov 5, 2025</div>
+            <div class="event-status status-upcoming">Upcoming</div>
+          </div>
+          <div class="event-body">
+            <div class="event-category">Culture</div>
+            <div class="event-title">Annual Cultural Arts & Drama Festival</div>
+            <div class="event-meta">
+              <span>📅 November 5</span>
+              <span>📍 Assembly Hall</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-img"><div class="event-img-ph ev-5">📝</div>
+            <div class="event-date-badge">May 20, 2025</div>
+            <div class="event-status status-past">Past</div>
+          </div>
+          <div class="event-body">
+            <div class="event-category">Academics</div>
+            <div class="event-title">Mid-Year Mock Examinations</div>
+            <div class="event-meta">
+              <span>📅 May 20–28</span>
+              <span>📍 All Classrooms</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-img"><div class="event-img-ph ev-6">🌿</div>
+            <div class="event-date-badge">Apr 15, 2025</div>
+            <div class="event-status status-past">Past</div>
+          </div>
+          <div class="event-body">
+            <div class="event-category">Environment</div>
+            <div class="event-title">National Tree Planting Drive</div>
+            <div class="event-meta">
+              <span>📅 April 15</span>
+              <span>📍 School Compound</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="ev-nav">
+      <button class="ev-btn" id="evPrev" onclick="slideEvents(-1)">&#8592;</button>
+      <button class="ev-btn" id="evNext" onclick="slideEvents(1)">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-header">
+      <div>
+        <span class="section-tag">Our Moments</span>
+        <h2 class="section-title" style="color:var(--white)">School <span>Gallery</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="gallery-filters">
+        <button class="gal-filter active" onclick="filterGal(this,'all')">All</button>
+        <button class="gal-filter" onclick="filterGal(this,'academics')">Academics</button>
+        <button class="gal-filter" onclick="filterGal(this,'sports')">Sports</button>
+        <button class="gal-filter" onclick="filterGal(this,'events')">Events</button>
+      </div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gal-item tall" data-cat="academics">
+        <div class="gal-ph g1">🏫<div class="gal-label">Main School Building</div></div>
+      </div>
+      <div class="gal-item" data-cat="sports">
+        <div class="gal-ph g2">⚽<div class="gal-label">Football Practice</div></div>
+      </div>
+      <div class="gal-item" data-cat="events">
+        <div class="gal-ph g3">🎓<div class="gal-label">Graduation Ceremony</div></div>
+      </div>
+      <div class="gal-item wide" data-cat="academics">
+        <div class="gal-ph g4">🔬<div class="gal-label">Chemistry Lab Session</div></div>
+      </div>
+      <div class="gal-item" data-cat="sports">
+        <div class="gal-ph g5">🏃<div class="gal-label">Athletics Track Day</div></div>
+      </div>
+      <div class="gal-item" data-cat="events">
+        <div class="gal-ph g6">🎤<div class="gal-label">Drama & Arts Festival</div></div>
+      </div>
+      <div class="gal-item" data-cat="academics">
+        <div class="gal-ph g7">📚<div class="gal-label">Library Study Session</div></div>
+      </div>
+      <div class="gal-item tall" data-cat="sports">
+        <div class="gal-ph g8">🏆<div class="gal-label">Championship Trophies</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <span class="section-tag">Reach Us</span>
+      <h2 class="section-title">Get In <span>Touch</span></h2>
+      <div class="section-line"></div>
+
+      <!-- Map -->
+      <div class="contact-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127672.69!2d34.4697!3d-1.0634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182aa3038c4e0451%3A0x5c7e4e4f5c8d8c1e!2sMigori%2C%20Kenya!5e0!3m2!1sen!2ske!4v1"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Manyatta Boys High School Location">
+        </iframe>
+      </div>
+
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-item-text">
+            <strong>Address</strong>
+            <span>P.O. Box 200 – 40400<br>Migori Town, Migori County, Kenya</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-item-text">
+            <strong>Phone</strong>
+            <span>+254 700 000 000<br>+254 720 000 000</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-item-text">
+            <strong>Email</strong>
+            <span>principal@manyattaboys.sc.ke<br>info@manyattaboys.sc.ke</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap">
+      <span class="section-tag">Send a Message</span>
+      <h2 class="section-title" style="margin-bottom:24px">We'd Love to <span>Hear You</span></h2>
+      <div class="section-line"></div>
+
+      <div class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Omondi">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+254 700 000 000">
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select>
+            <option value="">Select a subject…</option>
+            <option>Admissions Inquiry</option>
+            <option>Academic Information</option>
+            <option>Alumni Matters</option>
+            <option>General Inquiry</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Write your message here…"></textarea>
+        </div>
+        <button class="btn-submit" onclick="submitForm()">
+          <span>Send Message</span>
+          <span>✉️</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALUMNI TESTIMONIALS -->
+<section id="alumni">
+  <div class="alumni-inner">
+    <div style="text-align:center; max-width:600px; margin:0 auto 12px;">
+      <span class="section-tag">Alumni Voices</span>
+      <h2 class="section-title">What Our <span>Old Boys</span> Say</h2>
+      <div class="section-line" style="margin:0 auto 20px;"></div>
+      <p style="font-size:15px; color:var(--grey-light); line-height:1.8;">Manyatta Boys shaped the men we are today. Hear from our alumni who carry the school's values into the world.</p>
+    </div>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">The discipline and academic rigour at Manyatta Boys was the foundation of everything I've achieved. The teachers genuinely cared about our futures. I owe my engineering career to this great institution.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av1">KO</div>
+          <div class="author-info">
+            <strong>Kevin Odhiambo</strong>
+            <span>Civil Engineer · Class of 2010</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">Manyatta shaped me into the leader I am today. The co-curricular activities, especially the debate club, gave me the confidence to stand before thousands. Forever grateful!</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av2">JO</div>
+          <div class="author-info">
+            <strong>James Otieno</strong>
+            <span>Lawyer & Politician · Class of 2005</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">The science department at Manyatta Boys was exceptional. The labs, the mentors — they sparked a love of medicine that led me to become a physician. I visit every year to give back.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av3">DO</div>
+          <div class="author-info">
+            <strong>Dr. David Omondi</strong>
+            <span>Medical Doctor · Class of 2008</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">From the football pitch to the classroom, Manyatta taught me teamwork and perseverance. Those values follow me in my career in the corporate world every single day.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av4">FO</div>
+          <div class="author-info">
+            <strong>Francis Okello</strong>
+            <span>Business Executive · Class of 2013</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">As someone who joined Manyatta from a humble background, the school was a game changer. Scholarships, mentorship, exposure — they believed in me before I believed in myself.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av5">PO</div>
+          <div class="author-info">
+            <strong>Peter Owino</strong>
+            <span>Software Engineer · Class of 2015</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">The spiritual and moral formation I received at Manyatta Boys made me a better human being. The school's holistic approach to education is truly unmatched in this region.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av6">RM</div>
+          <div class="author-info">
+            <strong>Rev. Richard Mwangi</strong>
+            <span>Clergy & Educator · Class of 2001</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="footer-logo">
+        <div class="footer-logo-badge">MB</div>
+        <div class="footer-logo-text">
+          <span>Manyatta Boys</span>
+          <span>High School</span>
+        </div>
+      </a>
+      <p>Shaping generations of leaders in Migori County through academic excellence, discipline, and service. Knowledge · Discipline · Service.</p>
+      <div class="footer-socials">
+        <a class="social-link" href="#" title="Facebook">📘</a>
+        <a class="social-link" href="#" title="Twitter/X">🐦</a>
+        <a class="social-link" href="#" title="Instagram">📷</a>
+        <a class="social-link" href="#" title="YouTube">▶️</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About School</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#alumni">Alumni</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Academics</h4>
+      <ul>
+        <li><a href="#">KCSE Results</a></li>
+        <li><a href="#">Science Department</a></li>
+        <li><a href="#">Library</a></li>
+        <li><a href="#">Admissions</a></li>
+        <li><a href="#">Scholarships</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>School Life</h4>
+      <ul>
+        <li><a href="#">Sports & Athletics</a></li>
+        <li><a href="#">Clubs & Societies</a></li>
+        <li><a href="#">Boarding Facilities</a></li>
+        <li><a href="#">School Uniform</a></li>
+        <li><a href="#">Alumni Network</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div>© 2025 Manyatta Boys High School. <span>All rights reserved.</span></div>
+    <div>Migori County, Kenya &nbsp;·&nbsp; <span>Knowledge · Discipline · Service</span></div>
+  </div>
+</footer>
+
+<script>
+  // === HAMBURGER ===
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  // === HERO CAROUSEL ===
+  let heroIdx = 0;
+  const heroSlides = document.getElementById('heroSlides');
+  const heroDots = document.querySelectorAll('#heroDots .c-dot');
+  const HERO_COUNT = 4;
+
+  function goHeroSlide(i) {
+    heroIdx = i;
+    heroSlides.style.transform = `translateX(-${heroIdx * 100}%)`;
+    heroDots.forEach((d, idx) => d.classList.toggle('active', idx === heroIdx));
+  }
+
+  function nextHero() { goHeroSlide((heroIdx + 1) % HERO_COUNT); }
+  function prevHero() { goHeroSlide((heroIdx - 1 + HERO_COUNT) % HERO_COUNT); }
+
+  setInterval(nextHero, 4500);
+
+  // === EVENTS CAROUSEL ===
+  let evOffset = 0;
+  const evTrack = document.getElementById('eventsTrack');
+
+  function getEvVisible() {
+    if (window.innerWidth < 640) return 1.1;
+    if (window.innerWidth < 900) return 2;
+    return 3;
+  }
+
+  function slideEvents(dir) {
+    const cards = evTrack.querySelectorAll('.event-card');
+    const vis = Math.floor(getEvVisible());
+    const maxOffset = cards.length - vis;
+    evOffset = Math.max(0, Math.min(evOffset + dir, maxOffset));
+    const cardW = evTrack.parentElement.clientWidth / vis;
+    evTrack.style.transform = `translateX(-${evOffset * (cardW + 24)}px)`;
+  }
+
+  window.addEventListener('resize', () => {
+    evOffset = 0;
+    evTrack.style.transform = 'translateX(0)';
+  });
+
+  // === GALLERY FILTER ===
+  function filterGal(btn, cat) {
+    document.querySelectorAll('.gal-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.gal-item').forEach(item => {
+      if (cat === 'all' || item.dataset.cat === cat) {
+        item.style.opacity = '1';
+        item.style.transform = '';
+        item.style.pointerEvents = '';
+      } else {
+        item.style.opacity = '0.2';
+        item.style.transform = 'scale(0.97)';
+        item.style.pointerEvents = 'none';
+      }
+    });
+  }
+
+  // === CONTACT FORM ===
+  function submitForm() {
+    const btn = document.querySelector('.btn-submit');
+    btn.innerHTML = '<span>Sending…</span><span>⏳</span>';
+    btn.style.opacity = '0.7';
+    setTimeout(() => {
+      btn.innerHTML = '<span>Message Sent!</span><span>✅</span>';
+      btn.style.background = 'linear-gradient(135deg, #27ae60, #48b07a)';
+      btn.style.opacity = '1';
+      document.querySelectorAll('#contactForm input, #contactForm textarea, #contactForm select')
+        .forEach(el => el.value = '');
+      setTimeout(() => {
+        btn.innerHTML = '<span>Send Message</span><span>✉️</span>';
+        btn.style.background = '';
+      }, 3500);
+    }, 1400);
+  }
+
+  // === SCROLL ANIMATIONS ===
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(
+    '.about-feat, .event-card, .gal-item, .testimonial-card, .contact-item, .stat-item'
+  ).forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.55s ${i * 0.07}s ease, transform 0.55s ${i * 0.07}s ease`;
+    observer.observe(el);
+  });
+
+  // Sticky nav shadow
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.boxShadow = window.scrollY > 20 ? '0 4px 20px rgba(0,0,0,0.3)' : 'none';
+  });
+</script>
+
+</body>
+</html>
