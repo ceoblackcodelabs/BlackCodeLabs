@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reddit — Enhanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0b;--bg2:#111113;--bg3:#18181c;--bg4:#222228;--bg5:#2a2a32;
+  --text:#e8e8ed;--text2:#8a8a9a;--text3:#4a4a5a;
+  --border:#1e1e26;--border2:#28283a;
+  --orange:#ff4500;--orange-dim:rgba(255,69,0,0.12);
+  --blue:#4a9eff;--upvote:#ff5722;--downvote:#7c8cf8;
+  --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:2px}
+
+.header{
+  position:sticky;top:0;z-index:200;height:52px;
+  background:rgba(10,10,11,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:16px;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-0.3px;white-space:nowrap}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:var(--orange);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;flex-shrink:0;box-shadow:0 0 20px rgba(255,69,0,0.35);}
+.search-wrap{flex:1;max-width:540px;position:relative;display:flex;align-items:center}
+.search-wrap input{width:100%;height:36px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:0 100px 0 38px;font-size:13px;font-family:var(--font);outline:none;transition:all .2s;}
+.search-wrap input::placeholder{color:var(--text3)}
+.search-wrap input:focus{border-color:rgba(74,158,255,0.4);background:var(--bg4);box-shadow:0 0 0 3px rgba(74,158,255,0.08)}
+.search-icon{position:absolute;left:12px;color:var(--text3);font-size:16px;pointer-events:none}
+.ask-btn{position:absolute;right:6px;height:26px;padding:0 12px;background:linear-gradient(135deg,#ff4500,#ff6b35);border:none;border-radius:6px;color:#fff;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:var(--font);letter-spacing:0.3px;transition:opacity .15s;}
+.ask-btn:hover{opacity:0.85}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:6px}
+.hbtn{height:32px;padding:0 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:var(--font);letter-spacing:0.2px;transition:all .15s;}
+.hbtn.outline{background:transparent;border:1px solid var(--border2);color:var(--text2);}
+.hbtn.outline:hover{border-color:var(--blue);color:var(--blue);background:rgba(74,158,255,0.06)}
+.hbtn.fill{background:var(--orange);color:#fff;box-shadow:0 2px 12px rgba(255,69,0,0.3)}
+.hbtn.fill:hover{opacity:0.9}
+.icon-btn{width:34px;height:34px;border-radius:8px;background:transparent;border:1px solid transparent;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s;}
+.icon-btn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.avatar-wrap{position:relative}
+.avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#ff585b,#ff8a65);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;border:1px solid var(--border2);transition:all .15s;}
+.avatar:hover{border-color:var(--blue);box-shadow:0 0 0 2px rgba(74,158,255,0.2)}
+
+.dropdown{position:absolute;top:42px;right:0;width:228px;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;z-index:300;overflow:hidden;transform-origin:top right;transform:scale(0.94) translateY(-6px);opacity:0;pointer-events:none;transition:transform .18s cubic-bezier(.34,1.56,.64,1),opacity .14s;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
+.dropdown.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+.drop-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.drop-head .av2{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#ff585b,#ff8a65);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.drop-head .name{font-weight:600;font-size:13px;color:var(--text)}
+.drop-head .handle{font-size:11px;color:var(--text2);margin-top:1px}
+.drop-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;cursor:pointer;transition:background .1s;color:var(--text2);}
+.drop-item:hover{background:var(--bg4);color:var(--text)}
+.drop-item i{font-size:16px;width:18px;flex-shrink:0}
+.beta{font-size:9px;font-weight:700;color:var(--orange);background:rgba(255,69,0,.15);padding:2px 5px;border-radius:4px;margin-left:auto;letter-spacing:0.5px}
+.drop-div{height:1px;background:var(--border);margin:4px 0}
+
+.layout{display:flex;max-width:1180px;margin:0 auto}
+
+.sidebar{width:228px;flex-shrink:0;height:calc(100vh - 52px);overflow-y:auto;position:sticky;top:52px;padding:12px 0;border-right:1px solid var(--border);}
+.nav-label{padding:12px 16px 4px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1.2px;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;border-radius:0;transition:all .12s;font-size:13px;font-weight:500;color:var(--text2);position:relative;}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{color:var(--text)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:18px;background:var(--orange);border-radius:0 2px 2px 0;}
+.nav-item i{font-size:18px;flex-shrink:0}
+.nav-item.active i{color:var(--orange)}
+.sub-av{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;border:1px solid var(--border2);}
+.promo-card{margin:8px 10px;background:var(--bg3);border-radius:10px;overflow:hidden;border:1px solid var(--border2);}
+.promo-img{height:56px;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.promo-body{padding:8px 10px 10px}
+.promo-title{font-weight:600;font-size:12px;color:var(--text);display:flex;align-items:center;gap:6px}
+.new-badge{background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;letter-spacing:0.5px}
+.promo-sub{font-size:11px;color:var(--text2);margin-top:3px}
+
+.feed{flex:1;padding:20px;min-width:0}
+.sort-bar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:6px;display:flex;align-items:center;gap:2px;margin-bottom:16px;}
+.sort-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;border:none;background:transparent;color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:var(--font);letter-spacing:0.2px;}
+.sort-btn:hover{background:var(--bg4);color:var(--text)}
+.sort-btn.active{background:var(--bg4);color:var(--text);font-weight:600}
+.sort-btn i{font-size:14px}
+.view-toggle{margin-left:auto;display:flex;gap:2px}
+
+.post{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;display:flex;overflow:hidden;transition:border-color .15s,background .15s;cursor:pointer;}
+.post:hover{border-color:var(--border2);background:var(--bg3)}
+
+.vote-col{width:48px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:14px 0 12px;gap:2px;}
+.vbtn{width:28px;height:28px;border:none;background:transparent;cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:16px;transition:all .15s;position:relative;}
+.vbtn:hover{background:var(--bg5);color:var(--text2)}
+.vbtn.up:hover,.vbtn.up.voted{color:var(--upvote);background:rgba(255,87,34,0.1)}
+.vbtn.down:hover,.vbtn.down.voted{color:var(--downvote);background:rgba(124,140,248,0.1)}
+.vbtn .pop{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;font-family:var(--mono);pointer-events:none;opacity:0;color:var(--upvote);}
+.vbtn.down .pop{color:var(--downvote);top:auto;bottom:-4px}
+@keyframes popUp{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-12px)}}
+@keyframes popDown{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(12px)}}
+@keyframes bumpUp{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+@keyframes bumpDown{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+@keyframes countFlip{0%{transform:scaleY(1)}40%{transform:scaleY(0.5)}100%{transform:scaleY(1)}}
+.vbtn.anim-up{animation:bumpUp .22s ease}
+.vbtn.anim-down{animation:bumpDown .22s ease}
+.vcount{font-size:12px;font-weight:600;font-family:var(--mono);color:var(--text2);min-height:18px;text-align:center;letter-spacing:-0.5px;transition:color .2s;padding:2px 0;}
+.vcount.up-color{color:var(--upvote)}
+.vcount.down-color{color:var(--downvote)}
+.vcount.flip{animation:countFlip .18s ease}
+
+.vote-divider{width:1px;background:var(--border);flex-shrink:0;align-self:stretch;margin:10px 0}
+
+.post-inner{flex:1;padding:12px 14px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.post-meta{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.meta-sub{display:flex;align-items:center;gap:5px;}
+.sub-name{font-weight:600;color:var(--text);font-size:12px}
+.sub-name:hover{color:var(--blue)}
+.meta-dot{color:var(--text3)}
+.post-title{font-size:15px;font-weight:500;line-height:1.4;color:var(--text);letter-spacing:-0.1px;}
+.flair{display:inline-flex;align-items:center;font-size:11px;padding:2px 8px;border-radius:5px;font-weight:500;margin-bottom:2px;letter-spacing:0.1px;}
+.nsfw-flair{background:rgba(255,69,0,.12);color:#ff7a5a;border:1px solid rgba(255,69,0,.2)}
+.news-flair{background:rgba(74,158,255,.12);color:#7ab8ff;border:1px solid rgba(74,158,255,.2)}
+.post-img-placeholder{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:56px;border-radius:8px;overflow:hidden;margin:2px 0;position:relative;}
+.post-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent);border-radius:8px;}
+
+.post-actions{display:flex;gap:2px;margin-top:2px}
+.act-btn{display:flex;align-items:center;gap:5px;padding:5px 8px;border-radius:6px;border:none;background:transparent;color:var(--text3);font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;font-family:var(--font);}
+.act-btn:hover{background:var(--bg5);color:var(--text2)}
+.act-btn i{font-size:15px}
+.join-btn{height:26px;padding:0 12px;border-radius:6px;border:1px solid var(--blue);background:transparent;color:var(--blue);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0;align-self:center;transition:all .15s;margin-left:auto;font-family:var(--font);}
+.join-btn:hover{background:rgba(74,158,255,0.1)}
+.join-btn.joined{background:rgba(74,158,255,0.12);color:var(--blue)}
+.popular-tag{display:inline-flex;align-items:center;gap:3px;background:rgba(255,69,0,.1);color:#ff7a5a;font-size:10px;padding:2px 7px;border-radius:5px;font-weight:500;border:1px solid rgba(255,69,0,.15);}
+.post-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px}
+
+.rpanel{width:288px;flex-shrink:0;padding:20px 0 20px 16px}
+.rcard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.rcard-banner{height:72px;background:linear-gradient(135deg,#1a0a00,#3d1200,#ff4500 120%);position:relative;overflow:hidden;}
+.rcard-banner::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(255,255,255,0.02) 10px,rgba(255,255,255,0.02) 20px);}
+.rcard-inner{padding:14px}
+.rcard-title{font-weight:600;font-size:14px;margin-bottom:6px;letter-spacing:-0.2px}
+.rcard-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:14px}
+.rcard-stats{display:flex;gap:16px;margin-bottom:14px}
+.rstat-n{font-weight:600;font-size:15px;font-family:var(--mono);letter-spacing:-0.5px}
+.rstat-l{font-size:11px;color:var(--text2);margin-top:1px}
+.rbtn{width:100%;height:32px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;margin-bottom:8px;font-family:var(--font);letter-spacing:0.2px;transition:all .15s;}
+.rbtn.orange{background:var(--orange);color:#fff;box-shadow:0 2px 12px rgba(255,69,0,0.25)}
+.rbtn.orange:hover{opacity:0.9}
+.rbtn.outline2{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.rbtn.outline2:hover{border-color:var(--text2);color:var(--text)}
+.recent-post{padding:11px 0;border-top:1px solid var(--border)}
+.recent-post:first-child{border-top:none}
+.rp-sub{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);margin-bottom:3px}
+.rp-title{font-size:12px;font-weight:500;line-height:1.35;margin-bottom:4px;color:var(--text)}
+.rp-meta{font-size:10px;color:var(--text3);font-family:var(--mono)}
+.rp-av{width:14px;height:14px;border-radius:3px;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rcard-divider-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.1px;margin-bottom:10px}
+.online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ade80;margin-right:4px;box-shadow:0 0 6px rgba(74,222,128,0.5);}
+
+@media(max-width:960px){.rpanel{display:none}}
+@media(max-width:680px){.sidebar{display:none}.feed{padding:10px 12px}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark">r/</div>
+    <span>reddit</span>
+  </div>
+  <div class="search-wrap">
+    <i class="ti ti-search search-icon" aria-hidden="true"></i>
+    <input type="text" placeholder="Search Reddit" />
+    <button class="ask-btn"><i class="ti ti-sparkles" style="font-size:12px" aria-hidden="true"></i>Ask AI</button>
+  </div>
+  <div class="header-right">
+    <button class="icon-btn" aria-label="Messages"><i class="ti ti-message-circle" aria-hidden="true"></i></button>
+    <button class="icon-btn" aria-label="Notifications"><i class="ti ti-bell" aria-hidden="true"></i></button>
+    <button class="hbtn outline">Log In</button>
+    <button class="hbtn fill">Get App</button>
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatarBtn" onclick="toggleDropdown()">&#x1F601;</div>
+      <div class="dropdown" id="dropdown">
+        <div class="drop-head">
+          <div class="av2">&#x1F601;</div>
+          <div>
+            <div class="name">u/DuchessAliiyah</div>
+            <div class="handle">View profile →</div>
+          </div>
+        </div>
+        <div class="drop-item"><i class="ti ti-user" aria-hidden="true"></i>View Profile</div>
+        <div class="drop-item"><i class="ti ti-mood-smile" aria-hidden="true"></i>Edit Avatar</div>
+        <div class="drop-item"><i class="ti ti-file-text" aria-hidden="true"></i>Drafts</div>
+        <div class="drop-item"><i class="ti ti-trophy" aria-hidden="true"></i>Achievements</div>
+        <div class="drop-div"></div>
+        <div class="drop-item"><i class="ti ti-coin" aria-hidden="true"></i>Earn Rewards</div>
+        <div class="drop-item"><i class="ti ti-diamond" aria-hidden="true"></i>Premium</div>
+        <div class="drop-item"><i class="ti ti-moon" aria-hidden="true"></i>Appearance</div>
+        <div class="drop-div"></div>
+        <div class="drop-item"><i class="ti ti-settings" aria-hidden="true"></i>Settings</div>
+        <div class="drop-item"><i class="ti ti-logout" aria-hidden="true"></i>Log Out</div>
+        <div class="drop-item"><i class="ti ti-clock" aria-hidden="true"></i>Try Reddit Pro <span class="beta">BETA</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="nav-item active"><i class="ti ti-home" aria-hidden="true"></i>Home</div>
+    <div class="nav-item"><i class="ti ti-trending-up" aria-hidden="true"></i>Popular</div>
+    <div class="nav-item"><i class="ti ti-newspaper" aria-hidden="true"></i>News</div>
+    <div class="nav-item"><i class="ti ti-compass" aria-hidden="true"></i>Explore</div>
+    <div class="nav-label">Games</div>
+    <div class="promo-card">
+      <div class="promo-img">&#x1F3AE;</div>
+      <div class="promo-body">
+        <div class="promo-title">LETTERSET <span class="new-badge">NEW</span></div>
+        <div class="promo-sub">Make every letter count</div>
+        <div class="promo-sub" style="margin-top:2px;color:var(--text3)">169K monthly players</div>
+      </div>
+    </div>
+    <div class="nav-item"><div class="sub-av" style="background:#2a1f10">&#x2694;&#xFE0F;</div>Slingblade</div>
+    <div class="nav-item"><div class="sub-av" style="background:#102010">&#x1F33E;</div>Farm Merge Valley</div>
+    <div class="nav-item"><div class="sub-av" style="background:#1a1030">&#x1F7E3;</div>Color Puzzle</div>
+    <div class="nav-label">Your Communities</div>
+    <div class="nav-item"><i class="ti ti-plus" aria-hidden="true"></i>Create Feed</div>
+    <div class="nav-label">Recent</div>
+    <div class="nav-item"><div class="sub-av" style="background:#2a0a0a">&#x1F525;</div>r/LateNightChat</div>
+    <div class="nav-item"><div class="sub-av" style="background:#0a1a2a">&#x2601;&#xFE0F;</div>r/thisiscloudnine</div>
+    <div class="nav-item"><div class="sub-av" style="background:#102010">&#x1F3CB;&#xFE0F;</div>r/homegym</div>
+    <div class="nav-item"><div class="sub-av" style="background:#1a0a20">&#x1F9B6;</div>r/WhiteToe</div>
+  </nav>
+
+  <main class="feed">
+    <div class="sort-bar">
+      <button class="sort-btn active" onclick="setSort(this)"><i class="ti ti-chart-bar" aria-hidden="true"></i>Best</button>
+      <button class="sort-btn" onclick="setSort(this)"><i class="ti ti-flame" aria-hidden="true"></i>Hot</button>
+      <button class="sort-btn" onclick="setSort(this)"><i class="ti ti-brand-speedtest" aria-hidden="true"></i>New</button>
+      <button class="sort-btn" onclick="setSort(this)"><i class="ti ti-rocket" aria-hidden="true"></i>Top</button>
+      <button class="sort-btn" onclick="setSort(this)"><i class="ti ti-chart-line" aria-hidden="true"></i>Rising</button>
+      <div class="view-toggle">
+        <button class="sort-btn active" aria-label="List view"><i class="ti ti-layout-list" aria-hidden="true"></i></button>
+        <button class="sort-btn" aria-label="Card view"><i class="ti ti-layout-cards" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div id="posts"></div>
+  </main>
+
+  <aside class="rpanel">
+    <div class="rcard">
+      <div class="rcard-banner"></div>
+      <div class="rcard-inner">
+        <div class="rcard-title">Home Feed</div>
+        <div class="rcard-desc">Your personal frontpage — come here to check in with your favorite communities.</div>
+        <div class="rcard-stats">
+          <div><div class="rstat-n">52.3M</div><div class="rstat-l">Members</div></div>
+          <div><div class="rstat-n"><span class="online-dot"></span>24/7</div><div class="rstat-l">Always active</div></div>
+        </div>
+        <button class="rbtn orange">Create Post</button>
+        <button class="rbtn outline2">Create Community</button>
+      </div>
+    </div>
+    <div class="rcard">
+      <div class="rcard-inner">
+        <div class="rcard-divider-label">Recent posts</div>
+        <div class="recent-post">
+          <div class="rp-sub"><div class="rp-av" style="background:#102010">&#x1F33E;</div>r/FarmMergeValley · 8h</div>
+          <div class="rp-title">What will you merge first today?</div>
+          <div class="rp-meta">82 pts · 84 comments</div>
+        </div>
+        <div class="recent-post">
+          <div class="rp-sub"><div class="rp-av" style="background:#0a1a2a">&#x1F4F7;</div>r/KenyaPics · 4d</div>
+          <div class="rp-title">Silhouettes in motion — Nairobi Visuals</div>
+          <div class="rp-meta">1.2k pts · 47 comments</div>
+        </div>
+        <div class="recent-post">
+          <div class="rp-sub"><div class="rp-av" style="background:#2a0a0a">&#x1F525;</div>r/worldnews · 2h</div>
+          <div class="rp-title">Major climate agreement signed by 120 nations</div>
+          <div class="rp-meta">34k pts · 2.1k comments</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+const posts=[
+  {id:1,sub:'r/LateNightChat',subColor:'#2a0a0a',subEmoji:'&#x1F525;',user:'u/nightowl_22',time:'55m ago',title:'[25m] Looking to start a GC for like-minded night owls — mostly chill vibes, open to everyone',flair:'NSFW',flairClass:'nsfw-flair',votes:1,comments:0,hasImg:true,imgEmoji:'&#x1F4F7;',imgBg:'linear-gradient(135deg,#1a0808,#2d1010)',joinable:false,popularNear:false},
+  {id:2,sub:'r/KenyaPics',subColor:'#0a1a0a',subEmoji:'&#x1F1F0;&#x1F1EA;',user:'u/nairobi_captures',time:'4 days ago',title:'Silhouettes in motion &#x1F4CD; Allsops — Nairobi Visuals',flair:'',flairClass:'',votes:1243,comments:47,hasImg:true,imgEmoji:'&#x1F307;',imgBg:'linear-gradient(135deg,#0a0f1e,#1a2540)',joinable:true,popularNear:true},
+  {id:3,sub:'r/worldnews',subColor:'#0a1525',subEmoji:'&#x1F30D;',user:'u/globetrotter99',time:'2h ago',title:'Scientists confirm record temperatures across three continents — climate data points to accelerating change',flair:'Breaking',flairClass:'news-flair',votes:34821,comments:2103,hasImg:false,imgEmoji:'',imgBg:'',joinable:false,popularNear:false},
+  {id:4,sub:'r/homegym',subColor:'#0a1a0a',subEmoji:'&#x1F3CB;&#xFE0F;',user:'u/liftbro_ke',time:'6h ago',title:'Finally finished my garage gym after 8 months of saving — total cost breakdown inside',flair:'',flairClass:'',votes:8932,comments:634,hasImg:true,imgEmoji:'&#x1F4AA;',imgBg:'linear-gradient(135deg,#0d1a0d,#1a2d1a)',joinable:false,popularNear:false},
+  {id:5,sub:'r/AskReddit',subColor:'#1a0a25',subEmoji:'&#x2753;',user:'u/curious_soul_tz',time:'3h ago',title:"What's something that immediately makes you trust a person more? [Serious]",flair:'Serious',flairClass:'news-flair',votes:52041,comments:8872,hasImg:false,imgEmoji:'',imgBg:'',joinable:false,popularNear:false},
+];
+
+const voteState={};
+posts.forEach(p=>{voteState[p.id]={count:p.votes,state:0}});
+
+function fmt(n){
+  if(n>=1000)return(n/1000).toFixed(n>=10000?0:1)+'k';
+  return String(n);
+}
+
+function vote(id,dir,el){
+  const v=voteState[id];
+  const prev=v.state;
+  v.state=(prev===dir)?0:dir;
+  v.count+=v.state-prev;
+  const card=document.querySelector('[data-post="'+id+'"]');
+  const countEl=card.querySelector('.vcount');
+  const upBtn=card.querySelector('.vbtn.up');
+  const downBtn=card.querySelector('.vbtn.down');
+  countEl.classList.remove('flip');
+  void countEl.offsetWidth;
+  countEl.classList.add('flip');
+  countEl.textContent=fmt(v.count);
+  countEl.className='vcount flip'+(v.state===1?' up-color':v.state===-1?' down-color':'');
+  setTimeout(()=>countEl.classList.remove('flip'),200);
+  upBtn.className='vbtn up'+(v.state===1?' voted':'');
+  downBtn.className='vbtn down'+(v.state===-1?' voted':'');
+  if(v.state!==0){
+    const animBtn=v.state===1?upBtn:downBtn;
+    animBtn.classList.add(v.state===1?'anim-up':'anim-down');
+    const pop=animBtn.querySelector('.pop');
+    pop.textContent=v.state===1?'+1':'−1';
+    pop.style.animation='none';
+    void pop.offsetWidth;
+    pop.style.animation=v.state===1?'popUp 0.45s ease forwards':'popDown 0.45s ease forwards';
+    setTimeout(()=>animBtn.classList.remove('anim-up','anim-down'),250);
+  }
+}
+
+function toggleJoin(btn){
+  btn.classList.toggle('joined');
+  btn.textContent=btn.classList.contains('joined')?'✓ Joined':'Join';
+}
+
+function setSort(btn){
+  document.querySelectorAll('.sort-btn').forEach(b=>{
+    if(!b.closest('.view-toggle'))b.classList.remove('active');
+  });
+  btn.classList.add('active');
+}
+
+function toggleDropdown(){
+  document.getElementById('dropdown').classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#avatarBtn')&&!e.target.closest('#dropdown'))
+    document.getElementById('dropdown').classList.remove('open');
+});
+
+function renderPosts(){
+  document.getElementById('posts').innerHTML=posts.map(p=>`
+    <article class="post" data-post="${p.id}">
+      <div class="vote-col">
+        <button class="vbtn up" onclick="event.stopPropagation();vote(${p.id},1,this)" aria-label="Upvote">
+          <i class="ti ti-arrow-up" aria-hidden="true"></i>
+          <span class="pop" aria-hidden="true"></span>
+        </button>
+        <span class="vcount">${fmt(p.votes)}</span>
+        <button class="vbtn down" onclick="event.stopPropagation();vote(${p.id},-1,this)" aria-label="Downvote">
+          <i class="ti ti-arrow-down" aria-hidden="true"></i>
+          <span class="pop" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="vote-divider"></div>
+      <div class="post-inner">
+        <div class="post-meta">
+          <div class="meta-sub">
+            <div style="width:18px;height:18px;border-radius:5px;background:${p.subColor};display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${p.subEmoji}</div>
+            <span class="sub-name">${p.sub}</span>
+          </div>
+          <span class="meta-dot">·</span>
+          <span>${p.time}</span>
+          <span class="meta-dot">·</span>
+          <span>by ${p.user}</span>
+          ${p.popularNear?'<span class="popular-tag"><i class="ti ti-map-pin" style="font-size:10px" aria-hidden="true"></i>Near you</span>':''}
+        </div>
+        ${p.flair?'<div><span class="flair '+p.flairClass+'">'+p.flair+'</span></div>':''}
+        <div class="post-title">${p.title}</div>
+        ${p.hasImg?'<div class="post-img-placeholder" style="background:'+p.imgBg+'"><span style="font-size:52px;position:relative;z-index:1">'+p.imgEmoji+'</span><div class="post-img-overlay"></div></div>':''}
+        <div class="post-footer">
+          <div class="post-actions">
+            <button class="act-btn"><i class="ti ti-message-2" aria-hidden="true"></i>${fmt(p.comments)}</button>
+            <button class="act-btn"><i class="ti ti-share" aria-hidden="true"></i>Share</button>
+            <button class="act-btn"><i class="ti ti-bookmark" aria-hidden="true"></i>Save</button>
+            <button class="act-btn"><i class="ti ti-dots" aria-hidden="true"></i></button>
+          </div>
+          ${p.joinable?'<button class="join-btn" onclick="event.stopPropagation();toggleJoin(this)">Join</button>':''}
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+renderPosts();
+</script>
+</body>
+</html>
