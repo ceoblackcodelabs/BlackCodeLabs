@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Ofweneke — The Duke of Kakamega</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C62828;
+  --red-bright: #E53935;
+  --red-deep: #8B0000;
+  --amber: #F59E0B;
+  --cream: #FDF6EC;
+  --warm-white: #FFF8F0;
+  --ink: #111008;
+  --charcoal: #1C1A16;
+  --stone: #3A3530;
+  --dust: #8C7E6E;
+  --parchment: #E8DDD0;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+}
+
+/* ──── HERO CAROUSEL ──── */
+#hero{
+  position:relative;
+  height:100vh;
+  min-height:600px;
+  overflow:hidden;
+}
+
+.carousel-track{
+  display:flex;
+  height:100%;
+  transition:transform .9s cubic-bezier(.77,0,.18,1);
+  will-change:transform;
+}
+
+.carousel-slide{
+  min-width:100%;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+}
+
+.slide-bg{
+  position:absolute;inset:0;
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+  transform:scale(1.06);
+  transition:transform 6s ease;
+}
+@media(min-width:769px){
+  .slide-bg{background-position:65% top;}
+}
+.carousel-slide.active .slide-bg{transform:scale(1);}
+
+/* slide images */
+.slide-1 .slide-bg{background-image:url('https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/706357188_18588670069060858_6776464938833297895_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ig_cache_key=MzkwNDg1MzAwOTY5ODgxMDQzNA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMzk4NC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=sx9TnPPblTMQ7kNvwF1ABnf&_nc_oc=Ado59mpVTjqcmmwA-kBp5Eio_gmNsUow-7RxWwyeQ1VtaO1C1AqECeGTQVAU61ICh-s&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=iDRc4iMTvN8oTUCdpzAwqQ&_nc_ss=7a22e&oh=00_Af87Tb46tTY5vdjPk5ZlkeIcXs6-fPVlAszTfoQlQikjNA&oe=6A2C62AA');background-color:#0a0500;}
+.slide-2 .slide-bg{background-image:url('https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/716210313_18591675994060858_6944587952000835732_n.jpg?stp=dst-jpegr_e35_tt6&_nc_cat=101&ig_cache_key=MzkxMjA3ODU0NzYwMTU2NjQ3MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMzAyNC5oZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=CWIrkXFxDkAQ7kNvwEYaCis&_nc_oc=AdrzfWiCk-UFxf51RchaJkLEZkamul3sm5YnXV-P0_ycykowfkgflyzAw86yYw3iqQM&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&se=-1&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=X6m1R7Zo4tF6IcwK2Hv3Jg&_nc_ss=7a22e&oh=00_Af_yP0-JNrLpvXwzz1TK3KfbI-ejyCf_iuIEUSQTRLwV2Q&oe=6A2C593B');background-color:#050008;}
+.slide-3 .slide-bg{background-image:url('https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/714722453_18591366259060858_4376478228547506049_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzkxMTMyMjM3NzYxMzc3MTUwMQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMzA3Mi5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=qp1d0wvQPzAQ7kNvwENNw-g&_nc_oc=AdooZQTVwSGlOjOf7-4iIb02VzPRNW_HWhHi76KGmXrLLms2B1onVn6vt1bh1yPCoNU&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=jxPcA_I_M7H3Rbnor6imsg&_nc_ss=7a22e&oh=00_Af91Xf7kZZ6pXLSbySXQNERFTTILCPcqVzQyj1Pv16ij4A&oe=6A2C5CAD');background-color:#00080a;}
+.slide-4 .slide-bg{background-image:url('https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/708394716_18589780429060858_1195032516749154800_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ig_cache_key=MzkwNzU0MDcxMDI1NjUyMjU3OQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMzA3Mi5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=xBmgpwbxy7cQ7kNvwGdMUA8&_nc_oc=AdojXflsnpQuLo8-7eKIB_RWpwbrapc8S_ugwkzgwpMKbieG3KKUcTEcE_mantqwsws&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=9fWnT3u_MiIUCoyG8HtcMQ&_nc_ss=7a22e&oh=00_Af-iYfm47mE684ZxpsI3_rqbjj1lsxNJcUjKQ9AMAPRV-Q&oe=6A2C31D6');background-color:#080a00;}
+
+.slide-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to right, rgba(0,0,0,.88) 0%, rgba(0,0,0,.65) 38%, rgba(0,0,0,.2) 65%, rgba(0,0,0,.05) 100%);
+  z-index:1;
+}
+.slide-overlay::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 45%);
+}
+
+.slide-content{
+  position:absolute;inset:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  padding:0 6vw;
+  padding-top:80px;
+}
+
+.slide-inner{
+  max-width:680px;
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity .7s ease .3s, transform .7s ease .3s;
+}
+.carousel-slide.active .slide-inner{opacity:1;transform:translateY(0);}
+
+.slide-tag{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:1.2rem;
+}
+.slide-tag::before{content:'';width:30px;height:1px;background:var(--amber);}
+
+.slide-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(3.5rem,8vw,7rem);
+  font-weight:700;
+  line-height:.92;
+  color:#fff;
+  text-transform:uppercase;
+  letter-spacing:-.01em;
+  margin-bottom:1.2rem;
+}
+.slide-title .accent{color:var(--red-bright);}
+
+.slide-desc{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(.95rem,2vw,1.15rem);
+  font-style:italic;
+  color:rgba(255,255,255,.7);
+  line-height:1.7;
+  max-width:480px;
+  margin-bottom:2rem;
+}
+
+.slide-cta{
+  display:inline-block;
+  padding:.85rem 2.4rem;
+  background:var(--red);
+  color:#fff;
+  font-family:'Oswald',sans-serif;
+  font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:500;
+  text-decoration:none;
+  transition:background .3s,transform .2s;
+}
+.slide-cta:hover{background:var(--red-bright);transform:translateY(-2px);}
+
+/* decorative side number */
+.slide-num{
+  position:absolute;right:5vw;bottom:8vh;
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(5rem,14vw,12rem);
+  font-weight:700;
+  color:rgba(255,255,255,.03);
+  line-height:1;
+  z-index:2;
+  pointer-events:none;
+  letter-spacing:-.04em;
+}
+
+/* Carousel controls */
+.carousel-controls{
+  position:absolute;bottom:2rem;left:6vw;
+  z-index:10;
+  display:flex;align-items:center;gap:1.5rem;
+}
+
+.carousel-dots{display:flex;gap:.6rem;}
+.carousel-dot{
+  width:28px;height:3px;
+  background:rgba(255,255,255,.3);
+  cursor:pointer;
+  transition:background .3s,width .3s;
+}
+.carousel-dot.active{background:var(--amber);width:50px;}
+
+.carousel-arrows{display:flex;gap:.8rem;}
+.carousel-arrow{
+  width:44px;height:44px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.4);
+  color:#fff;
+  font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:border-color .3s,background .3s;
+  backdrop-filter:blur(8px);
+}
+.carousel-arrow:hover{border-color:var(--amber);background:rgba(245,158,11,.15);}
+
+.carousel-progress{
+  position:absolute;bottom:0;left:0;
+  height:3px;background:var(--red);
+  transition:width .1s linear;
+  z-index:10;
+}
+
+/* ──── NAV ──── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 6vw;
+  transition:background .4s,padding .4s,backdrop-filter .4s;
+}
+nav.scrolled{
+  background:rgba(10,8,5,.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:.9rem 6vw;
+}
+
+.nav-logo{
+  font-family:'Oswald',sans-serif;
+  font-size:1.5rem;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;
+  color:#fff;text-decoration:none;
+  line-height:1;
+}
+.nav-logo span{color:var(--red-bright);}
+.nav-logo small{
+  display:block;
+  font-family:'DM Sans',sans-serif;
+  font-size:.55rem;letter-spacing:.25em;
+  color:rgba(255,255,255,.4);
+  text-transform:uppercase;
+  margin-top:.1rem;
+}
+
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{
+  font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);text-decoration:none;
+  transition:color .3s;
+  font-weight:500;
+}
+.nav-links a:hover{color:var(--amber);}
+
+.nav-cta{
+  padding:.6rem 1.8rem;
+  background:var(--red);
+  color:#fff;
+  font-family:'Oswald',sans-serif;
+  font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:500;
+  text-decoration:none;
+  transition:background .3s;
+}
+.nav-cta:hover{background:var(--red-bright);}
+
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.nav-hamburger span{width:24px;height:2px;background:#fff;display:block;transition:.3s;}
+
+/* Mobile nav */
+.mobile-nav{
+  position:fixed;inset:0;
+  background:rgba(10,8,5,.98);
+  z-index:900;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:2rem;
+  transform:translateY(-100%);
+  transition:transform .5s cubic-bezier(.77,0,.18,1);
+}
+.mobile-nav.open{transform:translateY(0);}
+.mobile-nav a{
+  font-family:'Oswald',sans-serif;
+  font-size:2.5rem;font-weight:700;text-transform:uppercase;
+  color:#fff;text-decoration:none;
+  transition:color .3s;
+}
+.mobile-nav a:hover{color:var(--red-bright);}
+.mobile-nav-close{
+  position:absolute;top:1.5rem;right:6vw;
+  font-size:1.8rem;color:rgba(255,255,255,.5);
+  cursor:pointer;background:none;border:none;
+  transition:color .3s;
+}
+.mobile-nav-close:hover{color:var(--amber);}
+
+/* ──── TICKER ──── */
+.ticker{
+  background:var(--red);
+  padding:.55rem 0;overflow:hidden;
+  white-space:nowrap;
+}
+.ticker-inner{
+  display:inline-flex;gap:0;
+  animation:ticker 30s linear infinite;
+}
+.ticker-item{
+  font-family:'Oswald',sans-serif;
+  font-size:.9rem;letter-spacing:.2em;text-transform:uppercase;
+  color:#fff;padding:0 2rem;font-weight:400;
+}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ──── SECTION BASE ──── */
+section{padding:7rem 6vw;}
+
+.section-label{
+  font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--red-bright);
+  display:flex;align-items:center;gap:.8rem;
+  margin-bottom:1rem;
+}
+.section-label::before{content:'';width:32px;height:1px;background:var(--red-bright);}
+
+.section-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(2.2rem,5vw,4rem);
+  font-weight:700;text-transform:uppercase;
+  color:#fff;line-height:1;
+  letter-spacing:-.01em;
+}
+.section-title em{
+  font-family:'Libre Baskerville',serif;
+  font-style:italic;color:var(--amber);
+  font-size:.85em;text-transform:none;
+}
+
+/* ──── ABOUT ──── */
+#about{background:var(--charcoal);position:relative;overflow:hidden;}
+#about::after{
+  content:'DUKE';
+  position:absolute;right:-2rem;bottom:-3rem;
+  font-family:'Oswald',sans-serif;
+  font-size:20vw;font-weight:700;
+  color:rgba(255,255,255,.02);
+  pointer-events:none;line-height:1;
+  text-transform:uppercase;
+}
+
+.about-layout{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1.15fr;
+  gap:5rem;align-items:center;
+}
+
+.about-img-wrap{
+  position:relative;
+}
+
+.about-img-stage{
+  position:relative;
+  aspect-ratio:4/5;
+  overflow:hidden;
+}
+.about-img-stage::before{
+  content:'';
+  position:absolute;
+  top:-16px;left:-16px;
+  right:16px;bottom:16px;
+  border:2px solid var(--red);
+  opacity:.4;z-index:0;
+}
+.about-img-stage img,
+.about-img-ph{
+  position:relative;z-index:1;
+  width:100%;height:100%;
+  object-fit:cover;object-position:top;
+  display:block;
+}
+.about-img-ph{
+  background:linear-gradient(160deg,#1a1008,#2a1a10);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+}
+.about-img-ph .initials{
+  font-family:'Oswald',sans-serif;
+  font-size:6rem;font-weight:700;
+  color:rgba(198,40,40,.4);
+}
+
+.about-badge{
+  position:absolute;
+  bottom:-1.5rem;right:-1.5rem;
+  background:var(--red);
+  padding:1.5rem;
+  z-index:10;
+  text-align:center;
+  min-width:100px;
+}
+.about-badge .n{
+  font-family:'Oswald',sans-serif;
+  font-size:2.8rem;font-weight:700;
+  color:#fff;line-height:1;display:block;
+}
+.about-badge .l{
+  font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.8);
+}
+
+.about-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,.08);
+  margin-top:3.5rem;
+}
+.about-stat{
+  background:var(--charcoal);
+  padding:1.5rem 1rem;text-align:center;
+}
+.about-stat .big{
+  font-family:'Oswald',sans-serif;
+  font-size:2.2rem;font-weight:700;
+  color:var(--amber);line-height:1;
+}
+.about-stat .sm{
+  font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-top:.4rem;
+}
+
+.about-text{}
+.about-text h2{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:700;text-transform:uppercase;
+  color:#fff;line-height:.95;
+  margin-bottom:1.8rem;
+  letter-spacing:-.01em;
+}
+.about-text h2 span{
+  display:block;
+  font-family:'Libre Baskerville',serif;
+  font-style:italic;font-weight:400;
+  font-size:.55em;text-transform:none;
+  color:var(--amber);
+  letter-spacing:0;
+}
+.about-text p{
+  font-size:.9rem;line-height:1.9;
+  color:rgba(255,255,255,.6);
+  margin-bottom:1rem;
+}
+.about-text p strong{color:rgba(255,255,255,.9);font-weight:500;}
+
+.about-tags{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.8rem 0;}
+.about-tag{
+  padding:.38rem .9rem;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);
+}
+
+.btn-red{
+  display:inline-block;
+  padding:.85rem 2.4rem;
+  background:var(--red);color:#fff;
+  font-family:'Oswald',sans-serif;
+  font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:500;text-decoration:none;
+  transition:background .3s,transform .2s;
+}
+.btn-red:hover{background:var(--red-bright);transform:translateY(-2px);}
+
+.btn-outline-w{
+  display:inline-block;
+  padding:.85rem 2.4rem;
+  border:1px solid rgba(255,255,255,.25);
+  color:rgba(255,255,255,.7);
+  font-family:'Oswald',sans-serif;
+  font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:500;text-decoration:none;
+  transition:border-color .3s,color .3s,transform .2s;
+}
+.btn-outline-w:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-2px);}
+
+/* ──── SERVICES ──── */
+#services{
+  background:var(--ink);
+  padding:7rem 6vw;
+}
+.services-wrap{max-width:1200px;margin:0 auto;}
+.services-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:4rem;gap:2rem;
+  flex-wrap:wrap;
+}
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:rgba(255,255,255,.07);
+}
+
+.service-card{
+  background:var(--ink);
+  padding:2.8rem 2.5rem;
+  position:relative;overflow:hidden;
+  transition:background .4s;
+}
+.service-card::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;
+  height:3px;background:var(--red);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s;
+}
+.service-card:hover{background:var(--charcoal);}
+.service-card:hover::after{transform:scaleX(1);}
+
+.service-icon{
+  font-size:2.2rem;margin-bottom:1.5rem;
+  display:block;
+}
+.service-n{
+  position:absolute;top:1.5rem;right:2rem;
+  font-family:'Oswald',sans-serif;
+  font-size:5rem;font-weight:700;
+  color:rgba(255,255,255,.04);
+  line-height:1;
+  pointer-events:none;
+}
+.service-card h3{
+  font-family:'Oswald',sans-serif;
+  font-size:1.35rem;font-weight:600;
+  text-transform:uppercase;
+  color:#fff;margin-bottom:.9rem;
+  letter-spacing:.03em;
+}
+.service-card p{
+  font-size:.83rem;line-height:1.85;
+  color:rgba(255,255,255,.5);
+}
+
+/* ──── GALLERY ──── */
+#gallery{
+  background:var(--charcoal);
+  padding:7rem 6vw;
+}
+.gallery-wrap{max-width:1200px;margin:0 auto;}
+
+/* Masonry-style gallery with film strip feel */
+.gallery-strip{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:260px 200px;
+  gap:.8rem;
+  position:relative;
+}
+
+.g-item{
+  position:relative;overflow:hidden;
+  cursor:pointer;
+}
+.g-item:nth-child(1){grid-row:1/3;}
+.g-item:nth-child(2){grid-column:2;}
+.g-item:nth-child(3){grid-column:3;}
+.g-item:nth-child(4){grid-column:2;}
+.g-item:nth-child(5){grid-column:3;}
+
+.g-bg{
+  width:100%;height:100%;
+  background-size:cover;background-position:center;
+  transition:transform .6s ease;
+}
+.g-item:hover .g-bg{transform:scale(1.08);}
+
+/* placeholder colors */
+.g-item:nth-child(1) .g-bg{background:linear-gradient(135deg,#1a1008,#2d1e12);}
+.g-item:nth-child(2) .g-bg{background:linear-gradient(135deg,#0a1018,#162030);}
+.g-item:nth-child(3) .g-bg{background:linear-gradient(135deg,#18100a,#2a1c10);}
+.g-item:nth-child(4) .g-bg{background:linear-gradient(135deg,#100a18,#201530);}
+.g-item:nth-child(5) .g-bg{background:linear-gradient(135deg,#0a1810,#122818);}
+
+.g-label-inner{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;
+  font-family:'Oswald',sans-serif;
+  font-size:2rem;font-weight:700;text-transform:uppercase;
+  color:rgba(255,255,255,.08);letter-spacing:.1em;
+}
+
+.g-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 55%);
+  opacity:0;transition:opacity .4s;
+  display:flex;align-items:flex-end;
+  padding:1.2rem;
+}
+.g-item:hover .g-overlay{opacity:1;}
+
+.g-meta{
+  display:flex;flex-direction:column;gap:.3rem;
+}
+.g-title{
+  font-family:'Oswald',sans-serif;
+  font-size:1rem;font-weight:600;text-transform:uppercase;
+  color:#fff;letter-spacing:.05em;
+}
+.g-sub{
+  font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--amber);
+}
+
+/* corner number tag */
+.g-num{
+  position:absolute;top:.8rem;left:.8rem;
+  font-family:'Oswald',sans-serif;
+  font-size:.7rem;letter-spacing:.1em;
+  background:var(--red);color:#fff;
+  padding:.2rem .6rem;font-weight:600;
+}
+
+/* second row: horizontal scroll strip */
+.gallery-reel{
+  display:flex;gap:.8rem;
+  overflow-x:auto;
+  margin-top:.8rem;
+  scrollbar-width:none;
+  padding-bottom:.2rem;
+}
+.gallery-reel::-webkit-scrollbar{display:none;}
+.reel-item{
+  flex:0 0 200px;height:140px;
+  position:relative;overflow:hidden;
+  cursor:pointer;
+}
+.reel-item .g-bg{background-size:cover;background-position:center;}
+.reel-item:nth-child(1) .g-bg{background:linear-gradient(135deg,#1a100a,#2a1812);}
+.reel-item:nth-child(2) .g-bg{background:linear-gradient(135deg,#0a1820,#102535);}
+.reel-item:nth-child(3) .g-bg{background:linear-gradient(135deg,#180a10,#2a1020);}
+.reel-item:nth-child(4) .g-bg{background:linear-gradient(135deg,#0a1a0a,#122512);}
+.reel-item:nth-child(5) .g-bg{background:linear-gradient(135deg,#1a1508,#2a2010);}
+.reel-item:nth-child(6) .g-bg{background:linear-gradient(135deg,#08101a,#102030);}
+.reel-item .g-overlay{padding:.8rem;}
+.reel-item:hover .g-overlay{opacity:1;}
+.reel-item:hover .g-bg{transform:scale(1.1);}
+
+/* ──── AWARDS ──── */
+#awards{background:var(--ink);}
+.awards-wrap{max-width:1200px;margin:0 auto;}
+
+.awards-top{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+  margin-bottom:5rem;
+}
+.awards-big-num{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(8rem,18vw,16rem);
+  font-weight:700;line-height:.85;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,.1);
+  letter-spacing:-.04em;
+  position:relative;
+}
+.awards-big-num::after{
+  content:attr(data-num);
+  position:absolute;inset:0;
+  color:transparent;
+  -webkit-text-stroke:1px var(--red);
+  clip-path:polygon(0 0, 40% 0, 40% 100%, 0 100%);
+}
+
+.awards-right h2{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(2rem,3.5vw,3rem);
+  font-weight:700;text-transform:uppercase;
+  color:#fff;margin-bottom:1rem;line-height:1;
+}
+.awards-right p{
+  font-size:.88rem;line-height:1.9;
+  color:rgba(255,255,255,.5);
+  max-width:400px;
+  margin-bottom:2rem;
+}
+
+.awards-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:rgba(255,255,255,.07);
+  max-width:500px;
+}
+.award-item{
+  background:var(--ink);
+  padding:1.5rem;
+  display:flex;align-items:flex-start;gap:1rem;
+  transition:background .3s;
+}
+.award-item:hover{background:var(--charcoal);}
+.award-icon{
+  color:var(--amber);font-size:1.2rem;
+  flex-shrink:0;margin-top:.1rem;
+}
+.award-name{
+  font-size:.78rem;letter-spacing:.05em;
+  color:rgba(255,255,255,.7);line-height:1.5;
+}
+
+/* awards marquee */
+.awards-marquee{overflow:hidden;margin-top:3rem;}
+.awards-marquee-inner{
+  display:inline-flex;gap:1rem;
+  animation:ticker 35s linear infinite;
+}
+.award-chip{
+  display:flex;align-items:center;gap:.8rem;
+  background:var(--charcoal);
+  border:1px solid rgba(255,255,255,.08);
+  padding:.9rem 1.4rem;white-space:nowrap;
+  transition:border-color .3s;
+}
+.award-chip:hover{border-color:rgba(245,158,11,.4);}
+.award-chip .star{color:var(--amber);}
+.award-chip span{
+  font-family:'Oswald',sans-serif;
+  font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+}
+
+/* ──── RATE CARD ──── */
+#rates{background:var(--charcoal);}
+.rates-wrap{max-width:1200px;margin:0 auto;}
+.rates-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,.07);
+  margin-top:4rem;
+}
+.rate-card{
+  background:var(--charcoal);
+  padding:3rem 2.5rem;
+  position:relative;
+  transition:background .3s;
+}
+.rate-card:hover{background:var(--stone);}
+.rate-card.featured{
+  background:var(--red-deep);
+}
+.rate-card.featured::before{
+  content:'MOST BOOKED';
+  position:absolute;top:0;right:1.8rem;
+  background:var(--amber);color:var(--ink);
+  font-family:'Oswald',sans-serif;
+  font-size:.6rem;font-weight:700;letter-spacing:.15em;
+  padding:.3rem .8rem;
+}
+.rate-icon{font-size:2rem;margin-bottom:1.5rem;display:block;}
+.rate-card h3{
+  font-family:'Oswald',sans-serif;
+  font-size:1.3rem;font-weight:600;text-transform:uppercase;
+  color:#fff;letter-spacing:.04em;margin-bottom:.6rem;
+}
+.rate-price{
+  font-family:'Oswald',sans-serif;
+  font-size:2.8rem;font-weight:700;
+  color:var(--amber);line-height:1;
+  margin:1rem 0;
+}
+.rate-price sub{font-size:.9rem;letter-spacing:.1em;color:rgba(255,255,255,.4);}
+.rate-desc{
+  font-size:.8rem;line-height:1.8;
+  color:rgba(255,255,255,.5);margin-bottom:1.5rem;
+}
+.rate-list{list-style:none;}
+.rate-list li{
+  font-size:.77rem;letter-spacing:.04em;
+  color:rgba(255,255,255,.55);
+  padding:.5rem 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  display:flex;align-items:center;gap:.7rem;
+}
+.rate-list li::before{content:'→';color:var(--red-bright);font-size:.8rem;}
+
+.rates-note{
+  text-align:center;
+  font-family:'Libre Baskerville',serif;
+  font-size:1rem;font-style:italic;
+  color:rgba(255,255,255,.35);
+  max-width:650px;margin:3rem auto 0;
+  line-height:1.8;
+}
+
+/* ──── CONTACT ──── */
+#contact{
+  background:var(--ink);
+  padding:7rem 6vw;
+  position:relative;
+  overflow:hidden;
+}
+
+.contact-wrap{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1.2fr;
+  gap:6rem;
+  align-items:start;
+}
+
+/* LEFT: contact info panel */
+.contact-panel{
+  position:relative;
+}
+
+.contact-panel-head{
+  margin-bottom:3rem;
+}
+.contact-panel-head h2{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(2.5rem,5vw,4rem);
+  font-weight:700;text-transform:uppercase;
+  color:#fff;line-height:.95;
+  letter-spacing:-.01em;
+  margin-bottom:.8rem;
+}
+.contact-panel-head h2 em{
+  font-family:'Libre Baskerville',serif;
+  font-style:italic;color:var(--amber);
+  font-size:.75em;text-transform:none;
+  display:block;
+}
+.contact-panel-head p{
+  font-size:.85rem;line-height:1.8;
+  color:rgba(255,255,255,.45);
+  max-width:340px;
+}
+
+/* vertical info items */
+.contact-items{display:flex;flex-direction:column;gap:0;}
+.contact-item{
+  display:flex;align-items:stretch;gap:0;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  padding:1.4rem 0;
+  transition:background .3s;
+  cursor:default;
+}
+.contact-item:hover{background:rgba(255,255,255,.02);}
+.contact-item:first-child{border-top:1px solid rgba(255,255,255,.07);}
+
+.c-num{
+  font-family:'Oswald',sans-serif;
+  font-size:.65rem;letter-spacing:.2em;
+  color:rgba(255,255,255,.2);
+  width:2.5rem;flex-shrink:0;
+  padding-top:.15rem;
+  font-weight:600;
+}
+.c-body{flex:1;}
+.c-label{
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--red-bright);margin-bottom:.35rem;
+  font-weight:600;
+}
+.c-value{
+  font-size:.88rem;line-height:1.5;
+  color:rgba(255,255,255,.8);
+}
+.c-value a{color:var(--amber);text-decoration:none;}
+.c-value a:hover{text-decoration:underline;}
+.c-arrow{
+  font-size:1rem;color:rgba(255,255,255,.15);
+  display:flex;align-items:center;
+  padding-left:1rem;
+  transition:color .3s,transform .3s;
+}
+.contact-item:hover .c-arrow{color:var(--amber);transform:translateX(4px);}
+
+/* social row */
+.contact-social{
+  display:flex;gap:.8rem;
+  margin-top:2rem;
+}
+.social-btn{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.65rem 1.2rem;
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.6);
+  text-decoration:none;
+  font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:600;
+  transition:border-color .3s,color .3s,background .3s;
+}
+.social-btn:hover{border-color:var(--amber);color:var(--amber);background:rgba(245,158,11,.05);}
+
+/* RIGHT: form */
+.contact-form-wrap{
+  background:var(--charcoal);
+  padding:3rem;
+  border:1px solid rgba(255,255,255,.07);
+  position:relative;
+}
+.contact-form-wrap::before{
+  content:'BOOK ME';
+  position:absolute;right:-1rem;top:2rem;
+  font-family:'Oswald',sans-serif;
+  font-size:6rem;font-weight:700;
+  color:rgba(255,255,255,.02);
+  line-height:1;pointer-events:none;
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+}
+
+.form-title{
+  font-family:'Oswald',sans-serif;
+  font-size:1.5rem;font-weight:700;text-transform:uppercase;
+  color:#fff;margin-bottom:.5rem;letter-spacing:.04em;
+}
+.form-sub{
+  font-size:.78rem;color:rgba(255,255,255,.4);
+  margin-bottom:2rem;
+  line-height:1.6;
+}
+
+.form-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1rem;
+}
+.form-field{
+  display:flex;flex-direction:column;gap:.45rem;
+}
+.form-field.full{grid-column:1/-1;}
+.form-field label{
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--amber);font-weight:600;
+}
+.form-field input,
+.form-field select,
+.form-field textarea{
+  background:var(--stone);
+  border:1px solid rgba(255,255,255,.1);
+  border-bottom:2px solid rgba(255,255,255,.1);
+  color:#fff;
+  padding:.8rem 1rem;
+  font-family:'DM Sans',sans-serif;
+  font-size:.83rem;
+  outline:none;
+  transition:border-color .3s,background .3s;
+  width:100%;resize:none;
+  -webkit-appearance:none;
+  border-radius:0;
+}
+.form-field select option{background:var(--stone);}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus{
+  border-color:rgba(255,255,255,.15);
+  border-bottom-color:var(--amber);
+  background:#2a2520;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder{color:rgba(255,255,255,.25);}
+
+.form-actions{
+  display:flex;align-items:center;gap:1rem;
+  margin-top:1.5rem;
+  flex-wrap:wrap;
+}
+.form-submit{
+  padding:.9rem 2.5rem;
+  background:var(--red);color:#fff;
+  border:none;
+  font-family:'Oswald',sans-serif;
+  font-size:.9rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;
+  transition:background .3s,transform .2s;
+}
+.form-submit:hover{background:var(--red-bright);transform:translateY(-2px);}
+.form-note{
+  font-size:.7rem;color:rgba(255,255,255,.3);
+  line-height:1.5;
+}
+
+/* ──── FOOTER ──── */
+footer{
+  background:var(--charcoal);
+  padding:3.5rem 6vw;
+  border-top:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1.5rem;
+}
+.footer-logo{
+  font-family:'Oswald',sans-serif;
+  font-size:1.6rem;font-weight:700;text-transform:uppercase;
+  color:#fff;text-decoration:none;
+  letter-spacing:.05em;
+}
+.footer-logo span{color:var(--red-bright);}
+.footer-copy{
+  font-size:.68rem;letter-spacing:.1em;
+  color:rgba(255,255,255,.3);text-align:center;
+}
+.footer-copy a{color:var(--amber);text-decoration:none;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{
+  font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);text-decoration:none;
+  transition:color .3s;
+}
+.footer-links a:hover{color:var(--amber);}
+
+/* ──── TOAST ──── */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;
+  background:var(--amber);color:var(--ink);
+  padding:1rem 2rem;
+  font-family:'Oswald',sans-serif;
+  font-size:.85rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  z-index:9000;
+  transform:translateY(100px);opacity:0;
+  transition:transform .4s,opacity .4s;
+  pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ──── SCROLL REVEAL ──── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ──── RESPONSIVE ──── */
+@media(max-width:1024px){
+  .about-layout{grid-template-columns:1fr;gap:3rem;}
+  .about-img-wrap{max-width:480px;}
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .rates-grid{grid-template-columns:repeat(2,1fr);}
+  .contact-wrap{grid-template-columns:1fr;gap:4rem;}
+  .awards-top{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  nav{padding:1rem 5vw;}
+  .nav-links,.nav-cta{display:none;}
+  .nav-hamburger{display:flex;}
+  section{padding:5rem 5vw;}
+  .about-layout{gap:2rem;}
+  .gallery-strip{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:220px 180px;
+  }
+  .g-item:nth-child(1){grid-column:1/-1;grid-row:1;}
+  .g-item:nth-child(2){grid-column:1;grid-row:2;}
+  .g-item:nth-child(3){grid-column:2;grid-row:2;}
+  .g-item:nth-child(4){display:none;}
+  .g-item:nth-child(5){display:none;}
+  .services-grid{grid-template-columns:1fr;}
+  .rates-grid{grid-template-columns:1fr;}
+  .contact-form-wrap{padding:2rem 1.5rem;}
+  .form-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;align-items:flex-start;}
+  .about-stats{grid-template-columns:repeat(3,1fr);}
+  .awards-top{grid-template-columns:1fr;}
+  .awards-grid{grid-template-columns:1fr;}
+  .contact-wrap{gap:3rem;}
+  .slide-content{padding:0 5vw;padding-top:80px;}
+  .carousel-controls{bottom:1.5rem;left:5vw;}
+}
+@media(max-width:480px){
+  .slide-title{font-size:2.8rem;}
+  .gallery-strip{grid-template-columns:1fr;grid-template-rows:280px 200px 200px;}
+  .g-item:nth-child(1){grid-column:1;grid-row:1;}
+  .g-item:nth-child(2){grid-column:1;grid-row:2;}
+  .g-item:nth-child(3){grid-column:1;grid-row:3;}
+  .g-item:nth-child(4){display:none;}
+  .g-item:nth-child(5){display:none;}
+  .about-stat .big{font-size:1.8rem;}
+  .contact-panel-head h2{font-size:2.2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#services" onclick="closeMobileNav()">Services</a>
+  <a href="#gallery" onclick="closeMobileNav()">Gallery</a>
+  <a href="#rates" onclick="closeMobileNav()">Rates</a>
+  <a href="#contact" onclick="closeMobileNav()">Book Me</a>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Dr. Ofweneke<span>.</span><small>The Duke of Kakamega</small></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">What I Do</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#rates">Rates</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Now</a>
+  <div class="nav-hamburger" onclick="openMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ██ HERO CAROUSEL ██ -->
+<section id="hero">
+  <div class="carousel-track" id="carouselTrack">
+
+    <div class="carousel-slide slide-1 active">
+      <div class="slide-bg"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-inner">
+          <p class="slide-tag">Stand-Up Comedy</p>
+          <h1 class="slide-title">The King<br>of <span class="accent">Laughs</span></h1>
+          <p class="slide-desc">East Africa's sharpest comedian — bringing unfiltered truth, electric wit, and "Oga oh!" energy to every room.</p>
+          <a href="#contact" class="slide-cta">Book a Show →</a>
+        </div>
+      </div>
+      <div class="slide-num">01</div>
+    </div>
+
+    <div class="carousel-slide slide-2">
+      <div class="slide-bg"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-inner">
+          <p class="slide-tag">TV &amp; Radio Host</p>
+          <h1 class="slide-title">Born for<br>the <span class="accent">Mic</span></h1>
+          <p class="slide-desc">TV47's commanding voice and Radio 47's mid-morning host — from Hello Mr. Right to Dr. Ofweneke Tonight.</p>
+          <a href="#services" class="slide-cta">See Services →</a>
+        </div>
+      </div>
+      <div class="slide-num">02</div>
+    </div>
+
+    <div class="carousel-slide slide-3">
+      <div class="slide-bg"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-inner">
+          <p class="slide-tag">MC &amp; Events</p>
+          <h1 class="slide-title">Most<br><span class="accent">Professional</span><br>MC</h1>
+          <p class="slide-desc">Award-winning emcee for corporate galas, headline concerts, weddings, and international events across Africa.</p>
+          <a href="#rates" class="slide-cta">View Rates →</a>
+        </div>
+      </div>
+      <div class="slide-num">03</div>
+    </div>
+
+    <div class="carousel-slide slide-4">
+      <div class="slide-bg"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-inner">
+          <p class="slide-tag">Motivational Speaker</p>
+          <h1 class="slide-title">Wisdom.<br><span class="accent">Purpose.</span><br>Impact.</h1>
+          <p class="slide-desc">Faith-powered leadership coach and mindset speaker transforming lives through humor, truth, and the Gospel.</p>
+          <a href="#about" class="slide-cta">Learn More →</a>
+        </div>
+      </div>
+      <div class="slide-num">04</div>
+    </div>
+
+  </div>
+
+  <!-- controls -->
+  <div class="carousel-controls">
+    <div class="carousel-dots" id="carouselDots"></div>
+    <div class="carousel-arrows">
+      <button class="carousel-arrow" id="prevBtn">&#8592;</button>
+      <button class="carousel-arrow" id="nextBtn">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="carousel-progress" id="carouselProgress"></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner"></div>
+</div>
+
+<!-- ██ ABOUT ██ -->
+<section id="about">
+  <div class="about-layout">
+    <div class="about-img-wrap reveal">
+      <div class="about-img-stage">
+        <img src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/712115487_18590780650060858_2925214014440881602_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzkwOTg4OTIyMjQzMjMyNzk5Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMzA3Mi5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=Tp9BBiCiWK4Q7kNvwFwvnA2&_nc_oc=Adp-EYbq11XqpFOnBC1sNyePD6p6kylZOSvAYHa8fqsxT_zaEP7JjQwgTk931GcPHxk&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=GcXAE-tsRFq4JmQizAB6jA&_nc_ss=7a22e&oh=00_Af_MTIA7sb0y4wI99HFRmwHdiaWokPGSSljXL508lkrH5w&oe=6A2C395E"
+          alt="Dr. Ofweneke"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        />
+        <div class="about-img-ph" style="display:none;aspect-ratio:4/5;">
+          <span class="initials">DO</span>
+          <span style="font-size:.65rem;letter-spacing:.2em;color:rgba(255,255,255,.3);text-transform:uppercase">The Duke</span>
+        </div>
+      </div>
+
+      <div class="about-badge">
+        <span class="n">20+</span>
+        <span class="l">Awards</span>
+      </div>
+
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="big">500+</div>
+          <div class="sm">Events Hosted</div>
+        </div>
+        <div class="about-stat">
+          <div class="big">20+</div>
+          <div class="sm">Awards</div>
+        </div>
+        <div class="about-stat">
+          <div class="big">10+</div>
+          <div class="sm">Yrs On-Air</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text reveal">
+      <p class="section-label">The Duke of Kakamega</p>
+      <h2>
+        Entertainer.<br>Preacher.<br>
+        <span>Born January 17, 1991 — Nairobi</span>
+      </h2>
+      <p>Dr. Ofweneke (real name <strong>Sande Bush Oyolo</strong>) is a powerhouse Kenyan entertainer — comedian, TV/radio host, MC, actor, author, motivational speaker, and leadership coach all in one extraordinary person.</p>
+      <p>Born with <strong>Luhya/Kamba heritage</strong> and raised in Nairobi, he channelled raw talent into one of East Africa's most diverse and celebrated media careers. Known for his signature <strong>Nigerian-style accent</strong>, catchphrases like "Oga oh!", and a gift for blending sharp comedy with deep wisdom.</p>
+      <p>A vocal Christian apostle, CEO of <strong>92 Degrees Creative Hub</strong>, and founder of <strong>Creatives For Christ</strong> — Dr. Ofweneke is as comfortable dropping marriage wisdom ("Ndoa ni kisima kirefu…") as he is commanding a festival crowd of thousands.</p>
+      <div class="about-tags">
+        <span class="about-tag">TV47 Host</span>
+        <span class="about-tag">Radio 47</span>
+        <span class="about-tag">Stand-Up Comedian</span>
+        <span class="about-tag">Motivational Speaker</span>
+        <span class="about-tag">92 Degrees CEO</span>
+        <span class="about-tag">Creatives For Christ</span>
+        <span class="about-tag">Hello Mr. Right</span>
+        <span class="about-tag">Award-Winning Actor</span>
+      </div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#contact" class="btn-red">Book Dr. Ofweneke</a>
+        <a href="#services" class="btn-outline-w">What I Do</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ██ SERVICES ██ -->
+<section id="services">
+  <div class="services-wrap">
+    <div class="services-header reveal">
+      <div>
+        <p class="section-label">What I Do</p>
+        <h2 class="section-title">Every Platform.<br><em>Every Stage.</em></h2>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-icon">😂</span>
+        <span class="service-n">01</span>
+        <h3>Stand-Up Comedy</h3>
+        <p>Sharp, unfiltered, and brutally relatable — live shows that blend social commentary with gut-busting humor. From intimate sets to stadium shows across East Africa.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">📺</span>
+        <span class="service-n">02</span>
+        <h3>TV Hosting</h3>
+        <p>Host of <em>Dr. Ofweneke Tonight</em>, <em>Hello Mr. Right</em>, and <em>Lessons at 30</em> on TV47 — commanding the screen with depth, humor, and raw authenticity.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🎙️</span>
+        <span class="service-n">03</span>
+        <h3>Radio Personality</h3>
+        <p>Mid-morning voice on Radio 47 — conversational, insightful, and deeply connected to real Kenyan life. A mic legend since his early days on-air.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🎤</span>
+        <span class="service-n">04</span>
+        <h3>MC &amp; Events</h3>
+        <p>Kenya's <em>Most Professional Male MC of the Year</em>. Concerts, corporate galas, weddings, festivals, international gigs — he controls every room he walks into.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🧠</span>
+        <span class="service-n">05</span>
+        <h3>Motivational Speaking</h3>
+        <p>Faith-based leadership, marriage, personal growth, and mindset transformation. A speaker who makes you laugh, think, and leave a changed person.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">✝️</span>
+        <span class="service-n">06</span>
+        <h3>Ministry &amp; Coaching</h3>
+        <p>Apostle. Coach. Founder of Creatives For Christ. Transforming creatives and entrepreneurs through gospel-centered purpose and leadership principles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ██ GALLERY ██ -->
+<section id="gallery">
+  <div class="gallery-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem;" class="reveal">
+      <div>
+        <p class="section-label">Gallery</p>
+        <h2 class="section-title">In the <em>Moment</em></h2>
+      </div>
+      <p style="font-size:.78rem;color:rgba(255,255,255,.35);max-width:280px;line-height:1.7;text-align:right;">From comedy stages to TV sets, award nights to corporate stages — the moments that define a career.</p>
+    </div>
+
+    <!-- main mosaic -->
+    <div class="gallery-strip reveal">
+      <div class="g-item">
+        <div class="g-bg"><div class="g-label-inner">ON STAGE</div></div>
+        <div class="g-overlay">
+          <div class="g-meta">
+            <span class="g-title">Comedy Night Live</span>
+            <span class="g-sub">Nairobi · 2024</span>
+          </div>
+        </div>
+        <span class="g-num">01</span>
+      </div>
+      <div class="g-item">
+        <div class="g-bg"><div class="g-label-inner">TV47</div></div>
+        <div class="g-overlay">
+          <div class="g-meta">
+            <span class="g-title">Dr. Ofweneke Tonight</span>
+            <span class="g-sub">TV47 Studio</span>
+          </div>
+        </div>
+        <span class="g-num">02</span>
+      </div>
+      <div class="g-item">
+        <div class="g-bg"><div class="g-label-inner">RADIO</div></div>
+        <div class="g-overlay">
+          <div class="g-meta">
+            <span class="g-title">Radio 47</span>
+            <span class="g-sub">Morning Show</span>
+          </div>
+        </div>
+        <span class="g-num">03</span>
+      </div>
+      <div class="g-item">
+        <div class="g-bg"><div class="g-label-inner">MC</div></div>
+        <div class="g-overlay">
+          <div class="g-meta">
+            <span class="g-title">Corporate Gala</span>
+            <span class="g-sub">International Event</span>
+          </div>
+        </div>
+        <span class="g-num">04</span>
+      </div>
+      <div class="g-item">
+        <div class="g-bg"><div class="g-label-inner">AWARDS</div></div>
+        <div class="g-overlay">
+          <div class="g-meta">
+            <span class="g-title">Award Season</span>
+            <span class="g-sub">Pan-Africa</span>
+          </div>
+        </div>
+        <span class="g-num">05</span>
+      </div>
+    </div>
+
+    <!-- reel strip -->
+    <div class="gallery-reel reveal" style="margin-top:1rem;">
+      <div class="reel-item">
+        <div class="g-bg"><div class="g-label-inner" style="font-size:1.2rem;">SPEAK</div></div>
+        <div class="g-overlay"><div class="g-meta"><span class="g-sub">Keynote · Nairobi</span></div></div>
+      </div>
+      <div class="reel-item">
+        <div class="g-bg"><div class="g-label-inner" style="font-size:1.2rem;">FAITH</div></div>
+        <div class="g-overlay"><div class="g-meta"><span class="g-sub">Creatives For Christ</span></div></div>
+      </div>
+      <div class="reel-item">
+        <div class="g-bg"><div class="g-label-inner" style="font-size:1.2rem;">LAUGH</div></div>
+        <div class="g-overlay"><div class="g-meta"><span class="g-sub">Stand-Up · 2024</span></div></div>
+      </div>
+      <div class="reel-item">
+        <div class="g-bg"><div class="g-label-inner" style="font-size:1.2rem;">HOST</div></div>
+        <div class="g-overlay"><div class="g-meta"><span class="g-sub">Hello Mr. Right</span></div></div>
+      </div>
+      <div class="reel-item">
+        <div class="g-bg"><div class="g-label-inner" style="font-size:1.2rem;">OGA!</div></div>
+        <div class="g-overlay"><div class="g-meta"><span class="g-sub">Festival Stage</span></div></div>
+      </div>
+      <div class="reel-item">
+        <div class="g-bg"><div class="g-label-inner" style="font-size:1.2rem;">LEAD</div></div>
+        <div class="g-overlay"><div class="g-meta"><span class="g-sub">92 Degrees Hub</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ██ AWARDS ██ -->
+<section id="awards">
+  <div class="awards-wrap">
+    <div class="awards-top">
+      <div class="awards-big-num reveal" data-num="20+">20+</div>
+      <div class="awards-right reveal">
+        <p class="section-label">Recognition</p>
+        <h2>Multi-Award<br>Winning Career</h2>
+        <p>Recognized across Kenya and East Africa for excellence in comedy, broadcasting, events hosting, and inspirational leadership.</p>
+        <div class="awards-grid">
+          <div class="award-item"><span class="award-icon">✦</span><span class="award-name">Most Professional Male MC of the Year</span></div>
+          <div class="award-item"><span class="award-icon">✦</span><span class="award-name">Best Comedy Show — Kenya</span></div>
+          <div class="award-item"><span class="award-icon">✦</span><span class="award-name">Top Radio Personality — Radio 47</span></div>
+          <div class="award-item"><span class="award-icon">✦</span><span class="award-name">Outstanding Entertainment Excellence</span></div>
+          <div class="award-item"><span class="award-icon">✦</span><span class="award-name">Best TV Host — TV47</span></div>
+          <div class="award-item"><span class="award-icon">✦</span><span class="award-name">Digital Content Creator of the Year</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="awards-marquee reveal">
+      <div class="awards-marquee-inner" id="awardsInner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ██ RATE CARD ██ -->
+<section id="rates">
+  <div class="rates-wrap">
+    <div class="reveal">
+      <p class="section-label">Rate Card</p>
+      <h2 class="section-title">Invest in<br><em>Excellence</em></h2>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card reveal">
+        <span class="rate-icon">😂</span>
+        <h3>Comedy Performance</h3>
+        <div class="rate-price">KES 100K<sub>+</sub></div>
+        <p class="rate-desc">Live stand-up sets for corporate events, festivals, and private shows.</p>
+        <ul class="rate-list">
+          <li>30–90 min sets</li>
+          <li>Corporate & private events</li>
+          <li>Custom material available</li>
+          <li>Pre-show consultation</li>
+        </ul>
+      </div>
+      <div class="rate-card featured reveal">
+        <span class="rate-icon">🎤</span>
+        <h3>MC / Emcee</h3>
+        <div class="rate-price">KES 120K<sub>+</sub></div>
+        <p class="rate-desc">Full event MC experience — from weddings to headline concerts and international stages.</p>
+        <ul class="rate-list">
+          <li>Weddings & galas</li>
+          <li>Concerts & festivals</li>
+          <li>Corporate events</li>
+          <li>International bookings</li>
+          <li>Pre-event briefing included</li>
+        </ul>
+      </div>
+      <div class="rate-card reveal">
+        <span class="rate-icon">🧠</span>
+        <h3>Motivational Talk</h3>
+        <div class="rate-price">KES 80K<sub>+</sub></div>
+        <p class="rate-desc">Keynote and workshop sessions on leadership, marriage, faith, and personal growth.</p>
+        <ul class="rate-list">
+          <li>Keynote addresses</li>
+          <li>Corporate workshops</li>
+          <li>School & youth sessions</li>
+          <li>Faith-based retreats</li>
+        </ul>
+      </div>
+      <div class="rate-card reveal">
+        <span class="rate-icon">📺</span>
+        <h3>Brand Partnership</h3>
+        <div class="rate-price">KES 200K<sub>+</sub></div>
+        <p class="rate-desc">Ambassador deals, social media campaigns, and spokesperson engagements.</p>
+        <ul class="rate-list">
+          <li>Social media campaigns</li>
+          <li>TVC appearances</li>
+          <li>Long-term retainer available</li>
+          <li>Full brief on request</li>
+        </ul>
+      </div>
+      <div class="rate-card reveal">
+        <span class="rate-icon">✈️</span>
+        <h3>International</h3>
+        <div class="rate-price">Custom</div>
+        <p class="rate-desc">Pan-African bookings and diaspora events — from Uganda to London and beyond.</p>
+        <ul class="rate-list">
+          <li>Pan-African events</li>
+          <li>Travel + accommodation extra</li>
+          <li>Flexible scheduling</li>
+          <li>Enquire for full quote</li>
+        </ul>
+      </div>
+      <div class="rate-card reveal">
+        <span class="rate-icon">💼</span>
+        <h3>Custom Package</h3>
+        <div class="rate-price">Bespoke</div>
+        <p class="rate-desc">Comedy + keynote? MC + coaching workshop? Let's build something that fits your vision.</p>
+        <ul class="rate-list">
+          <li>Mix of any services</li>
+          <li>Multi-day events</li>
+          <li>Charity & cultural events</li>
+          <li>Direct negotiation</li>
+        </ul>
+      </div>
+    </div>
+    <p class="rates-note reveal">All rates are starting points — final pricing depends on scope, location, and duration.<br>A 50% deposit secures your booking. International bookings exclude travel and accommodation.</p>
+  </div>
+</section>
+
+<!-- ██ CONTACT ██ -->
+<section id="contact">
+  <div class="contact-wrap">
+
+    <!-- LEFT PANEL -->
+    <div class="contact-panel reveal">
+      <div class="contact-panel-head">
+        <h2>Let's Make<br><em>It Happen</em></h2>
+        <p>Ready to bring Dr. Ofweneke's energy, wisdom, and humor to your event or campaign? Reach out below.</p>
+      </div>
+
+      <div class="contact-items">
+        <div class="contact-item">
+          <span class="c-num">01</span>
+          <div class="c-body">
+            <p class="c-label">YouTube</p>
+            <p class="c-value"><a href="https://youtube.com/@DrOfweneke" target="_blank">@DrOfweneke</a></p>
+          </div>
+          <span class="c-arrow">→</span>
+        </div>
+        <div class="contact-item">
+          <span class="c-num">02</span>
+          <div class="c-body">
+            <p class="c-label">On Air — TV47</p>
+            <p class="c-value">Dr. Ofweneke Tonight · Hello Mr. Right · Lessons at 30</p>
+          </div>
+          <span class="c-arrow">→</span>
+        </div>
+        <div class="contact-item">
+          <span class="c-num">03</span>
+          <div class="c-body">
+            <p class="c-label">On Air — Radio 47</p>
+            <p class="c-value">Mid-Morning Show · Mon – Fri</p>
+          </div>
+          <span class="c-arrow">→</span>
+        </div>
+        <div class="contact-item">
+          <span class="c-num">04</span>
+          <div class="c-body">
+            <p class="c-label">Based In</p>
+            <p class="c-value">Nairobi, Kenya · Available Internationally</p>
+          </div>
+          <span class="c-arrow">→</span>
+        </div>
+        <div class="contact-item">
+          <span class="c-num">05</span>
+          <div class="c-body">
+            <p class="c-label">92 Degrees Creative Hub</p>
+            <p class="c-value">CEO — Creatives, Brands &amp; Ministry</p>
+          </div>
+          <span class="c-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="contact-social">
+        <a href="https://youtube.com/@DrOfweneke" target="_blank" class="social-btn">▶ YouTube</a>
+        <a href="#" class="social-btn">📸 Instagram</a>
+        <a href="#" class="social-btn">𝕏 Twitter</a>
+      </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="contact-form-wrap reveal">
+      <p class="form-title">Send an Enquiry</p>
+      <p class="form-sub">Fill in the details and Dr. Ofweneke's team will get back to you within 24 hours.</p>
+
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Your Name</label>
+            <input type="text" placeholder="Full name" required>
+          </div>
+          <div class="form-field">
+            <label>Email Address</label>
+            <input type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-field">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+254 ...">
+          </div>
+          <div class="form-field">
+            <label>Service Needed</label>
+            <select required>
+              <option value="" disabled selected>Select a service</option>
+              <option>Comedy Performance</option>
+              <option>MC / Emcee</option>
+              <option>Motivational Speaking</option>
+              <option>Brand Partnership</option>
+              <option>International Booking</option>
+              <option>Custom Package</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Event Date</label>
+            <input type="date">
+          </div>
+          <div class="form-field">
+            <label>Event Location</label>
+            <input type="text" placeholder="City / Venue">
+          </div>
+          <div class="form-field full">
+            <label>Event Details &amp; Vision</label>
+            <textarea rows="5" placeholder="Tell us about your event — audience size, theme, goals, budget range..."></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="form-submit">Send Enquiry →</button>
+          <p class="form-note">50% deposit secures your date.<br>Response within 24 hours.</p>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Dr. Ofweneke<span>.</span></a>
+  <p class="footer-copy">© 2026 Dr. Ofweneke — Sande Bush Oyolo. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#rates">Rates</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast">✓ Enquiry sent! We'll be in touch within 24 hours.</div>
+
+<script>
+// ── TICKER ──
+const tickerWords=['The Duke of Kakamega','⬥','OGA OH!','⬥','Stand-Up Comedy','⬥','TV47','⬥','Radio 47','⬥','20+ Awards','⬥','Most Professional MC','⬥','500+ Events','⬥','Nairobi Kenya','⬥'];
+const ti=document.getElementById('tickerInner');
+const tHtml=tickerWords.map(t=>t==='⬥'?`<span class="ticker-item" style="opacity:.4">✦</span>`:`<span class="ticker-item">${t}</span>`).join('');
+ti.innerHTML=tHtml+tHtml;
+
+// ── AWARDS MARQUEE ──
+const awardsList=['Most Professional Male MC of the Year','Best Comedy Show — Kenya','Top Radio Personality','Best TV Host East Africa','Outstanding Entertainment Excellence','Digital Creator of the Year','Pan-African Media Award','Leadership Excellence Award'];
+const ai=document.getElementById('awardsInner');
+const aHtml=awardsList.map(a=>`<div class="award-chip"><span class="star">✦</span><span>${a}</span></div>`).join('');
+ai.innerHTML=aHtml+aHtml;
+
+// ── HERO CAROUSEL ──
+const slides=document.querySelectorAll('.carousel-slide');
+const dotsWrap=document.getElementById('carouselDots');
+const track=document.getElementById('carouselTrack');
+const progress=document.getElementById('carouselProgress');
+let current=0,timer,progTimer,progVal=0,autoDelay=6000;
+
+// build dots
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='carousel-dot'+(i===0?' active':'');
+  d.onclick=()=>goTo(i);
+  dotsWrap.appendChild(d);
+});
+
+function updateDots(){
+  document.querySelectorAll('.carousel-dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===current);
+  });
+}
+
+function goTo(n){
+  slides[current].classList.remove('active');
+  current=((n%slides.length)+slides.length)%slides.length;
+  slides[current].classList.add('active');
+  track.style.transform=`translateX(-${current*100}%)`;
+  updateDots();
+  resetProgress();
+}
+
+function next(){goTo(current+1);}
+function prev(){goTo(current-1);}
+
+document.getElementById('nextBtn').onclick=()=>{next();};
+document.getElementById('prevBtn').onclick=()=>{prev();};
+
+// progress bar
+function resetProgress(){
+  clearInterval(progTimer);
+  progVal=0;progress.style.width='0%';
+  const step=100/(autoDelay/100);
+  progTimer=setInterval(()=>{
+    progVal+=step;
+    progress.style.width=Math.min(progVal,100)+'%';
+    if(progVal>=100){clearInterval(progTimer);}
+  },100);
+}
+
+// autoplay
+function startAuto(){timer=setInterval(next,autoDelay);}
+function stopAuto(){clearInterval(timer);clearInterval(progTimer);}
+startAuto();resetProgress();
+
+document.getElementById('hero').addEventListener('mouseenter',stopAuto);
+document.getElementById('hero').addEventListener('mouseleave',()=>{startAuto();resetProgress();});
+
+// touch swipe
+let touchX=0;
+document.getElementById('hero').addEventListener('touchstart',e=>{touchX=e.touches[0].clientX;});
+document.getElementById('hero').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchX;
+  if(Math.abs(dx)>50){dx<0?next():prev();}
+});
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// ── MOBILE NAV ──
+function openMobileNav(){document.getElementById('mobileNav').classList.add('open');}
+function closeMobileNav(){document.getElementById('mobileNav').classList.remove('open');}
+
+// ── SCROLL REVEAL ──
+const revEls=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.1});
+revEls.forEach(el=>obs.observe(el));
+
+// ── FORM ──
+function handleSubmit(e){
+  e.preventDefault();
+  const toast=document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),4500);
+  e.target.reset();
+}
+</script>
+</body>
+</html>
