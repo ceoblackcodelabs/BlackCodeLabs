@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hon. Geoffrey Omatoke Mosiria | Official Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8A84B;
+    --gold-light: #E8C97A;
+    --gold-dim: rgba(200,168,75,0.15);
+    --dark: #080A0E;
+    --dark-2: #10131A;
+    --dark-3: #181C26;
+    --dark-4: #1E2330;
+    --white: #F5F0E8;
+    --grey: #7A8090;
+    --red: #B83025;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--dark); color:var(--white); overflow-x:hidden; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    height:72px; padding:0 6%;
+    display:flex; align-items:center; justify-content:space-between;
+    background:rgba(8,10,14,0.0); backdrop-filter:blur(0px);
+    border-bottom:1px solid transparent;
+    transition:all 0.4s ease;
+  }
+  nav.scrolled {
+    background:rgba(8,10,14,0.96); backdrop-filter:blur(20px);
+    border-bottom-color:var(--gold-dim); height:62px;
+  }
+  .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:700; color:var(--gold); text-decoration:none; }
+  .nav-logo span { color:var(--white); font-weight:400; }
+  .nav-links { display:flex; gap:34px; list-style:none; }
+  .nav-links a { color:rgba(245,240,232,0.6); text-decoration:none; font-size:0.76rem; font-weight:500; letter-spacing:2px; text-transform:uppercase; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-cta { background:var(--gold) !important; color:var(--dark) !important; padding:8px 20px; font-weight:600 !important; }
+  .nav-cta:hover { background:var(--gold-light) !important; }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+  .hamburger span { width:22px; height:1.5px; background:var(--white); border-radius:2px; transition:0.3s; }
+
+  /* HERO */
+  #hero { position:relative; width:100%; height:100vh; overflow:hidden; }
+  .carousel-track {
+    position:absolute; inset:0;
+    display:flex; width:300%; height:100%;
+    will-change:transform;
+    transition:transform 1s cubic-bezier(0.77,0,0.18,1);
+  }
+  .slide { position:relative; width:calc(100%/3); height:100%; flex-shrink:0; overflow:hidden; }
+  .slide-bg {
+    position:absolute; inset:0; width:100%; height:100%;
+    background-size:cover !important;
+    background-position:center top !important;
+    background-repeat:no-repeat !important;
+    transform:scale(1.07);
+    transition:transform 9s ease;
+  }
+  .slide.active .slide-bg { transform:scale(1); }
+  .slide-overlay {
+    position:absolute; inset:0; z-index:1;
+    background:linear-gradient(to bottom, rgba(8,10,14,0.05) 0%, rgba(8,10,14,0.18) 35%, rgba(8,10,14,0.72) 75%, rgba(8,10,14,0.92) 100%);
+  }
+  .slide-content {
+    position:absolute; bottom:11vh; left:8%; right:8%;
+    z-index:2; max-width:680px;
+    opacity:0; transform:translateY(48px);
+    transition:opacity 0.9s 0.25s ease, transform 0.9s 0.25s ease;
+  }
+  .slide.active .slide-content { opacity:1; transform:translateY(0); }
+  .slide-tag {
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:0.68rem; letter-spacing:3.5px; text-transform:uppercase;
+    color:var(--gold); font-weight:600; margin-bottom:16px;
+  }
+  .slide-tag::before { content:''; width:28px; height:1px; background:var(--gold); }
+  .slide-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(3rem,7.5vw,6.8rem);
+    font-weight:700; line-height:1.0;
+    color:var(--white); margin-bottom:18px;
+    text-shadow:0 4px 40px rgba(0,0,0,0.5);
+  }
+  .slide-title em { color:var(--gold); font-style:italic; }
+  .slide-sub { font-size:clamp(0.88rem,1.5vw,1.04rem); color:rgba(245,240,232,0.7); font-weight:300; line-height:1.7; max-width:500px; margin-bottom:30px; }
+  .hero-btn {
+    display:inline-flex; align-items:center; gap:10px;
+    border:1px solid var(--gold); color:var(--gold);
+    padding:13px 30px; font-size:0.76rem; font-weight:600;
+    letter-spacing:2px; text-transform:uppercase; text-decoration:none;
+    position:relative; overflow:hidden; transition:color 0.3s;
+  }
+  .hero-btn::before {
+    content:''; position:absolute; inset:0;
+    background:var(--gold); transform:translateX(-101%);
+    transition:transform 0.3s ease; z-index:-1;
+  }
+  .hero-btn:hover { color:var(--dark); }
+  .hero-btn:hover::before { transform:translateX(0); }
+  .hero-btn svg { width:14px; }
+  .carousel-dots {
+    position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
+    display:flex; gap:8px; z-index:10;
+  }
+  .dot { width:22px; height:2px; background:rgba(255,255,255,0.22); cursor:pointer; transition:all 0.35s; }
+  .dot.active { background:var(--gold); width:46px; }
+  .carousel-arrows {
+    position:absolute; bottom:26px; right:6%;
+    display:flex; gap:8px; z-index:10;
+  }
+  .arrow {
+    width:46px; height:46px; border:1px solid rgba(200,168,75,0.3);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all 0.25s; color:var(--gold);
+    background:rgba(8,10,14,0.4); backdrop-filter:blur(8px);
+  }
+  .arrow:hover { background:var(--gold); color:var(--dark); border-color:var(--gold); }
+  .arrow svg { width:16px; }
+  .slide-progress { position:absolute; bottom:0; left:0; height:2px; background:var(--gold); width:0%; z-index:10; }
+
+  /* STATS */
+  .stats-bar { background:var(--gold); display:grid; grid-template-columns:repeat(4,1fr); }
+  .stat-item { padding:30px 20px; text-align:center; border-right:1px solid rgba(8,10,14,0.12); transition:background 0.2s; }
+  .stat-item:last-child { border-right:none; }
+  .stat-item:hover { background:rgba(8,10,14,0.08); }
+  .stat-num { font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:700; color:var(--dark); line-height:1; }
+  .stat-label { font-size:0.66rem; letter-spacing:2px; text-transform:uppercase; color:rgba(8,10,14,0.6); font-weight:600; margin-top:5px; }
+
+  /* COMMON */
+  section { padding:110px 8%; }
+  .section-tag {
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:0.66rem; letter-spacing:3.5px; text-transform:uppercase;
+    color:var(--gold); font-weight:600; margin-bottom:14px;
+  }
+  .section-tag::before { content:''; width:22px; height:1px; background:var(--gold); }
+  .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.4rem,5vw,4rem); font-weight:700; line-height:1.05; margin-bottom:14px; }
+  .section-title em { color:var(--gold); font-style:italic; }
+  .divider { width:44px; height:2px; background:var(--gold); margin:18px 0 40px; }
+
+  /* ABOUT */
+  #about { background:var(--dark-2); display:grid; grid-template-columns:1fr 1.15fr; gap:90px; align-items:center; }
+  .about-img-wrap { position:relative; }
+  .about-main-img { width:100%; aspect-ratio:3/4; object-fit:cover; object-position:top center; display:block; filter:grayscale(8%) contrast(1.06); }
+  .about-accent { position:absolute; bottom:-16px; left:-16px; width:90px; height:90px; border:2px solid var(--gold); pointer-events:none; z-index:0; }
+  .about-accent2 { position:absolute; top:-14px; right:-14px; width:50px; height:50px; border:1px solid rgba(200,168,75,0.25); pointer-events:none; }
+  .about-badge { position:absolute; top:26px; right:-22px; background:var(--gold); padding:20px 16px; text-align:center; color:var(--dark); z-index:2; box-shadow:0 8px 30px rgba(0,0,0,0.4); }
+  .about-badge-num { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; line-height:1; }
+  .about-badge-text { font-size:0.58rem; letter-spacing:1.5px; text-transform:uppercase; font-weight:600; margin-top:2px; }
+  .about-text p { color:rgba(245,240,232,0.72); line-height:1.9; margin-bottom:18px; font-size:0.95rem; }
+  .about-facts { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:36px; }
+  .fact { padding:18px 20px; border-left:2px solid var(--gold); background:var(--dark-3); }
+  .fact-label { font-size:0.62rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+  .fact-value { font-size:0.9rem; font-weight:500; }
+
+  /* PILLARS */
+  #pillars { background:var(--dark); text-align:center; }
+  .pillars-intro { max-width:500px; margin:0 auto 60px; }
+  .pillars-intro p { color:var(--grey); font-size:0.94rem; line-height:1.8; }
+  .pillars-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; }
+  .pillar { background:var(--dark-3); padding:50px 36px; position:relative; overflow:hidden; transition:transform 0.35s ease, background 0.3s; text-align:left; }
+  .pillar::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform 0.4s ease; }
+  .pillar:hover { transform:translateY(-5px); background:var(--dark-4); }
+  .pillar:hover::after { transform:scaleX(1); }
+  .pillar-num { font-family:'Cormorant Garamond',serif; font-size:4rem; font-weight:700; color:rgba(200,168,75,0.07); position:absolute; top:14px; right:22px; line-height:1; user-select:none; }
+  .pillar-icon { width:50px; height:50px; border:1px solid rgba(200,168,75,0.2); display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+  .pillar-icon svg { width:21px; color:var(--gold); }
+  .pillar h3 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:600; margin-bottom:12px; }
+  .pillar p { color:var(--grey); font-size:0.87rem; line-height:1.75; }
+
+  /* TRANSFORMATION */
+  #transformation { background:var(--dark-2); padding:0; }
+  .trans-wrap { display:grid; grid-template-columns:1fr 1fr; min-height:720px; }
+  .trans-images { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:0; }
+  .trans-img-item { overflow:hidden; position:relative; }
+  .trans-img-item img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; transition:transform 0.6s ease; filter:grayscale(12%) contrast(1.06); }
+  .trans-img-item:hover img { transform:scale(1.06); }
+  .trans-img-item:first-child { grid-column:span 2; }
+  .img-caption { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(8,10,14,0.85), transparent); padding:20px 16px 12px; font-size:0.66rem; letter-spacing:2.5px; text-transform:uppercase; color:rgba(245,240,232,0.65); }
+  .trans-content { padding:80px 60px; display:flex; flex-direction:column; justify-content:center; }
+  .process-steps { margin-top:34px; }
+  .step { display:flex; gap:20px; padding:20px 0; border-bottom:1px solid rgba(200,168,75,0.07); align-items:flex-start; transition:padding-left 0.3s; }
+  .step:hover { padding-left:6px; }
+  .step-num { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:700; color:rgba(200,168,75,0.16); min-width:44px; line-height:1; padding-top:2px; }
+  .step-info h4 { font-size:0.93rem; font-weight:600; margin-bottom:5px; }
+  .step-info p { color:var(--grey); font-size:0.85rem; line-height:1.65; }
+
+  /* REPORT */
+  #report { background:var(--dark); padding:0; }
+  .report-container { display:grid; grid-template-columns:1fr 1fr; min-height:680px; }
+  .report-visual {
+    background:linear-gradient(145deg, #6B0B0B 0%, #A31515 45%, #C0392B 100%);
+    padding:80px 60px; display:flex; flex-direction:column; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .report-visual::before { content:''; position:absolute; top:-100px; right:-80px; width:300px; height:300px; border-radius:50%; border:60px solid rgba(255,255,255,0.04); }
+  .report-visual::after { content:''; position:absolute; bottom:-80px; left:-60px; width:260px; height:260px; border-radius:50%; border:40px solid rgba(0,0,0,0.08); }
+  .shield-icon { width:68px; height:68px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; margin-bottom:30px; }
+  .shield-icon svg { width:34px; color:white; }
+  .report-visual h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,3.5vw,3rem); font-weight:700; color:white; line-height:1.1; margin-bottom:18px; }
+  .report-visual > p { color:rgba(255,255,255,0.74); line-height:1.75; font-size:0.93rem; max-width:380px; }
+  .emergency-line { margin-top:28px; padding:18px 20px; background:rgba(0,0,0,0.2); border-left:3px solid rgba(255,255,255,0.35); }
+  .e-label { font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:3px; }
+  .e-number { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:700; color:white; line-height:1.1; }
+  .e-sub { color:rgba(255,255,255,0.5); font-size:0.75rem; margin-top:3px; }
+  .report-form-panel { background:var(--dark-2); padding:70px 55px; display:flex; flex-direction:column; justify-content:center; }
+  .report-form-panel h3 { font-family:'Cormorant Garamond',serif; font-size:1.85rem; font-weight:600; margin-bottom:6px; }
+  .report-form-panel > p { color:var(--grey); font-size:0.85rem; margin-bottom:26px; line-height:1.65; }
+  .form-group { margin-bottom:15px; }
+  .form-group label { display:block; font-size:0.63rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--grey); margin-bottom:7px; }
+  .form-group input, .form-group select, .form-group textarea { width:100%; background:var(--dark-3); border:1px solid rgba(200,168,75,0.12); color:var(--white); padding:12px 15px; font-family:'DM Sans',sans-serif; font-size:0.88rem; outline:none; transition:border-color 0.2s, background 0.2s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); background:var(--dark-4); }
+  .form-group select option { background:var(--dark-3); }
+  .form-group textarea { resize:vertical; min-height:90px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .submit-btn { width:100%; padding:14px; background:var(--red); color:white; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; transition:background 0.2s, transform 0.15s; margin-top:8px; }
+  .submit-btn:hover { background:#9B2719; transform:translateY(-1px); }
+  .anonymous-note { display:flex; align-items:center; gap:8px; margin-top:12px; font-size:0.75rem; color:var(--grey); }
+  .anonymous-note svg { width:13px; color:var(--gold); flex-shrink:0; }
+
+  /* CONTACT */
+  #contact { background:var(--dark-3); }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; }
+  .contact-info > p { color:var(--grey); line-height:1.85; margin-bottom:36px; font-size:0.94rem; }
+  .contact-cards { display:flex; flex-direction:column; gap:10px; }
+  .contact-card { display:flex; align-items:center; gap:18px; padding:20px 22px; background:var(--dark-4); border:1px solid rgba(200,168,75,0.08); transition:border-color 0.2s, background 0.2s; }
+  .contact-card:hover { border-color:rgba(200,168,75,0.25); background:var(--dark-2); }
+  .contact-card-icon { width:42px; height:42px; flex-shrink:0; background:var(--gold-dim); border:1px solid rgba(200,168,75,0.2); display:flex; align-items:center; justify-content:center; }
+  .contact-card-icon svg { width:18px; color:var(--gold); }
+  .contact-card-label { font-size:0.6rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--grey); margin-bottom:3px; }
+  .contact-card-value { font-size:0.9rem; font-weight:500; }
+  .social-row { display:flex; gap:10px; margin-top:26px; }
+  .social-btn { width:42px; height:42px; border:1px solid rgba(200,168,75,0.18); display:flex; align-items:center; justify-content:center; color:var(--grey); text-decoration:none; transition:all 0.25s; }
+  .social-btn svg { width:17px; }
+  .social-btn:hover { background:var(--gold); border-color:var(--gold); color:var(--dark); transform:translateY(-2px); }
+  .contact-form-wrap input, .contact-form-wrap textarea { width:100%; background:var(--dark-4); border:1px solid rgba(200,168,75,0.1); color:var(--white); padding:14px 18px; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s, background 0.2s; margin-bottom:12px; }
+  .contact-form-wrap input:focus, .contact-form-wrap textarea:focus { border-color:var(--gold); background:var(--dark-2); }
+  .contact-form-wrap textarea { min-height:130px; resize:vertical; }
+  .contact-send-btn { background:var(--gold); color:var(--dark); border:none; padding:14px 38px; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; cursor:pointer; transition:all 0.25s; }
+  .contact-send-btn:hover { background:var(--gold-light); transform:translateY(-1px); }
+
+  /* FOOTER */
+  footer { background:var(--dark); border-top:1px solid rgba(200,168,75,0.08); padding:50px 8%; display:grid; grid-template-columns:2fr 1fr 1fr; gap:20px; align-items:center; }
+  .footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700; }
+  .footer-logo span { color:var(--white); font-weight:400; }
+  .footer-tagline { font-size:0.66rem; color:var(--grey); letter-spacing:2px; text-transform:uppercase; margin-top:6px; }
+  footer p { color:var(--grey); font-size:0.76rem; text-align:right; }
+
+  /* MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:2000; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+  .modal-overlay.show { opacity:1; pointer-events:all; }
+  .modal { background:var(--dark-2); border:1px solid rgba(200,168,75,0.2); padding:52px 44px; text-align:center; max-width:440px; width:90%; transform:translateY(20px) scale(0.97); transition:transform 0.35s ease; }
+  .modal-overlay.show .modal { transform:translateY(0) scale(1); }
+  .modal-icon { width:66px; height:66px; border:1px solid rgba(200,168,75,0.2); margin:0 auto 20px; display:flex; align-items:center; justify-content:center; background:rgba(200,168,75,0.05); }
+  .modal-icon svg { width:30px; color:var(--gold); }
+  .modal h3 { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:700; margin-bottom:12px; }
+  .modal p { color:var(--grey); line-height:1.75; font-size:0.9rem; margin-bottom:26px; }
+  .modal-close { background:var(--gold); color:var(--dark); border:none; padding:11px 30px; cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:700; font-size:0.78rem; letter-spacing:2px; text-transform:uppercase; }
+
+  /* ANIMATIONS */
+  .fade-up { opacity:0; transform:translateY(32px); transition:opacity 0.8s ease, transform 0.8s ease; }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width:1024px) {
+    #about { grid-template-columns:1fr; gap:50px; }
+    .about-badge { display:none; }
+    .trans-wrap { grid-template-columns:1fr; }
+    .trans-images { grid-template-rows:280px 200px; min-height:480px; }
+    .trans-content { padding:60px 8%; }
+    .contact-grid { grid-template-columns:1fr; gap:50px; }
+    .pillars-grid { grid-template-columns:repeat(2,1fr); }
+    footer { grid-template-columns:1fr 1fr; }
+    footer p:last-child { display:none; }
+  }
+  @media (max-width:768px) {
+    nav { padding:0 5%; }
+    .nav-links { display:none; flex-direction:column; position:absolute; top:62px; left:0; right:0; background:rgba(8,10,14,0.98); padding:24px 6%; gap:20px; border-bottom:1px solid var(--gold-dim); z-index:999; }
+    .nav-links.open { display:flex; }
+    .hamburger { display:flex; }
+    section { padding:70px 6%; }
+    .stats-bar { grid-template-columns:repeat(2,1fr); }
+    .pillars-grid { grid-template-columns:1fr; }
+    .report-container { grid-template-columns:1fr; }
+    .report-form-panel { padding:50px 6%; }
+    .report-visual { padding:60px 6%; }
+    .form-row { grid-template-columns:1fr; }
+    .carousel-arrows { display:none; }
+    .trans-images { grid-template-columns:1fr 1fr; grid-template-rows:220px 180px; }
+    .trans-img-item:first-child { grid-column:span 2; }
+    footer { grid-template-columns:1fr; text-align:center; }
+    footer p { text-align:center; }
+    .about-img-wrap { max-width:360px; margin:0 auto; }
+  }
+  @media (max-width:480px) {
+    .slide-title { font-size:2.8rem; }
+    .stat-num { font-size:2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">Hon. Geoffrey <span>Mosiria</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#pillars">Initiatives</a></li>
+    <li><a href="#transformation">Street to Success</a></li>
+    <li><a href="#report">Report Abuse</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="carousel-track" id="carouselTrack">
+    <div class="slide active">
+      <div class="slide-bg" style="background-image:linear-gradient(to bottom,rgba(8,10,14,0.08) 0%,rgba(8,10,14,0.18) 35%,rgba(8,10,14,0.75) 75%,rgba(8,10,14,0.94) 100%),url('car1.jpeg');"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <span class="slide-tag">Chief Officer · Citizen Engagement</span>
+        <h1 class="slide-title">Serving <em>Nairobi</em><br>With Purpose</h1>
+        <p class="slide-sub">A dedicated public servant transforming lives and spaces in Nairobi City County — one community, one initiative at a time.</p>
+        <a href="#about" class="hero-btn">Learn More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg" style="background-image:linear-gradient(to bottom,rgba(8,10,14,0.08) 0%,rgba(8,10,14,0.18) 35%,rgba(8,10,14,0.75) 75%,rgba(8,10,14,0.94) 100%),url('car2.jpg');"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <span class="slide-tag">Community Champion</span>
+        <h1 class="slide-title">Beyond the<br><em>Office Walls</em></h1>
+        <p class="slide-sub">Hands-on grassroots leadership — rescuing street families, reuniting lost individuals, and amplifying the voices of vulnerable Nairobians.</p>
+        <a href="#transformation" class="hero-btn">See the Work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg" style="background-image:linear-gradient(to bottom,rgba(8,10,14,0.08) 0%,rgba(8,10,14,0.18) 35%,rgba(8,10,14,0.75) 75%,rgba(8,10,14,0.94) 100%),url('car3.jpeg');"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <span class="slide-tag">Honoured · Award-Winning Leader</span>
+        <h1 class="slide-title">One of Kenya's<br><em>Best Chief Officers</em></h1>
+        <p class="slide-sub">Recognised nationally for excellence in governance, environmental management, and citizen-first public service delivery.</p>
+        <a href="#report" class="hero-btn">Report Child Abuse <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-arrows">
+    <div class="arrow" onclick="changeSlide(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <div class="arrow" onclick="changeSlide(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+  </div>
+  <div class="carousel-dots">
+    <div class="dot active" onclick="goToSlide(0)"></div>
+    <div class="dot" onclick="goToSlide(1)"></div>
+    <div class="dot" onclick="goToSlide(2)"></div>
+  </div>
+  <div class="slide-progress" id="slideProgress"></div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Years in Public Service</div></div>
+  <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Street Families Assisted</div></div>
+  <div class="stat-item"><div class="stat-num">22</div><div class="stat-label">Siblings &amp; Family Values</div></div>
+  <div class="stat-item"><div class="stat-num">1M+</div><div class="stat-label">Nairobians Served</div></div>
+</div>
+
+<section id="about">
+  <div class="about-img-wrap fade-up">
+    <img class="about-main-img"
+      src="https://scontent-mba2-1.cdninstagram.com/v/t51.82787-15/670863719_18575901493010704_878070436689802294_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=Mzg3NTkxNTM5MTAzMzk4MzY0NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=6ixddP-NgnUQ7kNvwF4InGy&_nc_oc=AdqjjZKCvrX7M8ixgFrPcxZjKxcMHC1Kg5k97BM7x_TWUWUhcP4fTk7xARJkZM3d__A&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-mba2-1.cdninstagram.com&_nc_gid=3YQYSz7tfnw5y6MUZgfv_w&_nc_ss=7a22e&oh=00_Af9LdWcK1g8erq67G5Rt11FXliksvdgKxKRIwH0-ZytqTw&oe=6A2C9C49"
+      alt="Hon. Geoffrey Omatoke Mosiria — Chief Officer, Citizen Engagement, Nairobi City County"
+      loading="lazy"
+      onerror="this.src='https://kenyanews.go.ke/wp-content/uploads/2023/12/Geoffrey-Mosiria.jpg';">
+    <div class="about-accent"></div>
+    <div class="about-accent2"></div>
+    <div class="about-badge"><div class="about-badge-num">MBA</div><div class="about-badge-text">Qualified</div></div>
+  </div>
+  <div class="about-text fade-up">
+    <p class="section-tag">About the Officer</p>
+    <h2 class="section-title">Geoffrey Omatoke<br><em>Mosiria</em></h2>
+    <div class="divider"></div>
+    <p>Hon. Geoffrey Omatoke Mosiria — popularly known as <strong>Hon. Geoffrey Mosiria</strong> — is one of Nairobi County's most visible, energetic, and results-driven public servants. Currently serving as the <strong>Chief Officer for Citizen Engagement &amp; Customer Service</strong> at the Nairobi City County Government, he has built a reputation for going far beyond his official mandate.</p>
+    <p>Holding a Bachelor of Commerce from the University of Nairobi and an MBA, Geoffrey brings both academic rigor and fierce street-level pragmatism to public service. He previously served as Chief Officer for Environment, where he spearheaded Nairobi's CBD cleanup — clearing hawker hotspots, tackling noise pollution, and enforcing environmental bylaws.</p>
+    <p>What sets Geoffrey apart is his humanity. From dedicating a portion of his personal salary to charity, to personally rescuing and rehabilitating street families, he embodies servant leadership in its truest form.</p>
+    <div class="about-facts">
+      <div class="fact"><div class="fact-label">Education</div><div class="fact-value">B.Com, UoN · MBA</div></div>
+      <div class="fact"><div class="fact-label">Current Role</div><div class="fact-value">Chief Officer, Citizen Engagement</div></div>
+      <div class="fact"><div class="fact-label">County</div><div class="fact-value">Nairobi City County</div></div>
+      <div class="fact"><div class="fact-label">Recognition</div><div class="fact-value">Best Chief Officer in Kenya</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="pillars">
+  <div class="pillars-intro fade-up">
+    <p class="section-tag">Core Initiatives</p>
+    <h2 class="section-title">Leading with <em>Action</em></h2>
+    <div class="divider" style="margin:18px auto 24px;"></div>
+    <p>From street-level rescue operations to county-wide environmental reform, Geoffrey's work spans six pillars that collectively serve every Nairobian.</p>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar fade-up"><div class="pillar-num">01</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Citizen Engagement</h3><p>Bridging the gap between county government and residents through direct outreach, community forums, and rapid complaint resolution for Nairobians.</p></div>
+    <div class="pillar fade-up"><div class="pillar-num">02</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Street Family Rehabilitation</h3><p>Personally rescuing, rehabilitating, and reintegrating street families — giving Nairobi's most vulnerable residents a new beginning and restored dignity.</p></div>
+    <div class="pillar fade-up"><div class="pillar-num">03</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h3>Environmental Leadership</h3><p>Hands-on clean-up of Nairobi's CBD — clearing hawkers from main streets, improving waste management, and enforcing environmental health standards.</p></div>
+    <div class="pillar fade-up"><div class="pillar-num">04</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Child Protection</h3><p>A fierce advocate against child abuse and domestic violence — working to ensure every child in Nairobi is safe, protected, and able to reach their potential.</p></div>
+    <div class="pillar fade-up"><div class="pillar-num">05</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><h3>Family Reunification</h3><p>Actively working to reunite lost or separated individuals with their families — a deeply personal mission reflecting his commitment to community wellbeing.</p></div>
+    <div class="pillar fade-up"><div class="pillar-num">06</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Charitable Giving</h3><p>Dedicating a personal portion of his salary every month to fund community service, social interventions, and support for vulnerable Nairobians.</p></div>
+  </div>
+</section>
+
+<section id="transformation" style="padding:0;">
+  <div class="trans-wrap">
+    <div class="trans-images fade-up">
+      <div class="trans-img-item">
+        <img src="https://nairobileo.co.ke/wp-content/uploads/2023/05/WhatsApp-Image-2023-05-10-at-13.38.14.jpg" alt="Geoffrey Mosiria leading Nairobi CBD cleanup" loading="lazy">
+        <div class="img-caption">CBD Cleanup Operations</div>
+      </div>
+      <div class="trans-img-item">
+        <img src="https://cdn.standardmedia.co.ke/images/wysiwyg/images/m9jLMVKqQNbmHbqxB1q4Bqjl9wkXFyCYdFQZJ9bQ.jpg" alt="Geoffrey Mosiria community engagement" loading="lazy">
+        <div class="img-caption">Community Engagement</div>
+      </div>
+      <div class="trans-img-item">
+        <img src="https://kenyanews.go.ke/wp-content/uploads/2023/12/Geoffrey-Mosiria.jpg" alt="Hon. Geoffrey Mosiria official recognition" loading="lazy">
+        <div class="img-caption">Award Recognition</div>
+      </div>
+    </div>
+    <div class="trans-content fade-up">
+      <p class="section-tag">Transforming Lives</p>
+      <h2 class="section-title">From the <em>Streets</em><br>to a New Life</h2>
+      <div class="divider"></div>
+      <p style="color:var(--grey);line-height:1.85;font-size:0.94rem;">Hon. Geoffrey Mosiria personally leads rescue operations for individuals living on Nairobi's streets. He doesn't just clear the streets — he invests in the people who once called them home.</p>
+      <div class="process-steps">
+        <div class="step"><div class="step-num">01</div><div class="step-info"><h4>Outreach &amp; Rescue</h4><p>Direct field visits to identify vulnerable individuals and street families, establishing trust and assessing immediate needs.</p></div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-info"><h4>Rehabilitation &amp; Care</h4><p>Access to shelter, medical attention, counseling, and basic needs as the first step to rebuilding a stable life.</p></div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-info"><h4>Skills &amp; Reintegration</h4><p>Connecting individuals with skills training, employment opportunities, and community support systems for long-term change.</p></div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-info"><h4>Family Reunification</h4><p>Tracing and reconnecting individuals with their families — restoring relationships and providing a foundation for renewed purpose.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="report" style="padding:0;">
+  <div class="report-container">
+    <div class="report-visual">
+      <div class="shield-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke="white"/></svg></div>
+      <h2>Report Child Abuse</h2>
+      <p>Every child deserves to be safe. If you witness or suspect child abuse, neglect, or exploitation — don't stay silent. Your report could save a life. All reports are handled with strict confidentiality.</p>
+      <div class="emergency-line"><div class="e-label">Emergency Hotline</div><div class="e-number">116</div><div class="e-sub">Childline Kenya — Free &amp; 24/7</div></div>
+      <div class="emergency-line" style="margin-top:12px;"><div class="e-label">Nairobi County Office</div><div class="e-number" style="font-size:1.5rem;">+254 020 222 2222</div></div>
+    </div>
+    <div class="report-form-panel">
+      <p class="section-tag">Confidential Report</p>
+      <h3>Submit a Report</h3>
+      <p>Your identity is protected. You may submit anonymously. All information shared is treated with the highest level of confidentiality.</p>
+      <form id="reportForm" onsubmit="submitReport(event)">
+        <div class="form-row">
+          <div class="form-group"><label>Your Name (Optional)</label><input type="text" placeholder="Anonymous"></div>
+          <div class="form-group"><label>Your Phone (Optional)</label><input type="tel" placeholder="+254 ..."></div>
+        </div>
+        <div class="form-group"><label>Type of Abuse *</label><select required><option value="">Select type...</option><option>Physical Abuse</option><option>Sexual Abuse</option><option>Emotional / Psychological Abuse</option><option>Neglect</option><option>Child Labour / Exploitation</option><option>Domestic Violence (child present)</option><option>Other</option></select></div>
+        <div class="form-group"><label>Location of Incident *</label><input type="text" placeholder="Estate, street, or nearest landmark" required></div>
+        <div class="form-group"><label>Describe What You Witnessed *</label><textarea placeholder="Provide as much detail as possible — time, people involved, what happened..." required></textarea></div>
+        <button type="submit" class="submit-btn">Submit Report Securely</button>
+        <div class="anonymous-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Your report is confidential. You may remain anonymous.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info fade-up">
+      <p class="section-tag">Get in Touch</p>
+      <h2 class="section-title">Reach <em>Geoffrey</em></h2>
+      <div class="divider"></div>
+      <p>Hon. Geoffrey Mosiria is committed to accessibility. Whether you have a county complaint, need assistance, or want to collaborate on community initiatives — reach out.</p>
+      <div class="contact-cards">
+        <div class="contact-card"><div class="contact-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="contact-card-label">Office</div><div class="contact-card-value">City Hall, Nairobi City County</div></div></div>
+        <div class="contact-card"><div class="contact-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="contact-card-label">Official Email</div><div class="contact-card-value">g.mosiria@nairobi.go.ke</div></div></div>
+        <div class="contact-card"><div class="contact-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><div class="contact-card-label">County Hotline</div><div class="contact-card-value">+254 020 222 2222</div></div></div>
+      </div>
+      <div class="social-row">
+        <a href="#" class="social-btn" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.37 6.37 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg></a>
+        <a href="#" class="social-btn" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" class="social-btn" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="social-btn" title="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      </div>
+    </div>
+    <div class="contact-form-wrap fade-up">
+      <p class="section-tag">Send a Message</p>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;margin-bottom:24px;">Write to <em style="color:var(--gold);font-style:italic;">Geoffrey</em></h3>
+      <form id="contactForm" onsubmit="submitContact(event)">
+        <input type="text" placeholder="Your Full Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <input type="text" placeholder="Subject">
+        <textarea placeholder="Your message..." required></textarea>
+        <button type="submit" class="contact-send-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><div class="footer-logo">Hon. Geoffrey <span>Omatoke Mosiria</span></div><div class="footer-tagline" style="margin-top:6px;">Chief Officer · Citizen Engagement · Nairobi City County</div></div>
+  <p>© 2025 Geoffrey Mosiria.<br>Official Website. All rights reserved.</p>
+  <p>Nairobi City County<br>Government, Kenya</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h3 id="modalTitle">Report Submitted</h3>
+    <p id="modalMsg">Thank you for speaking up. Your report has been received and will be handled confidentially by the appropriate authorities.</p>
+    <button class="modal-close" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  const total = 3;
+  const track = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const progressBar = document.getElementById('slideProgress');
+  let autoTimer;
+  const INTERVAL = 5800;
+
+  function goToSlide(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    track.style.transform = 'translateX(-' + (current * 100/3) + '%)';
+    startProgress();
+  }
+  function changeSlide(dir) { goToSlide(current + dir); }
+  function startProgress() {
+    clearTimeout(autoTimer);
+    progressBar.style.transition = 'none';
+    progressBar.style.width = '0%';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      progressBar.style.transition = 'width ' + INTERVAL + 'ms linear';
+      progressBar.style.width = '100%';
+    }));
+    autoTimer = setTimeout(() => goToSlide(current + 1), INTERVAL);
+  }
+  startProgress();
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  }));
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  function submitReport(e) {
+    e.preventDefault();
+    document.getElementById('modalTitle').textContent = 'Report Received \u2713';
+    document.getElementById('modalMsg').textContent = 'Your confidential report has been submitted. The relevant child protection authorities will review it promptly. If the child is in immediate danger, please call 116 (Childline Kenya) or 999 now.';
+    document.getElementById('modalOverlay').classList.add('show');
+    e.target.reset();
+  }
+  function submitContact(e) {
+    e.preventDefault();
+    document.getElementById('modalTitle').textContent = 'Message Sent \u2713';
+    document.getElementById('modalMsg').textContent = "Thank you for reaching out to Hon. Geoffrey Mosiria's office. Your message has been received and our team will respond as soon as possible.";
+    document.getElementById('modalOverlay').classList.add('show');
+    e.target.reset();
+  }
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+    if (e.key === 'ArrowRight') changeSlide(1);
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+</body>
+</html>
