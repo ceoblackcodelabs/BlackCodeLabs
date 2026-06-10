@@ -76,7 +76,7 @@
             <div class="auth-forms">
                 <!-- Login Form -->
                 <div class="auth-form-panel active" id="login-form">
-                    <form class="auth-form" id="loginForm" method="POST" action="{% url 'authenticate' %}">
+                    <form class="auth-form" id="loginForm" method="POST" action="">
                         {% csrf_token %}
                         <input type="hidden" name="form_type" value="login">
 
@@ -141,7 +141,7 @@
 
                 <!-- Registration Form -->
                 <div class="auth-form-panel" id="register-form">
-                    <form class="auth-form" id="registerForm" method="POST" action="{% url 'authenticate' %}">
+                    <form class="auth-form" id="registerForm" method="POST" action="">
                         {% csrf_token %}
                         <input type="hidden" name="form_type" value="register">
 

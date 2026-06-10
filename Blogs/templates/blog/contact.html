@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Contact — Scholar Voice{% endblock %}
+{% block content %}
+<section class="container narrow">
+  <div class="page-head">
+    <h1>Get in touch</h1>
+    <p class="muted">Questions, story ideas, or feedback? Send us a message.</p>
+  </div>
+  <form method="post" class="card-form rise">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-row">
+        <label class="label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div class="field-error">{{ field.errors|join:" " }}</div>{% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Send message</button>
+  </form>
+</section>
+{% endblock %}

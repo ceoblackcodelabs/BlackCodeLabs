@@ -24,8 +24,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('projects/', include('Pitchs.urls')),
     path("BCL/", include("BCL.urls")),
+    path("Blogs", include("Blogs.urls")),
     # path("salespro/", include("SalesPro.urls")),
-    path('QRIdentifier/', include('QRIdentifier.urls')),
     path('', include('Home.urls')),
     path('auth/', include('Users.urls')),
 ]

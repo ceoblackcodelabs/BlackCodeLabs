@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}About — Scholar Voice{% endblock %}
+{% block content %}
+
+<!-- Page Header -->
+<section class="page-hero">
+  <div class="container page-hero-inner">
+    <span class="eyebrow">About Us</span>
+    <h1>About Scholar Voice</h1>
+    <p class="page-hero-lead">The official voice of your institution — connecting administration, students, and community.</p>
+  </div>
+</section>
+
+<section class="container narrow">
+  <div class="about-content">
+
+    <!-- Mission Card -->
+    <div class="about-card rise">
+      <div class="about-card-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h2>Our Mission</h2>
+      <p>Scholar Voice is the institutional blog where the administration shares official updates, announcements and stories with the entire student body and wider community. We believe in transparency, timely communication, and celebrating the achievements of our campus.</p>
+    </div>
+
+    <!-- What You'll Find -->
+    <div class="about-card rise" style="animation-delay:.1s">
+      <div class="about-card-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <h2>What you'll find here</h2>
+      <ul class="feature-list">
+        <li>
+          <span class="feature-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <span>Graduation and academic calendar updates</span>
+        </li>
+        <li>
+          <span class="feature-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <span>Scholarships and financial aid announcements</span>
+        </li>
+        <li>
+          <span class="feature-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <span>Campus life, events and sports coverage</span>
+        </li>
+        <li>
+          <span class="feature-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <span>Important notices from the administration</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Engagement Card -->
+    <div class="about-card rise" style="animation-delay:.2s">
+      <div class="about-card-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h2>Engage with us</h2>
+      <p>Reading is free and open to everyone. To comment, like, or send us a message, simply <a href="{% url 'accounts:register' %}">register</a> a free student account and join the conversation.</p>
+      <div class="about-cta">
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary">
+          <span>Create free account</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="{% url 'blog:list' %}" class="btn btn-ghost">Browse all posts</a>
+      </div>
+    </div>
+
+    <!-- Contact Teaser -->
+    <div class="about-card about-card-contact rise" style="animation-delay:.3s">
+      <div class="about-card-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <h2>Get in touch</h2>
+      <p>Have a story tip, question, or feedback? We'd love to hear from you.</p>
+      <a href="{% url 'blog:contact' %}" class="btn btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>Contact us</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in or join — Scholar Voice</title>
+<meta name="description" content="Sign in or create your member account to receive personalized updates from your institution.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>📍 Main Campus · Office of Communications</span>
+    <span><a href="index.html">← Back to news</a></span>
+  </div>
+</div>
+
+<div class="auth-wrap">
+  <aside class="auth-side">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">SV</div>
+      <div class="brand-text">
+        <span class="brand-name" style="color:#fff">Scholar Voice</span>
+        <span class="brand-sub" style="color:#cbd5e1">Official Institutional News</span>
+      </div>
+    </a>
+
+    <div style="position:relative;z-index:1">
+      <h2>Your campus, in your pocket.</h2>
+      <p>Join thousands of students, parents and alumni receiving real-time updates from the administration.</p>
+
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="check">✓</div>
+          <div><strong>Personalized updates</strong><br><span>Choose the topics, faculties and events you care about.</span></div>
+        </div>
+        <div class="auth-feature">
+          <div class="check">✓</div>
+          <div><strong>Mobile push notifications</strong><br><span>Never miss a graduation update or scholarship deadline.</span></div>
+        </div>
+        <div class="auth-feature">
+          <div class="check">✓</div>
+          <div><strong>Join the conversation</strong><br><span>Comment, reply and engage with the campus community.</span></div>
+        </div>
+        <div class="auth-feature">
+          <div class="check">✓</div>
+          <div><strong>100% official</strong><br><span>Direct from the institution. No rumors, no noise.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:1;color:#94a3b8;font-size:13px">
+      © 2026 Scholar Voice · The official news platform.
+    </div>
+  </aside>
+
+  <section class="auth-form-side">
+    <div class="auth-form">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign in</button>
+        <button class="auth-tab" data-tab="register">Create account</button>
+      </div>
+
+      <div class="tab-panel active" data-panel="login">
+        <h1>Welcome back</h1>
+        <p class="lead">Sign in to your member account to continue.</p>
+
+        <form id="loginForm">
+          <div class="form-row">
+            <div><label class="label">Email address</label><input class="input" type="email" id="loginEmail" required placeholder="you@school.edu"></div>
+          </div>
+          <div class="form-row">
+            <div><label class="label">Password</label><input class="input" type="password" required placeholder="••••••••" minlength="6"></div>
+          </div>
+          <div class="checkbox-row">
+            <label><input type="checkbox" checked> Remember me</label>
+            <a href="#">Forgot password?</a>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+
+        <div class="divider">or continue with</div>
+        <div class="social-row">
+          <button class="btn btn-social" type="button">Google</button>
+          <button class="btn btn-social" type="button">Microsoft</button>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="register">
+        <h1>Become a member</h1>
+        <p class="lead">Create your free account to receive personalized institutional updates.</p>
+
+        <form id="registerForm">
+          <div class="form-row">
+            <div><label class="label">Full name</label><input class="input" type="text" id="regName" required placeholder="Jane Doe"></div>
+          </div>
+          <div class="form-row">
+            <div><label class="label">School email</label><input class="input" type="email" id="regEmail" required placeholder="you@school.edu"></div>
+          </div>
+          <div class="form-row two">
+            <div><label class="label">Password</label><input class="input" type="password" id="regPassword" required minlength="6" placeholder="At least 6 characters"></div>
+            <div><label class="label">Confirm password</label><input class="input" type="password" id="regPassword2" required minlength="6" placeholder="Repeat password"></div>
+          </div>
+          <div class="checkbox-row">
+            <label><input type="checkbox" required> I agree to the <a href="#">terms</a> &amp; <a href="#">privacy policy</a></label>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Create my account</button>
+        </form>
+
+        <div class="divider">or sign up with</div>
+        <div class="social-row">
+          <button class="btn btn-social" type="button">Google</button>
+          <button class="btn btn-social" type="button">Microsoft</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
