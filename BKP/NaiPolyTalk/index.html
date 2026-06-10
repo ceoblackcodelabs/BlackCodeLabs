@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scholar Voice — Official Institutional News & Updates</title>
+<meta name="description" content="The official news and announcements platform for our institution. Graduation, scholarships, campus life, events and more — direct from administration to every student.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>📍 Main Campus · Office of Communications</span>
+    <span>🕘 Mon–Fri 8AM–5PM · <a href="mailto:news@school.edu">news@school.edu</a></span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">SV</div>
+      <div class="brand-text">
+        <span class="brand-name">Scholar Voice</span>
+        <span class="brand-sub">Official Institutional News</span>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="index.html#latest">Latest</a>
+      <a href="index.html#categories">Categories</a>
+      <a href="auth.html">Membership</a>
+    </nav>
+    <div class="brand" style="gap:10px" data-auth-slot></div>
+    <button class="menu-toggle" aria-label="Menu"><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="eyebrow"><span class="dot"></span> Live · Updated daily by administration</div>
+    <h1>The official voice of your <span class="accent">institution.</span></h1>
+    <p>Stay informed on graduation, scholarships, campus events and every important announcement — delivered straight from the administration to your screen.</p>
+    <div class="hero-actions">
+      <a href="#latest" class="btn btn-gold">Read latest updates</a>
+      <a href="auth.html" class="btn btn-ghost" style="background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)">Join as student member</a>
+    </div>
+  </div>
+</section>
+
+<main class="section">
+  <div class="wrap">
+    <div id="featuredWrap"></div>
+
+    <div id="latest"></div>
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Latest from administration</h2>
+        <p class="section-sub">Filter by category or search for what matters to you.</p>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="searchInput" type="search" placeholder="Search announcements, events, scholarships...">
+    </div>
+
+    <div id="categories"></div>
+    <div class="filters" id="filters" style="margin-bottom:30px"></div>
+
+    <div class="grid" id="postsGrid"></div>
+
+    <div style="margin-top:80px">
+      <div class="newsletter">
+        <div class="newsletter-content">
+          <h3>Never miss an update.</h3>
+          <p>Get official announcements straight to your phone and inbox. Free for all students, parents and staff.</p>
+        </div>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="your@email.edu" required>
+          <button class="btn btn-gold" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand">
+          <div class="brand-mark">SV</div>
+          <div class="brand-text">
+            <span class="brand-name" style="color:#fff">Scholar Voice</span>
+            <span class="brand-sub">Official Institutional News</span>
+          </div>
+        </div>
+        <p class="foot-about">The official news and announcements platform serving over 25,000 students, parents, alumni and staff across all faculties.</p>
+      </div>
+      <div>
+        <h4>Sections</h4>
+        <a href="index.html">Latest News</a>
+        <a href="index.html">Graduation</a>
+        <a href="index.html">Scholarships</a>
+        <a href="index.html">Events</a>
+      </div>
+      <div>
+        <h4>Institution</h4>
+        <a href="#">About Us</a>
+        <a href="#">Leadership</a>
+        <a href="#">Press Room</a>
+        <a href="#">Careers</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:news@school.edu">news@school.edu</a>
+        <a href="tel:+1234567890">+1 (234) 567-890</a>
+        <a href="#">Visit campus</a>
+        <a href="auth.html">Student portal</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Scholar Voice · All rights reserved.</span>
+      <span>Privacy · Terms · Accessibility</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

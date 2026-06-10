@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'Home',
     'Users',
     # 'SalesPro.apps.SalesproConfig',
-    'QRIdentifier',
     'Pitchs.apps.PitchsConfig',
 
     # Allauth apps
@@ -49,7 +48,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-
+    'Blogs',
     'BCL',
 ]
 
@@ -131,8 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'Users.User'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -202,10 +199,6 @@ from decouple import config
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - emails print to console
 DEFAULT_FROM_EMAIL = 'noreply@blackcodelabs.com'
 CONTACT_NOTIFICATION_EMAIL = 'sales@blackcodelabs.com'
-
-LOGIN_REDIRECT_URL = 'build_profile'
-LOGOUT_REDIRECT_URL = 'authenticate'
-LOGIN_URL = 'authenticate'
 
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://blackcodelabs.com']

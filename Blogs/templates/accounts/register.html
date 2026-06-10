@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Create account — Scholar Voice{% endblock %}
+{% block content %}
+<section class="container narrow">
+  <div class="auth-card rise">
+    <h1>Join Scholar Voice</h1>
+    <p class="muted">Create a free account to comment, like and stay updated.</p>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-row">
+          <label class="label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<div class="muted small">{{ field.help_text|safe }}</div>{% endif %}
+          {% if field.errors %}<div class="field-error">{{ field.errors|join:" " }}</div>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary block" type="submit">Create account</button>
+    </form>
+    <p class="muted center" style="margin-top:16px">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+  </div>
+</section>
+{% endblock %}
