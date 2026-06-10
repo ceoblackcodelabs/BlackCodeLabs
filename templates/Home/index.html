@@ -217,8 +217,8 @@
     <h1 class="hero-h1">We build<br><em>digital</em><br>empires.</h1>
     <p class="hero-sub">BlackCodeLabs crafts world-class software, APIs, mobile apps, and web experiences that scale with your ambitions.</p>
     <div class="hero-btns">
-      <a href="solutions.html" class="btn btn-red btn-lg">Explore Solutions</a>
-      <a href="contact.html" class="btn btn-outline btn-lg">Let's Talk →</a>
+      <a href="{% url 'solutions' %}" class="btn btn-red btn-lg">Explore Solutions</a>
+      <a href="{% url 'contact' %}" class="btn btn-outline btn-lg">Let's Talk →</a>
     </div>
   </div>
   <div class="hero-scroll"><div class="scroll-bar"></div><span>Scroll</span></div>
@@ -265,7 +265,7 @@
         <span class="s-label">What We Do</span>
         <h2 class="s-title">Services built for <em>real results.</em></h2>
       </div>
-      <a href="solutions.html" class="btn btn-outline btn-sm" style="flex-shrink:0">All Solutions →</a>
+      <a href="{% url 'solutions' %}" class="btn btn-outline btn-sm" style="flex-shrink:0">All Solutions →</a>
     </div>
     <div class="services-grid" data-stagger>
         {% for services in tech_services %}

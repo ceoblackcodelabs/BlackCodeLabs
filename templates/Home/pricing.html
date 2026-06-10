@@ -1,8 +1,8 @@
-<!-- Home/templates/Home/contact.html -->
+<!-- Home/templates/Home/pricing.html -->
 {% extends 'Home/base.html' %}
 {% load static %}
 
-{% block title %}Contact | BlackCodeLabs{% endblock %}
+{% block title %}Pricing | BlackCodeLabs{% endblock %}
 
 {% block injectcss %}
 <style>
@@ -111,7 +111,7 @@
         <li class="dim"><span class="n">✗</span>Bug bounty program</li>
         <li class="dim"><span class="n">✗</span>Dedicated account manager</li>
       </ul>
-      <a href="register.html" class="plan-btn pb-border">Get Started →</a>
+      <a href="{% url "contact" %}" class="plan-btn pb-border">Get Started →</a>
     </div>
     <div class="price-card featured reveal" data-delay="120">
       <div class="feat-badge">Most Popular</div>
@@ -168,8 +168,8 @@
   <h2>Still not sure? <em>Let's chat.</em></h2>
   <p>Our team will help you figure out exactly what you need — no pressure, no commitment.</p>
   <div class="cta-row">
-    <a href="contact.html" class="btn btn-red btn-lg">Talk to Our Team →</a>
-    <a href="solutions.html" class="btn btn-outline btn-lg">Browse Solutions</a>
+    <a href="{% url "contact" %}" class="btn btn-red btn-lg">Talk to Our Team →</a>
+    <a href="{% url "solutions" %}" class="btn btn-outline btn-lg">Browse Solutions</a>
   </div>
 </div>
 {% endblock %}
