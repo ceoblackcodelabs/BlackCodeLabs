@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kai Tanaka — Karate Champion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0A0A0A;
+    --charcoal: #1C1C1C;
+    --crimson: #C8102E;
+    --crimson-light: #E8213F;
+    --gold: #D4AF37;
+    --gold-light: #F0CC55;
+    --off-white: #F5F0E8;
+    --muted: #8A8580;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-accent: 'Noto Serif JP', serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--crimson); border-radius: 2px; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    padding: 14px 48px;
+    border-bottom: 1px solid rgba(200,16,46,0.25);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    color: var(--off-white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--crimson); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+    text-decoration: none; transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-belt {
+    width: 36px; height: 6px; background: var(--crimson);
+    border-radius: 3px; position: relative; overflow: hidden;
+  }
+  .nav-belt::after {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: belt-shine 2.5s infinite;
+  }
+  @keyframes belt-shine { to { left: 200%; } }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+  .hamburger span { width: 26px; height: 2px; background: var(--off-white); border-radius: 1px; transition: all 0.3s; }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative; width: 100%; height: 100vh;
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+  }
+  #three-canvas {
+    position: absolute; inset: 0; z-index: 1;
+    pointer-events: none;
+  }
+  .hero-slides {
+    position: absolute; inset: 0; z-index: 0;
+  }
+  .hero-slide {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0; transition: opacity 1.2s ease;
+  }
+  .hero-slide.active { opacity: 1; }
+  .hero-slide::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(10,10,10,0.75) 0%,
+      rgba(200,16,46,0.15) 50%,
+      rgba(10,10,10,0.8) 100%
+    );
+  }
+  /* Placeholder gradient slides */
+  .slide-1 { background: linear-gradient(135deg, #1a0a0f 0%, #3d0f1a 40%, #1a0505 100%); }
+  .slide-2 { background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3d 40%, #050518 100%); }
+  .slide-3 { background: linear-gradient(135deg, #0a1a0a 0%, #1a3d1a 40%, #051505 100%); }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 24px;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--crimson);
+    margin-bottom: 20px;
+    animation: fadeUp 1s 0.3s both;
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 14vw, 12rem);
+    line-height: 0.9; letter-spacing: 4px;
+    color: var(--off-white);
+    text-shadow: 0 0 80px rgba(200,16,46,0.3);
+    animation: fadeUp 1s 0.5s both;
+  }
+  .hero-name .first { display: block; }
+  .hero-name .last { display: block; color: var(--crimson); }
+  .hero-tagline {
+    margin-top: 24px;
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+    font-weight: 300; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--muted);
+    animation: fadeUp 1s 0.7s both;
+  }
+  .hero-cta {
+    margin-top: 44px;
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 36px; border: 1px solid var(--crimson);
+    color: var(--off-white); text-decoration: none;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: all 0.3s; animation: fadeUp 1s 0.9s both;
+  }
+  .hero-cta:hover { background: var(--crimson); letter-spacing: 4px; }
+  .hero-cta-arrow { transition: transform 0.3s; }
+  .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
+
+  .hero-scroll-hint {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
+    animation: fadeIn 2s 1.5s both;
+  }
+  .scroll-line {
+    width: 1px; height: 50px; background: linear-gradient(to bottom, var(--crimson), transparent);
+    animation: scroll-drop 2s infinite;
+  }
+  @keyframes scroll-drop {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* Hero carousel dots */
+  .hero-dots {
+    position: absolute; bottom: 48px; right: 48px; z-index: 2;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .hero-dot {
+    width: 4px; height: 24px; background: rgba(255,255,255,0.2);
+    border-radius: 2px; cursor: pointer; transition: all 0.3s;
+  }
+  .hero-dot.active { height: 40px; background: var(--crimson); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ─── SECTION BASE ─── */
+  section { position: relative; }
+
+  .section-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 6px;
+    text-transform: uppercase; color: var(--crimson); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 0.95; color: var(--off-white);
+    letter-spacing: 2px;
+  }
+
+  /* ─── ABOUT ─── */
+  #about {
+    background: var(--charcoal);
+    padding: 120px 48px;
+  }
+  .about-header {
+    text-align: center; margin-bottom: 80px;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 40px; max-width: 1300px; margin: 0 auto;
+    align-items: center;
+  }
+  .about-img-wrap {
+    position: relative; overflow: hidden;
+  }
+  .about-img-wrap.portrait { aspect-ratio: 3/4; }
+  .about-img-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, #2a0a0f 0%, #1a1a1a 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px;
+    border: 1px solid rgba(200,16,46,0.2);
+  }
+  .about-img-placeholder svg { opacity: 0.3; }
+  .about-img-placeholder span {
+    font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .about-img-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    border: 2px solid var(--crimson); opacity: 0;
+    transform: scale(1.05); transition: all 0.5s; z-index: 1; pointer-events: none;
+  }
+  .about-img-wrap:hover::before { opacity: 0.4; transform: scale(1); }
+
+  .about-content { padding: 20px 24px; }
+  .about-intro {
+    font-family: var(--font-accent);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.3; color: var(--off-white); margin-bottom: 24px;
+  }
+  .about-intro em { color: var(--gold); font-style: normal; }
+  .about-body {
+    font-size: 0.95rem; line-height: 1.9; color: #B0AB9F; margin-bottom: 28px;
+  }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px;
+  }
+  .stat-val {
+    font-family: var(--font-display); font-size: 2.8rem;
+    color: var(--crimson); letter-spacing: 2px; line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted); margin-top: 4px;
+  }
+
+  /* ─── BELT RANK STRIP ─── */
+  .belt-strip {
+    background: var(--black); padding: 28px 48px;
+    display: flex; align-items: center; gap: 0; overflow: hidden;
+  }
+  .belt-item {
+    display: flex; align-items: center; gap: 16px;
+    flex-shrink: 0; padding-right: 48px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted);
+    white-space: nowrap;
+  }
+  .belt-color {
+    width: 40px; height: 8px; border-radius: 4px; flex-shrink: 0;
+  }
+  .belt-strip-inner {
+    display: flex;
+    animation: marquee 20s linear infinite;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ─── ACHIEVEMENTS ─── */
+  #achievements {
+    background: var(--black); padding: 120px 48px;
+  }
+  .achievements-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 64px; flex-wrap: wrap; gap: 20px;
+  }
+  .carousel-controls { display: flex; gap: 12px; }
+  .carousel-btn {
+    width: 48px; height: 48px; border: 1px solid rgba(255,255,255,0.1);
+    background: transparent; color: var(--off-white); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s; font-size: 1.2rem;
+  }
+  .carousel-btn:hover { border-color: var(--crimson); background: rgba(200,16,46,0.1); }
+
+  .medals-carousel { overflow: hidden; }
+  .medals-track {
+    display: flex; gap: 28px;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .medal-card {
+    flex-shrink: 0;
+    width: calc(33.333% - 19px);
+    background: var(--charcoal);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 36px 32px; position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+    cursor: default;
+  }
+  .medal-card:hover { transform: translateY(-6px); border-color: rgba(200,16,46,0.3); }
+  .medal-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--crimson), var(--gold));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .medal-card:hover::before { transform: scaleX(1); }
+
+  .medal-icon {
+    font-size: 3.2rem; margin-bottom: 20px; display: block;
+    filter: drop-shadow(0 0 12px rgba(212,175,55,0.4));
+  }
+  .medal-rank {
+    font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 4px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .medal-title {
+    font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 2px;
+    color: var(--off-white); margin-bottom: 10px;
+  }
+  .medal-event {
+    font-size: 0.82rem; color: var(--muted); line-height: 1.6;
+  }
+  .medal-year {
+    position: absolute; top: 28px; right: 28px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 3px;
+    color: rgba(255,255,255,0.15);
+  }
+  .medals-progress {
+    display: flex; gap: 6px; justify-content: center; margin-top: 40px;
+  }
+  .progress-dot {
+    width: 20px; height: 3px; background: rgba(255,255,255,0.15);
+    border-radius: 2px; cursor: pointer; transition: all 0.3s;
+  }
+  .progress-dot.active { background: var(--crimson); width: 36px; }
+
+  /* ─── VISION ─── */
+  #vision {
+    background: var(--charcoal);
+    padding: 140px 48px;
+    position: relative; overflow: hidden;
+  }
+  #vision::before {
+    content: '道'; position: absolute;
+    font-family: var(--font-accent); font-size: 40vw; line-height: 1;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    color: rgba(200,16,46,0.04); pointer-events: none;
+    z-index: 0; white-space: nowrap;
+  }
+  .vision-inner {
+    position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; text-align: center;
+  }
+  .vision-quote {
+    font-family: var(--font-accent);
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+    line-height: 1.6; color: var(--off-white); margin-bottom: 56px;
+  }
+  .vision-quote .quote-mark {
+    font-size: 5rem; color: var(--crimson); line-height: 0;
+    vertical-align: -0.35em; margin-right: 8px; font-family: Georgia, serif;
+  }
+  .vision-body {
+    font-size: 1rem; line-height: 2; color: #B0AB9F;
+    max-width: 680px; margin: 0 auto 56px;
+  }
+  .vision-signature {
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+  }
+  .sig-line { flex: 1; max-width: 80px; height: 1px; background: rgba(255,255,255,0.15); }
+  .sig-name {
+    font-family: var(--font-display); letter-spacing: 4px; font-size: 1.1rem; color: var(--gold);
+  }
+
+  /* ─── GALLERY ─── */
+  #gallery {
+    background: var(--black); padding: 120px 48px;
+  }
+  .gallery-header { text-align: center; margin-bottom: 64px; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 12px; max-width: 1300px; margin: 0 auto;
+  }
+  .gallery-item {
+    overflow: hidden; position: relative;
+    background: var(--charcoal);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .gallery-item:nth-child(1) { grid-column: span 5; grid-row: span 2; aspect-ratio: unset; min-height: 360px; }
+  .gallery-item:nth-child(2) { grid-column: span 4; min-height: 170px; }
+  .gallery-item:nth-child(3) { grid-column: span 3; min-height: 170px; }
+  .gallery-item:nth-child(4) { grid-column: span 4; min-height: 170px; }
+  .gallery-item:nth-child(5) { grid-column: span 3; min-height: 170px; }
+  .gallery-item:nth-child(6) { grid-column: span 4; min-height: 200px; }
+  .gallery-item:nth-child(7) { grid-column: span 8; min-height: 200px; }
+
+  .gallery-placeholder {
+    width: 100%; height: 100%; min-height: inherit;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    color: var(--muted); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .gallery-item::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(200,16,46,0.0);
+    transition: background 0.3s;
+  }
+  .gallery-item:hover::after { background: rgba(200,16,46,0.08); }
+
+  /* ─── CONTACT / FOOTER ─── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 80px 48px 40px;
+  }
+  .footer-inner {
+    display: flex; flex-direction: column; align-items: center; gap: 40px;
+    max-width: 1300px; margin: 0 auto;
+  }
+  .footer-logo {
+    font-family: var(--font-display); font-size: 3rem; letter-spacing: 6px;
+    color: var(--off-white);
+  }
+  .footer-logo span { color: var(--crimson); }
+  .footer-belt {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .fb-seg {
+    height: 6px; border-radius: 3px;
+  }
+  .footer-tagline {
+    font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--muted); text-align: center;
+  }
+  .footer-copy {
+    font-size: 0.7rem; color: rgba(255,255,255,0.2); text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05); width: 100%; padding-top: 24px;
+    margin-top: 16px;
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .about-grid { grid-template-columns: 1fr 1.4fr; }
+    .about-grid .about-img-wrap:last-child { display: none; }
+    .medal-card { width: calc(50% - 14px); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav.scrolled { padding: 12px 24px; }
+    .nav-links, .nav-belt { display: none; }
+    .hamburger { display: flex; }
+
+    #about { padding: 80px 24px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-img-wrap.portrait:first-child { aspect-ratio: 16/9; max-height: 300px; }
+    .about-stats { grid-template-columns: repeat(3, 1fr); }
+
+    .belt-strip { padding: 20px 24px; }
+
+    #achievements { padding: 80px 24px; }
+    .achievements-header { flex-direction: column; align-items: flex-start; }
+    .medal-card { width: calc(80vw); }
+
+    #vision { padding: 100px 24px; }
+
+    #gallery { padding: 80px 24px; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-item:nth-child(1),
+    .gallery-item:nth-child(2),
+    .gallery-item:nth-child(3),
+    .gallery-item:nth-child(4),
+    .gallery-item:nth-child(5),
+    .gallery-item:nth-child(6),
+    .gallery-item:nth-child(7) {
+      grid-column: span 1; min-height: 160px;
+    }
+    .gallery-item:nth-child(1) { grid-column: span 2; min-height: 220px; }
+
+    footer { padding: 60px 24px 32px; }
+
+    .hero-dots { display: none; }
+    .hero-scroll-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">KAI <span>T.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#achievements">Medals</a></li>
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+  </ul>
+  <div class="nav-belt" title="Red Belt — 1st Kyu"></div>
+  <div class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-slides" id="heroSlides">
+    <div class="hero-slide slide-1 active">
+      <!-- Replace background-image with real photo URL:
+           style="background-image: url('your-photo-1.jpg')" -->
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.15;font-size:20vw;font-family:'Noto Serif JP',serif;color:white;user-select:none;pointer-events:none;">空手</div>
+    </div>
+    <div class="hero-slide slide-2">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.1;font-size:18vw;font-family:'Noto Serif JP',serif;color:white;user-select:none;pointer-events:none;">道</div>
+    </div>
+    <div class="hero-slide slide-3">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.1;font-size:18vw;font-family:'Noto Serif JP',serif;color:white;user-select:none;pointer-events:none;">武</div>
+    </div>
+  </div>
+
+  <canvas id="three-canvas"></canvas>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Karate Champion · Red Belt · 1st Kyu</p>
+    <h1 class="hero-name">
+      <span class="first">KAI</span>
+      <span class="last">TANAKA</span>
+    </h1>
+    <p class="hero-tagline">The spirit of karate · Discipline · Honour · Power</p>
+    <a href="#about" class="hero-cta">
+      Discover My Journey
+      <span class="hero-cta-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hero-dots" id="heroDots">
+    <div class="hero-dot active" data-slide="0"></div>
+    <div class="hero-dot" data-slide="1"></div>
+    <div class="hero-dot" data-slide="2"></div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ─── BELT MARQUEE ─── -->
+<div class="belt-strip" aria-hidden="true">
+  <div class="belt-strip-inner" id="beltMarquee">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="about-header reveal">
+    <p class="section-label">Who I Am</p>
+    <h2 class="section-title">The Making of a<br>Champion</h2>
+  </div>
+  <div class="about-grid">
+    <!-- Col 1: Portrait photo -->
+    <div class="about-img-wrap portrait reveal reveal-delay-1">
+      <div class="about-img-placeholder" style="min-height:400px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        <span>Add your photo here</span>
+      </div>
+    </div>
+
+    <!-- Col 2: Text -->
+    <div class="about-content reveal reveal-delay-2">
+      <p class="section-label">My Story</p>
+      <p class="about-intro">
+        Born to <em>fight with honour,</em><br>trained to stand with purpose.
+      </p>
+      <p class="about-body">
+        My name is Kai Tanaka, and I started my karate journey at age six — not because
+        I wanted to fight, but because I wanted to grow. Every early morning, every bruised
+        knuckle, every moment of doubt has been a lesson that has shaped who I am today.
+      </p>
+      <p class="about-body">
+        Training under Sensei Hiroshi at the Shotokan Dojo, I've learned that karate is
+        not just a sport — it is a way of life.
+        The discipline I build on the mat follows me into the classroom,
+        into my friendships, and into every challenge I face.
+      </p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-val">7</div>
+          <div class="stat-label">Years Training</div>
+        </div>
+        <div>
+          <div class="stat-val">12</div>
+          <div class="stat-label">Tournaments</div>
+        </div>
+        <div>
+          <div class="stat-val">8</div>
+          <div class="stat-label">Medals Won</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Col 3: 3:4 ratio photo -->
+    <div class="about-img-wrap portrait reveal reveal-delay-3">
+      <div class="about-img-placeholder" style="min-height:400px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14.5 4l-5 16M4 8l16 8-8-2-2-8z"/>
+        </svg>
+        <span>Action photo here</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ACHIEVEMENTS ─── -->
+<section id="achievements">
+  <div class="achievements-header">
+    <div class="reveal">
+      <p class="section-label">On the Podium</p>
+      <h2 class="section-title">Medals &amp;<br>Honours</h2>
+    </div>
+    <div class="carousel-controls reveal">
+      <button class="carousel-btn" id="prevMedal" aria-label="Previous">&#8592;</button>
+      <button class="carousel-btn" id="nextMedal" aria-label="Next">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="medals-carousel">
+    <div class="medals-track" id="medalsTrack">
+
+      <div class="medal-card">
+        <span class="medal-year">2024</span>
+        <span class="medal-icon">🥇</span>
+        <div class="medal-rank">Gold Medal</div>
+        <div class="medal-title">National Junior Championships</div>
+        <div class="medal-event">Kata — Under-14 Division · Nairobi Sports Complex</div>
+      </div>
+
+      <div class="medal-card">
+        <span class="medal-year">2024</span>
+        <span class="medal-icon">🥈</span>
+        <div class="medal-rank">Silver Medal</div>
+        <div class="medal-title">East Africa Open</div>
+        <div class="medal-event">Kumite 45kg — Under-14 · Mombasa Regional Centre</div>
+      </div>
+
+      <div class="medal-card">
+        <span class="medal-year">2023</span>
+        <span class="medal-icon">🥇</span>
+        <div class="medal-rank">Gold Medal</div>
+        <div class="medal-title">Regional Shotokan Cup</div>
+        <div class="medal-event">Kata &amp; Kumite Double · Nakuru Dojo Federation</div>
+      </div>
+
+      <div class="medal-card">
+        <span class="medal-year">2023</span>
+        <span class="medal-icon">🥉</span>
+        <div class="medal-rank">Bronze Medal</div>
+        <div class="medal-title">Inter-School Invitational</div>
+        <div class="medal-event">Team Kumite · Nairobi Schools League</div>
+      </div>
+
+      <div class="medal-card">
+        <span class="medal-year">2022</span>
+        <span class="medal-icon">🥇</span>
+        <div class="medal-rank">Gold Medal</div>
+        <div class="medal-title">City Championship</div>
+        <div class="medal-event">Kata — Under-12 Division · Westlands Martial Arts Centre</div>
+      </div>
+
+      <div class="medal-card">
+        <span class="medal-year">2022</span>
+        <span class="medal-icon">🏆</span>
+        <div class="medal-rank">Best Competitor Award</div>
+        <div class="medal-title">Spring Tournament</div>
+        <div class="medal-event">Overall performance award · Kenya Karate Federation</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="medals-progress" id="medalsProgress"></div>
+</section>
+
+<!-- ─── VISION ─── -->
+<section id="vision">
+  <div class="vision-inner">
+    <p class="section-label reveal" style="text-align:center;margin-bottom:24px;">My Voice</p>
+    <h2 class="section-title reveal" style="text-align:center;margin-bottom:60px;">From the<br>Heart</h2>
+    <blockquote class="vision-quote reveal">
+      <span class="quote-mark">"</span>Karate taught me that the greatest battles are
+      the ones you fight inside yourself. Every time I bow before stepping on the mat,
+      I remind myself — this is not about winning trophies. It's about becoming
+      someone worthy of wearing this belt."
+    </blockquote>
+    <p class="vision-body reveal reveal-delay-1">
+      When I grow up, I want to open a dojo in my community — a place where kids who
+      feel unseen can find themselves through discipline and respect. Karate gave me
+      confidence when I had none. I want to pass that on.
+      I believe every child has a champion inside them.
+      They just need someone to believe in them first, and a dojo to call home.
+    </p>
+    <div class="vision-signature reveal reveal-delay-2">
+      <div class="sig-line"></div>
+      <span class="sig-name">— Kai Tanaka, Age 13</span>
+      <div class="sig-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <p class="section-label">Moments in Motion</p>
+    <h2 class="section-title">Gallery</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><div class="gallery-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Training</span></div></div>
+    <div class="gallery-item"><div class="gallery-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Competition</span></div></div>
+    <div class="gallery-item"><div class="gallery-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Medal Ceremony</span></div></div>
+    <div class="gallery-item"><div class="gallery-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Kata</span></div></div>
+    <div class="gallery-item"><div class="gallery-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Dojo</span></div></div>
+    <div class="gallery-item"><div class="gallery-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Sensei &amp; Me</span></div></div>
+    <div class="gallery-item"><div class="gallery-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Team</span></div></div>
+  </div>
+  <p style="text-align:center;margin-top:32px;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">
+    Replace placeholders with real photos by adding <code style="color:var(--gold)">background-image: url('...')</code> to each .gallery-item
+  </p>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">KAI <span>T.</span></div>
+    <div class="footer-belt">
+      <div class="fb-seg" style="width:20px;background:#fff;opacity:0.8;"></div>
+      <div class="fb-seg" style="width:20px;background:#f5e642;"></div>
+      <div class="fb-seg" style="width:20px;background:#f5a623;"></div>
+      <div class="fb-seg" style="width:20px;background:#4caf50;"></div>
+      <div class="fb-seg" style="width:20px;background:#2196f3;"></div>
+      <div class="fb-seg" style="width:20px;background:#9c27b0;"></div>
+      <div class="fb-seg" style="width:20px;background:#795548;"></div>
+      <div class="fb-seg" style="width:32px;background:#C8102E;"></div>
+    </div>
+    <p class="footer-tagline">Discipline · Respect · Perseverance · Indomitable Spirit</p>
+    <p class="footer-copy">© 2025 Kai Tanaka · Shotokan Karate · All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- ─── THREE.JS ─── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  // ── Three.js Particle System ──
+  const canvas = document.getElementById('three-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
+  camera.position.z = 30;
+
+  function resize() {
+    const hero = document.getElementById('hero');
+    const w = hero.offsetWidth, h = hero.offsetHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Create particles — dojo dust + flying sparks
+  const COUNT = 300;
+  const positions = new Float32Array(COUNT * 3);
+  const velocities = [];
+  const colors = new Float32Array(COUNT * 3);
+
+  const palette = [
+    new THREE.Color('#C8102E'),
+    new THREE.Color('#D4AF37'),
+    new THREE.Color('#F5F0E8'),
+    new THREE.Color('#8A2020'),
+  ];
+
+  for (let i = 0; i < COUNT; i++) {
+    positions[i * 3]     = (Math.random() - 0.5) * 80;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 50;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+
+    velocities.push({
+      x: (Math.random() - 0.5) * 0.04,
+      y: (Math.random() - 0.5) * 0.025 + 0.005,
+      z: (Math.random() - 0.5) * 0.02,
+    });
+
+    const c = palette[Math.floor(Math.random() * palette.length)];
+    colors[i * 3]     = c.r;
+    colors[i * 3 + 1] = c.g;
+    colors[i * 3 + 2] = c.b;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: 0.28, vertexColors: true, transparent: true,
+    opacity: 0.7, sizeAttenuation: true,
+  });
+
+  const particles = new THREE.Points(geo, mat);
+  scene.add(particles);
+
+  // Subtle connecting lines between nearby particles
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0xC8102E, transparent: true, opacity: 0.07
+  });
+
+  let mouse = { x: 0, y: 0 };
+  document.getElementById('hero').addEventListener('mousemove', e => {
+    mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  let frame = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    frame++;
+    const pos = geo.attributes.position.array;
+
+    for (let i = 0; i < COUNT; i++) {
+      pos[i * 3]     += velocities[i].x;
+      pos[i * 3 + 1] += velocities[i].y;
+      pos[i * 3 + 2] += velocities[i].z;
+
+      // Wrap around
+      if (pos[i * 3] > 40) pos[i * 3] = -40;
+      if (pos[i * 3] < -40) pos[i * 3] = 40;
+      if (pos[i * 3 + 1] > 25) pos[i * 3 + 1] = -25;
+      if (pos[i * 3 + 1] < -25) pos[i * 3 + 1] = 25;
+      if (pos[i * 3 + 2] > 20) pos[i * 3 + 2] = -20;
+      if (pos[i * 3 + 2] < -20) pos[i * 3 + 2] = 20;
+    }
+    geo.attributes.position.needsUpdate = true;
+
+    // Gentle camera drift + mouse parallax
+    particles.rotation.y = frame * 0.0003 + mouse.x * 0.08;
+    particles.rotation.x = mouse.y * 0.05;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // ── Hero Carousel ──
+  let slideIdx = 0;
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+
+  function goSlide(n) {
+    slides[slideIdx].classList.remove('active');
+    dots[slideIdx].classList.remove('active');
+    slideIdx = (n + slides.length) % slides.length;
+    slides[slideIdx].classList.add('active');
+    dots[slideIdx].classList.add('active');
+  }
+
+  setInterval(() => goSlide(slideIdx + 1), 5000);
+
+  dots.forEach(d => {
+    d.addEventListener('click', () => goSlide(+d.dataset.slide));
+  });
+
+  // ── Belt Marquee ──
+  const belts = [
+    { name: 'White Belt', color: '#FFFFFF' },
+    { name: 'Yellow Belt', color: '#F5E642' },
+    { name: 'Orange Belt', color: '#F5A623' },
+    { name: 'Green Belt', color: '#4CAF50' },
+    { name: 'Blue Belt', color: '#2196F3' },
+    { name: 'Purple Belt', color: '#9C27B0' },
+    { name: 'Brown Belt', color: '#795548' },
+    { name: 'Red Belt', color: '#C8102E' },
+  ];
+  const container = document.getElementById('beltMarquee');
+  // Duplicate for seamless loop
+  for (let r = 0; r < 3; r++) {
+    belts.forEach(b => {
+      const el = document.createElement('div');
+      el.className = 'belt-item';
+      el.innerHTML = `<div class="belt-color" style="background:${b.color};box-shadow:0 0 8px ${b.color}40;"></div>${b.name}`;
+      container.appendChild(el);
+    });
+  }
+
+  // ── Medals Carousel ──
+  const track = document.getElementById('medalsTrack');
+  const progressEl = document.getElementById('medalsProgress');
+  const cards = track.querySelectorAll('.medal-card');
+  let medalsIdx = 0;
+
+  function getVisible() {
+    if (window.innerWidth < 768) return 1;
+    if (window.innerWidth < 1024) return 2;
+    return 3;
+  }
+
+  function buildProgress() {
+    progressEl.innerHTML = '';
+    const total = cards.length - getVisible() + 1;
+    for (let i = 0; i < Math.max(1, total); i++) {
+      const d = document.createElement('div');
+      d.className = 'progress-dot' + (i === medalsIdx ? ' active' : '');
+      d.addEventListener('click', () => moveMedals(i));
+      progressEl.appendChild(d);
+    }
+  }
+
+  function moveMedals(n) {
+    const vis = getVisible();
+    const max = Math.max(0, cards.length - vis);
+    medalsIdx = Math.min(Math.max(n, 0), max);
+    const cardW = cards[0].offsetWidth + 28;
+    track.style.transform = `translateX(-${medalsIdx * cardW}px)`;
+    document.querySelectorAll('.progress-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === medalsIdx);
+    });
+  }
+
+  document.getElementById('prevMedal').addEventListener('click', () => moveMedals(medalsIdx - 1));
+  document.getElementById('nextMedal').addEventListener('click', () => moveMedals(medalsIdx + 1));
+
+  // Set card widths
+  function layoutCards() {
+    const vis = getVisible();
+    const gap = 28;
+    const total = track.parentElement.offsetWidth;
+    const w = (total - gap * (vis - 1)) / vis;
+    cards.forEach(c => c.style.width = w + 'px');
+    moveMedals(medalsIdx);
+    buildProgress();
+  }
+  layoutCards();
+  window.addEventListener('resize', layoutCards);
+
+  // ── Nav scroll ──
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ── Hamburger (mobile) ──
+  document.getElementById('hamburger').addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (!links) return;
+    if (links.style.display === 'flex') {
+      links.style.display = 'none';
+    } else {
+      Object.assign(links.style, {
+        display: 'flex', flexDirection: 'column',
+        position: 'fixed', top: '64px', left: '0', right: '0',
+        background: 'rgba(10,10,10,0.97)', padding: '32px 24px',
+        gap: '24px', backdropFilter: 'blur(12px)',
+        zIndex: '999', borderBottom: '1px solid rgba(200,16,46,0.2)',
+      });
+    }
+  });
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      const links = document.querySelector('.nav-links');
+      if (window.innerWidth < 768) links.style.display = 'none';
+    });
+  });
+
+  // ── Counter animation on stats ──
+  function animateCounters() {
+    document.querySelectorAll('.stat-val').forEach(el => {
+      const target = parseInt(el.textContent);
+      let current = 0;
+      const step = Math.ceil(target / 30);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current;
+        if (current >= target) clearInterval(timer);
+      }, 40);
+    });
+  }
+  const aboutSection = document.getElementById('about');
+  const aboutObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      animateCounters();
+      aboutObserver.disconnect();
+    }
+  }, { threshold: 0.3 });
+  aboutObserver.observe(aboutSection);
+
+})();
+</script>
+</body>
+</html>
