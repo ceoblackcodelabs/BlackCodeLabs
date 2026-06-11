@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hash Grill – Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@300;400;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ash:#1A1A18;
+  --ash2:#242420;
+  --ash3:#2E2E2A;
+  --smoke:#3D3D38;
+  --ember:#E8520A;
+  --ember2:#FF6B2B;
+  --ochre:#C4923A;
+  --cream:#F5EDD8;
+  --cream2:#EEE3C8;
+  --mid:#9A9A8E;
+  --white:#FFFFFF;
+}
+html{scroll-behavior:smooth}
+body{background:var(--ash);color:var(--cream);font-family:'Lato',sans-serif;overflow-x:hidden}
+
+/* ── EMBER GLOW ANIMATION ── */
+@keyframes emberGlow{
+  0%,100%{box-shadow:0 0 60px 20px rgba(232,82,10,.18),0 0 120px 40px rgba(232,82,10,.07)}
+  50%{box-shadow:0 0 80px 30px rgba(232,82,10,.28),0 0 160px 60px rgba(232,82,10,.12)}
+}
+@keyframes flicker{0%,100%{opacity:1}45%{opacity:.88}55%{opacity:.95}75%{opacity:.9}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sizzle{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:66px;background:rgba(26,26,24,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(232,82,10,.12)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-flame{font-size:22px;animation:flicker 2.5s infinite}
+.nav-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--cream);line-height:1}
+.nav-name span{color:var(--ember);display:block;font-size:11px;font-family:'Lato',sans-serif;font-weight:700;letter-spacing:4px;text-transform:uppercase;line-height:1.4}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-right a{color:var(--mid);text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:color .2s}
+.nav-right a:hover{color:var(--ember)}
+.nav-order{background:var(--ember);color:var(--white)!important;padding:9px 20px;border-radius:4px;letter-spacing:1.5px!important;transition:background .2s!important}
+.nav-order:hover{background:var(--ember2)!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:22px;height:2px;background:var(--cream);border-radius:2px}
+.mobile-nav{display:none;position:fixed;top:66px;inset:0 0 auto;background:var(--ash2);z-index:199;padding:24px 5vw 32px;flex-direction:column;gap:0;border-top:1px solid rgba(232,82,10,.15)}
+.mobile-nav.open{display:flex}
+.mobile-nav a{color:var(--cream);text-decoration:none;padding:16px 0;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.06)}
+
+/* ── HERO ── */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1800&q=85');background-size:cover;background-position:center;filter:brightness(.35)}
+.hero-glow{position:absolute;inset:0;animation:emberGlow 4s ease-in-out infinite;pointer-events:none}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,var(--ash) 0%,rgba(26,26,24,.6) 40%,transparent 70%)}
+.hero-content{position:relative;z-index:2;padding:120px 5vw 80px;max-width:760px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,82,10,.15);border:1px solid rgba(232,82,10,.35);color:var(--ember);padding:7px 14px;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;animation:fadeUp .7s .2s both}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,11vw,9rem);line-height:.95;letter-spacing:4px;color:var(--cream);animation:fadeUp .7s .4s both}
+.hero-title .fire{color:var(--ember);animation:flicker 1.8s infinite}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:rgba(245,237,216,.7);line-height:1.7;margin:20px 0 36px;max-width:520px;font-weight:300;animation:fadeUp .7s .6s both}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .7s .8s both}
+.btn-fire{background:var(--ember);color:var(--white);padding:15px 34px;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:background .2s,transform .2s;display:inline-block}
+.btn-fire:hover{background:var(--ember2);transform:translateY(-2px)}
+.btn-ghost{border:1px solid rgba(245,237,216,.35);color:var(--cream);padding:14px 32px;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:all .2s;display:inline-block}
+.btn-ghost:hover{border-color:var(--ember);color:var(--ember)}
+.hero-stats{position:absolute;bottom:0;left:0;right:0;z-index:2;display:flex;border-top:1px solid rgba(255,255,255,.06)}
+.hero-stat{flex:1;padding:20px 5vw;text-align:center;border-right:1px solid rgba(255,255,255,.06);background:rgba(26,26,24,.75);backdrop-filter:blur(8px)}
+.hero-stat:last-child{border-right:none}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--ember);letter-spacing:2px}
+.hero-stat-label{font-size:11px;color:var(--mid);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+
+/* ── STICKY CATEGORY BAR ── */
+#cat-bar{position:sticky;top:66px;z-index:100;background:var(--ash2);border-bottom:2px solid var(--ash3);overflow-x:auto;scrollbar-width:none}
+#cat-bar::-webkit-scrollbar{display:none}
+.cat-inner{display:flex;padding:0 5vw;gap:0;min-width:max-content}
+.cat-btn{padding:16px 22px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mid);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;white-space:nowrap;font-family:'Lato',sans-serif}
+.cat-btn:hover{color:var(--cream)}
+.cat-btn.active{color:var(--ember);border-bottom-color:var(--ember)}
+
+/* ── SECTION COMMONS ── */
+.menu-section{padding:70px 5vw;max-width:1280px;margin:0 auto}
+.section-head{margin-bottom:40px}
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ember);margin-bottom:10px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,5vw,3.8rem);letter-spacing:3px;color:var(--cream);line-height:1}
+.section-line{width:48px;height:2px;background:var(--ember);margin-top:12px}
+.section-desc{font-size:.9rem;color:var(--mid);line-height:1.7;margin-top:12px;max-width:520px;font-weight:300}
+
+/* ── FEATURED (hero card row) ── */
+#featured{background:var(--ash)}
+.featured-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:20px}
+.feat-card{position:relative;border-radius:6px;overflow:hidden;cursor:pointer}
+.feat-card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.feat-card:hover .feat-card-img{transform:scale(1.06)}
+.feat-card-big{height:460px}
+.feat-card-small{height:220px}
+.feat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,24,.92) 0%,transparent 55%)}
+.feat-body{position:absolute;bottom:0;left:0;right:0;padding:22px}
+.feat-tag{display:inline-block;background:var(--ember);color:var(--white);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 9px;border-radius:2px;margin-bottom:8px}
+.feat-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;line-height:1.1;color:var(--cream)}
+.feat-price{font-size:1rem;color:var(--ember);font-weight:700;margin-top:6px}
+.feat-card-small .feat-name{font-size:1.2rem}
+.feat-small-col{display:grid;grid-template-rows:1fr 1fr;gap:20px}
+
+/* ── MENU GRID ── */
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}
+.menu-item{display:flex;gap:0;background:var(--ash2);border:1px solid rgba(255,255,255,.04);border-radius:6px;overflow:hidden;transition:border-color .25s,transform .25s;cursor:pointer}
+.menu-item:hover{border-color:rgba(232,82,10,.4);transform:translateY(-3px)}
+.menu-item-img{width:110px;flex-shrink:0;overflow:hidden}
+.menu-item-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.menu-item:hover .menu-item-img img{transform:scale(1.08)}
+.menu-item-body{padding:16px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.menu-item-name{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:1.5px;color:var(--cream);line-height:1.1}
+.menu-item-desc{font-size:.8rem;color:var(--mid);line-height:1.55;margin-top:6px;font-weight:300}
+.menu-item-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.menu-item-price{font-size:1rem;font-weight:700;color:var(--ochre)}
+.menu-item-badges{display:flex;gap:5px}
+.badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 7px;border-radius:2px}
+.badge-spicy{background:rgba(232,82,10,.18);color:var(--ember);border:1px solid rgba(232,82,10,.3)}
+.badge-chef{background:rgba(196,146,58,.15);color:var(--ochre);border:1px solid rgba(196,146,58,.3)}
+.badge-new{background:rgba(255,255,255,.07);color:var(--cream);border:1px solid rgba(255,255,255,.15)}
+.badge-veg{background:rgba(80,180,80,.12);color:#7ec87e;border:1px solid rgba(80,180,80,.25)}
+.add-btn{width:30px;height:30px;border-radius:50%;background:var(--ember);border:none;color:var(--white);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .2s;flex-shrink:0}
+.add-btn:hover{background:var(--ember2);transform:scale(1.1)}
+
+/* ── WIDE ITEM (drinks / desserts horizontal) ── */
+.menu-grid-wide{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2px}
+.menu-item-wide{display:flex;align-items:center;justify-content:space-between;background:var(--ash2);border:1px solid rgba(255,255,255,.04);border-radius:6px;padding:18px 20px;transition:border-color .2s}
+.menu-item-wide:hover{border-color:rgba(232,82,10,.35)}
+.wide-left{flex:1}
+.wide-name{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:1.5px;color:var(--cream)}
+.wide-desc{font-size:.78rem;color:var(--mid);margin-top:4px;font-weight:300;line-height:1.5}
+.wide-right{display:flex;align-items:center;gap:14px;flex-shrink:0;margin-left:16px}
+.wide-price{font-weight:700;color:var(--ochre);font-size:.95rem}
+
+/* ── GRILL SPECIALS BAND ── */
+#specials-band{background:var(--ember);padding:50px 5vw}
+.band-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.band-text .eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.65)}
+.band-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);letter-spacing:3px;color:var(--white);line-height:1;margin-top:6px}
+.band-text p{font-size:.9rem;color:rgba(255,255,255,.8);line-height:1.65;margin-top:8px;max-width:480px;font-weight:300}
+.band-cta{background:var(--ash);color:var(--cream);padding:15px 34px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:background .2s;flex-shrink:0;display:inline-block}
+.band-cta:hover{background:var(--ash2)}
+
+/* ── COMBO DEALS ── */
+#combos{background:var(--ash3)}
+.combo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.combo-card{background:var(--ash2);border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.05);transition:transform .3s,border-color .3s}
+.combo-card:hover{transform:translateY(-5px);border-color:rgba(232,82,10,.3)}
+.combo-img{height:180px;overflow:hidden;position:relative}
+.combo-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.combo-card:hover .combo-img img{transform:scale(1.07)}
+.combo-ribbon{position:absolute;top:14px;right:0;background:var(--ember);color:var(--white);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 12px 5px 10px}
+.combo-body{padding:20px}
+.combo-name{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px;color:var(--cream)}
+.combo-items{font-size:.8rem;color:var(--mid);line-height:1.6;margin-top:6px;font-weight:300}
+.combo-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.combo-price-old{font-size:.8rem;color:var(--mid);text-decoration:line-through;margin-right:6px}
+.combo-price-new{font-size:1.1rem;font-weight:700;color:var(--ember)}
+.combo-save{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(232,82,10,.15);color:var(--ember);padding:3px 8px;border-radius:2px;border:1px solid rgba(232,82,10,.3)}
+
+/* ── ALLERGEN / INFO BAR ── */
+.info-bar{background:var(--ash3);border-top:1px solid rgba(255,255,255,.05);padding:20px 5vw}
+.info-bar-inner{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.info-legend{display:flex;flex-wrap:wrap;gap:12px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid)}
+
+/* ── FOOTER ── */
+footer{background:var(--ash2);border-top:1px solid rgba(255,255,255,.06);padding:50px 5vw 28px}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:36px}
+.footer-brand p{font-size:.85rem;color:var(--mid);line-height:1.7;margin:12px 0;font-weight:300}
+.footer-socials{display:flex;gap:10px;margin-top:4px}
+.fsocial{width:34px;height:34px;border:1px solid rgba(255,255,255,.12);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:13px;text-decoration:none;transition:all .2s}
+.fsocial:hover{background:var(--ember);border-color:var(--ember);color:var(--white)}
+.footer-col h4{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cream);margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-col ul a{color:var(--mid);text-decoration:none;font-size:.85rem;transition:color .2s}
+.footer-col ul a:hover{color:var(--ember)}
+.footer-bottom{max-width:1280px;margin:0 auto;border-top:1px solid rgba(255,255,255,.06);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--mid);letter-spacing:.5px}
+
+/* ── CART TOAST ── */
+#cart-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ember);color:var(--white);padding:13px 24px;border-radius:4px;font-size:13px;font-weight:700;letter-spacing:1px;opacity:0;transition:all .35s;z-index:500;pointer-events:none;white-space:nowrap}
+#cart-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .featured-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
+  .feat-card-big{grid-column:1/-1;height:300px}
+  .feat-card-small{height:200px}
+  .feat-small-col{display:contents}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
+}
+@media(max-width:700px){
+  nav .nav-right a:not(.nav-order){display:none}
+  .hamburger{display:flex}
+  .hero-stats{position:static;flex-wrap:wrap}
+  .hero-stat{flex:1 1 50%;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+  .featured-grid{grid-template-columns:1fr}
+  .feat-card-big,.feat-card-small{height:250px}
+  .feat-small-col{display:contents}
+  .menu-item{flex-direction:column}
+  .menu-item-img{width:100%;height:160px}
+  .combo-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;gap:28px}
+  .band-inner{flex-direction:column;text-align:center}
+  .band-text p{margin-left:auto;margin-right:auto}
+}
+@media(max-width:480px){
+  .hero-title{font-size:3.2rem}
+  .hero-ctas{flex-direction:column;align-items:flex-start}
+  .btn-fire,.btn-ghost{width:100%;text-align:center}
+  .menu-grid,.menu-grid-wide{grid-template-columns:1fr}
+  .menu-item{flex-direction:row}
+  .menu-item-img{width:90px;height:auto}
+}
+@media(min-width:1400px){
+  .menu-grid{grid-template-columns:repeat(4,1fr)}
+  .combo-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">
+    <span class="nav-flame">🔥</span>
+    <div class="nav-name">Hash Grill<span>Est. 2018 · Fire & Flavour</span></div>
+  </a>
+  <div class="nav-right">
+    <a href="#menu-sections">Menu</a>
+    <a href="#combos">Deals</a>
+    <a href="#footer">Find Us</a>
+    <a href="tel:+254000000000" class="nav-order">📞 Reserve</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#menu-sections" onclick="toggleMenu()">Full Menu</a>
+  <a href="#combos" onclick="toggleMenu()">Combo Deals</a>
+  <a href="#footer" onclick="toggleMenu()">Find Us</a>
+  <a href="tel:+254000000000" onclick="toggleMenu()">📞 Make a Reservation</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fa-solid fa-fire"></i> Open Now · Kilimani, Nairobi</div>
+    <h1 class="hero-title">HASH<br><span class="fire">GRILL</span></h1>
+    <p class="hero-sub">Fired over real charcoal. Seasoned with obsession. Every cut grilled to order — because great food doesn't wait and neither should you.</p>
+    <div class="hero-ctas">
+      <a href="#menu-sections" class="btn-fire">View Full Menu</a>
+      <a href="#combos" class="btn-ghost">Today's Deals</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">48+</div><div class="hero-stat-label">Menu Items</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">12</div><div class="hero-stat-label">Grill Cuts</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">4.9★</div><div class="hero-stat-label">Guest Rating</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">20min</div><div class="hero-stat-label">Avg. Wait</div></div>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section id="featured" style="padding:60px 5vw">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">From the Grill</div>
+      <div class="section-title">Chef's Picks</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="featured-grid reveal">
+      <div class="feat-card feat-card-big">
+        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=900&q=80" alt="Signature Ribeye" class="feat-card-img"/>
+        <div class="feat-overlay"></div>
+        <div class="feat-body">
+          <span class="feat-tag">🔥 Bestseller</span>
+          <div class="feat-name">Signature Charcoal Ribeye</div>
+          <div class="feat-price">Ksh 1,850</div>
+        </div>
+      </div>
+      <div class="feat-small-col">
+        <div class="feat-card feat-card-small">
+          <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=700&q=80" alt="Flame Chicken" class="feat-card-img"/>
+          <div class="feat-overlay"></div>
+          <div class="feat-body">
+            <span class="feat-tag">Chef's Pick</span>
+            <div class="feat-name">Half Flame Chicken</div>
+            <div class="feat-price">Ksh 950</div>
+          </div>
+        </div>
+        <div class="feat-card feat-card-small">
+          <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=700&q=80" alt="Grill Platter" class="feat-card-img"/>
+          <div class="feat-overlay"></div>
+          <div class="feat-body">
+            <span class="feat-tag">New</span>
+            <div class="feat-name">Mixed Grill Platter</div>
+            <div class="feat-price">Ksh 2,400</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY BAR -->
+<div id="cat-bar">
+  <div class="cat-inner">
+    <button class="cat-btn active" onclick="scrollToSection('grills')">🥩 Grills</button>
+    <button class="cat-btn" onclick="scrollToSection('chicken')">🍗 Chicken</button>
+    <button class="cat-btn" onclick="scrollToSection('burgers')">🍔 Burgers</button>
+    <button class="cat-btn" onclick="scrollToSection('sides')">🍟 Sides</button>
+    <button class="cat-btn" onclick="scrollToSection('salads')">🥗 Salads</button>
+    <button class="cat-btn" onclick="scrollToSection('starters')">🍢 Starters</button>
+    <button class="cat-btn" onclick="scrollToSection('desserts')">🍨 Desserts</button>
+    <button class="cat-btn" onclick="scrollToSection('drinks')">🥤 Drinks</button>
+  </div>
+</div>
+
+<div id="menu-sections">
+
+<!-- GRILLS -->
+<div id="grills" style="background:var(--ash)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">From the Charcoal</div>
+      <div class="section-title">🥩 Grill Cuts</div>
+      <div class="section-line"></div>
+      <p class="section-desc">All cuts seasoned with our house dry rub and fired over pure hardwood charcoal. Served with choice of one side.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1558030006-450675393462?w=400&q=75" alt="Ribeye"/></div><div class="menu-item-body"><div><div class="menu-item-name">Charcoal Ribeye Steak</div><div class="menu-item-desc">300g grass-fed ribeye, house dry rub, chimichurri butter</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 1,850</span><div class="menu-item-badges"><span class="badge badge-chef">Chef's Pick</span></div><button class="add-btn" onclick="addToast('Ribeye')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=75" alt="Sirloin"/></div><div class="menu-item-body"><div><div class="menu-item-name">Sirloin Steak</div><div class="menu-item-desc">250g sirloin, garlic herb crust, red wine jus</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 1,600</span><div class="menu-item-badges"></div><button class="add-btn" onclick="addToast('Sirloin')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=75" alt="T-Bone"/></div><div class="menu-item-body"><div><div class="menu-item-name">T-Bone 500g</div><div class="menu-item-desc">The centrepiece — bone-in, smoked sea salt, peppercorn sauce</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 2,200</span><div class="menu-item-badges"><span class="badge badge-chef">Signature</span></div><button class="add-btn" onclick="addToast('T-Bone')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=75" alt="Mixed Platter"/></div><div class="menu-item-body"><div><div class="menu-item-name">Mixed Grill Platter</div><div class="menu-item-desc">Ribeye, lamb chop, chicken quarter, merguez sausage. Feeds 2–3</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 2,400</span><div class="menu-item-badges"><span class="badge badge-new">New</span></div><button class="add-btn" onclick="addToast('Mixed Platter')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=400&q=75" alt="Lamb Chops"/></div><div class="menu-item-body"><div><div class="menu-item-name">Lamb Chops (4 pcs)</div><div class="menu-item-desc">Marinated overnight, rosemary & garlic, mint yoghurt</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 1,750</span><div class="menu-item-badges"><span class="badge badge-spicy">Spiced</span></div><button class="add-btn" onclick="addToast('Lamb Chops')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=75" alt="Pork Ribs"/></div><div class="menu-item-body"><div><div class="menu-item-name">BBQ Pork Ribs Half Rack</div><div class="menu-item-desc">Slow-smoked 4 hrs, house BBQ glaze, apple slaw</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 1,950</span><div class="menu-item-badges"><span class="badge badge-chef">Slow Smoked</span></div><button class="add-btn" onclick="addToast('Pork Ribs')">+</button></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHICKEN -->
+<div id="chicken" style="background:var(--ash2)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Fired & Flavoured</div>
+      <div class="section-title">🍗 Chicken</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=400&q=75" alt="Half Chicken"/></div><div class="menu-item-body"><div><div class="menu-item-name">Half Flame Chicken</div><div class="menu-item-desc">Peri-peri marinade, grilled over charcoal, lemon butter drizzle</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 950</span><div class="menu-item-badges"><span class="badge badge-spicy">🌶 Spicy</span></div><button class="add-btn" onclick="addToast('Half Chicken')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c3?w=400&q=75" alt="Full Chicken"/></div><div class="menu-item-body"><div><div class="menu-item-name">Whole Roast Chicken</div><div class="menu-item-desc">Serves 2, herb-brined, rotisserie-style, crispy skin</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 1,650</span><div class="menu-item-badges"><span class="badge badge-new">Share</span></div><button class="add-btn" onclick="addToast('Whole Chicken')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=400&q=75" alt="Chicken Wings"/></div><div class="menu-item-body"><div><div class="menu-item-name">Grill Wings (8 pcs)</div><div class="menu-item-desc">Honey-sriracha or buffalo glaze, celery, blue cheese dip</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 750</span><div class="menu-item-badges"><span class="badge badge-spicy">🌶 Hot</span></div><button class="add-btn" onclick="addToast('Wings')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1606728035253-49e8a23146de?w=400&q=75" alt="Chicken Skewers"/></div><div class="menu-item-body"><div><div class="menu-item-name">Chicken Skewers (3 pcs)</div><div class="menu-item-desc">Tikka spice, capsicum, onion, tzatziki, flatbread</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 820</span><div class="menu-item-badges"></div><button class="add-btn" onclick="addToast('Skewers')">+</button></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BURGERS -->
+<div id="burgers" style="background:var(--ash)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Hand-Pressed Patties</div>
+      <div class="section-title">🍔 Burgers</div>
+      <div class="section-line"></div>
+      <p class="section-desc">All burgers served with hash-cut fries and house sauce. Patties are 180g, cooked medium unless requested otherwise.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=75" alt="Classic Smash"/></div><div class="menu-item-body"><div><div class="menu-item-name">Classic Hash Smash</div><div class="menu-item-desc">Double smash patty, American cheese, pickles, hash sauce</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 850</span><div class="menu-item-badges"><span class="badge badge-chef">Fan Fave</span></div><button class="add-btn" onclick="addToast('Classic Smash')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=75" alt="Bacon Burger"/></div><div class="menu-item-body"><div><div class="menu-item-name">Ember Bacon Burger</div><div class="menu-item-desc">Beef patty, crispy bacon, cheddar, caramelised onion, ember mayo</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 980</span><div class="menu-item-badges"><span class="badge badge-chef">Signature</span></div><button class="add-btn" onclick="addToast('Bacon Burger')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400&q=75" alt="Spicy Burger"/></div><div class="menu-item-body"><div><div class="menu-item-name">The Inferno</div><div class="menu-item-desc">Jalapeño beef patty, ghost pepper sauce, pepper jack, crispy onions</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 920</span><div class="menu-item-badges"><span class="badge badge-spicy">🌶🌶 Extra Hot</span></div><button class="add-btn" onclick="addToast('Inferno Burger')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&q=75" alt="Chicken Burger"/></div><div class="menu-item-body"><div><div class="menu-item-name">Crispy Chicken Burger</div><div class="menu-item-desc">Fried chicken thigh, coleslaw, pickled cucumber, honey mustard</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 850</span><div class="menu-item-badges"></div><button class="add-btn" onclick="addToast('Chicken Burger')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&q=75" alt="Mushroom Burger"/></div><div class="menu-item-body"><div><div class="menu-item-name">Black Bean Grill Burger</div><div class="menu-item-desc">Smoky black bean patty, avocado, tomato salsa, ciabatta bun</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 780</span><div class="menu-item-badges"><span class="badge badge-veg">🌱 Veggie</span></div><button class="add-btn" onclick="addToast('Bean Burger')">+</button></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SIDES -->
+<div id="sides" style="background:var(--ash2)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">The Supporting Cast</div>
+      <div class="section-title">🍟 Sides</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid-wide">
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Hash-Cut Fries</div><div class="wide-desc">Thick-cut, double-fried, smoked paprika salt</div></div><div class="wide-right"><span class="wide-price">Ksh 320</span><button class="add-btn" onclick="addToast('Fries')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Loaded Fries</div><div class="wide-desc">Hash fries, cheddar sauce, jalapeños, bacon bits, sour cream</div></div><div class="wide-right"><span class="wide-price">Ksh 520</span><button class="add-btn" onclick="addToast('Loaded Fries')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Sweet Potato Fries</div><div class="wide-desc">Crispy, cinnamon-dusted, chipotle aioli</div></div><div class="wide-right"><span class="wide-price">Ksh 380</span><button class="add-btn" onclick="addToast('Sweet Potato Fries')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Grilled Corn on the Cob</div><div class="wide-desc">Charred, herb butter, cotija cheese</div></div><div class="wide-right"><span class="wide-price">Ksh 280</span><button class="add-btn" onclick="addToast('Corn')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Coleslaw</div><div class="wide-desc">House-made, apple, fennel, light mayo dressing</div></div><div class="wide-right"><span class="wide-price">Ksh 220</span><button class="add-btn" onclick="addToast('Coleslaw')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Ugali & Sukuma</div><div class="wide-desc">White maize ugali, sautéed sukuma wiki, tomato</div></div><div class="wide-right"><span class="wide-price">Ksh 250</span><button class="add-btn" onclick="addToast('Ugali')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Steamed Rice</div><div class="wide-desc">Basmati, herb-infused, lemon zest</div></div><div class="wide-right"><span class="wide-price">Ksh 200</span><button class="add-btn" onclick="addToast('Rice')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Roasted Garlic Bread</div><div class="wide-desc">Charcoal-toasted ciabatta, roasted garlic butter, parsley</div></div><div class="wide-right"><span class="wide-price">Ksh 260</span><button class="add-btn" onclick="addToast('Garlic Bread')">+</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SALADS -->
+<div id="salads" style="background:var(--ash)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Fresh & Light</div>
+      <div class="section-title">🥗 Salads</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid-wide">
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Grilled Caesar</div><div class="wide-desc">Charred romaine, parmesan, house Caesar dressing, croutons</div></div><div class="wide-right"><span class="wide-price">Ksh 580</span><button class="add-btn" onclick="addToast('Caesar Salad')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Avocado & Tomato</div><div class="wide-desc">Kenyan avocado, heirloom tomato, red onion, basil, olive oil</div></div><div class="wide-right"><span class="wide-price">Ksh 480</span><button class="add-btn" onclick="addToast('Avo Salad')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Hash Steak Salad</div><div class="wide-desc">Sliced sirloin, rocket, cherry tomato, parmesan, balsamic glaze</div></div><div class="wide-right"><span class="wide-price">Ksh 980</span><button class="add-btn" onclick="addToast('Steak Salad')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Watermelon & Feta</div><div class="wide-desc">Fresh watermelon, feta crumble, mint, toasted seeds, honey drizzle</div></div><div class="wide-right"><span class="wide-price">Ksh 520</span><button class="add-btn" onclick="addToast('Watermelon Salad')">+</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STARTERS -->
+<div id="starters" style="background:var(--ash2)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">To Begin</div>
+      <div class="section-title">🍢 Starters</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=400&q=75" alt="Calamari"/></div><div class="menu-item-body"><div><div class="menu-item-name">Crispy Calamari</div><div class="menu-item-desc">Flash-fried, lemon aioli, smoked paprika dip</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 680</span><div class="menu-item-badges"></div><button class="add-btn" onclick="addToast('Calamari')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=75" alt="Samosas"/></div><div class="menu-item-body"><div><div class="menu-item-name">Beef Samosas (4 pcs)</div><div class="menu-item-desc">Spiced mince, crispy pastry, tamarind & coriander chutney</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 420</span><div class="menu-item-badges"><span class="badge badge-spicy">Spiced</span></div><button class="add-btn" onclick="addToast('Samosas')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=400&q=75" alt="Nachos"/></div><div class="menu-item-body"><div><div class="menu-item-name">Grill Nachos</div><div class="menu-item-desc">Tortilla chips, pulled beef, cheddar sauce, jalapeños, salsa</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 780</span><div class="menu-item-badges"><span class="badge badge-chef">Share</span></div><button class="add-btn" onclick="addToast('Nachos')">+</button></div></div></div>
+      <div class="menu-item reveal"><div class="menu-item-img"><img src="https://images.unsplash.com/photo-1639024471283-03518883512d?w=400&q=75" alt="Soup"/></div><div class="menu-item-body"><div><div class="menu-item-name">Pumpkin Bisque</div><div class="menu-item-desc">Roasted pumpkin, coconut cream, ginger, toasted seeds</div></div><div class="menu-item-footer"><span class="menu-item-price">Ksh 480</span><div class="menu-item-badges"><span class="badge badge-veg">🌱 Vegan</span></div><button class="add-btn" onclick="addToast('Pumpkin Bisque')">+</button></div></div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end menu-sections -->
+
+<!-- SPECIALS BAND -->
+<div id="specials-band">
+  <div class="band-inner">
+    <div class="band-text">
+      <div class="eyebrow">🔥 Happy Hour</div>
+      <h2>Mon – Fri, 4PM – 7PM</h2>
+      <p>20% off all grill cuts and half-price wings during Happy Hour. Show up, sit down, and let the fire do the rest.</p>
+    </div>
+    <a href="tel:+254000000000" class="band-cta">Reserve Your Table</a>
+  </div>
+</div>
+
+<!-- COMBO DEALS -->
+<div id="combos" style="background:var(--ash3);padding:70px 5vw">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Value Packs</div>
+      <div class="section-title">Combo Deals</div>
+      <div class="section-line"></div>
+      <p class="section-desc">Feed more, spend less. Our combos are built to share.</p>
+    </div>
+    <div class="combo-grid">
+      <div class="combo-card reveal">
+        <div class="combo-img"><img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=600&q=75" alt=""/><div class="combo-ribbon">Save Ksh 400</div></div>
+        <div class="combo-body"><div class="combo-name">Hash Family Platter</div><div class="combo-items">Mixed grill platter + 4 sides + 4 soft drinks + garlic bread</div><div class="combo-footer"><div><span class="combo-price-old">Ksh 4,200</span><span class="combo-price-new">Ksh 3,800</span></div><span class="combo-save">Best Value</span></div></div>
+      </div>
+      <div class="combo-card reveal">
+        <div class="combo-img"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=75" alt=""/><div class="combo-ribbon">Save Ksh 250</div></div>
+        <div class="combo-body"><div class="combo-name">Burger & Ribs Duo</div><div class="combo-items">2× smash burgers + half rack ribs + 2 loaded fries + 2 drinks</div><div class="combo-footer"><div><span class="combo-price-old">Ksh 3,250</span><span class="combo-price-new">Ksh 3,000</span></div><span class="combo-save">For Two</span></div></div>
+      </div>
+      <div class="combo-card reveal">
+        <div class="combo-img"><img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=75" alt=""/><div class="combo-ribbon">Save Ksh 200</div></div>
+        <div class="combo-body"><div class="combo-name">Chicken Feast</div><div class="combo-items">Whole roast chicken + 8 wings + coleslaw + 4 hash fries + 2 drinks</div><div class="combo-footer"><div><span class="combo-price-old">Ksh 3,600</span><span class="combo-price-new">Ksh 3,400</span></div><span class="combo-save">Feeds 3–4</span></div></div>
+      </div>
+      <div class="combo-card reveal">
+        <div class="combo-img"><img src="https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=75" alt=""/><div class="combo-ribbon">Date Night</div></div>
+        <div class="combo-body"><div class="combo-name">Date Night Grill</div><div class="combo-items">2× ribeye steaks + 2 sides + starter + dessert + 2 mocktails</div><div class="combo-footer"><div><span class="combo-price-old">Ksh 5,800</span><span class="combo-price-new">Ksh 5,200</span></div><span class="combo-save">Save Ksh 600</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DESSERTS -->
+<div id="desserts" style="background:var(--ash)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Sweet Endings</div>
+      <div class="section-title">🍨 Desserts</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid-wide">
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Warm Chocolate Lava Cake</div><div class="wide-desc">Dark chocolate centre, vanilla bean ice cream, raspberry coulis</div></div><div class="wide-right"><span class="wide-price">Ksh 480</span><button class="add-btn" onclick="addToast('Lava Cake')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Charred Pineapple Sundae</div><div class="wide-desc">Grill-caramelised pineapple, coconut ice cream, toasted coconut, caramel</div></div><div class="wide-right"><span class="wide-price">Ksh 420</span><button class="add-btn" onclick="addToast('Pineapple Sundae')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Kenyan Chai Crème Brûlée</div><div class="wide-desc">Masala-spiced custard, caramelised sugar crust, shortbread</div></div><div class="wide-right"><span class="wide-price">Ksh 460</span><button class="add-btn" onclick="addToast('Crème Brûlée')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Malva Pudding</div><div class="wide-desc">South African sticky pudding, custard sauce, toasted almond</div></div><div class="wide-right"><span class="wide-price">Ksh 400</span><button class="add-btn" onclick="addToast('Malva Pudding')">+</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DRINKS -->
+<div id="drinks" style="background:var(--ash2)">
+  <div class="menu-section">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Quench the Fire</div>
+      <div class="section-title">🥤 Drinks</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid-wide" style="margin-bottom:32px">
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Fresh Passion Juice</div><div class="wide-desc">Cold-pressed, unsweetened or sweetened</div></div><div class="wide-right"><span class="wide-price">Ksh 280</span><button class="add-btn" onclick="addToast('Passion Juice')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Watermelon Lemonade</div><div class="wide-desc">Fresh watermelon, lemon, mint, sparkling</div></div><div class="wide-right"><span class="wide-price">Ksh 320</span><button class="add-btn" onclick="addToast('Watermelon Lemonade')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Mango Lassi</div><div class="wide-desc">Alphonso mango, yoghurt, cardamom, honey</div></div><div class="wide-right"><span class="wide-price">Ksh 300</span><button class="add-btn" onclick="addToast('Mango Lassi')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Ember Mocktail</div><div class="wide-desc">Hibiscus, ginger beer, chilli rim, lime — our house signature</div></div><div class="wide-right"><span class="wide-price">Ksh 380</span><button class="add-btn" onclick="addToast('Ember Mocktail')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Kenyan Chai (Spiced)</div><div class="wide-desc">House masala blend, full-cream milk, brown sugar</div></div><div class="wide-right"><span class="wide-price">Ksh 180</span><button class="add-btn" onclick="addToast('Kenyan Chai')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Cold Brew Coffee</div><div class="wide-desc">Single-origin Kenyan AA, 18-hour steep, served over ice</div></div><div class="wide-right"><span class="wide-price">Ksh 320</span><button class="add-btn" onclick="addToast('Cold Brew')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Soft Drinks</div><div class="wide-desc">Coca-Cola, Sprite, Fanta, Stoney · 300ml</div></div><div class="wide-right"><span class="wide-price">Ksh 120</span><button class="add-btn" onclick="addToast('Soft Drink')">+</button></div></div>
+      <div class="menu-item-wide reveal"><div class="wide-left"><div class="wide-name">Still / Sparkling Water</div><div class="wide-desc">500ml · chilled</div></div><div class="wide-right"><span class="wide-price">Ksh 100</span><button class="add-btn" onclick="addToast('Water')">+</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO BAR -->
+<div class="info-bar">
+  <div class="info-bar-inner">
+    <div class="info-legend">
+      <div class="legend-item"><span class="badge badge-chef" style="font-size:10px">Chef's Pick</span> Recommended by our head chef</div>
+      <div class="legend-item"><span class="badge badge-spicy" style="font-size:10px">🌶 Spicy</span> Contains chilli heat</div>
+      <div class="legend-item"><span class="badge badge-veg" style="font-size:10px">🌱 Veg/Vegan</span> Plant-based</div>
+      <div class="legend-item"><span class="badge badge-new" style="font-size:10px">New</span> Newly added</div>
+    </div>
+    <div style="font-size:11px;color:var(--mid)">Prices in Kenyan Shillings (Ksh) · Taxes included · Allergen info available on request</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+        <span style="font-size:20px">🔥</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--cream)">Hash Grill</span>
+      </div>
+      <p>Real fire. Real flavour. A Nairobi grill house built for people who take their food seriously. Walk in hungry, leave satisfied.</p>
+      <div class="footer-socials">
+        <a href="#" class="fsocial" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="fsocial" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="fsocial" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" class="fsocial" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Hours</h4>
+      <ul>
+        <li><a href="#">Mon–Thu: 11AM – 10PM</a></li>
+        <li><a href="#">Fri–Sat: 11AM – 11PM</a></li>
+        <li><a href="#">Sunday: 12PM – 9PM</a></li>
+        <li><a href="#">Happy Hour: Mon–Fri 4–7PM</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Find Us</h4>
+      <ul>
+        <li><a href="#">Nairobi, Kenya</a></li>
+        <li><a href="tel:+254000000000">+254 000 000 000</a></li>
+        <li><a href="#">info@hashgrill.co.ke</a></li>
+        <li><a href="#">Reserve a Table</a></li>
+        <li><a href="#">Private Dining</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Hash Grill. All rights reserved.</span>
+    <span style="color:var(--ember)">Fired with passion · Nairobi, Kenya</span>
+  </div>
+</footer>
+
+<!-- CART TOAST -->
+<div id="cart-toast"></div>
+
+<script>
+// Mobile nav
+function toggleMenu(){
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+
+// Category tab scroll & highlight
+function scrollToSection(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const offset = 66 + 49; // nav + cat bar
+  const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({top, behavior:'smooth'});
+}
+
+// Highlight active category on scroll
+const sections = ['grills','chicken','burgers','sides','salads','starters','desserts','drinks'];
+const catBtns = document.querySelectorAll('.cat-btn');
+window.addEventListener('scroll', () => {
+  const offset = 66 + 49 + 60;
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top <= offset) current = id;
+  });
+  catBtns.forEach((btn, i) => {
+    btn.classList.toggle('active', sections[i] === current);
+  });
+});
+
+// Toast notification
+let toastTimer;
+function addToast(name) {
+  const t = document.getElementById('cart-toast');
+  t.textContent = `✓ ${name} added to order`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// Scroll reveal
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
