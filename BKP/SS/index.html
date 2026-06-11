@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>S&S School of Technical Skills – Events & Decor | Nairobi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --green:#1B3A2F;
+    --green-light:#2E5E47;
+    --gold:#C9A84C;
+    --gold-light:#E8C97A;
+    --offwhite:#F8F5EF;
+    --blush:#F4E8E0;
+    --charcoal:#2D2D2D;
+    --mid:#5A5A5A;
+    --white:#FFFFFF;
+    --radius:12px;
+    --shadow:0 8px 40px rgba(0,0,0,0.12);
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;color:var(--charcoal);background:var(--offwhite);overflow-x:hidden}
+  h1,h2,h3,h4{font-family:'Playfair Display',serif}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:70px;transition:background .35s,box-shadow .35s}
+  nav.scrolled{background:var(--green);box-shadow:0 2px 20px rgba(0,0,0,0.3)}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .nav-logo-circle{width:42px;height:42px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--green);font-size:14px;flex-shrink:0}
+  .nav-logo-text{color:var(--white);font-family:'Playfair Display',serif;font-size:16px;font-weight:600;line-height:1.2}
+  .nav-logo-text span{display:block;font-family:'Inter',sans-serif;font-size:10px;font-weight:400;color:var(--gold-light);letter-spacing:1.5px;text-transform:uppercase}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{color:var(--white);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.5px;transition:color .2s;opacity:.9}
+  .nav-links a:hover{color:var(--gold-light);opacity:1}
+  .nav-cta{background:var(--gold);color:var(--green)!important;padding:8px 18px;border-radius:50px;font-weight:600!important;opacity:1!important}
+  .nav-cta:hover{background:var(--gold-light)!important}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+  .hamburger span{width:24px;height:2px;background:var(--white);border-radius:2px;transition:all .3s}
+  .mobile-menu{display:none;position:fixed;top:70px;left:0;right:0;background:var(--green);z-index:999;flex-direction:column;padding:20px 5vw 30px}
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{color:var(--white);text-decoration:none;padding:14px 0;font-size:15px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .mobile-menu a:last-child{border:none}
+
+  /* ── HERO CAROUSEL ── */
+  #hero{position:relative;height:100vh;min-height:500px;overflow:hidden}
+  .hero-slides{position:absolute;inset:0}
+  .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background-size:cover;background-position:center}
+  .hero-slide.active{opacity:1}
+  .hero-slide:nth-child(1){background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80')}
+  .hero-slide:nth-child(2){background-image:url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&q=80')}
+  .hero-slide:nth-child(3){background-image:url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1600&q=80')}
+  .hero-slide:nth-child(4){background-image:url('https://images.unsplash.com/photo-1561491989-ad2b5eca3e26?w=1600&q=80')}
+  .hero-slide:nth-child(5){background-image:url('https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1600&q=80')}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(27,58,47,.82) 0%,rgba(27,58,47,.5) 60%,rgba(201,168,76,.25) 100%)}
+  .hero-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5vw}
+  .hero-eyebrow{color:var(--gold-light);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fadeUp .8s .3s forwards}
+  .hero-title{color:var(--white);font-size:clamp(2.4rem,6vw,5rem);font-weight:700;line-height:1.1;margin-bottom:20px;opacity:0;animation:fadeUp .8s .5s forwards}
+  .hero-title em{color:var(--gold-light);font-style:italic}
+  .hero-desc{color:rgba(255,255,255,.88);font-size:clamp(.95rem,2vw,1.2rem);max-width:620px;line-height:1.7;margin-bottom:36px;opacity:0;animation:fadeUp .8s .7s forwards}
+  .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .8s .9s forwards}
+  .btn-primary{background:var(--gold);color:var(--green);padding:14px 32px;border-radius:50px;font-weight:600;font-size:15px;text-decoration:none;transition:transform .2s,background .2s;display:inline-block}
+  .btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
+  .btn-outline{border:2px solid var(--white);color:var(--white);padding:13px 30px;border-radius:50px;font-weight:500;font-size:15px;text-decoration:none;transition:all .2s;display:inline-block}
+  .btn-outline:hover{background:rgba(255,255,255,.15)}
+  .hero-dots{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+  .hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;transition:all .3s}
+  .hero-dot.active{background:var(--gold);width:24px;border-radius:4px}
+  .hero-arrows{position:absolute;bottom:50%;transform:translateY(50%);width:100%;display:flex;justify-content:space-between;padding:0 20px;z-index:3}
+  .hero-arrow{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:var(--white);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s;font-size:14px}
+  .hero-arrow:hover{background:var(--gold);border-color:var(--gold);color:var(--green)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ── GOLD DIVIDER ── */
+  .ribbon-divider{display:flex;align-items:center;gap:16px;padding:0 5vw;margin:0 auto;max-width:300px}
+  .ribbon-line{flex:1;height:1px;background:var(--gold)}
+  .ribbon-diamond{width:8px;height:8px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
+
+  /* ── SECTION COMMONS ── */
+  section{padding:80px 5vw}
+  .section-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--green);line-height:1.2;margin-bottom:16px}
+  .section-sub{font-size:1rem;color:var(--mid);line-height:1.7;max-width:560px}
+
+  /* ── ABOUT ── */
+  #about{background:var(--white)}
+  .about-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+  .about-img-wrap{position:relative}
+  .about-img-main{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius);box-shadow:var(--shadow)}
+  .about-badge{position:absolute;bottom:-20px;right:-20px;background:var(--green);color:var(--white);padding:24px;border-radius:var(--radius);text-align:center;box-shadow:var(--shadow)}
+  .about-badge-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);display:block}
+  .about-badge-text{font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.8}
+  .about-text .ribbon-divider{padding:0;margin:20px 0}
+  .about-features{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .about-feat{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--mid)}
+  .about-feat i{color:var(--gold);margin-top:2px;flex-shrink:0}
+
+  /* ── SERVICES ── */
+  #services{background:var(--offwhite)}
+  .services-head{text-align:center;margin-bottom:50px}
+  .services-head .section-sub{margin:0 auto}
+  .services-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+  .service-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.07);transition:transform .3s,box-shadow .3s;position:relative}
+  .service-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+  .service-card-img{height:200px;overflow:hidden}
+  .service-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .service-card:hover .service-card-img img{transform:scale(1.07)}
+  .service-card-body{padding:22px}
+  .service-icon{width:44px;height:44px;background:var(--blush);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .service-icon i{color:var(--gold);font-size:18px}
+  .service-card h3{font-size:1.15rem;color:var(--green);margin-bottom:8px}
+  .service-card p{font-size:.9rem;color:var(--mid);line-height:1.6}
+  .service-tag{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;letter-spacing:1px;color:var(--gold);text-transform:uppercase}
+
+  /* ── TESTIMONIALS ── */
+  #testimonials{background:var(--green);overflow:hidden}
+  .testimonials-head{text-align:center;margin-bottom:50px}
+  .testimonials-head .section-label{color:var(--gold-light)}
+  .testimonials-head .section-title{color:var(--white)}
+  .testi-carousel{max-width:800px;margin:0 auto;position:relative}
+  .testi-track{display:flex;transition:transform .5s ease}
+  .testi-slide{min-width:100%;padding:0 20px}
+  .testi-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:40px;text-align:center}
+  .testi-stars{color:var(--gold);font-size:18px;margin-bottom:20px;letter-spacing:3px}
+  .testi-quote{color:rgba(255,255,255,.9);font-family:'Playfair Display',serif;font-size:clamp(1rem,2vw,1.2rem);line-height:1.8;margin-bottom:28px;font-style:italic}
+  .testi-author{display:flex;align-items:center;justify-content:center;gap:14px}
+  .testi-avatar{width:52px;height:52px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--green);font-size:18px;flex-shrink:0}
+  .testi-name{color:var(--white);font-weight:600;font-size:15px}
+  .testi-role{color:var(--gold-light);font-size:12px;margin-top:2px}
+  .testi-nav{display:flex;justify-content:center;gap:10px;margin-top:30px}
+  .testi-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s}
+  .testi-dot.active{background:var(--gold);width:22px;border-radius:4px}
+
+  /* ── STATS ── */
+  #stats{background:var(--gold);padding:50px 5vw}
+  .stats-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;text-align:center}
+  .stat-item{position:relative}
+  .stat-item+.stat-item::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:rgba(27,58,47,.2)}
+  .stat-num{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--green)}
+  .stat-label{font-size:13px;font-weight:500;color:var(--green);opacity:.75;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+  .stat-icon{font-size:22px;color:var(--green);opacity:.5;margin-bottom:8px}
+
+  /* ── COURSES ── */
+  #courses{background:var(--white)}
+  .courses-head{text-align:center;margin-bottom:50px}
+  .courses-head .section-sub{margin:0 auto}
+  .courses-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px}
+  .course-card{border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);background:var(--offwhite);transition:transform .3s,box-shadow .3s;display:flex;flex-direction:column}
+  .course-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+  .course-header{background:var(--green);padding:28px 24px 20px;position:relative}
+  .course-level{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.15);padding:4px 10px;border-radius:50px;border:1px solid rgba(201,168,76,.4);margin-bottom:12px}
+  .course-header h3{color:var(--white);font-size:1.25rem;line-height:1.3}
+  .course-header-icon{position:absolute;right:20px;top:20px;width:40px;height:40px;background:rgba(255,255,255,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:18px}
+  .course-body{padding:22px;flex:1;display:flex;flex-direction:column}
+  .course-body p{font-size:.9rem;color:var(--mid);line-height:1.65;flex:1}
+  .course-meta{display:flex;gap:16px;margin:18px 0;flex-wrap:wrap}
+  .course-meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mid)}
+  .course-meta-item i{color:var(--gold)}
+  .course-enrol{display:block;background:var(--green);color:var(--white);text-align:center;padding:12px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s;letter-spacing:.5px;margin-top:auto}
+  .course-enrol:hover{background:var(--green-light)}
+
+  /* ── CONTACT / ENROLMENT ── */
+  #contact{background:var(--offwhite)}
+  .contact-inner{max-width:1200px;margin:0 auto}
+  .contact-tabs{display:flex;gap:0;margin-bottom:36px;border-radius:var(--radius);overflow:hidden;border:2px solid var(--green);max-width:400px}
+  .contact-tab{flex:1;padding:13px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--green);background:transparent}
+  .contact-tab.active{background:var(--green);color:var(--white)}
+  .contact-pane{display:none}
+  .contact-pane.active{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .form-group{margin-bottom:18px}
+  .form-group label{display:block;font-size:13px;font-weight:600;color:var(--green);margin-bottom:6px}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border:1.5px solid #E0DAD0;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;background:var(--white);color:var(--charcoal);transition:border-color .2s;outline:none}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+  .form-group textarea{height:120px;resize:vertical}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .btn-submit{background:var(--green);color:var(--white);border:none;padding:14px 36px;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,transform .2s;width:100%}
+  .btn-submit:hover{background:var(--green-light);transform:translateY(-1px)}
+  .map-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);height:100%;min-height:420px}
+  .map-wrap iframe{width:100%;height:100%;min-height:420px;border:none}
+  .contact-info{margin-top:24px;display:flex;flex-direction:column;gap:14px}
+  .contact-info-item{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--mid)}
+  .contact-info-item i{color:var(--gold);margin-top:2px;flex-shrink:0;font-size:16px}
+
+  /* ── FOOTER ── */
+  footer{background:var(--green);color:rgba(255,255,255,.7);padding:60px 5vw 30px}
+  .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:50px;margin-bottom:40px}
+  .footer-brand p{font-size:.9rem;line-height:1.7;margin:14px 0}
+  .footer-col h4{color:var(--white);font-size:14px;font-weight:600;margin-bottom:16px;font-family:'Inter',sans-serif}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .footer-col ul a{color:rgba(255,255,255,.65);text-decoration:none;font-size:13px;transition:color .2s}
+  .footer-col ul a:hover{color:var(--gold-light)}
+  .footer-socials{display:flex;gap:10px;margin-top:16px}
+  .footer-social{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.65);font-size:14px;text-decoration:none;transition:all .2s}
+  .footer-social:hover{background:var(--gold);border-color:var(--gold);color:var(--green)}
+  .footer-bottom{max-width:1200px;margin:0 auto;border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:12px}
+
+  /* ── WHATSAPP FAB ── */
+  .wa-fab{position:fixed;bottom:28px;right:28px;z-index:2000;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;box-shadow:0 6px 24px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s,box-shadow .2s}
+  .wa-fab:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(37,211,102,.55)}
+  .wa-pulse{position:absolute;inset:0;border-radius:50%;background:#25D366;animation:waPulse 2s infinite}
+  @keyframes waPulse{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
+  .wa-fab i{position:relative;z-index:1}
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease}
+  .reveal-left.visible{opacity:1;transform:translateX(0)}
+  .reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease}
+  .reveal-right.visible{opacity:1;transform:translateX(0)}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1024px){
+    .footer-grid{grid-template-columns:1fr 1fr}
+    .about-badge{right:-10px;bottom:-10px;padding:18px}
+  }
+  @media(max-width:768px){
+    nav .nav-links{display:none}
+    .hamburger{display:flex}
+    .about-inner{grid-template-columns:1fr;gap:40px}
+    .about-badge{right:10px;bottom:-15px}
+    .about-features{grid-template-columns:1fr}
+    section{padding:60px 5vw}
+    .contact-pane.active{grid-template-columns:1fr}
+    .form-row{grid-template-columns:1fr}
+    .stat-item+.stat-item::before{display:none}
+    .footer-grid{grid-template-columns:1fr;gap:30px}
+    .footer-bottom{flex-direction:column;text-align:center}
+    .hero-arrows{display:none}
+    .courses-grid{grid-template-columns:1fr}
+    .services-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:480px){
+    .hero-title{font-size:2rem}
+    .hero-desc{font-size:.9rem}
+    .hero-btns{flex-direction:column;align-items:center}
+    .btn-primary,.btn-outline{width:100%;max-width:280px;text-align:center}
+    .contact-tabs{max-width:100%}
+    .testi-card{padding:28px 20px}
+  }
+  @media(min-width:1400px){
+    .services-grid{grid-template-columns:repeat(4,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-circle">S&S</div>
+    <div class="nav-logo-text">S&S School<span>of Technical Skills</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact" class="nav-cta">Enrol Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#courses" onclick="toggleMenu()">Courses</a>
+  <a href="#testimonials" onclick="toggleMenu()">Reviews</a>
+  <a href="#contact" onclick="toggleMenu()">Contact Us</a>
+  <a href="#contact" onclick="toggleMenu()" style="color:var(--gold-light);font-weight:600">Enrol Now</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-slides">
+    <div class="hero-slide active"></div>
+    <div class="hero-slide"></div>
+    <div class="hero-slide"></div>
+    <div class="hero-slide"></div>
+    <div class="hero-slide"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Nairobi's Premier Decor School</p>
+    <h1 class="hero-title">Where <em>Elegance</em> Becomes<br>a Profession</h1>
+    <p class="hero-desc">S&S School of Technical Skills trains the next generation of event decorators, wedding stylists, and celebration artists. Located in Kilimani, Nairobi.</p>
+    <div class="hero-btns">
+      <a href="#courses" class="btn-primary">Explore Courses</a>
+      <a href="#contact" class="btn-outline">Enrol Today</a>
+    </div>
+  </div>
+  <div class="hero-arrows">
+    <div class="hero-arrow" onclick="heroSlide(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+    <div class="hero-arrow" onclick="heroSlide(1)"><i class="fa-solid fa-chevron-right"></i></div>
+  </div>
+  <div class="hero-dots" id="heroDots"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-img-wrap reveal-left">
+      <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80" alt="S&S School training session" class="about-img-main"/>
+      <div class="about-badge">
+        <span class="about-badge-num">10+</span>
+        <span class="about-badge-text">Years of<br>Excellence</span>
+      </div>
+    </div>
+    <div class="about-text reveal-right">
+      <p class="section-label">About Us</p>
+      <h2 class="section-title">Crafting Celebration<br>Artisans in Nairobi</h2>
+      <div class="ribbon-divider">
+        <div class="ribbon-line"></div>
+        <div class="ribbon-diamond"></div>
+        <div class="ribbon-line"></div>
+      </div>
+      <p class="section-sub" style="max-width:100%">S&S School of Technical Skills is Nairobi's leading institution for events décor and styling. Nestled in Kilimani along Elgeyo Marakwet Road, we transform passionate beginners into sought-after professional decorators.</p>
+      <p style="font-size:.9rem;color:var(--mid);line-height:1.7;margin-top:16px">Our hands-on curriculum covers everything from grand weddings and ruracio ceremonies to intimate baby showers and corporate events. Every class is guided by industry practitioners with real-world event experience.</p>
+      <div class="about-features">
+        <div class="about-feat"><i class="fa-solid fa-check-circle"></i><span>Certified professional instructors</span></div>
+        <div class="about-feat"><i class="fa-solid fa-check-circle"></i><span>Practical hands-on training</span></div>
+        <div class="about-feat"><i class="fa-solid fa-check-circle"></i><span>Industry-recognised certificates</span></div>
+        <div class="about-feat"><i class="fa-solid fa-check-circle"></i><span>Flexible class schedules</span></div>
+        <div class="about-feat"><i class="fa-solid fa-check-circle"></i><span>Job placement support</span></div>
+        <div class="about-feat"><i class="fa-solid fa-check-circle"></i><span>Active alumni network</span></div>
+      </div>
+      <a href="#contact" class="btn-primary" style="margin-top:30px;display:inline-block">Start Your Journey</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-head reveal">
+    <p class="section-label">What We Do</p>
+    <h2 class="section-title">Events We Specialise In</h2>
+    <p class="section-sub">From intimate gatherings to grand celebrations — we teach you to design and execute every occasion with artistry and precision.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Wedding Decor"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-rings-wedding"></i></div>
+        <h3>Wedding Decor</h3>
+        <p>Master the art of creating dreamy, bespoke wedding environments — from floral arches to table centrepieces and grand venue transformations.</p>
+        <span class="service-tag">↗ Signature Course</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?w=600&q=80" alt="Ruracio"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-earth-africa"></i></div>
+        <h3>Ruracio (Traditional)</h3>
+        <p>Celebrate cultural heritage with authentic, beautifully styled ruracio setups that honour tradition while exuding modern elegance.</p>
+        <span class="service-tag">↗ Cultural Specialty</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80" alt="Graduation"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h3>Graduation Events</h3>
+        <p>Design milestone celebrations that capture achievement — elegant décor, stage setups, and memorable photo backdrops for graduates.</p>
+        <span class="service-tag">↗ Milestone Decor</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1561491989-ad2b5eca3e26?w=600&q=80" alt="Baby Shower"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-baby"></i></div>
+        <h3>Baby Showers</h3>
+        <p>Create sweet, whimsical atmospheres for baby shower celebrations with balloon arches, candy tables, and themed decor setups.</p>
+        <span class="service-tag">↗ Popular Package</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600&q=80" alt="Bridal Shower"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+        <h3>Bridal Showers</h3>
+        <p>Style enchanting bridal shower experiences with elegant floral arrangements, luxurious colour palettes, and Instagram-worthy setups.</p>
+        <span class="service-tag">↗ Trending</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80" alt="Birthday"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-cake-candles"></i></div>
+        <h3>Birthday Parties</h3>
+        <p>From children's themed parties to sophisticated adult milestone celebrations — design unforgettable birthday experiences of all scales.</p>
+        <span class="service-tag">↗ All Ages</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80" alt="Corporate Events"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
+        <h3>Corporate Events</h3>
+        <p>Professional décor for product launches, award ceremonies, gala dinners, and corporate conferences that leave lasting impressions.</p>
+        <span class="service-tag">↗ Professional</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-img"><img src="https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=600&q=80" alt="General Events"/></div>
+      <div class="service-card-body">
+        <div class="service-icon"><i class="fa-solid fa-star"></i></div>
+        <h3>All Events Decor</h3>
+        <p>A comprehensive foundation covering décor principles, colour theory, vendor management, and event logistics for any occasion.</p>
+        <span class="service-tag">↗ Foundation Course</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testimonials-head reveal">
+    <p class="section-label">Testimonials</p>
+    <h2 class="section-title" style="color:var(--white)">Stories from Our Graduates</h2>
+  </div>
+  <div class="testi-carousel reveal">
+    <div class="testi-track" id="testiTrack">
+      <div class="testi-slide">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"S&S completely transformed my career. Within three months of graduating I was booked for 12 weddings. The practical training is second to none in Nairobi."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">W</div>
+            <div><div class="testi-name">Wanjiru Kamau</div><div class="testi-role">Wedding Decorator · Nairobi</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-slide">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"The ruracio and traditional events module was eye-opening. I now run my own decor business serving Kikuyu, Luo, and Kalenjin ceremonies. Truly cultural and modern."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">A</div>
+            <div><div class="testi-name">Achieng Odhiambo</div><div class="testi-role">Cultural Events Stylist · Kisumu</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-slide">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"I enrolled with zero experience. The instructors were patient, knowledgeable, and genuinely invested in our success. My first baby shower job earned me Ksh 45,000!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">F</div>
+            <div><div class="testi-name">Fatuma Hassan</div><div class="testi-role">Baby Shower Specialist · Mombasa</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-slide">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"Flexible evening classes meant I could train while still employed. Now I do decor full-time and my income has tripled. S&S is the best investment I've ever made."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">M</div>
+            <div><div class="testi-name">Moses Kibet</div><div class="testi-role">Full-Time Event Decorator · Eldoret</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-slide">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"The bridal shower and wedding combo course gave me a niche. I'm now the go-to decorator in Karen and Lavington. The alumni network continues to refer clients to me."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">G</div>
+            <div><div class="testi-name">Grace Muthoni</div><div class="testi-role">Bridal Stylist · Nairobi</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-nav" id="testiDots"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+      <div class="stat-num" data-target="2400">0</div>
+      <div class="stat-label">Graduates Trained</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
+      <div class="stat-num" data-target="10">0</div>
+      <div class="stat-label">Years of Excellence</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-icon"><i class="fa-solid fa-chalkboard-teacher"></i></div>
+      <div class="stat-num" data-target="18">0</div>
+      <div class="stat-label">Expert Instructors</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-icon"><i class="fa-brands fa-instagram"></i></div>
+      <div class="stat-num" data-target="12">0</div>
+      <div class="stat-label">K Social Followers</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+      <div class="stat-num" data-target="5800">0</div>
+      <div class="stat-label">Events Decorated</div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="courses-head reveal">
+    <p class="section-label">Enrol Today</p>
+    <h2 class="section-title">Courses on Offer</h2>
+    <p class="section-sub">Professional, practical, and nationally recognised. Choose the programme that fits your ambition and schedule.</p>
+  </div>
+  <div class="courses-grid">
+    <div class="course-card reveal">
+      <div class="course-header">
+        <div class="course-header-icon"><i class="fa-solid fa-rings-wedding"></i></div>
+        <span class="course-level">Intermediate</span>
+        <h3>Wedding & Bridal Decor</h3>
+      </div>
+      <div class="course-body">
+        <p>Master floral design, draping, lighting, table layouts, and bridal suite styling. Learn to coordinate entire wedding décor from concept to execution.</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><i class="fa-solid fa-clock"></i> 8 Weeks</span>
+          <span class="course-meta-item"><i class="fa-solid fa-calendar"></i> Weekdays / Weekend</span>
+          <span class="course-meta-item"><i class="fa-solid fa-certificate"></i> Certified</span>
+        </div>
+        <a href="#contact" class="course-enrol" onclick="switchToEnrol()">Enrol Now</a>
+      </div>
+    </div>
+    <div class="course-card reveal">
+      <div class="course-header">
+        <div class="course-header-icon"><i class="fa-solid fa-earth-africa"></i></div>
+        <span class="course-level">Beginner–Advanced</span>
+        <h3>Traditional & Ruracio Styling</h3>
+      </div>
+      <div class="course-body">
+        <p>Understand cultural décor requirements across Kenyan traditions. Learn authentic material sourcing, colour significance, and venue transformation for traditional ceremonies.</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><i class="fa-solid fa-clock"></i> 4 Weeks</span>
+          <span class="course-meta-item"><i class="fa-solid fa-calendar"></i> Flexible</span>
+          <span class="course-meta-item"><i class="fa-solid fa-certificate"></i> Certified</span>
+        </div>
+        <a href="#contact" class="course-enrol" onclick="switchToEnrol()">Enrol Now</a>
+      </div>
+    </div>
+    <div class="course-card reveal">
+      <div class="course-header">
+        <div class="course-header-icon"><i class="fa-solid fa-baby"></i></div>
+        <span class="course-level">Beginner</span>
+        <h3>Baby & Bridal Shower Design</h3>
+      </div>
+      <div class="course-body">
+        <p>Specialise in intimate celebration décor — balloon artistry, dessert table styling, backdrop design, and floral installations for baby and bridal showers.</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><i class="fa-solid fa-clock"></i> 3 Weeks</span>
+          <span class="course-meta-item"><i class="fa-solid fa-calendar"></i> Weekend Friendly</span>
+          <span class="course-meta-item"><i class="fa-solid fa-certificate"></i> Certified</span>
+        </div>
+        <a href="#contact" class="course-enrol" onclick="switchToEnrol()">Enrol Now</a>
+      </div>
+    </div>
+    <div class="course-card reveal">
+      <div class="course-header">
+        <div class="course-header-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <span class="course-level">All Levels</span>
+        <h3>Graduation & Milestone Events</h3>
+      </div>
+      <div class="course-body">
+        <p>Design dignified, memorable graduation celebrations — stage décor, photo walls, colour-coordinated table settings, and outdoor venue styling.</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><i class="fa-solid fa-clock"></i> 3 Weeks</span>
+          <span class="course-meta-item"><i class="fa-solid fa-calendar"></i> Weekday / Evening</span>
+          <span class="course-meta-item"><i class="fa-solid fa-certificate"></i> Certified</span>
+        </div>
+        <a href="#contact" class="course-enrol" onclick="switchToEnrol()">Enrol Now</a>
+      </div>
+    </div>
+    <div class="course-card reveal">
+      <div class="course-header">
+        <div class="course-header-icon"><i class="fa-solid fa-cake-candles"></i></div>
+        <span class="course-level">Beginner–Intermediate</span>
+        <h3>Birthday Party Decor</h3>
+      </div>
+      <div class="course-body">
+        <p>From kids' themed parties to elegant adult celebrations — learn themed décor creation, balloon sculpting, cake table styling, and fun photo installations.</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><i class="fa-solid fa-clock"></i> 2 Weeks</span>
+          <span class="course-meta-item"><i class="fa-solid fa-calendar"></i> Flexible</span>
+          <span class="course-meta-item"><i class="fa-solid fa-certificate"></i> Certified</span>
+        </div>
+        <a href="#contact" class="course-enrol" onclick="switchToEnrol()">Enrol Now</a>
+      </div>
+    </div>
+    <div class="course-card reveal">
+      <div class="course-header" style="background:linear-gradient(135deg,var(--green) 0%,#3a7055 100%)">
+        <div class="course-header-icon"><i class="fa-solid fa-star"></i></div>
+        <span class="course-level" style="border-color:var(--gold-light);color:var(--gold-light)">Flagship Programme</span>
+        <h3>Comprehensive Events Decor Diploma</h3>
+      </div>
+      <div class="course-body">
+        <p>Our most complete programme — covering all event types, business setup, vendor relations, pricing, client management, and a live practicum event. Launch your career with confidence.</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><i class="fa-solid fa-clock"></i> 16 Weeks</span>
+          <span class="course-meta-item"><i class="fa-solid fa-calendar"></i> Full or Part Time</span>
+          <span class="course-meta-item"><i class="fa-solid fa-certificate"></i> Diploma</span>
+        </div>
+        <a href="#contact" class="course-enrol" onclick="switchToEnrol()" style="background:var(--gold);color:var(--green)">Enrol Now — Flagship</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal" style="margin-bottom:0">
+      <p class="section-label">Get In Touch</p>
+      <h2 class="section-title">Contact Us & Enrolment</h2>
+      <p class="section-sub" style="margin-bottom:28px">Have questions or ready to start? Reach out or fill in the enrolment form below.</p>
+    </div>
+    <div class="contact-tabs reveal">
+      <div class="contact-tab active" onclick="switchTab('contact-form')">Contact Us</div>
+      <div class="contact-tab" onclick="switchTab('enrol-form')">Enrolment Form</div>
+    </div>
+
+    <!-- CONTACT PANE -->
+    <div class="contact-pane active" id="contact-form">
+      <div>
+        <div class="form-group"><label>Full Name</label><input type="text" placeholder="Jane Wanjiku"/></div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="jane@example.com"/></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+254 7XX XXX XXX"/></div>
+        <div class="form-group"><label>Subject</label>
+          <select>
+            <option>General Enquiry</option>
+            <option>Course Information</option>
+            <option>Enrolment</option>
+            <option>Partnership</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Tell us how we can help you…"></textarea></div>
+        <button class="btn-submit">Send Message <i class="fa-solid fa-paper-plane" style="margin-left:6px"></i></button>
+        <div class="contact-info" style="margin-top:28px">
+          <div class="contact-info-item"><i class="fa-solid fa-location-dot"></i><span>Elgeyo Marakwet Road, Kilimani, Nairobi</span></div>
+          <div class="contact-info-item"><i class="fa-solid fa-phone"></i><span>+254 795 770 401</span></div>
+          <div class="contact-info-item"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp: +254 795 770 401</span></div>
+          <div class="contact-info-item"><i class="fa-solid fa-clock"></i><span>Mon – Sat: 8:00 AM – 6:00 PM</span></div>
+        </div>
+      </div>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.802624!2d36.782!3d-1.295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d60e9b4a61%3A0x8e3c6a2af9b1e2d4!2sElgeyo%20Marakwet%20Road%2C%20Kilimani%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1700000000000"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="S&S School Location - Kilimani Nairobi"></iframe>
+      </div>
+    </div>
+
+    <!-- ENROLMENT PANE -->
+    <div class="contact-pane" id="enrol-form">
+      <div>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane"/></div>
+          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Wanjiku"/></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="jane@example.com"/></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+254 7XX XXX XXX"/></div>
+        <div class="form-group"><label>National ID / Passport</label><input type="text" placeholder="ID Number"/></div>
+        <div class="form-group"><label>Course of Interest</label>
+          <select>
+            <option>— Select Course —</option>
+            <option>Comprehensive Events Decor Diploma (16 Weeks)</option>
+            <option>Wedding & Bridal Decor (8 Weeks)</option>
+            <option>Traditional & Ruracio Styling (4 Weeks)</option>
+            <option>Baby & Bridal Shower Design (3 Weeks)</option>
+            <option>Graduation & Milestone Events (3 Weeks)</option>
+            <option>Birthday Party Decor (2 Weeks)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Preferred Schedule</label>
+            <select>
+              <option>Weekday Mornings</option>
+              <option>Weekday Evenings</option>
+              <option>Weekend Classes</option>
+              <option>Full Time</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Intake</label>
+            <select>
+              <option>January Intake</option>
+              <option>March Intake</option>
+              <option>June Intake</option>
+              <option>September Intake</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>How Did You Hear About Us?</label>
+          <select>
+            <option>Social Media (Instagram/Facebook)</option>
+            <option>Word of Mouth / Referral</option>
+            <option>Google Search</option>
+            <option>WhatsApp</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Additional Message (Optional)</label><textarea placeholder="Any questions or special requirements…" style="height:90px"></textarea></div>
+        <button class="btn-submit">Submit Enrolment <i class="fa-solid fa-check" style="margin-left:6px"></i></button>
+      </div>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.802624!2d36.782!3d-1.295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d60e9b4a61%3A0x8e3c6a2af9b1e2d4!2sElgeyo%20Marakwet%20Road%2C%20Kilimani%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1700000000001"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="S&S School Location - Kilimani Nairobi"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#hero" class="nav-logo" style="margin-bottom:0">
+        <div class="nav-logo-circle">S&S</div>
+        <div class="nav-logo-text">S&S School<span>of Technical Skills</span></div>
+      </a>
+      <p>Nairobi's leading school for events décor and styling. Empowering passionate decorators with professional skills since 2014.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="footer-social" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="footer-social" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://wa.me/254795770401" class="footer-social" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="#" class="footer-social" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Our Services</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Courses</h4>
+      <ul>
+        <li><a href="#courses">Events Decor Diploma</a></li>
+        <li><a href="#courses">Wedding Decor</a></li>
+        <li><a href="#courses">Ruracio Styling</a></li>
+        <li><a href="#courses">Baby Shower Design</a></li>
+        <li><a href="#courses">Birthday Decor</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">Elgeyo Marakwet Rd, Kilimani</a></li>
+        <li><a href="tel:+254795770401">+254 795 770 401</a></li>
+        <li><a href="https://wa.me/254795770401">WhatsApp Us</a></li>
+        <li><a href="mailto:info@snsschool.co.ke">info@snsschool.co.ke</a></li>
+        <li><a href="#">Mon–Sat: 8AM–6PM</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 S&S School of Technical Skills. All rights reserved.</span>
+    <span style="color:var(--gold-light)">Kilimani, Nairobi · Events Decor Excellence</span>
+  </div>
+</footer>
+
+<!-- WHATSAPP FAB -->
+<a href="https://wa.me/254795770401?text=Hello%20S%26S%20School%2C%20I%27d%20like%20to%20know%20more%20about%20your%20courses."
+   class="wa-fab" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <div class="wa-pulse"></div>
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<script>
+// ── NAVBAR SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ── MOBILE MENU ──
+function toggleMenu() {
+  const m = document.getElementById('mobileMenu');
+  m.classList.toggle('open');
+}
+
+// ── HERO CAROUSEL ──
+let heroIdx = 0;
+const heroSlides = document.querySelectorAll('.hero-slide');
+const dotsContainer = document.getElementById('heroDots');
+heroSlides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'hero-dot' + (i===0?' active':'');
+  d.onclick = () => goHero(i);
+  dotsContainer.appendChild(d);
+});
+function updateHero() {
+  heroSlides.forEach((s,i) => s.classList.toggle('active', i===heroIdx));
+  document.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i===heroIdx));
+}
+function heroSlide(dir) {
+  heroIdx = (heroIdx + dir + heroSlides.length) % heroSlides.length;
+  updateHero();
+}
+function goHero(i) { heroIdx = i; updateHero(); }
+setInterval(() => heroSlide(1), 5500);
+
+// ── TESTIMONIALS CAROUSEL ──
+let testiIdx = 0;
+const testiSlides = document.querySelectorAll('.testi-slide');
+const testiDots = document.getElementById('testiDots');
+testiSlides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'testi-dot' + (i===0?' active':'');
+  d.onclick = () => goTesti(i);
+  testiDots.appendChild(d);
+});
+function updateTesti() {
+  document.getElementById('testiTrack').style.transform = `translateX(-${testiIdx*100}%)`;
+  document.querySelectorAll('.testi-dot').forEach((d,i) => d.classList.toggle('active', i===testiIdx));
+}
+function goTesti(i) { testiIdx=i; updateTesti(); }
+setInterval(() => { testiIdx=(testiIdx+1)%testiSlides.length; updateTesti(); }, 6000);
+
+// ── CONTACT TABS ──
+function switchTab(id) {
+  document.querySelectorAll('.contact-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.contact-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = document.querySelectorAll('.contact-tab');
+  tabs[id==='contact-form'?0:1].classList.add('active');
+}
+function switchToEnrol() {
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+  setTimeout(() => switchTab('enrol-form'), 600);
+}
+
+// ── SCROLL REVEAL ──
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObserver.observe(el));
+
+// ── COUNTER ANIMATION ──
+function animateCounters() {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = +el.dataset.target;
+    const suffix = el.nextElementSibling?.textContent.includes('Followers') ? 'K+' : '+';
+    let current = 0;
+    const step = Math.ceil(target / 60);
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current + suffix;
+      if(current >= target) clearInterval(timer);
+    }, 28);
+  });
+}
+const statsObserver = new IntersectionObserver((entries) => {
+  if(entries[0].isIntersecting) { animateCounters(); statsObserver.disconnect(); }
+}, { threshold: 0.3 });
+const statsEl = document.getElementById('stats');
+if(statsEl) statsObserver.observe(statsEl);
+</script>
+</body>
+</html>
