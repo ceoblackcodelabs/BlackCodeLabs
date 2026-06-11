@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Eternal Bouquets – Luxury Preserved Flowers</title>
+<style>
+  /* ─── Reset & Base ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rose:    #c2185b;
+    --blush:   #f8bbd0;
+    --cream:   #fff8f0;
+    --dark:    #1a0a0f;
+    --muted:   #6d4c57;
+    --gold:    #c9a84c;
+    --white:   #ffffff;
+    --shadow:  0 8px 32px rgba(0,0,0,.18);
+    --radius:  14px;
+    --trans:   .35s cubic-bezier(.4,0,.2,1);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Georgia', serif; background: var(--cream); color: var(--dark); overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  /* ─── Nav ─── */
+  nav {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; height: 68px;
+    background: rgba(255,255,255,.12); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    transition: background var(--trans);
+  }
+  nav.scrolled { background: rgba(255,255,255,.97); box-shadow: 0 2px 18px rgba(0,0,0,.10); }
+  nav.scrolled .nav-logo, nav.scrolled .nav-links a { color: var(--dark); }
+  .nav-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: .04em; color: #fff; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: #fff; font-size: .95rem; letter-spacing: .06em; text-transform: uppercase; transition: color var(--trans); }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-right { display: flex; align-items: center; gap: 1.2rem; }
+  .cart-btn {
+    position: relative; cursor: pointer;
+    background: var(--rose); color: #fff; border: none;
+    padding: .5rem 1.2rem; border-radius: 30px; font-size: .9rem;
+    display: flex; align-items: center; gap: .5rem; transition: background var(--trans);
+  }
+  .cart-btn:hover { background: #ad1457; }
+  .cart-count {
+    background: var(--gold); color: var(--dark); border-radius: 50%;
+    width: 20px; height: 20px; display: flex; align-items: center;
+    justify-content: center; font-size: .7rem; font-weight: 700;
+  }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 26px; height: 2px; background: #fff; border-radius: 2px; transition: var(--trans); }
+  nav.scrolled .hamburger span { background: var(--dark); }
+
+  /* ─── Hero Carousel ─── */
+  #hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+  #three-canvas { position: absolute; inset: 0; z-index: 0; }
+  .slides { position: absolute; inset: 0; }
+  .slide {
+    position: absolute; inset: 0; opacity: 0;
+    background-size: cover; background-position: center;
+    transition: opacity 1.2s ease;
+  }
+  .slide.active { opacity: 1; }
+  .slide::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,10,15,.55) 0%, rgba(194,24,91,.15) 100%);
+  }
+
+  /* Unsplash flower images (free to use) */
+  .slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1490750967868-88df5691cc5e?w=1600&auto=format&fit=crop'); }
+  .slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1519378058457-4c29a0a2efac?w=1600&auto=format&fit=crop'); }
+  .slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=1600&auto=format&fit=crop'); }
+  .slide:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1487530811015-780e47af1f0e?w=1600&auto=format&fit=crop'); }
+
+  .hero-content {
+    position: relative; z-index: 2; height: 100%;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center; padding: 0 5%;
+  }
+  .hero-tag {
+    display: inline-block; background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.4); color: #fff;
+    padding: .35rem 1.2rem; border-radius: 30px; font-size: .8rem;
+    letter-spacing: .14em; text-transform: uppercase; margin-bottom: 1.4rem;
+    backdrop-filter: blur(6px);
+  }
+  .hero-title {
+    font-size: clamp(2.6rem, 6vw, 5.5rem); color: #fff;
+    line-height: 1.12; margin-bottom: 1.2rem;
+    text-shadow: 0 4px 24px rgba(0,0,0,.35);
+  }
+  .hero-title em { color: var(--gold); font-style: italic; }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.25rem); color: rgba(255,255,255,.85);
+    max-width: 580px; margin-bottom: 2.2rem; line-height: 1.7;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    padding: .85rem 2.4rem; background: var(--rose); color: #fff;
+    border-radius: 40px; font-size: 1rem; font-family: inherit;
+    border: none; cursor: pointer; transition: transform var(--trans), box-shadow var(--trans), background var(--trans);
+    box-shadow: 0 4px 20px rgba(194,24,91,.45);
+  }
+  .btn-primary:hover { background: #ad1457; transform: translateY(-3px); box-shadow: 0 8px 28px rgba(194,24,91,.5); }
+  .btn-outline {
+    padding: .85rem 2.4rem; background: transparent; color: #fff;
+    border: 2px solid rgba(255,255,255,.7); border-radius: 40px;
+    font-size: 1rem; font-family: inherit; cursor: pointer;
+    transition: background var(--trans), color var(--trans);
+  }
+  .btn-outline:hover { background: rgba(255,255,255,.15); }
+
+  .carousel-dots {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    z-index: 3; display: flex; gap: .6rem;
+  }
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: rgba(255,255,255,.45); cursor: pointer; transition: background var(--trans), transform var(--trans);
+  }
+  .dot.active { background: var(--gold); transform: scale(1.4); }
+  .carousel-arrow {
+    position: absolute; top: 50%; z-index: 3; transform: translateY(-50%);
+    background: rgba(255,255,255,.15); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.3); color: #fff;
+    width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+    font-size: 1.4rem; display: flex; align-items: center; justify-content: center;
+    transition: background var(--trans);
+  }
+  .carousel-arrow:hover { background: rgba(255,255,255,.3); }
+  .arrow-prev { left: 2rem; }
+  .arrow-next { right: 2rem; }
+
+  /* ─── Section Basics ─── */
+  section { padding: 100px 5%; }
+  .section-label {
+    text-align: center; font-size: .8rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--rose); margin-bottom: .6rem;
+  }
+  .section-title {
+    text-align: center; font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--dark); margin-bottom: 1rem;
+  }
+  .section-line {
+    width: 60px; height: 3px; background: var(--gold);
+    border-radius: 2px; margin: 0 auto 3rem;
+  }
+
+  /* ─── About ─── */
+  #about { background: var(--white); }
+  .about-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: center; max-width: 1100px; margin: 0 auto;
+  }
+  .about-img-wrap { position: relative; }
+  .about-img-wrap img {
+    width: 100%; height: 540px; object-fit: cover;
+    border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .about-badge {
+    position: absolute; bottom: -24px; right: -24px;
+    background: var(--rose); color: #fff; border-radius: 50%;
+    width: 120px; height: 120px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    box-shadow: 0 6px 24px rgba(194,24,91,.4); padding: .5rem;
+  }
+  .about-badge strong { font-size: 1.8rem; line-height: 1; }
+  .about-badge span { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  .about-text h2 { font-size: clamp(1.7rem, 2.8vw, 2.4rem); color: var(--dark); margin-bottom: 1.2rem; }
+  .about-text p { color: var(--muted); line-height: 1.9; margin-bottom: 1rem; font-size: 1.02rem; }
+  .about-features { display: flex; gap: 2rem; margin-top: 1.8rem; flex-wrap: wrap; }
+  .feat { display: flex; align-items: flex-start; gap: .7rem; }
+  .feat-icon { font-size: 1.5rem; line-height: 1; }
+  .feat h4 { font-size: .95rem; color: var(--dark); margin-bottom: .2rem; }
+  .feat p { font-size: .85rem; color: var(--muted); }
+
+  /* ─── Shop ─── */
+  #shop { background: var(--cream); }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem; max-width: 1200px; margin: 0 auto;
+  }
+  .product-card {
+    background: var(--white); border-radius: var(--radius);
+    overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.07);
+    transition: transform var(--trans), box-shadow var(--trans);
+    cursor: pointer;
+  }
+  .product-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,.13); }
+  .product-img-wrap { position: relative; overflow: hidden; height: 260px; }
+  .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .product-card:hover .product-img-wrap img { transform: scale(1.07); }
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--rose); color: #fff;
+    font-size: .72rem; padding: .25rem .75rem; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+  .product-info { padding: 1.3rem 1.4rem 1.6rem; }
+  .product-name { font-size: 1.1rem; color: var(--dark); margin-bottom: .3rem; }
+  .product-desc { font-size: .87rem; color: var(--muted); line-height: 1.6; margin-bottom: .9rem; }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price { font-size: 1.25rem; font-weight: 700; color: var(--rose); }
+  .add-cart-btn {
+    background: var(--dark); color: #fff; border: none;
+    padding: .5rem 1.1rem; border-radius: 25px; font-size: .85rem;
+    cursor: pointer; transition: background var(--trans);
+  }
+  .add-cart-btn:hover { background: var(--rose); }
+
+  /* ─── Product Modal ─── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(26,10,15,.72); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--white); border-radius: 18px; max-width: 860px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    box-shadow: 0 24px 80px rgba(0,0,0,.3);
+    transform: scale(.94); transition: transform .3s;
+  }
+  .modal-overlay.open .modal { transform: scale(1); }
+  .modal-img { height: 100%; min-height: 360px; }
+  .modal-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px 0 0 18px; }
+  .modal-body { padding: 2.4rem; display: flex; flex-direction: column; justify-content: center; }
+  .modal-tag { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--rose); margin-bottom: .5rem; }
+  .modal-title { font-size: 1.7rem; color: var(--dark); margin-bottom: .7rem; }
+  .modal-price { font-size: 1.6rem; font-weight: 700; color: var(--rose); margin-bottom: 1rem; }
+  .modal-desc { color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; font-size: .96rem; }
+  .modal-details { margin-bottom: 1.5rem; }
+  .modal-details li { font-size: .88rem; color: var(--muted); margin-bottom: .4rem; padding-left: 1.2rem; position: relative; }
+  .modal-details li::before { content: '✦'; position: absolute; left: 0; color: var(--gold); font-size: .65rem; top: .15rem; }
+  .modal-actions { display: flex; gap: 1rem; }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1.2rem;
+    background: rgba(0,0,0,.12); border: none; color: var(--dark);
+    width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background var(--trans);
+  }
+  .modal-close:hover { background: var(--rose); color: #fff; }
+
+  /* ─── Cart Overlay ─── */
+  .cart-overlay {
+    position: fixed; top: 0; right: 0; height: 100vh; z-index: 1500;
+    width: 380px; max-width: 100vw;
+    background: var(--white); box-shadow: -8px 0 48px rgba(0,0,0,.18);
+    display: flex; flex-direction: column;
+    transform: translateX(110%); transition: transform .4s cubic-bezier(.4,0,.2,1);
+  }
+  .cart-overlay.open { transform: translateX(0); }
+  .cart-header {
+    padding: 1.4rem 1.6rem; border-bottom: 1px solid #f0e0e8;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-header h3 { font-size: 1.2rem; }
+  .cart-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.6rem; }
+  .cart-empty { text-align: center; color: var(--muted); margin-top: 3rem; font-size: .95rem; }
+  .cart-item {
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1rem 0; border-bottom: 1px solid #f9eef3;
+  }
+  .cart-item img { width: 68px; height: 68px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: .95rem; color: var(--dark); margin-bottom: .2rem; }
+  .cart-item-price { font-size: .9rem; color: var(--rose); }
+  .cart-item-qty { display: flex; align-items: center; gap: .5rem; margin-top: .4rem; }
+  .qty-btn { background: #f9eef3; border: none; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+  .qty-btn:hover { background: var(--blush); }
+  .cart-item-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.1rem; }
+  .cart-item-remove:hover { color: var(--rose); }
+  .cart-footer { padding: 1.4rem 1.6rem; border-top: 1px solid #f0e0e8; }
+  .cart-total { display: flex; justify-content: space-between; font-size: 1.05rem; margin-bottom: 1.2rem; font-weight: 700; }
+  .checkout-btn {
+    width: 100%; padding: .9rem; background: var(--rose); color: #fff;
+    border: none; border-radius: 30px; font-size: 1rem; font-family: inherit;
+    cursor: pointer; transition: background var(--trans);
+  }
+  .checkout-btn:hover { background: #ad1457; }
+
+  /* ─── Contact ─── */
+  #contact { background: var(--white); }
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    max-width: 1000px; margin: 0 auto; align-items: start;
+  }
+  .contact-info h3 { font-size: 1.5rem; margin-bottom: .8rem; }
+  .contact-info p { color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .contact-detail { display: flex; align-items: center; gap: .8rem; margin-bottom: .8rem; color: var(--muted); font-size: .95rem; }
+  .contact-detail .icon { font-size: 1.3rem; }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: .4rem; }
+  .form-group label { font-size: .85rem; color: var(--muted); letter-spacing: .05em; }
+  .form-group input, .form-group textarea, .form-group select {
+    padding: .8rem 1rem; border: 1.5px solid #e8d5de; border-radius: 10px;
+    font-family: inherit; font-size: .95rem; color: var(--dark);
+    background: var(--cream); transition: border-color var(--trans);
+    outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--rose); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .submit-btn {
+    padding: .9rem; background: var(--rose); color: #fff;
+    border: none; border-radius: 30px; font-size: 1rem; font-family: inherit;
+    cursor: pointer; transition: background var(--trans);
+  }
+  .submit-btn:hover { background: #ad1457; }
+
+  /* ─── Testimonials ─── */
+  #testimonials { background: linear-gradient(135deg, #1a0a0f 0%, #3d1124 100%); }
+  #testimonials .section-label { color: var(--gold); }
+  #testimonials .section-title { color: #fff; }
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem; max-width: 1100px; margin: 0 auto;
+  }
+  .testi-card {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--radius); padding: 2rem; backdrop-filter: blur(8px);
+    transition: transform var(--trans), background var(--trans);
+  }
+  .testi-card:hover { transform: translateY(-4px); background: rgba(255,255,255,.1); }
+  .stars { color: var(--gold); font-size: 1.1rem; margin-bottom: .8rem; }
+  .testi-text { color: rgba(255,255,255,.8); line-height: 1.8; font-size: .96rem; margin-bottom: 1.4rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: .9rem; }
+  .testi-avatar {
+    width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--rose);
+  }
+  .testi-name { color: #fff; font-size: .95rem; }
+  .testi-loc { color: rgba(255,255,255,.5); font-size: .8rem; }
+
+  /* ─── Footer ─── */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,.6);
+    text-align: center; padding: 2rem 5%;
+    font-size: .88rem;
+  }
+  footer span { color: var(--rose); }
+
+  /* ─── Toast ─── */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--dark); color: #fff; padding: .75rem 1.8rem;
+    border-radius: 30px; font-size: .9rem; z-index: 3000;
+    opacity: 0; transition: opacity .3s, transform .3s;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3); pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .about-badge { right: 10px; }
+    .contact-inner { grid-template-columns: 1fr; }
+    .modal { grid-template-columns: 1fr; }
+    .modal-img { height: 240px; }
+    .modal-img img { border-radius: 18px 18px 0 0; }
+  }
+  @media (max-width: 700px) {
+    nav { padding: 0 4%; }
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; width: 100%; background: rgba(255,255,255,.97); padding: 1rem 0; box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+    .nav-links.open { display: flex; }
+    .nav-links a { color: var(--dark); padding: .7rem 1.6rem; }
+    .hamburger { display: flex; }
+    section { padding: 70px 5%; }
+    .form-row { grid-template-columns: 1fr; }
+    .modal-actions { flex-direction: column; }
+    .about-img-wrap img { height: 320px; }
+    .carousel-arrow { width: 38px; height: 38px; font-size: 1rem; }
+    .arrow-prev { left: .8rem; }
+    .arrow-next { right: .8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Nav ─── -->
+<nav id="navbar">
+  <div class="nav-logo">Eternal<span>Bouquets</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#contact">Custom Order</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section id="hero">
+  <canvas id="three-canvas"></canvas>
+  <div class="slides" id="slides">
+    <div class="slide active"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+  </div>
+  <button class="carousel-arrow arrow-prev" onclick="prevSlide()">&#8592;</button>
+  <button class="carousel-arrow arrow-next" onclick="nextSlide()">&#8594;</button>
+  <div class="hero-content">
+    <div class="hero-tag">✦ Preserved. Timeless. Breathtaking.</div>
+    <h1 class="hero-title">Flowers That<br><em>Last Forever</em></h1>
+    <p class="hero-sub">Luxury eternal bouquets crafted from real blooms, preserved at peak perfection — beauty that never fades.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Collection</button>
+      <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Custom Order</button>
+    </div>
+  </div>
+  <div class="carousel-dots" id="dots"></div>
+</section>
+
+<!-- ─── About ─── -->
+<section id="about">
+  <p class="section-label">Our Story</p>
+  <h2 class="section-title">More Than a Flower Shop</h2>
+  <div class="section-line"></div>
+  <div class="about-inner">
+    <div class="about-img-wrap">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop" alt="Florist arranging flowers" />
+      <div class="about-badge"><strong>12+</strong><span>Years of Craft</span></div>
+    </div>
+    <div class="about-text">
+      <h2>Preserving Nature's Most Beautiful Moments</h2>
+      <p>Born from a love of flowers and a passion for longevity, Eternal Bouquets bridges the gap between the fleeting and the forever. Every arrangement is hand-crafted using a bespoke preservation process that locks real petals in their most vivid, luscious state.</p>
+      <p>We source the finest blooms — garden roses, peonies, eucalyptus, and rare orchids — from sustainable farms across the world, then transform them into heirloom-quality arrangements that last for years without water or care.</p>
+      <p>Whether for a wedding, anniversary, corporate gift, or simply because you deserve something beautiful, our pieces become cherished keepsakes.</p>
+      <div class="about-features">
+        <div class="feat">
+          <div class="feat-icon">🌹</div>
+          <div><h4>100% Real Flowers</h4><p>No silk or plastic — only genuine preserved blooms.</p></div>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">♾️</div>
+          <div><h4>Last 3–5 Years</h4><p>With minimal care, your bouquet stays stunning.</p></div>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">🎁</div>
+          <div><h4>Custom Orders</h4><p>Bespoke arrangements for any occasion.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Shop ─── -->
+<section id="shop">
+  <p class="section-label">Our Collection</p>
+  <h2 class="section-title">Eternal Bouquets</h2>
+  <div class="section-line"></div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- ─── Contact ─── -->
+<section id="contact">
+  <p class="section-label">Custom Orders</p>
+  <h2 class="section-title">Create Something Unique</h2>
+  <div class="section-line"></div>
+  <div class="contact-inner">
+    <div class="contact-info">
+      <h3>Let's Design Your Perfect Bouquet</h3>
+      <p>Tell us your vision — the colours, the occasion, the feeling — and our master florists will bring it to life. Every custom order is a collaboration and a labour of love.</p>
+      <div class="contact-detail"><span class="icon">📍</span> 14 Bloom Lane, Nairobi, Kenya</div>
+      <div class="contact-detail"><span class="icon">📞</span> +254 700 123 456</div>
+      <div class="contact-detail"><span class="icon">✉️</span> hello@eternalbouquets.co.ke</div>
+      <div class="contact-detail"><span class="icon">🕐</span> Mon–Sat: 9am – 7pm</div>
+    </div>
+    <form class="contact-form" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Amara" required />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Wanjiku" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="amara@email.com" required />
+      </div>
+      <div class="form-group">
+        <label>Occasion</label>
+        <select>
+          <option>Wedding</option>
+          <option>Anniversary</option>
+          <option>Birthday</option>
+          <option>Corporate Gift</option>
+          <option>Sympathy</option>
+          <option>Just Because</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell us your vision</label>
+        <textarea placeholder="Describe colours, flower preferences, size, delivery date..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send My Request ✦</button>
+    </form>
+  </div>
+</section>
+
+<!-- ─── Testimonials ─── -->
+<section id="testimonials">
+  <p class="section-label">Love Notes</p>
+  <h2 class="section-title" style="color:#fff;">What Our Clients Say</h2>
+  <div class="section-line"></div>
+  <div class="testimonials-grid" id="testiGrid"></div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer>
+  <p>© 2025 <span>Eternal Bouquets</span> · Crafted with love in Nairobi · All rights reserved.</p>
+</footer>
+
+<!-- ─── Product Modal ─── -->
+<div class="modal-overlay" id="productModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-img" id="modalImgWrap"><img id="modalImg" src="" alt="" /></div>
+    <div class="modal-body">
+      <p class="modal-tag" id="modalTag"></p>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-price" id="modalPrice"></p>
+      <p class="modal-desc" id="modalDesc"></p>
+      <ul class="modal-details" id="modalDetails"></ul>
+      <div class="modal-actions">
+        <button class="btn-primary" id="modalAddBtn">Add to Cart</button>
+        <button class="btn-outline" style="border-color:var(--rose);color:var(--rose);" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+</div>
+
+<!-- ─── Cart ─── -->
+<div class="cart-overlay" id="cartOverlay">
+  <div class="cart-header">
+    <h3>Your Cart 🛒</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Your cart is empty.<br>Add some gorgeous bouquets! 🌸</p>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">KES 0</span></div>
+    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ─── Three.js CDN ─── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ─────────────────────────────────
+   DATA
+───────────────────────────────── */
+const products = [
+  {
+    id: 1, name: "Rose Eternelle", price: 4800,
+    tag: "Bestseller",
+    desc: "A cascade of blush and ivory garden roses, preserved in their softest bloom — a romantic classic.",
+    full: "Our signature Rose Eternelle is a hand-layered dome of 24 individually preserved garden roses. Each petal retains its velvety texture and luminous colour for up to five years. Presented in a bespoke glass cloche, it is the ultimate romantic gesture.",
+    details: ["24 preserved garden roses","Lasts 3–5 years","Glass cloche included","No water needed","Fragrance-free (hypoallergenic)"],
+    img: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&auto=format&fit=crop",
+    color: "Blush & Ivory"
+  },
+  {
+    id: 2, name: "Midnight Velvet", price: 5900,
+    tag: "New",
+    desc: "Deep burgundy roses with smoky eucalyptus — a dramatic, luxurious composition.",
+    full: "Midnight Velvet is for those who love drama and depth. Richly preserved burgundy garden roses are nestled among silvery eucalyptus sprigs in a matte black box, creating a moody, opulent statement piece for any space.",
+    details: ["16 preserved burgundy roses","Eucalyptus & dried botanicals","Luxury matte black box","Lasts 3–5 years","Ideal for desks & shelves"],
+    img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop",
+    color: "Burgundy & Slate"
+  },
+  {
+    id: 3, name: "Golden Hour", price: 6200,
+    tag: "Premium",
+    desc: "Sun-kissed yellow and amber roses, gilded with real gold leaf accents.",
+    full: "Golden Hour captures the warmth of a perfect sunset. Amber and champagne preserved roses are hand-painted with delicate gold leaf edges and arranged in a golden acrylic display box, making it an extraordinary gift or home accent.",
+    details: ["18 gold-leaf-kissed preserved roses","Real gold leaf details","Acrylic display box","Certificate of authenticity","Lasts 4–5 years"],
+    img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?w=600&auto=format&fit=crop",
+    color: "Amber & Gold"
+  },
+  {
+    id: 4, name: "Soft Peonies", price: 5500,
+    tag: "",
+    desc: "Voluminous preserved peonies in the softest pinks — pure cottagecore romance.",
+    full: "Our Soft Peonies arrangement features five full-bloom preserved peonies at peak garden splendour. Nestled with dried baby's breath and satin ribbon in a linen-wrapped hatbox, this piece exudes effortless femininity and timeless grace.",
+    details: ["5 full preserved peonies","Dried baby's breath","Linen hatbox","Lasts 2–4 years","Available in pink & white"],
+    img: "https://images.unsplash.com/photo-1502977249166-824b3a8a4d6d?w=600&auto=format&fit=crop",
+    color: "Soft Pink"
+  },
+  {
+    id: 5, name: "Lavender Dreams", price: 3900,
+    tag: "",
+    desc: "A soothing arrangement of preserved lavender, white roses and dried grasses.",
+    full: "Lavender Dreams is a tranquil, spa-like arrangement blending preserved French lavender with ivory mini roses and pampas-like dried grasses. Housed in a sage green box, it brings calm and beauty to any bedside or bathroom shelf.",
+    details: ["Preserved French lavender","6 mini ivory roses","Dried ornamental grasses","Sage green gift box","Lasts 2–3 years"],
+    img: "https://images.unsplash.com/photo-1495234024853-4a5c24c3b234?w=600&auto=format&fit=crop",
+    color: "Lavender & White"
+  },
+  {
+    id: 6, name: "Orchid Opulence", price: 7800,
+    tag: "Luxury",
+    desc: "Rare preserved orchids in a sculptural glass vase — the pinnacle of floral luxury.",
+    full: "Orchid Opulence features three rare preserved Phalaenopsis orchid stems in full cascade, arranged in a hand-blown glass vase with preserved moss and black volcanic pebbles. It is our most prestigious piece — an enduring work of living art.",
+    details: ["3 preserved Phalaenopsis orchids","Hand-blown glass vase","Volcanic pebble base","Lasts 4–6 years","Gift-wrapped with satin"],
+    img: "https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=600&auto=format&fit=crop",
+    color: "White & Emerald"
+  }
+];
+
+const testimonials = [
+  { name: "Amara Wanjiku", loc: "Nairobi, Kenya", rating: 5, avatar: "https://i.pravatar.cc/80?img=47", text: "I ordered the Rose Eternelle for our first anniversary and my husband was absolutely speechless. It's been two years and it still looks freshly picked. Worth every shilling!" },
+  { name: "Priya Sharma", loc: "Mombasa, Kenya", rating: 5, avatar: "https://i.pravatar.cc/80?img=44", text: "The Orchid Opulence on my desk is the first thing every client notices. So many compliments, and it genuinely requires zero maintenance. Magic." },
+  { name: "David Omondi", loc: "Kampala, Uganda", rating: 5, avatar: "https://i.pravatar.cc/80?img=12", text: "I gift from Eternal Bouquets every birthday. Each one is even more beautiful than the last. The packaging alone feels like an experience." },
+  { name: "Zara Patel", loc: "Dar es Salaam, Tanzania", rating: 5, avatar: "https://i.pravatar.cc/80?img=49", text: "Our wedding flowers were custom-designed by Eternal Bouquets — bridesmaids bouquets plus table centres. Two years later I still have mine on display." },
+  { name: "Liam Njoroge", loc: "Nairobi, Kenya", rating: 5, avatar: "https://i.pravatar.cc/80?img=33", text: "Got the Midnight Velvet for my home office. Absolutely stunning. Dark, dramatic, luxurious. It completes the room perfectly." },
+  { name: "Sofia Mendes", loc: "Nairobi, Kenya", rating: 4, avatar: "https://i.pravatar.cc/80?img=56", text: "Delivered beautifully packaged with a handwritten note. Golden Hour arrangement is breathtaking — the gold leaf is such a special touch." }
+];
+
+/* ─────────────────────────────────
+   THREE.JS PARTICLE BACKGROUND
+───────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('three-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 5;
+
+  // Floating petal particles
+  const count = 280;
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(count * 3);
+  const sizes = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
+    positions[i * 3]     = (Math.random() - .5) * 22;
+    positions[i * 3 + 1] = (Math.random() - .5) * 14;
+    positions[i * 3 + 2] = (Math.random() - .5) * 6;
+    sizes[i] = Math.random() * 6 + 2;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+  const mat = new THREE.PointsMaterial({
+    color: 0xf8bbd0, size: .06, transparent: true, opacity: .55,
+    sizeAttenuation: true
+  });
+  const particles = new THREE.Points(geo, mat);
+  scene.add(particles);
+
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = (e.clientX / window.innerWidth - .5) * .6;
+    mouseY = -(e.clientY / window.innerHeight - .5) * .4;
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = Date.now() * .0005;
+    particles.rotation.y = t * .08 + mouseX * .3;
+    particles.rotation.x = mouseY * .2;
+    const pos = geo.attributes.position.array;
+    for (let i = 0; i < count; i++) {
+      pos[i * 3 + 1] += Math.sin(t + i) * .003;
+    }
+    geo.attributes.position.needsUpdate = true;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+/* ─────────────────────────────────
+   CAROUSEL
+───────────────────────────────── */
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(d);
+});
+
+function goToSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dotsContainer.children[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dotsContainer.children[currentSlide].classList.add('active');
+}
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+setInterval(nextSlide, 5000);
+
+/* ─────────────────────────────────
+   NAV SCROLL
+───────────────────────────────── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+/* ─────────────────────────────────
+   RENDER PRODUCTS
+───────────────────────────────── */
+const grid = document.getElementById('productsGrid');
+products.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    <div class="product-img-wrap">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" />
+      ${p.tag ? `<div class="product-badge">${p.tag}</div>` : ''}
+    </div>
+    <div class="product-info">
+      <h3 class="product-name">${p.name}</h3>
+      <p class="product-desc">${p.desc}</p>
+      <div class="product-footer">
+        <span class="product-price">KES ${p.price.toLocaleString()}</span>
+        <button class="add-cart-btn" onclick="event.stopPropagation();addToCart(${p.id})">+ Add</button>
+      </div>
+    </div>`;
+  card.onclick = () => openModal(p.id);
+  grid.appendChild(card);
+});
+
+/* ─────────────────────────────────
+   RENDER TESTIMONIALS
+───────────────────────────────── */
+const testiGrid = document.getElementById('testiGrid');
+testimonials.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'testi-card';
+  card.innerHTML = `
+    <div class="stars">${'★'.repeat(t.rating)}${'☆'.repeat(5 - t.rating)}</div>
+    <p class="testi-text">"${t.text}"</p>
+    <div class="testi-author">
+      <img class="testi-avatar" src="${t.avatar}" alt="${t.name}" />
+      <div>
+        <div class="testi-name">${t.name}</div>
+        <div class="testi-loc">${t.loc}</div>
+      </div>
+    </div>`;
+  testiGrid.appendChild(card);
+});
+
+/* ─────────────────────────────────
+   MODAL
+───────────────────────────────── */
+let currentModalProduct = null;
+function openModal(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  currentModalProduct = p;
+  document.getElementById('modalImg').src = p.img;
+  document.getElementById('modalImg').alt = p.name;
+  document.getElementById('modalTag').textContent = p.tag || p.color;
+  document.getElementById('modalTitle').textContent = p.name;
+  document.getElementById('modalPrice').textContent = `KES ${p.price.toLocaleString()}`;
+  document.getElementById('modalDesc').textContent = p.full;
+  const ul = document.getElementById('modalDetails');
+  ul.innerHTML = p.details.map(d => `<li>${d}</li>`).join('');
+  document.getElementById('modalAddBtn').onclick = () => { addToCart(p.id); closeModal(); };
+  document.getElementById('productModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('productModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('productModal')) closeModal();
+}
+
+/* ─────────────────────────────────
+   CART
+───────────────────────────────── */
+let cart = {};
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  if (cart[id]) cart[id].qty++;
+  else cart[id] = { ...p, qty: 1 };
+  updateCartUI();
+  showToast(`🌸 ${p.name} added to cart!`);
+}
+function removeFromCart(id) {
+  delete cart[id];
+  updateCartUI();
+}
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].qty += delta;
+  if (cart[id].qty <= 0) delete cart[id];
+  updateCartUI();
+}
+function updateCartUI() {
+  const items = Object.values(cart);
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = items.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartTotal').textContent = `KES ${total.toLocaleString()}`;
+  const container = document.getElementById('cartItems');
+  if (!items.length) {
+    container.innerHTML = '<p class="cart-empty">Your cart is empty.<br>Add some gorgeous bouquets! 🌸</p>';
+    return;
+  }
+  container.innerHTML = items.map(i => `
+    <div class="cart-item">
+      <img src="${i.img}" alt="${i.name}" />
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">KES ${(i.price * i.qty).toLocaleString()}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${i.id}, -1)">−</button>
+          <span>${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i.id}, 1)">+</button>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${i.id})" title="Remove">✕</button>
+    </div>`).join('');
+}
+function toggleCart() {
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+function checkout() {
+  if (!Object.keys(cart).length) { showToast('Your cart is empty!'); return; }
+  showToast('✨ Order placed! We\'ll be in touch soon.');
+  cart = {};
+  updateCartUI();
+  toggleCart();
+}
+
+/* ─────────────────────────────────
+   CONTACT FORM
+───────────────────────────────── */
+function submitForm(e) {
+  e.preventDefault();
+  showToast('💌 Request sent! We\'ll reply within 24 hours.');
+  e.target.reset();
+}
+
+/* ─────────────────────────────────
+   TOAST
+───────────────────────────────── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ─────────────────────────────────
+   SCROLL REVEAL (Intersection Observer)
+───────────────────────────────── */
+const style = document.createElement('style');
+style.textContent = `
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+`;
+document.head.appendChild(style);
+document.querySelectorAll('.product-card, .testi-card, .about-inner, .contact-inner').forEach(el => {
+  el.classList.add('reveal');
+});
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

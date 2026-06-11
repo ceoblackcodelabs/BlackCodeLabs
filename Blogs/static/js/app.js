@@ -71,3 +71,4 @@ document.addEventListener('DOMContentLoaded', () => {
     headings.forEach(h => io.observe(h));
   }
 });
+
