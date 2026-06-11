@@ -24,11 +24,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('projects/', include('Pitchs.urls')),
     path("BCL/", include("BCL.urls")),
-    path("Blogs", include("Blogs.urls")),
+    path("Blogs/", include("Blogs.urls")),
     # path("salespro/", include("SalesPro.urls")),
     path('', include('Home.urls')),
     path('auth/', include('Users.urls')),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

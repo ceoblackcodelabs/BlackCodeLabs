@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mwn&bi$bd60hc5xg#vs_l@qgxy^6^l=)*%g!$=hcj89cm*4an1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["https://blackcodelab.com", "blackcodelab.com", "www.blackcodelab.com", "http://www.blackcodelab.com", "http://blackcodelab.com", "https://www.blackcodelab.com", "127.0.0.1", '10.5.5.208']
 
@@ -72,6 +72,7 @@ SOCIALACCOUNT_PROVIDERS = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -154,6 +155,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'Home' / 'static',
     BASE_DIR / 'SalesPro' / 'static',
     BASE_DIR / 'BCL' / 'static',
+    BASE_DIR / 'media',
 ]
 
 MEDIA_URL = '/media/'
