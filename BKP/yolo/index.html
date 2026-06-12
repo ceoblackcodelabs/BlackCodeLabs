@@ -5,849 +5,853 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YOLO Ice Cream — Life's Too Short for Bad Scoops</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Pacifico&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── RESET & TOKENS ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink:      #1C0A35;
+  --purple:   #2D0B4E;
+  --plum:     #4A1C7A;
+  --cream:    #FFF8F2;
+  --paper:    #FFFFFF;
+  --pink:     #F7498B;
+  --mint:     #0DDDAA;
+  --sun:      #FFD93D;
+  --peach:    #FF9757;
+  --muted:    #7A6490;
+  --border:   #EDE4F5;
+  --r-sm:     12px;
+  --r-md:     20px;
+  --r-lg:     28px;
+  --r-xl:     40px;
+  --shadow-sm: 0 2px 12px rgba(45,11,78,.08);
+  --shadow-md: 0 8px 32px rgba(45,11,78,.13);
+  --shadow-lg: 0 20px 60px rgba(45,11,78,.2);
+}
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; }
+a { text-decoration: none; }
 
-  :root {
-    --purple: #2D0B4E;
-    --purple-mid: #4A1C7A;
-    --cream: #FFF8F0;
-    --pink: #FF6B9D;
-    --mint: #00E5B0;
-    --yellow: #FFD93D;
-    --orange: #FF9F43;
-    --text: #1a0a2e;
-    --light-text: #6b5c7e;
-    --white: #ffffff;
-    --card-bg: #ffffff;
-    --shadow: 0 8px 32px rgba(45,11,78,0.12);
-    --shadow-hover: 0 16px 48px rgba(45,11,78,0.22);
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    overflow-x: hidden;
-  }
-
-  /* ======== NAV ======== */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    padding: 1rem 2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(45,11,78,0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    transition: all 0.3s;
-  }
-  nav.scrolled {
-    padding: 0.6rem 2rem;
-    background: rgba(45,11,78,0.97);
-  }
-  .nav-logo {
-    font-family: 'Pacifico', cursive;
-    font-size: clamp(1.4rem, 3vw, 1.8rem);
-    color: var(--yellow);
-    text-decoration: none;
-    letter-spacing: 1px;
-  }
-  .nav-logo span { color: var(--pink); }
+/* ─── NAV ────────────────────────────────────────────────────── */
+#nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 900;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1rem, 4vw, 3.5rem);
+  background: rgba(29,8,52,.92);
+  backdrop-filter: blur(14px);
+  transition: background .3s;
+}
+#nav.solid { background: rgba(29,8,52,.99); }
+.nav-logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.55rem; color: var(--sun); letter-spacing: .5px;
+}
+.nav-logo em { font-style: normal; color: var(--pink); }
+.nav-links {
+  display: flex; gap: 2rem; list-style: none; align-items: center;
+}
+.nav-links a {
+  color: rgba(255,255,255,.78); font-size: .88rem; font-weight: 500;
+  letter-spacing: .02em; transition: color .2s;
+}
+.nav-links a:hover { color: var(--mint); }
+.nav-right { display: flex; gap: .75rem; align-items: center; }
+.cart-trigger {
+  position: relative;
+  background: var(--pink); border: none; border-radius: var(--r-xl);
+  padding: .45rem 1.1rem .45rem .9rem;
+  display: flex; align-items: center; gap: .45rem;
+  color: #fff; font-size: .85rem; font-weight: 600;
+  transition: background .2s, transform .15s;
+}
+.cart-trigger:hover { background: #e03070; transform: scale(1.04); }
+.cart-trigger svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.cart-bubble {
+  background: var(--sun); color: var(--purple);
+  border-radius: 50%; width: 20px; height: 20px;
+  font-size: .7rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s;
+}
+.cart-bubble.pop { animation: pop .25s ease; }
+.ham { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+.ham span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: .3s; }
+@media (max-width: 720px) {
+  .ham { display: flex; }
   .nav-links {
-    display: flex; gap: 2rem; list-style: none;
-    align-items: center;
+    position: fixed; inset: 64px 0 0 auto; width: min(75vw,280px);
+    background: var(--purple); flex-direction: column; justify-content: flex-start;
+    gap: 0; padding: 1.5rem 0;
+    transform: translateX(100%); transition: transform .3s ease;
+    z-index: 899;
   }
-  .nav-links a {
-    color: var(--white); text-decoration: none;
-    font-size: 0.9rem; font-weight: 500;
-    opacity: 0.85; transition: opacity 0.2s, color 0.2s;
-    letter-spacing: 0.02em;
-  }
-  .nav-links a:hover { opacity: 1; color: var(--mint); }
-  .nav-cart-btn {
-    background: var(--pink); color: white;
-    border: none; border-radius: 50px;
-    padding: 0.5rem 1.2rem; font-family: 'DM Sans', sans-serif;
-    font-weight: 600; font-size: 0.85rem; cursor: pointer;
-    display: flex; align-items: center; gap: 0.4rem;
-    transition: transform 0.2s, background 0.2s;
-  }
-  .nav-cart-btn:hover { background: var(--orange); transform: scale(1.05); }
-  .cart-count {
-    background: var(--yellow); color: var(--purple);
-    border-radius: 50%; width: 20px; height: 20px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 700;
-  }
-  .hamburger {
-    display: none; flex-direction: column; gap: 5px;
-    cursor: pointer; background: none; border: none; padding: 4px;
-  }
-  .hamburger span {
-    display: block; width: 24px; height: 2px;
-    background: white; border-radius: 2px;
-    transition: all 0.3s;
-  }
-  @media (max-width: 768px) {
-    .hamburger { display: flex; }
-    .nav-links {
-      position: fixed; top: 0; right: -100%; bottom: 0;
-      width: min(80vw, 300px);
-      background: var(--purple);
-      flex-direction: column; justify-content: center;
-      gap: 2rem; padding: 2rem;
-      transition: right 0.3s ease; z-index: 999;
-    }
-    .nav-links.open { right: 0; }
-    .nav-links a { font-size: 1.1rem; }
-  }
+  .nav-links.open { transform: translateX(0); }
+  .nav-links li { width: 100%; }
+  .nav-links a { display: block; padding: .9rem 2rem; font-size: 1rem; }
+}
 
-  /* ======== HERO ======== */
-  #hero {
-    position: relative; height: 100vh; min-height: 600px;
-    overflow: hidden; background: var(--purple);
-  }
-  #hero-canvas {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-  }
-  .hero-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(45,11,78,0.7) 0%, rgba(45,11,78,0.3) 60%, transparent 100%);
-    display: flex; align-items: center;
-    padding: 0 clamp(1.5rem, 6vw, 6rem);
-  }
-  .hero-content {
-    max-width: 640px;
-    animation: fadeUp 1s ease both;
-  }
-  .hero-eyebrow {
-    font-size: 0.85rem; font-weight: 600;
-    color: var(--mint); letter-spacing: 0.18em;
-    text-transform: uppercase; margin-bottom: 1rem;
-  }
-  .hero-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(3rem, 8vw, 6rem);
-    line-height: 1.05;
-    color: white;
-    margin-bottom: 1.2rem;
-  }
-  .hero-title .highlight { color: var(--yellow); }
-  .hero-sub {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: rgba(255,255,255,0.82);
-    line-height: 1.65;
-    margin-bottom: 2rem;
-    max-width: 480px;
-  }
-  .hero-cta-group { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--pink); color: white;
-    border: none; border-radius: 50px;
-    padding: 0.9rem 2.2rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem; font-weight: 600;
-    cursor: pointer; text-decoration: none;
-    display: inline-block;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(255,107,157,0.4);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,107,157,0.5); }
-  .btn-outline {
-    background: transparent; color: white;
-    border: 2px solid rgba(255,255,255,0.5);
-    border-radius: 50px; padding: 0.9rem 2.2rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem; font-weight: 600;
-    cursor: pointer; text-decoration: none;
-    display: inline-block;
-    transition: all 0.2s;
-  }
-  .btn-outline:hover { border-color: var(--mint); color: var(--mint); }
-  .hero-scroll-hint {
-    position: absolute; bottom: 2rem; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center;
-    gap: 0.4rem; color: rgba(255,255,255,0.6); font-size: 0.75rem;
-    animation: bounce 2s infinite;
-  }
-  .hero-scroll-hint::after {
-    content: ''; display: block; width: 2px; height: 40px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
-  }
+/* ─── CART DRAWER ────────────────────────────────────────────── */
+.drawer-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(15,5,28,.6);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+  backdrop-filter: blur(3px);
+}
+.drawer-backdrop.open { opacity: 1; pointer-events: all; }
+.cart-drawer {
+  position: fixed; inset: 0 0 0 auto; z-index: 1001;
+  width: min(440px, 100vw);
+  background: var(--paper);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+  box-shadow: -8px 0 60px rgba(45,11,78,.25);
+}
+.cart-drawer.open { transform: translateX(0); }
+.drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 1.6rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.drawer-head h2 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; color: var(--purple); }
+.drawer-close {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--cream); border: none;
+  font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.drawer-close:hover { background: var(--border); }
+.drawer-body {
+  flex: 1; overflow-y: auto; padding: 1.2rem 1.6rem;
+  display: flex; flex-direction: column; gap: .75rem;
+}
+.drawer-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: .8rem; color: var(--muted); text-align: center;
+}
+.drawer-empty-icon { font-size: 3.5rem; }
+.drawer-empty p { font-size: .95rem; }
+.ci {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--cream); border-radius: var(--r-md);
+  padding: .9rem 1rem;
+}
+.ci-emoji { font-size: 2rem; flex-shrink: 0; width: 44px; text-align: center; }
+.ci-info { flex: 1; min-width: 0; }
+.ci-name { font-family: 'Fredoka One', cursive; font-size: .95rem; color: var(--purple); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ci-price { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+.ci-qty {
+  display: flex; align-items: center; gap: .35rem;
+  background: var(--paper); border-radius: 50px;
+  padding: .25rem .6rem;
+}
+.ci-qty button {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: none; border: none; color: var(--purple);
+  font-size: 1rem; display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.ci-qty button:hover { background: var(--border); }
+.ci-qty span { font-size: .85rem; font-weight: 600; min-width: 18px; text-align: center; }
+.ci-del { background: none; border: none; color: #ccc; font-size: 1rem; transition: color .2s; flex-shrink: 0; }
+.ci-del:hover { color: var(--pink); }
+.drawer-foot {
+  padding: 1.4rem 1.6rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.drawer-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1rem;
+}
+.drawer-total-label { font-size: .9rem; color: var(--muted); }
+.drawer-total-val { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: var(--purple); }
+.checkout-btn {
+  width: 100%; padding: 1rem;
+  background: linear-gradient(135deg, var(--pink), var(--peach));
+  border: none; border-radius: var(--r-xl);
+  color: #fff; font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem; letter-spacing: .02em;
+  box-shadow: 0 6px 24px rgba(247,73,139,.35);
+  transition: transform .2s, box-shadow .2s;
+}
+.checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(247,73,139,.45); }
+.checkout-btn:disabled { opacity: .45; pointer-events: none; }
 
-  /* ======== MARQUEE / TICKER ======== */
-  .marquee-wrap {
-    background: var(--yellow);
-    padding: 0.7rem 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .marquee-track {
-    display: inline-flex;
-    animation: marquee 22s linear infinite;
-  }
-  .marquee-track span {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1rem; color: var(--purple);
-    padding: 0 2rem;
-    letter-spacing: 0.04em;
-  }
-  .marquee-track span::before {
-    content: '🍦 ';
-  }
+/* ─── HERO ───────────────────────────────────────────────────── */
+#hero {
+  position: relative; height: 100svh; min-height: 580px;
+  overflow: hidden; background: var(--purple);
+}
+#three-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero-layer {
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg, rgba(29,8,52,.82) 0%, rgba(29,8,52,.48) 55%, rgba(29,8,52,.1) 100%);
+  display: flex; align-items: center;
+  padding: 0 clamp(1.5rem, 7vw, 7rem);
+}
+.hero-box { max-width: 580px; }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: rgba(13,221,170,.15); border: 1px solid rgba(13,221,170,.3);
+  border-radius: 50px; padding: .35rem 1rem;
+  font-size: .78rem; font-weight: 600; color: var(--mint);
+  letter-spacing: .12em; text-transform: uppercase;
+  margin-bottom: 1.4rem;
+}
+.hero-h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.8rem, 7.5vw, 5.6rem);
+  line-height: 1.06; color: #fff; margin-bottom: 1.2rem;
+}
+.hero-h1 .yc { color: var(--sun); }
+.hero-sub {
+  font-size: clamp(.95rem, 1.8vw, 1.15rem);
+  color: rgba(255,255,255,.78); line-height: 1.68;
+  max-width: 460px; margin-bottom: 2.2rem;
+}
+.hero-btns { display: flex; gap: .9rem; flex-wrap: wrap; }
+.btn-solid {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--pink); color: #fff;
+  border: none; border-radius: 50px;
+  padding: .85rem 2rem; font-weight: 700; font-size: .95rem;
+  box-shadow: 0 6px 24px rgba(247,73,139,.38);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-solid:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(247,73,139,.5); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: rgba(255,255,255,.1); color: #fff;
+  border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 50px; padding: .85rem 2rem;
+  font-weight: 600; font-size: .95rem;
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover { border-color: var(--mint); background: rgba(13,221,170,.1); color: var(--mint); }
+.hero-scroll {
+  position: absolute; bottom: 2.2rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  color: rgba(255,255,255,.45); font-size: .72rem; letter-spacing: .1em;
+  text-transform: uppercase; animation: bob 2.4s ease-in-out infinite;
+}
+.hero-scroll::after {
+  content: ''; width: 1px; height: 38px;
+  background: linear-gradient(rgba(255,255,255,.4), transparent);
+}
 
-  /* ======== SECTIONS COMMON ======== */
-  section { padding: clamp(4rem, 8vw, 7rem) clamp(1.2rem, 5vw, 5rem); }
-  .section-eyebrow {
-    font-size: 0.8rem; font-weight: 600;
-    color: var(--pink); letter-spacing: 0.18em;
-    text-transform: uppercase; margin-bottom: 0.8rem;
-    display: block;
-  }
-  .section-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    color: var(--purple); line-height: 1.15;
-    margin-bottom: 1rem;
-  }
-  .section-lead {
-    font-size: 1.05rem; color: var(--light-text);
-    line-height: 1.7; max-width: 520px;
-  }
+/* ─── TICKER ─────────────────────────────────────────────────── */
+.ticker { background: var(--sun); padding: .65rem 0; overflow: hidden; white-space: nowrap; }
+.ticker-track {
+  display: inline-flex;
+  animation: ticker 28s linear infinite;
+}
+.ticker-track span {
+  font-family: 'Fredoka One', cursive;
+  font-size: .9rem; color: var(--purple); padding: 0 1.8rem;
+}
 
-  /* ======== ABOUT ======== */
-  #about {
-    background: white;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: center;
-  }
-  .about-text .section-lead { max-width: 100%; }
-  .about-stats {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1.2rem; margin-top: 2rem;
-  }
-  .stat-card {
-    background: var(--cream);
-    border-radius: 16px; padding: 1.2rem;
-    text-align: center;
-  }
-  .stat-num {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2.2rem; color: var(--pink);
-    display: block;
-  }
-  .stat-label { font-size: 0.8rem; color: var(--light-text); margin-top: 0.2rem; }
-  .about-image-wrap {
-    position: relative; border-radius: 24px; overflow: hidden;
-    aspect-ratio: 4/5;
-    box-shadow: var(--shadow-hover);
-  }
-  .about-image-wrap img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.6s ease;
-  }
-  .about-image-wrap:hover img { transform: scale(1.04); }
-  .about-badge {
-    position: absolute; bottom: 1.5rem; left: 1.5rem;
-    background: var(--yellow); color: var(--purple);
-    border-radius: 16px; padding: 0.8rem 1.2rem;
-    font-family: 'Fredoka One', cursive; font-size: 1rem;
-    box-shadow: var(--shadow);
-  }
-  @media (max-width: 768px) {
-    #about { grid-template-columns: 1fr; }
-    .about-image-wrap { aspect-ratio: 4/3; order: -1; }
-  }
+/* ─── SECTION SHELL ──────────────────────────────────────────── */
+.sec { padding: clamp(4.5rem, 9vw, 7.5rem) clamp(1.2rem, 5vw, 5rem); }
+.sec-tag {
+  display: inline-block;
+  font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--pink);
+  margin-bottom: .7rem;
+}
+.sec-h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  color: var(--purple); line-height: 1.15; margin-bottom: .9rem;
+}
+.sec-lead {
+  font-size: 1rem; color: var(--muted); line-height: 1.72; max-width: 500px;
+}
 
-  /* ======== SHOP / ECOMMERCE ======== */
-  #shop { background: var(--cream); }
-  .shop-header {
-    display: flex; justify-content: space-between;
-    align-items: flex-end; margin-bottom: 3rem;
-    flex-wrap: wrap; gap: 1rem;
-  }
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
-    gap: 1.8rem;
-  }
-  .product-card {
-    background: white; border-radius: 24px;
-    overflow: hidden; box-shadow: var(--shadow);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-  }
-  .product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-hover);
-  }
-  .product-img-wrap {
-    position: relative; overflow: hidden;
-    aspect-ratio: 1/1; background: var(--cream);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 5rem;
-  }
-  .product-badge {
-    position: absolute; top: 0.8rem; right: 0.8rem;
-    background: var(--pink); color: white;
-    font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.06em; border-radius: 50px;
-    padding: 0.25rem 0.65rem;
-  }
-  .product-body { padding: 1.2rem 1.4rem 1.4rem; }
-  .product-name {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem; color: var(--purple); margin-bottom: 0.4rem;
-  }
-  .product-desc {
-    font-size: 0.82rem; color: var(--light-text);
-    line-height: 1.55; margin-bottom: 1rem;
-    display: -webkit-box; -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .product-footer {
-    display: flex; align-items: center;
-    justify-content: space-between;
-  }
-  .product-price {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.3rem; color: var(--pink);
-  }
-  .product-actions { display: flex; gap: 0.5rem; }
-  .btn-read-more {
-    background: var(--purple); color: white;
-    border: none; border-radius: 50px;
-    padding: 0.45rem 1rem; font-size: 0.78rem;
-    font-family: 'DM Sans', sans-serif; font-weight: 600;
-    cursor: pointer; transition: background 0.2s;
-  }
-  .btn-read-more:hover { background: var(--purple-mid); }
-  .btn-add-cart {
-    background: var(--mint); color: var(--purple);
-    border: none; border-radius: 50px;
-    padding: 0.45rem 1rem; font-size: 0.78rem;
-    font-family: 'DM Sans', sans-serif; font-weight: 700;
-    cursor: pointer; transition: transform 0.2s;
-  }
-  .btn-add-cart:hover { transform: scale(1.08); }
+/* ─── ABOUT ──────────────────────────────────────────────────── */
+#about {
+  background: var(--paper);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 6vw, 6rem); align-items: center;
+}
+.about-body { }
+.about-body .sec-lead { max-width: 100%; margin-bottom: 1rem; }
+.about-body p+p { margin-top: .9rem; }
+.about-kpi {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; margin-top: 2.2rem;
+}
+.kpi {
+  background: var(--cream); border-radius: var(--r-md);
+  padding: 1.1rem 1.2rem;
+}
+.kpi-n {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2rem; color: var(--pink); display: block;
+}
+.kpi-l { font-size: .78rem; color: var(--muted); margin-top: .1rem; }
+.about-visual { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 3/4; box-shadow: var(--shadow-lg); }
+.about-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.about-visual:hover img { transform: scale(1.04); }
+.about-chip {
+  position: absolute; bottom: 1.4rem; left: 1.4rem;
+  background: var(--sun); color: var(--purple);
+  border-radius: var(--r-sm); padding: .65rem 1rem;
+  font-family: 'Fredoka One', cursive; font-size: .9rem;
+  box-shadow: var(--shadow-md);
+}
+@media (max-width: 760px) {
+  #about { grid-template-columns: 1fr; }
+  .about-visual { aspect-ratio: 4/3; order: -1; }
+}
 
-  /* ======== CART SECTION ======== */
-  #cart-section {
-    background: var(--purple);
-    color: white;
-  }
-  #cart-section .section-title { color: var(--yellow); }
-  #cart-section .section-eyebrow { color: var(--mint); }
-  .cart-container {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 24px; padding: 2rem;
-    max-width: 700px; margin: 0 auto;
-  }
-  .cart-empty {
-    text-align: center; padding: 3rem;
-    color: rgba(255,255,255,0.5); font-size: 1rem;
-  }
-  .cart-empty .cart-empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
-  .cart-item {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-  .cart-item:last-of-type { border-bottom: none; }
-  .cart-item-emoji { font-size: 2.2rem; flex-shrink: 0; }
-  .cart-item-info { flex: 1; }
-  .cart-item-name { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--yellow); }
-  .cart-item-price { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin-top: 0.2rem; }
-  .cart-item-qty {
-    display: flex; align-items: center; gap: 0.5rem;
-    background: rgba(255,255,255,0.1); border-radius: 50px;
-    padding: 0.3rem 0.8rem;
-  }
-  .qty-btn {
-    background: none; border: none; color: white;
-    font-size: 1rem; cursor: pointer;
-    width: 22px; height: 22px; display: flex;
-    align-items: center; justify-content: center;
-    border-radius: 50%; transition: background 0.2s;
-  }
-  .qty-btn:hover { background: rgba(255,255,255,0.2); }
-  .qty-num { font-weight: 600; min-width: 20px; text-align: center; }
-  .cart-item-remove {
-    background: none; border: none; color: rgba(255,107,157,0.8);
-    cursor: pointer; font-size: 1.1rem;
-    transition: color 0.2s;
-  }
-  .cart-item-remove:hover { color: var(--pink); }
-  .cart-total {
-    display: flex; justify-content: space-between;
-    align-items: center; margin-top: 1.5rem;
-    padding-top: 1.2rem; border-top: 2px solid rgba(255,255,255,0.15);
-  }
-  .cart-total-label { font-family: 'Fredoka One', cursive; font-size: 1.2rem; }
-  .cart-total-amount { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--mint); }
-  .cart-checkout-btn {
-    width: 100%; margin-top: 1.2rem;
-    background: var(--yellow); color: var(--purple);
-    border: none; border-radius: 50px; padding: 1rem;
-    font-family: 'Fredoka One', cursive; font-size: 1.1rem;
-    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(255,217,61,0.3);
-  }
-  .cart-checkout-btn:hover { transform: scale(1.02); box-shadow: 0 6px 28px rgba(255,217,61,0.45); }
+/* ─── SHOP ───────────────────────────────────────────────────── */
+#shop { background: var(--cream); }
+.shop-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; flex-wrap: wrap; gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.shop-filter {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+}
+.filter-pill {
+  background: var(--paper); border: 1.5px solid var(--border);
+  border-radius: 50px; padding: .38rem .95rem;
+  font-size: .8rem; font-weight: 600; color: var(--muted);
+  cursor: pointer; transition: all .2s;
+}
+.filter-pill.active, .filter-pill:hover {
+  background: var(--purple); border-color: var(--purple); color: #fff;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: 1.5rem;
+}
+.pc { /* product card */
+  background: var(--paper);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid var(--border);
+  display: flex; flex-direction: column;
+  transition: transform .28s, box-shadow .28s;
+}
+.pc:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.pc-thumb {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4.5rem;
+}
+.pc-badge {
+  position: absolute; top: .8rem; left: .8rem;
+  background: var(--purple); color: var(--sun);
+  font-size: .65rem; font-weight: 700; letter-spacing: .06em;
+  border-radius: 50px; padding: .2rem .6rem; text-transform: uppercase;
+}
+.pc-body { padding: 1rem 1.2rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
+.pc-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem; color: var(--purple); margin-bottom: .35rem;
+}
+.pc-desc {
+  font-size: .8rem; color: var(--muted); line-height: 1.55;
+  flex: 1; margin-bottom: 1rem;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pc-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+}
+.pc-price {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem; color: var(--pink);
+}
+.pc-actions { display: flex; gap: .4rem; }
+.btn-more {
+  background: var(--cream); border: 1.5px solid var(--border);
+  color: var(--purple); border-radius: 50px;
+  padding: .38rem .85rem; font-size: .76rem; font-weight: 600;
+  transition: all .18s;
+}
+.btn-more:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
+.btn-cart-add {
+  background: var(--pink); border: none; color: #fff;
+  border-radius: 50px; padding: .38rem .85rem;
+  font-size: .76rem; font-weight: 700;
+  transition: background .18s, transform .15s;
+}
+.btn-cart-add:hover { background: #e03070; transform: scale(1.06); }
 
-  /* ======== MENU ======== */
-  #menu { background: white; }
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
-    gap: 1.2rem; margin-top: 2.5rem;
-  }
-  .menu-card {
-    border-radius: 20px; padding: 1.5rem 1.2rem;
-    text-align: center;
-    transition: transform 0.25s;
-    position: relative; overflow: hidden;
-  }
-  .menu-card:hover { transform: translateY(-4px); }
-  .menu-card:nth-child(1) { background: #FFF0F7; }
-  .menu-card:nth-child(2) { background: #F0FFF9; }
-  .menu-card:nth-child(3) { background: #FFF9EC; }
-  .menu-card:nth-child(4) { background: #F4F0FF; }
-  .menu-card:nth-child(5) { background: #FFF0F0; }
-  .menu-card:nth-child(6) { background: #F0FAFF; }
-  .menu-emoji { font-size: 2.8rem; display: block; margin-bottom: 0.8rem; }
-  .menu-cat-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.05rem; color: var(--purple); margin-bottom: 0.3rem;
-  }
-  .menu-cat-count { font-size: 0.8rem; color: var(--light-text); }
+/* ─── MENU ───────────────────────────────────────────────────── */
+#menu { background: var(--paper); }
+.menu-header { text-align: center; max-width: 500px; margin: 0 auto 3rem; }
+.menu-header .sec-lead { margin: 0 auto; text-align: center; }
+.menu-tabs {
+  display: flex; justify-content: center; gap: .5rem;
+  flex-wrap: wrap; margin-bottom: 2.5rem;
+}
+.mtab {
+  background: var(--cream); border: 1.5px solid var(--border);
+  border-radius: 50px; padding: .5rem 1.3rem;
+  font-size: .85rem; font-weight: 600; color: var(--muted);
+  cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: .4rem;
+}
+.mtab.active, .mtab:hover {
+  background: var(--purple); border-color: var(--purple); color: #fff;
+}
+.menu-panel { display: none; }
+.menu-panel.active { display: block; }
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 1.2rem;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--cream); border-radius: var(--r-md);
+  padding: 1rem 1.2rem;
+  transition: box-shadow .2s;
+}
+.menu-item:hover { box-shadow: var(--shadow-sm); }
+.mi-emoji { font-size: 2rem; flex-shrink: 0; width: 44px; text-align: center; }
+.mi-info { flex: 1; min-width: 0; }
+.mi-name { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--purple); }
+.mi-note { font-size: .78rem; color: var(--muted); margin-top: .15rem; }
+.mi-price { font-family: 'Fredoka One', cursive; font-size: 1.05rem; color: var(--pink); flex-shrink: 0; }
 
-  /* ======== CONTACT ======== */
-  #contact { background: var(--cream); }
-  .contact-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 5vw, 4rem); margin-top: 2.5rem;
-    align-items: start;
-  }
-  .contact-info-item {
-    display: flex; gap: 1rem; align-items: flex-start;
-    margin-bottom: 1.5rem;
-  }
-  .contact-icon {
-    width: 46px; height: 46px; border-radius: 14px;
-    background: var(--purple); color: var(--yellow);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; flex-shrink: 0;
-  }
-  .contact-info-title { font-weight: 600; color: var(--purple); margin-bottom: 0.2rem; }
-  .contact-info-text { font-size: 0.9rem; color: var(--light-text); line-height: 1.5; }
-  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .form-field {
-    background: white; border: 2px solid #e8dff5;
-    border-radius: 14px; padding: 0.85rem 1.1rem;
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-    color: var(--text); transition: border-color 0.2s;
-    width: 100%;
-  }
-  .form-field:focus { outline: none; border-color: var(--pink); }
-  .form-field::placeholder { color: #b8a8cc; }
-  textarea.form-field { resize: vertical; min-height: 120px; }
-  .btn-submit {
-    background: var(--pink); color: white;
-    border: none; border-radius: 50px; padding: 1rem 2.5rem;
-    font-family: 'Fredoka One', cursive; font-size: 1.05rem;
-    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 18px rgba(255,107,157,0.35);
-    align-self: flex-start;
-  }
-  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,157,0.5); }
-  @media (max-width: 640px) {
-    .contact-grid { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-  }
+/* ─── CONTACT ────────────────────────────────────────────────── */
+#contact { background: var(--purple); }
+#contact .sec-tag { color: var(--mint); }
+#contact .sec-h2 { color: #fff; }
+.contact-wrap {
+  display: grid; grid-template-columns: 1fr 1.3fr;
+  gap: clamp(2.5rem, 5vw, 5rem); margin-top: 3rem;
+  align-items: start;
+}
+.contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+.cinfo-card {
+  display: flex; align-items: flex-start; gap: 1rem;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r-md); padding: 1.2rem 1.4rem;
+}
+.cinfo-icon {
+  width: 42px; height: 42px; border-radius: var(--r-sm);
+  background: rgba(255,217,61,.15); color: var(--sun);
+  font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.cinfo-title { font-weight: 700; color: #fff; font-size: .9rem; margin-bottom: .2rem; }
+.cinfo-text { font-size: .82rem; color: rgba(255,255,255,.6); line-height: 1.55; }
+.contact-form {
+  background: var(--paper); border-radius: var(--r-lg);
+  padding: 2rem 2.2rem;
+  box-shadow: var(--shadow-lg);
+}
+.cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.cf-group { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+.cf-label { font-size: .78rem; font-weight: 700; color: var(--purple); letter-spacing: .04em; text-transform: uppercase; }
+.cf-input, .cf-textarea {
+  background: var(--cream); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: .8rem 1rem;
+  font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--ink);
+  transition: border-color .2s;
+  width: 100%;
+}
+.cf-input:focus, .cf-textarea:focus { outline: none; border-color: var(--pink); }
+.cf-input::placeholder, .cf-textarea::placeholder { color: #c0b0d0; }
+.cf-textarea { resize: vertical; min-height: 110px; }
+.cf-submit {
+  width: 100%; padding: 1rem;
+  background: linear-gradient(135deg, var(--pink), var(--peach));
+  border: none; border-radius: 50px; color: #fff;
+  font-family: 'Fredoka One', cursive; font-size: 1rem;
+  box-shadow: 0 6px 20px rgba(247,73,139,.35);
+  transition: transform .2s, box-shadow .2s; margin-top: .25rem;
+}
+.cf-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(247,73,139,.5); }
+@media (max-width: 680px) {
+  .contact-wrap { grid-template-columns: 1fr; }
+  .cf-row { grid-template-columns: 1fr; }
+}
 
-  /* ======== TESTIMONIALS ======== */
-  #testimonials { background: white; }
-  .testi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-    gap: 1.5rem; margin-top: 2.5rem;
-  }
-  .testi-card {
-    background: var(--cream); border-radius: 22px;
-    padding: 1.8rem; position: relative;
-    overflow: hidden; transition: box-shadow 0.3s;
-  }
-  .testi-card:hover { box-shadow: var(--shadow); }
-  .testi-quote {
-    font-size: 3rem; color: var(--pink);
-    font-family: 'Pacifico', cursive;
-    line-height: 1; margin-bottom: 0.5rem;
-    opacity: 0.5;
-  }
-  .testi-text {
-    font-size: 0.92rem; color: var(--text);
-    line-height: 1.65; margin-bottom: 1.2rem;
-    font-style: italic;
-  }
-  .testi-author { display: flex; align-items: center; gap: 0.8rem; }
-  .testi-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; background: var(--purple);
-  }
-  .testi-name { font-weight: 600; font-size: 0.9rem; color: var(--purple); }
-  .testi-stars { color: var(--yellow); font-size: 0.85rem; margin-top: 0.1rem; }
+/* ─── TESTIMONIALS ───────────────────────────────────────────── */
+#testi { background: var(--cream); }
+.testi-head { text-align: center; max-width: 480px; margin: 0 auto 3rem; }
+.testi-head .sec-lead { margin: 0 auto; text-align: center; }
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: 1.4rem;
+}
+.tc { /* testimonial card */
+  background: var(--paper); border-radius: var(--r-lg);
+  padding: 1.8rem; border: 1.5px solid var(--border);
+  transition: box-shadow .25s;
+}
+.tc:hover { box-shadow: var(--shadow-md); }
+.tc-stars { color: var(--sun); font-size: .9rem; letter-spacing: .06em; margin-bottom: .9rem; }
+.tc-text { font-size: .88rem; color: var(--muted); line-height: 1.68; font-style: italic; margin-bottom: 1.3rem; }
+.tc-author { display: flex; align-items: center; gap: .75rem; }
+.tc-av {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--purple); font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tc-name { font-weight: 700; font-size: .88rem; color: var(--purple); }
+.tc-loc { font-size: .75rem; color: var(--muted); margin-top: .1rem; }
 
-  /* ======== FOOTER ======== */
-  footer {
-    background: var(--purple);
-    color: rgba(255,255,255,0.75);
-    padding: clamp(3rem, 6vw, 5rem) clamp(1.2rem, 5vw, 5rem) 2rem;
-  }
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 3rem; margin-bottom: 3rem;
-  }
-  .footer-brand .nav-logo { font-size: 1.6rem; display: inline-block; margin-bottom: 1rem; }
-  .footer-desc { font-size: 0.88rem; line-height: 1.7; max-width: 280px; }
-  .footer-social { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
-  .social-btn {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; color: white; cursor: pointer;
-    transition: background 0.2s; text-decoration: none;
-  }
-  .social-btn:hover { background: var(--pink); }
-  .footer-col h4 {
-    font-family: 'Fredoka One', cursive; font-size: 1rem;
-    color: var(--yellow); margin-bottom: 1rem;
-  }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li {
-    margin-bottom: 0.6rem;
-  }
-  .footer-col ul li a {
-    color: rgba(255,255,255,0.65); text-decoration: none;
-    font-size: 0.88rem; transition: color 0.2s;
-  }
-  .footer-col ul li a:hover { color: var(--mint); }
-  .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 1.5rem;
-    display: flex; justify-content: space-between;
-    align-items: center; flex-wrap: wrap; gap: 0.8rem;
-    font-size: 0.82rem;
-  }
-  .footer-bottom-links { display: flex; gap: 1.5rem; }
-  .footer-bottom-links a { color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
-  .footer-bottom-links a:hover { color: var(--mint); }
-  @media (max-width: 900px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .footer-brand { grid-column: 1 / -1; }
-  }
-  @media (max-width: 500px) {
-    .footer-grid { grid-template-columns: 1fr; }
-  }
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: rgba(255,255,255,.6);
+  padding: clamp(3.5rem,7vw,5.5rem) clamp(1.2rem,5vw,5rem) 1.8rem;
+}
+.ft-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem; margin-bottom: 3rem;
+}
+.ft-brand .nav-logo { display: inline-block; margin-bottom: 1rem; font-size: 1.4rem; }
+.ft-brand p { font-size: .83rem; line-height: 1.72; max-width: 260px; }
+.ft-social { display: flex; gap: .6rem; margin-top: 1.4rem; }
+.ft-soc {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.08); border: none;
+  font-size: .95rem; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .2s;
+}
+.ft-soc:hover { background: var(--pink); }
+.ft-col h5 { font-family: 'Fredoka One', cursive; font-size: .95rem; color: var(--sun); margin-bottom: .9rem; }
+.ft-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.ft-col ul a { color: rgba(255,255,255,.55); font-size: .82rem; transition: color .2s; }
+.ft-col ul a:hover { color: var(--mint); }
+.ft-bottom {
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 1.4rem;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: .6rem;
+  font-size: .78rem;
+}
+.ft-legal { display: flex; gap: 1.4rem; }
+.ft-legal a { color: rgba(255,255,255,.4); transition: color .2s; }
+.ft-legal a:hover { color: var(--mint); }
+@media (max-width: 860px) {
+  .ft-grid { grid-template-columns: 1fr 1fr; }
+  .ft-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .ft-grid { grid-template-columns: 1fr; }
+}
 
-  /* ======== MODAL / OVERLAY ======== */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 2000;
-    background: rgba(20,5,40,0.85);
-    backdrop-filter: blur(8px);
-    display: flex; align-items: center; justify-content: center;
-    padding: 1.5rem;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal {
-    background: white; border-radius: 28px;
-    max-width: 560px; width: 100%;
-    max-height: 90vh; overflow-y: auto;
-    padding: 2.5rem;
-    transform: translateY(20px) scale(0.97);
-    transition: transform 0.3s;
-    position: relative;
-  }
-  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
-  .modal-close {
-    position: absolute; top: 1.2rem; right: 1.2rem;
-    background: var(--cream); border: none; border-radius: 50%;
-    width: 36px; height: 36px; font-size: 1.1rem;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s;
-  }
-  .modal-close:hover { background: #f0e0f0; }
-  .modal-emoji { font-size: 5rem; text-align: center; display: block; margin-bottom: 1rem; }
-  .modal-name {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.8rem; color: var(--purple);
-    text-align: center; margin-bottom: 0.5rem;
-  }
-  .modal-price {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.5rem; color: var(--pink);
-    text-align: center; margin-bottom: 1.2rem;
-  }
-  .modal-desc {
-    font-size: 0.95rem; color: var(--light-text);
-    line-height: 1.7; margin-bottom: 1.5rem;
-  }
-  .modal-details {
-    background: var(--cream); border-radius: 16px;
-    padding: 1.2rem; margin-bottom: 1.5rem;
-  }
-  .modal-detail-row {
-    display: flex; justify-content: space-between;
-    font-size: 0.88rem; padding: 0.4rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-  }
-  .modal-detail-row:last-child { border-bottom: none; }
-  .modal-detail-label { color: var(--light-text); }
-  .modal-detail-val { font-weight: 600; color: var(--purple); }
-  .modal-add-btn {
-    width: 100%; background: var(--pink); color: white;
-    border: none; border-radius: 50px; padding: 1rem;
-    font-family: 'Fredoka One', cursive; font-size: 1.1rem;
-    cursor: pointer; transition: transform 0.2s;
-  }
-  .modal-add-btn:hover { transform: scale(1.02); }
+/* ─── PRODUCT MODAL ──────────────────────────────────────────── */
+.modal-bg {
+  position: fixed; inset: 0; z-index: 1100;
+  background: rgba(15,5,28,.72); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.2rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity .28s;
+}
+.modal-bg.open { opacity: 1; pointer-events: all; }
+.modal-box {
+  background: var(--paper); border-radius: var(--r-xl);
+  width: min(520px, 100%); max-height: 88vh; overflow-y: auto;
+  padding: 2.2rem 2.2rem 2rem;
+  position: relative;
+  transform: scale(.95) translateY(16px);
+  transition: transform .28s;
+}
+.modal-bg.open .modal-box { transform: scale(1) translateY(0); }
+.m-close {
+  position: absolute; top: 1.2rem; right: 1.2rem;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--cream); border: none; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s;
+}
+.m-close:hover { background: var(--border); }
+.m-emoji { font-size: 5.5rem; text-align: center; display: block; margin-bottom: 1.2rem; }
+.m-name { font-family: 'Fredoka One', cursive; font-size: 1.75rem; color: var(--purple); text-align: center; }
+.m-price { font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--pink); text-align: center; margin: .3rem 0 1.2rem; }
+.m-desc { font-size: .88rem; color: var(--muted); line-height: 1.72; margin-bottom: 1.5rem; }
+.m-facts {
+  background: var(--cream); border-radius: var(--r-md);
+  overflow: hidden; margin-bottom: 1.6rem;
+}
+.m-fact {
+  display: flex; justify-content: space-between;
+  padding: .7rem 1.1rem; font-size: .83rem;
+  border-bottom: 1px solid var(--border);
+}
+.m-fact:last-child { border-bottom: none; }
+.m-fact-k { color: var(--muted); }
+.m-fact-v { font-weight: 600; color: var(--purple); }
+.m-add {
+  width: 100%; padding: .95rem;
+  background: linear-gradient(135deg, var(--pink), var(--peach));
+  border: none; border-radius: 50px; color: #fff;
+  font-family: 'Fredoka One', cursive; font-size: 1rem;
+  box-shadow: 0 6px 20px rgba(247,73,139,.3);
+  transition: transform .2s;
+}
+.m-add:hover { transform: scale(1.02); }
 
-  /* ======== TOAST ======== */
-  .toast {
-    position: fixed; bottom: 2rem; right: 2rem;
-    background: var(--purple); color: white;
-    border-radius: 16px; padding: 1rem 1.5rem;
-    font-size: 0.9rem; font-weight: 500;
-    z-index: 3000;
-    transform: translateY(100px); opacity: 0;
-    transition: all 0.3s;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    display: flex; align-items: center; gap: 0.6rem;
-    max-width: min(90vw, 320px);
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
+/* ─── TOAST ──────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.8rem; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--purple); color: #fff;
+  border-radius: 50px; padding: .75rem 1.6rem;
+  font-size: .88rem; font-weight: 600;
+  box-shadow: var(--shadow-lg); z-index: 2000;
+  opacity: 0; transition: transform .3s, opacity .3s;
+  white-space: nowrap; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  /* ======== ANIMATIONS ======== */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(8px); }
-  }
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
+/* ─── REVEAL ─────────────────────────────────────────────────── */
+.rv { opacity: 0; transform: translateY(22px); transition: opacity .55s ease, transform .55s ease; }
+.rv.in { opacity: 1; transform: translateY(0); }
+.rv2 { transition-delay: .1s; }
+.rv3 { transition-delay: .2s; }
 
-  /* ======== REVEAL ANIMATIONS ======== */
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+/* ─── UTILS ──────────────────────────────────────────────────── */
+@keyframes bob { 0%,100%{transform:translateX(-50%)} 50%{transform:translateX(-50%) translateY(7px)} }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+@keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.4)} 100%{transform:scale(1)} }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#hero" class="nav-logo">YOLO<span>🍦</span></a>
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">YOLO<em>🍦</em></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#about" onclick="closeMenu()">About</a></li>
-    <li><a href="#shop" onclick="closeMenu()">Shop</a></li>
-    <li><a href="#menu" onclick="closeMenu()">Menu</a></li>
-    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    <li><a href="#about"   onclick="closeNav()">About</a></li>
+    <li><a href="#shop"    onclick="closeNav()">Shop</a></li>
+    <li><a href="#menu"    onclick="closeNav()">Menu</a></li>
+    <li><a href="#contact" onclick="closeNav()">Contact</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:1rem;">
-    <button class="nav-cart-btn" onclick="scrollToCart()">
-      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+  <div class="nav-right">
+    <button class="cart-trigger" onclick="openCart()">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Cart
+      <span class="cart-bubble" id="cartBubble">0</span>
     </button>
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <button class="ham" id="hamBtn" onclick="toggleNav()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ── CART DRAWER ───────────────────────────────────────────── -->
+<div class="drawer-backdrop" id="drawerBg" onclick="closeCart()"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+  <div class="drawer-head">
+    <h2>🛒 Your Cart</h2>
+    <button class="drawer-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody">
+    <div class="drawer-empty" id="drawerEmpty">
+      <span class="drawer-empty-icon">🍦</span>
+      <p>Your cart is empty!</p>
+      <p style="font-size:.8rem;color:var(--muted)">Add some scoops from the shop.</p>
+    </div>
+  </div>
+  <div class="drawer-foot" id="drawerFoot" style="display:none">
+    <div class="drawer-total-row">
+      <span class="drawer-total-label">Order total</span>
+      <span class="drawer-total-val" id="drawerTotal">KES 0</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Checkout — Pay Now 🎉</button>
+  </div>
+</aside>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
 <section id="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-overlay">
-    <div class="hero-content">
-      <span class="hero-eyebrow">✨ Nairobi's Sweetest Escape</span>
-      <h1 class="hero-title">Life's Too Short for <span class="highlight">Bad Scoops</span></h1>
-      <p class="hero-sub">Handcrafted ice creams made with love, real fruit, and zero regrets. Because YOLO — you only lick once.</p>
-      <div class="hero-cta-group">
-        <a href="#shop" class="btn-primary">Explore Flavours</a>
-        <a href="#about" class="btn-outline">Our Story</a>
+  <canvas id="three-canvas"></canvas>
+  <div class="hero-layer">
+    <div class="hero-box">
+      <div class="hero-pill">✨ Nairobi's Favourite Scoop Shop</div>
+      <h1 class="hero-h1">Life's Too Short<br>for <span class="yc">Bad Scoops</span></h1>
+      <p class="hero-sub">Handcrafted ice creams made with real Kenyan fruit, Belgian chocolate, and absolutely zero regrets. Because YOLO.</p>
+      <div class="hero-btns">
+        <a href="#shop" class="btn-solid">Explore Flavours 🍦</a>
+        <a href="#about" class="btn-ghost">Our Story</a>
       </div>
     </div>
   </div>
-  <div class="hero-scroll-hint">Scroll</div>
+  <div class="hero-scroll">Scroll</div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap" aria-hidden="true">
-  <div class="marquee-track" id="marqueeTrack">
-    <span>Strawberry Bliss</span><span>Mango Tango</span><span>Chocolate Lava</span>
-    <span>Matcha Dreams</span><span>Passion Fruit</span><span>Cookies & Cream</span>
-    <span>Salted Caramel</span><span>Blueberry Swirl</span><span>Coconut Paradise</span>
-    <span>Peanut Butter Joy</span><span>Strawberry Bliss</span><span>Mango Tango</span>
-    <span>Chocolate Lava</span><span>Matcha Dreams</span><span>Passion Fruit</span>
-    <span>Cookies & Cream</span><span>Salted Caramel</span><span>Blueberry Swirl</span>
-    <span>Coconut Paradise</span><span>Peanut Butter Joy</span>
+<!-- ── TICKER ────────────────────────────────────────────────── -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>🍓 Strawberry Bliss</span><span>🥭 Mango Tango</span><span>🍫 Chocolate Lava</span>
+    <span>🍵 Matcha Dreams</span><span>🌺 Passion Punch</span><span>🍪 Cookies &amp; Dream</span>
+    <span>✨ Salted Caramel Gold</span><span>🫐 Blueberry Swirl</span><span>🥥 Coconut Paradise</span>
+    <span>🥜 Peanut Butter Joy</span>
+    <span>🍓 Strawberry Bliss</span><span>🥭 Mango Tango</span><span>🍫 Chocolate Lava</span>
+    <span>🍵 Matcha Dreams</span><span>🌺 Passion Punch</span><span>🍪 Cookies &amp; Dream</span>
+    <span>✨ Salted Caramel Gold</span><span>🫐 Blueberry Swirl</span><span>🥥 Coconut Paradise</span>
+    <span>🥜 Peanut Butter Joy</span>
   </div>
 </div>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-text reveal">
-    <span class="section-eyebrow">Who We Are</span>
-    <h2 class="section-title">Scooping Joy Since 2019</h2>
-    <p class="section-lead">YOLO Ice Cream started in a tiny kitchen in Westlands with one churn, big dreams, and a very long spoon. Today we craft over 30 signature flavours using locally sourced Kenyan fruits, Belgian chocolate, and cream so fresh it still smells like the farm.</p>
-    <p class="section-lead" style="margin-top:1rem;">Every scoop is a tiny adventure. We don't just make ice cream — we make moments worth remembering.</p>
-    <div class="about-stats">
-      <div class="stat-card"><span class="stat-num">30+</span><div class="stat-label">Unique Flavours</div></div>
-      <div class="stat-card"><span class="stat-num">12K+</span><div class="stat-label">Happy Customers</div></div>
-      <div class="stat-card"><span class="stat-num">5★</span><div class="stat-label">Average Rating</div></div>
-      <div class="stat-card"><span class="stat-num">100%</span><div class="stat-label">Natural Ingredients</div></div>
+<!-- ── ABOUT ─────────────────────────────────────────────────── -->
+<section id="about" class="sec">
+  <div class="about-body rv">
+    <span class="sec-tag">Who We Are</span>
+    <h2 class="sec-h2">Scooping Joy<br>Since 2019</h2>
+    <p class="sec-lead">YOLO Ice Cream started in a tiny kitchen in Westlands with one churn, big dreams, and a very long spoon. Today we craft over 30 signature flavours using locally-sourced Kenyan fruits and cream so fresh it still smells like the farm.</p>
+    <p class="sec-lead">Every scoop is a tiny adventure. We don't just make ice cream — we make moments worth remembering.</p>
+    <div class="about-kpi">
+      <div class="kpi"><span class="kpi-n">30+</span><div class="kpi-l">Unique Flavours</div></div>
+      <div class="kpi"><span class="kpi-n">12K+</span><div class="kpi-l">Happy Customers</div></div>
+      <div class="kpi"><span class="kpi-n">5 ★</span><div class="kpi-l">Average Rating</div></div>
+      <div class="kpi"><span class="kpi-n">100%</span><div class="kpi-l">Natural Ingredients</div></div>
     </div>
   </div>
-  <div class="about-image-wrap reveal">
-    <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80" alt="YOLO Ice Cream shop interior" loading="lazy">
-    <div class="about-badge">🌿 All Natural · 🇰🇪 Kenyan Made</div>
+  <div class="about-visual rv rv2">
+    <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=700&q=80" alt="Inside YOLO Ice Cream" loading="lazy">
+    <div class="about-chip">🌿 Natural · 🇰🇪 Kenyan Made</div>
   </div>
 </section>
 
-<!-- SHOP -->
-<section id="shop">
-  <div class="shop-header reveal">
+<!-- ── SHOP ───────────────────────────────────────────────────── -->
+<section id="shop" class="sec">
+  <div class="shop-top rv">
     <div>
-      <span class="section-eyebrow">Our Flavours</span>
-      <h2 class="section-title">Pick Your Scoop</h2>
+      <span class="sec-tag">Our Flavours</span>
+      <h2 class="sec-h2">Pick Your Scoop</h2>
     </div>
-    <p class="section-lead" style="max-width:360px;font-size:0.95rem;">Ten signature flavours. Infinite happiness. Choose yours — or let fate decide.</p>
+    <div class="shop-filter" id="shopFilter">
+      <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="classic">Classic</button>
+      <button class="filter-pill" data-filter="vegan">Vegan</button>
+      <button class="filter-pill" data-filter="premium">Premium</button>
+    </div>
   </div>
   <div class="products-grid" id="productsGrid"></div>
 </section>
 
-<!-- CART -->
-<section id="cart-section">
-  <div style="text-align:center;margin-bottom:2.5rem;" class="reveal">
-    <span class="section-eyebrow">Your Order</span>
-    <h2 class="section-title">Your Sweet Cart</h2>
+<!-- ── MENU ───────────────────────────────────────────────────── -->
+<section id="menu" class="sec">
+  <div class="menu-header rv">
+    <span class="sec-tag">What We Serve</span>
+    <h2 class="sec-h2">Browse the Menu</h2>
+    <p class="sec-lead">Something delicious for every kind of craving — from classic scoops to towering cakes.</p>
   </div>
-  <div class="cart-container" id="cartContainer">
-    <div class="cart-empty" id="cartEmpty">
-      <span class="cart-empty-icon">🛒</span>
-      <p>Your cart is empty!</p>
-      <p style="margin-top:0.5rem;font-size:0.85rem;">Go pick your favourite scoops above.</p>
-    </div>
-    <div id="cartItems"></div>
-    <div class="cart-total" id="cartTotalWrap" style="display:none">
-      <span class="cart-total-label">Total</span>
-      <span class="cart-total-amount" id="cartTotal">KES 0</span>
-    </div>
-    <button class="cart-checkout-btn" id="checkoutBtn" style="display:none" onclick="checkout()">
-      Checkout 🎉
-    </button>
+  <div class="menu-tabs" id="menuTabs">
+    <button class="mtab active" data-tab="scoops">🍦 Scoops</button>
+    <button class="mtab" data-tab="sorbet">🍧 Sorbet</button>
+    <button class="mtab" data-tab="shakes">🥤 Shakes</button>
+    <button class="mtab" data-tab="cakes">🧁 Cakes</button>
+    <button class="mtab" data-tab="sticks">🍡 Sticks</button>
+    <button class="mtab" data-tab="pints">🫙 Pints</button>
   </div>
+  <div id="menuPanels"></div>
 </section>
 
-<!-- MENU -->
-<section id="menu">
-  <div style="text-align:center;margin-bottom:0;" class="reveal">
-    <span class="section-eyebrow">What We Serve</span>
-    <h2 class="section-title">Browse Our Menu</h2>
-    <p class="section-lead" style="margin:0.5rem auto 0;text-align:center;">Something delicious for every kind of craving.</p>
-  </div>
-  <div class="menu-grid">
-    <div class="menu-card reveal"><span class="menu-emoji">🍦</span><div class="menu-cat-title">Classic Scoops</div><div class="menu-cat-count">8 flavours · from KES 250</div></div>
-    <div class="menu-card reveal"><span class="menu-emoji">🍧</span><div class="menu-cat-title">Sorbet & Sherbet</div><div class="menu-cat-count">5 flavours · from KES 220</div></div>
-    <div class="menu-card reveal"><span class="menu-emoji">🧁</span><div class="menu-cat-title">Ice Cream Cakes</div><div class="menu-cat-count">4 sizes · from KES 1,800</div></div>
-    <div class="menu-card reveal"><span class="menu-emoji">🥤</span><div class="menu-cat-title">Milkshakes</div><div class="menu-cat-count">6 flavours · from KES 400</div></div>
-    <div class="menu-card reveal"><span class="menu-emoji">🍡</span><div class="menu-cat-title">Ice Cream Sticks</div><div class="menu-cat-count">6 varieties · from KES 180</div></div>
-    <div class="menu-card reveal"><span class="menu-emoji">🫙</span><div class="menu-cat-title">Pints To Go</div><div class="menu-cat-count">10 flavours · from KES 650</div></div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="reveal" style="margin-bottom:0;">
-    <span class="section-eyebrow">Get In Touch</span>
-    <h2 class="section-title">Find Us or Reach Out</h2>
-  </div>
-  <div class="contact-grid">
-    <div class="reveal">
-      <div class="contact-info-item">
-        <div class="contact-icon">📍</div>
-        <div><div class="contact-info-title">Visit Us</div><div class="contact-info-text">Yaya Centre, Argwings Kodhek Rd<br>Hurlingham, Nairobi, Kenya</div></div>
-      </div>
-      <div class="contact-info-item">
-        <div class="contact-icon">🕐</div>
-        <div><div class="contact-info-title">Opening Hours</div><div class="contact-info-text">Mon – Fri: 10am – 10pm<br>Sat – Sun: 9am – 11pm</div></div>
-      </div>
-      <div class="contact-info-item">
-        <div class="contact-icon">📞</div>
-        <div><div class="contact-info-title">Call or WhatsApp</div><div class="contact-info-text">+254 700 123 456</div></div>
-      </div>
-      <div class="contact-info-item">
-        <div class="contact-icon">✉️</div>
-        <div><div class="contact-info-title">Email Us</div><div class="contact-info-text">hello@yoloicecream.co.ke</div></div>
-      </div>
-    </div>
-    <div class="reveal">
-      <form class="contact-form" onsubmit="submitForm(event)">
-        <div class="form-row">
-          <input class="form-field" type="text" placeholder="Your Name" required>
-          <input class="form-field" type="email" placeholder="Your Email" required>
+<!-- ── CONTACT ────────────────────────────────────────────────── -->
+<section id="contact" class="sec">
+  <span class="sec-tag">Get In Touch</span>
+  <h2 class="sec-h2">Find Us &amp; Say Hello</h2>
+  <div class="contact-wrap">
+    <div class="contact-info rv">
+      <div class="cinfo-card">
+        <div class="cinfo-icon">📍</div>
+        <div>
+          <div class="cinfo-title">Visit Us</div>
+          <div class="cinfo-text">Yaya Centre, Argwings Kodhek Rd<br>Hurlingham, Nairobi, Kenya</div>
         </div>
-        <input class="form-field" type="text" placeholder="Subject">
-        <textarea class="form-field" placeholder="Your message… tell us your favourite flavour too! 🍦"></textarea>
-        <button type="submit" class="btn-submit">Send Message 🚀</button>
+      </div>
+      <div class="cinfo-card">
+        <div class="cinfo-icon">🕐</div>
+        <div>
+          <div class="cinfo-title">Opening Hours</div>
+          <div class="cinfo-text">Mon – Fri &nbsp;&nbsp;10 am – 10 pm<br>Sat – Sun &nbsp;&nbsp;9 am – 11 pm</div>
+        </div>
+      </div>
+      <div class="cinfo-card">
+        <div class="cinfo-icon">📞</div>
+        <div>
+          <div class="cinfo-title">Call or WhatsApp</div>
+          <div class="cinfo-text">+254 700 123 456</div>
+        </div>
+      </div>
+      <div class="cinfo-card">
+        <div class="cinfo-icon">✉️</div>
+        <div>
+          <div class="cinfo-title">Email</div>
+          <div class="cinfo-text">hello@yoloicecream.co.ke</div>
+        </div>
+      </div>
+    </div>
+    <div class="rv rv2">
+      <form class="contact-form" onsubmit="submitForm(event)">
+        <div class="cf-row">
+          <div class="cf-group">
+            <label class="cf-label">Name</label>
+            <input class="cf-input" type="text" placeholder="Jane Wanjiku" required>
+          </div>
+          <div class="cf-group">
+            <label class="cf-label">Email</label>
+            <input class="cf-input" type="email" placeholder="jane@example.com" required>
+          </div>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Subject</label>
+          <input class="cf-input" type="text" placeholder="Catering enquiry, feedback…">
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Message</label>
+          <textarea class="cf-textarea" placeholder="Tell us what's on your mind — or just your favourite flavour 🍦"></textarea>
+        </div>
+        <button type="submit" class="cf-submit">Send Message 🚀</button>
       </form>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section id="testimonials">
-  <div style="text-align:center;" class="reveal">
-    <span class="section-eyebrow">Love Notes</span>
-    <h2 class="section-title">What Our Scoop Squad Says</h2>
+<!-- ── TESTIMONIALS ───────────────────────────────────────────── -->
+<section id="testi" class="sec">
+  <div class="testi-head rv">
+    <span class="sec-tag">Love Notes</span>
+    <h2 class="sec-h2">What the Scoop Squad Says</h2>
+    <p class="sec-lead">Real reviews from real ice cream lovers across Nairobi.</p>
   </div>
   <div class="testi-grid" id="testiGrid"></div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
 <footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="#hero" class="nav-logo">YOLO<span style="color:var(--pink)">🍦</span></a>
-      <p class="footer-desc">Handcrafted ice creams made with real Kenyan ingredients. Because life's too short for anything less than extraordinary scoops.</p>
-      <div class="footer-social">
-        <a href="#" class="social-btn" aria-label="Instagram">📸</a>
-        <a href="#" class="social-btn" aria-label="Facebook">👍</a>
-        <a href="#" class="social-btn" aria-label="TikTok">🎵</a>
-        <a href="#" class="social-btn" aria-label="WhatsApp">💬</a>
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <a href="#hero" class="nav-logo">YOLO<em style="color:var(--pink)">🍦</em></a>
+      <p>Handcrafted ice creams made with real Kenyan ingredients. Life's too short for anything less than extraordinary.</p>
+      <div class="ft-social">
+        <button class="ft-soc" aria-label="Instagram">📸</button>
+        <button class="ft-soc" aria-label="Facebook">👍</button>
+        <button class="ft-soc" aria-label="TikTok">🎵</button>
+        <button class="ft-soc" aria-label="WhatsApp">💬</button>
       </div>
     </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4>
+    <div class="ft-col">
+      <h5>Explore</h5>
       <ul>
         <li><a href="#about">About Us</a></li>
         <li><a href="#shop">Shop</a></li>
@@ -855,476 +859,493 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
-    <div class="footer-col">
-      <h4>Flavours</h4>
+    <div class="ft-col">
+      <h5>Flavours</h5>
       <ul>
         <li><a href="#shop">Strawberry Bliss</a></li>
         <li><a href="#shop">Mango Tango</a></li>
         <li><a href="#shop">Chocolate Lava</a></li>
-        <li><a href="#shop">Matcha Dreams</a></li>
+        <li><a href="#shop">Salted Caramel</a></li>
         <li><a href="#shop">View All →</a></li>
       </ul>
     </div>
-    <div class="footer-col">
-      <h4>Info</h4>
+    <div class="ft-col">
+      <h5>Info</h5>
       <ul>
-        <li><a href="#">Delivery Info</a></li>
+        <li><a href="#">Delivery</a></li>
         <li><a href="#">Catering</a></li>
-        <li><a href="#">Allergen Info</a></li>
+        <li><a href="#">Allergens</a></li>
         <li><a href="#">Careers</a></li>
-        <li><a href="#">Press</a></li>
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p>© 2026 YOLO Ice Cream Kenya. All rights reserved.</p>
-    <div class="footer-bottom-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms</a>
-      <a href="#">Cookies</a>
+  <div class="ft-bottom">
+    <span>© 2026 YOLO Ice Cream Kenya. All rights reserved.</span>
+    <div class="ft-legal">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a>
     </div>
   </div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="productModal" onclick="closeModalOutside(event)">
-  <div class="modal" id="modalContent">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <span class="modal-emoji" id="modalEmoji"></span>
-    <div class="modal-name" id="modalName"></div>
-    <div class="modal-price" id="modalPrice"></div>
-    <div class="modal-desc" id="modalDesc"></div>
-    <div class="modal-details" id="modalDetails"></div>
-    <button class="modal-add-btn" id="modalAddBtn">Add to Cart 🛒</button>
+<!-- ── PRODUCT MODAL ──────────────────────────────────────────── -->
+<div class="modal-bg" id="modalBg" onclick="closeModalOut(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <span class="m-emoji" id="mEmoji"></span>
+    <div class="m-name"  id="mName"></div>
+    <div class="m-price" id="mPrice"></div>
+    <div class="m-desc"  id="mDesc"></div>
+    <div class="m-facts" id="mFacts"></div>
+    <button class="m-add" id="mAdd">Add to Cart 🛒</button>
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- ── TOAST ──────────────────────────────────────────────────── -->
 <div class="toast" id="toast"></div>
 
+<!-- ── SCRIPTS ───────────────────────────────────────────────── -->
 <script>
-// ======== DATA ========
-const iceCreamData = [
-  {
-    id: 1, name: "Strawberry Bliss", emoji: "🍓", price: 320,
-    badge: "Bestseller",
-    shortDesc: "Fresh Kenyan strawberries churned into pure heaven.",
-    fullDesc: "Sourced from the highlands of Nyandarua, our strawberries are hand-picked at peak ripeness and blended into a cream base that's been aged for 24 hours. The result is a deeply fruity, floral scoop with a natural pink hue and absolutely zero artificial colouring.",
-    details: { Allergens: "Dairy, Eggs", Calories: "210 kcal / scoop", Category: "Classic", Available: "Daily", Origin: "Nyandarua Strawberries" }
+/* ═══════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════ */
+const PRODUCTS = [
+  { id:1,  name:"Strawberry Bliss",  emoji:"🍓", price:320, badge:"Bestseller", tag:"classic",
+    short:"Fresh Kenyan strawberries churned into pure heaven.",
+    full:"Sourced from the highlands of Nyandarua, our strawberries are hand-picked at peak ripeness and blended into a cream base aged for 24 hours. Deeply fruity, floral, and entirely natural — zero artificial colouring.",
+    facts:{ Allergens:"Dairy, Eggs", Calories:"210 kcal/scoop", Category:"Classic", Origin:"Nyandarua" }
   },
-  {
-    id: 2, name: "Mango Tango", emoji: "🥭", price: 300,
-    badge: "Seasonal",
-    shortDesc: "Alphonso mango sorbet that practically dances on your tongue.",
-    fullDesc: "We wait all year for mango season, and this scoop is why. Kenyan Alphonso mangoes blended with a whisper of lime zest and chilled coconut cream. It's sunshine in a cup — tropical, vibrant, and impossibly smooth.",
-    details: { Allergens: "Dairy", Calories: "185 kcal / scoop", Category: "Tropical", Available: "Dec – Mar", Origin: "Coastal Kenya Mangoes" }
+  { id:2,  name:"Mango Tango",       emoji:"🥭", price:300, badge:"Seasonal",   tag:"vegan",
+    short:"Alphonso mango sorbet with a whisper of lime zest.",
+    full:"Kenyan Alphonso mangoes blended with a whisper of lime zest and chilled coconut cream. Dairy-free, electric, and impossibly smooth. Sunshine in a cup.",
+    facts:{ Allergens:"None", Calories:"185 kcal/scoop", Category:"Sorbet / Vegan", Origin:"Coastal Kenya" }
   },
-  {
-    id: 3, name: "Chocolate Lava", emoji: "🍫", price: 360,
-    badge: "Fan Fave",
-    shortDesc: "Belgian dark chocolate with a molten caramel ribbon.",
-    fullDesc: "We use 72% Belgian couverture chocolate, melted and folded into a double-cream base, then swirled with a slow-cooked salted caramel ribbon. It's indulgent, complex, and completely irresistible — especially if you're going through something.",
-    details: { Allergens: "Dairy, Eggs, Soy", Calories: "265 kcal / scoop", Category: "Indulgent", Available: "Daily", Origin: "Belgian Couverture Chocolate" }
+  { id:3,  name:"Chocolate Lava",    emoji:"🍫", price:360, badge:"Fan Fave",   tag:"classic",
+    short:"72% Belgian dark chocolate with a molten caramel ribbon.",
+    full:"72% Belgian couverture chocolate melted and folded into a double-cream base, then swirled with slow-cooked salted caramel. Indulgent, complex, completely irresistible.",
+    facts:{ Allergens:"Dairy, Eggs, Soy", Calories:"265 kcal/scoop", Category:"Indulgent", Origin:"Belgian Chocolate" }
   },
-  {
-    id: 4, name: "Matcha Dreams", emoji: "🍵", price: 380,
-    badge: "Premium",
-    shortDesc: "Ceremonial grade matcha with a sweet white chocolate drizzle.",
-    fullDesc: "Ceremonial grade Japanese matcha, not culinary grade — we refuse to cut corners. Its grassy, umami depth is perfectly balanced by a swirl of white chocolate and a finishing pinch of fleur de sel. For those who know the difference.",
-    details: { Allergens: "Dairy, Eggs, Soy", Calories: "225 kcal / scoop", Category: "Premium", Available: "Daily", Origin: "Uji, Kyoto Matcha" }
+  { id:4,  name:"Matcha Dreams",     emoji:"🍵", price:380, badge:"Premium",    tag:"premium",
+    short:"Ceremonial-grade matcha with white chocolate and fleur de sel.",
+    full:"Ceremonial grade Japanese matcha — never culinary grade. Its grassy umami depth is balanced by a swirl of white chocolate and a finishing pinch of fleur de sel. For those who know the difference.",
+    facts:{ Allergens:"Dairy, Eggs, Soy", Calories:"225 kcal/scoop", Category:"Premium", Origin:"Uji, Kyoto" }
   },
-  {
-    id: 5, name: "Passion Punch", emoji: "🌺", price: 290,
-    badge: "Dairy-Free",
-    shortDesc: "Passion fruit sorbet with hibiscus and a kick of ginger.",
-    fullDesc: "Pure passion fruit pulp from Kisii, brightened with a hibiscus reduction and a surprising warmth of fresh ginger. Completely dairy-free and vegan, this sorbet is the most requested flavour at our market stalls — tangy, floral, and electric.",
-    details: { Allergens: "None", Calories: "140 kcal / scoop", Category: "Sorbet / Vegan", Available: "Daily", Origin: "Kisii Passion Fruits" }
+  { id:5,  name:"Passion Punch",     emoji:"🌺", price:290, badge:"Dairy-Free", tag:"vegan",
+    short:"Passion fruit sorbet with hibiscus and fresh ginger.",
+    full:"Pure passion fruit pulp from Kisii, brightened with a hibiscus reduction and a surprising warmth of fresh ginger. Completely vegan, tangy, floral, and electric.",
+    facts:{ Allergens:"None", Calories:"140 kcal/scoop", Category:"Sorbet / Vegan", Origin:"Kisii" }
   },
-  {
-    id: 6, name: "Cookies & Dream", emoji: "🍪", price: 340,
-    badge: "Kids' Fave",
-    shortDesc: "Vanilla bean cream loaded with Oreo chunks and chocolate fudge.",
-    fullDesc: "Our silkiest vanilla base — made with real Madagascar vanilla beans — is generously loaded with hand-crushed Oreo cookies and ribbons of dark chocolate fudge. It's the kind of scoop that makes children's eyes go wide and adults forget their diet.",
-    details: { Allergens: "Dairy, Eggs, Gluten, Soy", Calories: "295 kcal / scoop", Category: "Classic Mix-In", Available: "Daily", Origin: "Madagascar Vanilla Beans" }
+  { id:6,  name:"Cookies & Dream",   emoji:"🍪", price:340, badge:"Kids' Fave", tag:"classic",
+    short:"Madagascar vanilla cream loaded with Oreo chunks and fudge.",
+    full:"Our silkiest vanilla base — made with real Madagascar vanilla beans — generously loaded with hand-crushed Oreos and dark chocolate fudge ribbons. Eyes-wide-open good.",
+    facts:{ Allergens:"Dairy, Eggs, Gluten, Soy", Calories:"295 kcal/scoop", Category:"Mix-In", Origin:"Madagascar Vanilla" }
   },
-  {
-    id: 7, name: "Salted Caramel Gold", emoji: "✨", price: 350,
-    badge: "Award Winner",
-    shortDesc: "Slow-cooked caramel with Maldon sea salt flakes.",
-    fullDesc: "Our caramel is cooked the old-fashioned way — in a copper pan, stirred by hand, taken just to the edge of burnt. Then we fold in Maldon sea salt flakes and whip it into our cream base. It won Best Flavour at the Nairobi Food Festival 2024, and we're still humbly bragging about it.",
-    details: { Allergens: "Dairy, Eggs", Calories: "250 kcal / scoop", Category: "Award Winning", Available: "Daily", Origin: "Maldon Sea Salt, UK" }
+  { id:7,  name:"Salted Caramel Gold",emoji:"✨", price:350, badge:"Award Win", tag:"premium",
+    short:"Copper-pan caramel taken to the edge of burnt, with Maldon salt.",
+    full:"Our caramel is cooked the old-fashioned way in a copper pan, taken just to the edge of burnt. Folded with Maldon sea salt flakes and whipped into cream. Winner: Nairobi Food Festival 2024.",
+    facts:{ Allergens:"Dairy, Eggs", Calories:"250 kcal/scoop", Category:"Award Winning", Origin:"Maldon, UK" }
   },
-  {
-    id: 8, name: "Blueberry Swirl", emoji: "🫐", price: 310,
-    badge: "Antioxidant",
-    shortDesc: "Wild blueberry compote swirled through lavender cream.",
-    fullDesc: "A delicate lavender-infused cream base — subtle, never soapy — swirled through with a wild blueberry compote that we make fresh every morning. The combination is floral, jammy, and genuinely sophisticated. Pairs beautifully with a warm crepe.",
-    details: { Allergens: "Dairy, Eggs", Calories: "200 kcal / scoop", Category: "Floral", Available: "Daily", Origin: "Imported Wild Blueberries" }
+  { id:8,  name:"Blueberry Swirl",   emoji:"🫐", price:310, badge:null,         tag:"classic",
+    short:"Lavender cream swirled with a wild blueberry compote.",
+    full:"A delicate lavender-infused cream base — subtle, never soapy — swirled with wild blueberry compote made fresh every morning. Floral, jammy, and genuinely sophisticated.",
+    facts:{ Allergens:"Dairy, Eggs", Calories:"200 kcal/scoop", Category:"Floral", Origin:"Imported Blueberries" }
   },
-  {
-    id: 9, name: "Coconut Paradise", emoji: "🥥", price: 300,
-    badge: "Vegan",
-    shortDesc: "Toasted coconut flakes in creamy coconut milk base.",
-    fullDesc: "Made entirely with Kenyan coconut milk from the Coast Province, our vegan coconut ice cream is toasted, blended, and churned into something that genuinely makes you feel like you're sitting on a dhow off Diani Beach. Topped with toasted coconut ribbons.",
-    details: { Allergens: "Tree Nuts (Coconut)", Calories: "190 kcal / scoop", Category: "Vegan", Available: "Daily", Origin: "Coast Province Coconuts" }
+  { id:9,  name:"Coconut Paradise",  emoji:"🥥", price:300, badge:"Vegan",      tag:"vegan",
+    short:"Toasted Kenyan coconut milk ice cream.",
+    full:"Made entirely with Coast Province coconut milk. Toasted, blended, churned. Dairy-free and vegan, it genuinely feels like sitting on a dhow off Diani Beach.",
+    facts:{ Allergens:"Tree Nuts", Calories:"190 kcal/scoop", Category:"Vegan", Origin:"Kenya Coast" }
   },
-  {
-    id: 10, name: "Peanut Butter Joy", emoji: "🥜", price: 330,
-    badge: "High Protein",
-    shortDesc: "Roasted Kenyan peanuts blended with dark chocolate chunks.",
-    fullDesc: "We roast our own peanuts from Machakos — it takes an extra two hours and it's absolutely worth it. Combined with Belgian dark chocolate chips and a pinch of smoked salt, this scoop is rich, nutty, and deeply satisfying. The unofficial YOLO staff favourite.",
-    details: { Allergens: "Dairy, Eggs, Peanuts", Calories: "280 kcal / scoop", Category: "Nut-Based", Available: "Daily", Origin: "Machakos Peanuts" }
+  { id:10, name:"Peanut Butter Joy", emoji:"🥜", price:330, badge:"Staff Pick",  tag:"premium",
+    short:"Roasted Machakos peanuts with Belgian dark chocolate chips.",
+    full:"We roast our own peanuts from Machakos — it takes two extra hours and is absolutely worth it. Combined with Belgian dark choc chips and smoked salt. The unofficial staff favourite.",
+    facts:{ Allergens:"Dairy, Eggs, Peanuts", Calories:"280 kcal/scoop", Category:"Nut-Based", Origin:"Machakos" }
   }
 ];
 
-const testimonials = [
-  { text: "YOLO made my daughter's birthday unforgettable. The Cookies & Dream flavour was a hit with every single kid. We're already planning next year's order!", name: "Wanjiku M.", avatar: "🌸", stars: "★★★★★" },
-  { text: "The Salted Caramel Gold is absolutely elite. I've had ice cream all over the world and this genuinely competes. Nairobi has no idea how lucky it is.", name: "James O.", avatar: "👨🏾", stars: "★★★★★" },
-  { text: "As someone who's dairy-free, finding YOLO was a revelation. The Passion Punch and Coconut Paradise are incredible — I don't feel like I'm missing anything.", name: "Amina K.", avatar: "🌺", stars: "★★★★★" },
-  { text: "Ordered a pint of Chocolate Lava for a dinner party and had guests asking where to buy more before they even finished dessert. Absolute crowd-pleasers.", name: "David N.", avatar: "🎩", stars: "★★★★★" },
-  { text: "The matcha flavour is the real deal — not that fake sweet stuff. Perfectly balanced. I come in every Friday now and the staff know my order by heart!", name: "Priya S.", avatar: "✨", stars: "★★★★★" },
-  { text: "Best ice cream in Nairobi, full stop. The quality of ingredients shows in every scoop. Keep doing what you're doing, YOLO!", name: "Kevin M.", avatar: "🦁", stars: "★★★★★" }
+const MENU_DATA = {
+  scoops: [
+    { emoji:"🍓", name:"Strawberry Bliss",   note:"Single or double scoop",     price:"KES 320" },
+    { emoji:"🍫", name:"Chocolate Lava",      note:"With caramel ribbon",        price:"KES 360" },
+    { emoji:"🍪", name:"Cookies & Dream",     note:"Extra fudge available",      price:"KES 340" },
+    { emoji:"✨", name:"Salted Caramel Gold", note:"Award-winning recipe",       price:"KES 350" },
+    { emoji:"🫐", name:"Blueberry Swirl",     note:"Lavender-infused base",      price:"KES 310" },
+    { emoji:"🥜", name:"Peanut Butter Joy",   note:"Staff favourite",            price:"KES 330" },
+  ],
+  sorbet: [
+    { emoji:"🥭", name:"Mango Tango",         note:"Dairy-free / Vegan",         price:"KES 300" },
+    { emoji:"🌺", name:"Passion Punch",       note:"Ginger & hibiscus",          price:"KES 290" },
+    { emoji:"🥥", name:"Coconut Paradise",    note:"Dairy-free / Vegan",         price:"KES 300" },
+    { emoji:"🍵", name:"Matcha Dreams",       note:"Ceremonial grade",           price:"KES 380" },
+    { emoji:"🍓", name:"Berry Lemonade",      note:"Seasonal sorbet",            price:"KES 270" },
+  ],
+  shakes: [
+    { emoji:"🍫", name:"Choco Lava Shake",    note:"Thick & fudgy",              price:"KES 450" },
+    { emoji:"🍓", name:"Strawberry Dream",    note:"Fresh fruit blend",          price:"KES 420" },
+    { emoji:"🥜", name:"PB Banana Shake",     note:"Protein-packed",             price:"KES 460" },
+    { emoji:"🍵", name:"Matcha Latte Shake",  note:"With oat milk option",       price:"KES 480" },
+    { emoji:"🥭", name:"Mango Lassi Shake",   note:"Kenyan mango + yoghurt",     price:"KES 400" },
+    { emoji:"🫐", name:"Mixed Berry Blast",   note:"Antioxidant-rich",           price:"KES 430" },
+  ],
+  cakes: [
+    { emoji:"🎂", name:"Birthday Cake (6\")", note:"Serves 6–8 people",          price:"KES 2,800" },
+    { emoji:"🎂", name:"Birthday Cake (9\")", note:"Serves 10–14 people",        price:"KES 4,200" },
+    { emoji:"🍰", name:"Mini Celebration",    note:"4\" — serves 2–3",           price:"KES 1,800" },
+    { emoji:"🎉", name:"Corporate Cake",      note:"Custom branding available",  price:"From KES 6,000" },
+  ],
+  sticks: [
+    { emoji:"🍦", name:"Classic Vanilla",     note:"Dipped in white chocolate",  price:"KES 180" },
+    { emoji:"🍫", name:"Double Chocolate",    note:"Dark choc coating",          price:"KES 200" },
+    { emoji:"🍓", name:"Strawberry Dip",      note:"Real strawberry glaze",      price:"KES 190" },
+    { emoji:"🥥", name:"Coconut Crunch",      note:"Toasted coconut coating",    price:"KES 195" },
+    { emoji:"🥜", name:"Peanut Butter Crunch",note:"Nut-coated stick",           price:"KES 205" },
+    { emoji:"🌺", name:"Passion Fruit Pop",   note:"Vegan & dairy-free",         price:"KES 175" },
+  ],
+  pints: [
+    { emoji:"🍓", name:"Strawberry Bliss",    note:"500 ml take-home pint",      price:"KES 650" },
+    { emoji:"🍫", name:"Chocolate Lava",      note:"500 ml take-home pint",      price:"KES 720" },
+    { emoji:"✨", name:"Salted Caramel Gold", note:"500 ml take-home pint",      price:"KES 700" },
+    { emoji:"🍵", name:"Matcha Dreams",       note:"500 ml take-home pint",      price:"KES 760" },
+    { emoji:"🥭", name:"Mango Tango",         note:"500 ml take-home pint",      price:"KES 620" },
+    { emoji:"🥥", name:"Coconut Paradise",    note:"500 ml take-home pint",      price:"KES 630" },
+    { emoji:"🍪", name:"Cookies & Dream",     note:"500 ml take-home pint",      price:"KES 680" },
+    { emoji:"🥜", name:"Peanut Butter Joy",   note:"500 ml take-home pint",      price:"KES 660" },
+  ]
+};
+
+const TESTIMONIALS = [
+  { text:"YOLO made my daughter's birthday unforgettable. Cookies & Dream was a hit with every single kid. We're already planning next year's order!",  name:"Wanjiku M.", loc:"Kilimani", av:"🌸", stars:5 },
+  { text:"The Salted Caramel Gold is absolutely elite. I've had ice cream all over the world and this genuinely competes. Nairobi has no idea how lucky it is.", name:"James O.", loc:"Karen", av:"👨🏾", stars:5 },
+  { text:"As someone who's dairy-free, finding YOLO was a revelation. Passion Punch and Coconut Paradise are incredible — I don't feel like I'm missing anything.", name:"Amina K.", loc:"Westlands", av:"🌺", stars:5 },
+  { text:"Ordered a pint of Chocolate Lava for a dinner party and guests were asking where to buy more before they even finished dessert.",  name:"David N.", loc:"Lavington", av:"🎩", stars:5 },
+  { text:"The matcha is the real deal — not fake sweet stuff. Perfectly balanced. I come in every Friday now and the staff know my order.", name:"Priya S.", loc:"Gigiri", av:"✨", stars:5 },
+  { text:"Best ice cream in Nairobi, full stop. The quality shows in every scoop. Keep doing what you're doing, YOLO!", name:"Kevin M.", loc:"Parklands", av:"🦁", stars:5 }
 ];
 
-// ======== CART STATE ========
-let cart = {};
+const BG_COLORS = [
+  "#FFF0F7","#FFF6E8","#EFF6FF","#F0FFF9","#FFF3F0",
+  "#FAFFF0","#FFFBEC","#F3EEFF","#FFF0F0","#F0FAFF"
+];
 
-function getCart() {
-  return Object.values(cart);
-}
+/* ═══════════════════════════════════════════════════════════════
+   CART STATE
+═══════════════════════════════════════════════════════════════ */
+const cart = {};
 
 function addToCart(id) {
-  const product = iceCreamData.find(p => p.id === id);
-  if (!product) return;
-  if (cart[id]) {
-    cart[id].qty++;
-  } else {
-    cart[id] = { ...product, qty: 1 };
-  }
-  updateCartUI();
-  showToast(`🍦 ${product.name} added to cart!`);
+  if (cart[id]) cart[id].qty++;
+  else { const p = PRODUCTS.find(x => x.id === id); if (p) cart[id] = {...p, qty:1}; }
+  updateCart();
+  const p = PRODUCTS.find(x => x.id === id);
+  toast(`${p.emoji} ${p.name} added!`);
+  const b = document.getElementById('cartBubble');
+  b.classList.remove('pop');
+  void b.offsetWidth;
+  b.classList.add('pop');
 }
 
-function removeFromCart(id) {
-  delete cart[id];
-  updateCartUI();
-}
-
-function changeQty(id, delta) {
+function setQty(id, delta) {
   if (!cart[id]) return;
   cart[id].qty += delta;
   if (cart[id].qty <= 0) delete cart[id];
-  updateCartUI();
+  updateCart();
 }
 
-function updateCartUI() {
-  const items = getCart();
-  const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
-  const count = items.reduce((sum, i) => sum + i.qty, 0);
+function removeItem(id) { delete cart[id]; updateCart(); }
 
-  document.getElementById('cartCount').textContent = count;
+function updateCart() {
+  const items = Object.values(cart);
+  const count = items.reduce((s,i) => s + i.qty, 0);
+  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
 
-  const cartEmpty = document.getElementById('cartEmpty');
-  const cartItemsEl = document.getElementById('cartItems');
-  const cartTotalWrap = document.getElementById('cartTotalWrap');
-  const checkoutBtn = document.getElementById('checkoutBtn');
+  document.getElementById('cartBubble').textContent = count;
+
+  const body  = document.getElementById('drawerBody');
+  const empty = document.getElementById('drawerEmpty');
+  const foot  = document.getElementById('drawerFoot');
+  const tot   = document.getElementById('drawerTotal');
 
   if (items.length === 0) {
-    cartEmpty.style.display = 'block';
-    cartItemsEl.innerHTML = '';
-    cartTotalWrap.style.display = 'none';
-    checkoutBtn.style.display = 'none';
+    empty.style.display = 'flex';
+    foot.style.display  = 'none';
+    // clear items
+    [...body.querySelectorAll('.ci')].forEach(el => el.remove());
   } else {
-    cartEmpty.style.display = 'none';
-    cartTotalWrap.style.display = 'flex';
-    checkoutBtn.style.display = 'block';
-    document.getElementById('cartTotal').textContent = `KES ${total.toLocaleString()}`;
-    cartItemsEl.innerHTML = items.map(item => `
-      <div class="cart-item">
-        <div class="cart-item-emoji">${item.emoji}</div>
-        <div class="cart-item-info">
-          <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-price">KES ${item.price} each</div>
+    empty.style.display = 'none';
+    foot.style.display  = 'block';
+    tot.textContent = `KES ${total.toLocaleString()}`;
+
+    body.querySelectorAll('.ci').forEach(el => el.remove());
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'ci';
+      div.id = `ci-${item.id}`;
+      div.innerHTML = `
+        <div class="ci-emoji">${item.emoji}</div>
+        <div class="ci-info">
+          <div class="ci-name">${item.name}</div>
+          <div class="ci-price">KES ${item.price} × ${item.qty} = KES ${(item.price*item.qty).toLocaleString()}</div>
         </div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
-          <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+        <div class="ci-qty">
+          <button onclick="setQty(${item.id},-1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="setQty(${item.id},1)">+</button>
         </div>
-        <button class="cart-item-remove" onclick="removeFromCart(${item.id})" aria-label="Remove">🗑️</button>
-      </div>
-    `).join('');
+        <button class="ci-del" onclick="removeItem(${item.id})">🗑</button>`;
+      body.insertBefore(div, empty);
+    });
   }
 }
 
-function scrollToCart() {
-  document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
+function openCart()  {
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('drawerBg').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('drawerBg').classList.remove('open');
+  document.body.style.overflow = '';
+}
 function checkout() {
-  showToast('🎉 Order placed! We\'ll WhatsApp you shortly.');
-  cart = {};
-  updateCartUI();
+  toast('🎉 Order placed! We\'ll WhatsApp you shortly.');
+  Object.keys(cart).forEach(k => delete cart[k]);
+  updateCart();
+  closeCart();
 }
 
-// ======== RENDER PRODUCTS ========
-function renderProducts() {
+/* ═══════════════════════════════════════════════════════════════
+   RENDER PRODUCTS
+═══════════════════════════════════════════════════════════════ */
+function renderProducts(filter='all') {
   const grid = document.getElementById('productsGrid');
-  grid.innerHTML = iceCreamData.map(p => `
-    <div class="product-card reveal">
-      <div class="product-img-wrap" style="background:${getBg(p.id)};">
+  const list = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.tag === filter);
+  grid.innerHTML = list.map((p,i) => `
+    <div class="pc rv" style="transition-delay:${i*0.04}s">
+      <div class="pc-thumb" style="background:${BG_COLORS[p.id-1]}">
         <span>${p.emoji}</span>
-        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+        ${p.badge ? `<span class="pc-badge">${p.badge}</span>` : ''}
       </div>
-      <div class="product-body">
-        <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.shortDesc}</div>
-        <div class="product-footer">
-          <span class="product-price">KES ${p.price}</span>
-          <div class="product-actions">
-            <button class="btn-read-more" onclick="openModal(${p.id})">Read More</button>
-            <button class="btn-add-cart" onclick="addToCart(${p.id})">+ Cart</button>
+      <div class="pc-body">
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-desc">${p.short}</div>
+        <div class="pc-foot">
+          <span class="pc-price">KES ${p.price}</span>
+          <div class="pc-actions">
+            <button class="btn-more" onclick="openModal(${p.id})">Details</button>
+            <button class="btn-cart-add" onclick="addToCart(${p.id})">+ Cart</button>
           </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
+  observeReveal();
 }
 
-function getBg(id) {
-  const bgs = ['#FFF0F5','#FFF5E0','#F5E8FF','#E8FFF5','#FFF0F0','#F0F5FF','#FFFDE8','#EDF5FF','#F0FFF8','#FFF4E8'];
-  return bgs[(id - 1) % bgs.length];
+/* ═══════════════════════════════════════════════════════════════
+   RENDER MENU
+═══════════════════════════════════════════════════════════════ */
+function renderMenu() {
+  const container = document.getElementById('menuPanels');
+  container.innerHTML = Object.entries(MENU_DATA).map(([key, items]) => `
+    <div class="menu-panel${key==='scoops'?' active':''}" data-panel="${key}">
+      <div class="menu-grid">
+        ${items.map(m => `
+          <div class="menu-item">
+            <div class="mi-emoji">${m.emoji}</div>
+            <div class="mi-info">
+              <div class="mi-name">${m.name}</div>
+              <div class="mi-note">${m.note}</div>
+            </div>
+            <div class="mi-price">${m.price}</div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('menuTabs').addEventListener('click', e => {
+    const btn = e.target.closest('.mtab');
+    if (!btn) return;
+    document.querySelectorAll('.mtab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+  });
 }
 
-// ======== RENDER TESTIMONIALS ========
+/* ═══════════════════════════════════════════════════════════════
+   RENDER TESTIMONIALS
+═══════════════════════════════════════════════════════════════ */
 function renderTestimonials() {
-  const grid = document.getElementById('testiGrid');
-  grid.innerHTML = testimonials.map(t => `
-    <div class="testi-card reveal">
-      <div class="testi-quote">"</div>
-      <p class="testi-text">${t.text}</p>
-      <div class="testi-author">
-        <div class="testi-avatar">${t.avatar}</div>
+  document.getElementById('testiGrid').innerHTML = TESTIMONIALS.map((t,i) => `
+    <div class="tc rv" style="transition-delay:${i*0.07}s">
+      <div class="tc-stars">${'★'.repeat(t.stars)}</div>
+      <p class="tc-text">"${t.text}"</p>
+      <div class="tc-author">
+        <div class="tc-av">${t.av}</div>
         <div>
-          <div class="testi-name">${t.name}</div>
-          <div class="testi-stars">${t.stars}</div>
+          <div class="tc-name">${t.name}</div>
+          <div class="tc-loc">${t.loc}</div>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-// ======== MODAL ========
-let currentModalId = null;
-
+/* ═══════════════════════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════════════════════ */
 function openModal(id) {
-  const p = iceCreamData.find(x => x.id === id);
+  const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
-  currentModalId = id;
-  document.getElementById('modalEmoji').textContent = p.emoji;
-  document.getElementById('modalName').textContent = p.name;
-  document.getElementById('modalPrice').textContent = `KES ${p.price} per scoop`;
-  document.getElementById('modalDesc').textContent = p.fullDesc;
-  document.getElementById('modalDetails').innerHTML = Object.entries(p.details).map(([k,v]) => `
-    <div class="modal-detail-row">
-      <span class="modal-detail-label">${k}</span>
-      <span class="modal-detail-val">${v}</span>
-    </div>
-  `).join('');
-  document.getElementById('modalAddBtn').onclick = () => { addToCart(id); closeModal(); };
-  document.getElementById('productModal').classList.add('open');
+  document.getElementById('mEmoji').textContent = p.emoji;
+  document.getElementById('mName').textContent  = p.name;
+  document.getElementById('mPrice').textContent = `KES ${p.price} per scoop`;
+  document.getElementById('mDesc').textContent  = p.full;
+  document.getElementById('mFacts').innerHTML   = Object.entries(p.facts).map(([k,v]) => `
+    <div class="m-fact"><span class="m-fact-k">${k}</span><span class="m-fact-v">${v}</span></div>`).join('');
+  document.getElementById('mAdd').onclick = () => { addToCart(id); closeModal(); openCart(); };
+  document.getElementById('modalBg').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
 function closeModal() {
-  document.getElementById('productModal').classList.remove('open');
+  document.getElementById('modalBg').classList.remove('open');
   document.body.style.overflow = '';
 }
+function closeModalOut(e) { if (e.target === document.getElementById('modalBg')) closeModal(); }
 
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('productModal')) closeModal();
+/* ═══════════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════════ */
+let toastT;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 2600);
 }
 
-// ======== TOAST ========
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerHTML = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-}
+/* ═══════════════════════════════════════════════════════════════
+   FILTER
+═══════════════════════════════════════════════════════════════ */
+document.getElementById('shopFilter').addEventListener('click', e => {
+  const pill = e.target.closest('.filter-pill');
+  if (!pill) return;
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  renderProducts(pill.dataset.filter);
+});
 
-// ======== FORM ========
+/* ═══════════════════════════════════════════════════════════════
+   CONTACT FORM
+═══════════════════════════════════════════════════════════════ */
 function submitForm(e) {
   e.preventDefault();
-  showToast('✅ Message sent! We\'ll reply within 24 hours.');
+  toast('✅ Message sent — we\'ll reply within 24 hrs!');
   e.target.reset();
 }
 
-// ======== NAV ========
-function toggleMenu() {
-  document.getElementById('navLinks').classList.toggle('open');
-}
-function closeMenu() {
-  document.getElementById('navLinks').classList.remove('open');
-}
+/* ═══════════════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════════════ */
+function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+function closeNav()  { document.getElementById('navLinks').classList.remove('open'); }
 window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  document.getElementById('nav').classList.toggle('solid', window.scrollY > 50);
+}, { passive: true });
+document.addEventListener('click', e => {
+  const nl = document.getElementById('navLinks');
+  if (nl.classList.contains('open') && !nl.contains(e.target) && !document.getElementById('hamBtn').contains(e.target)) closeNav();
 });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeCart(); } });
 
-// ======== REVEAL OBSERVER ========
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.12 });
+/* ═══════════════════════════════════════════════════════════════
+   REVEAL OBSERVER
+═══════════════════════════════════════════════════════════════ */
+const RO = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); RO.unobserve(e.target); } });
+}, { threshold: 0.1 });
 
 function observeReveal() {
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.rv:not(.in)').forEach(el => RO.observe(el));
 }
 
-// ======== THREE.JS HERO ========
+/* ═══════════════════════════════════════════════════════════════
+   THREE.JS HERO
+═══════════════════════════════════════════════════════════════ */
 function initThree() {
-  const canvas = document.getElementById('hero-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-  renderer.setClearColor(0x2D0B4E, 1);
+  const canvas   = document.getElementById('three-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x1C0A35, 1);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-  camera.position.z = 6;
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
+  camera.position.z = 7;
 
-  // Lighting
-  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xFFD93D, 1.2);
-  dirLight.position.set(5, 8, 5);
-  scene.add(dirLight);
-  const pinkLight = new THREE.PointLight(0xFF6B9D, 1.5, 20);
-  pinkLight.position.set(-4, 2, 2);
-  scene.add(pinkLight);
-  const mintLight = new THREE.PointLight(0x00E5B0, 1.0, 20);
-  mintLight.position.set(4, -2, 3);
-  scene.add(mintLight);
+  // Lights
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  const sun = new THREE.DirectionalLight(0xFFD93D, 1.3);
+  sun.position.set(6, 8, 5); scene.add(sun);
+  const pl1 = new THREE.PointLight(0xFF6B9D, 1.8, 18); pl1.position.set(-5, 3, 3); scene.add(pl1);
+  const pl2 = new THREE.PointLight(0x0DDDAA, 1.2, 18); pl2.position.set( 5,-2, 3); scene.add(pl2);
 
-  // Scoop colours
-  const scoopColors = [
-    0xFF6B9D, 0xFFD93D, 0x00E5B0, 0xFF9F43,
-    0xB48FE3, 0x74C4A0, 0xFF8FAB, 0xA3D9FF,
-    0xFFB347, 0x9DE8BE
-  ];
+  // Particles
+  const pGeo = new THREE.BufferGeometry();
+  const pArr = new Float32Array(600);
+  for (let i=0;i<600;i++) pArr[i]=(Math.random()-.5)*35;
+  pGeo.setAttribute('position',new THREE.BufferAttribute(pArr,3));
+  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({color:0xffffff,size:.055,transparent:true,opacity:.4})));
 
-  const scoops = [];
-
-  function createScoop(x, y, z, colorHex, scale) {
-    const group = new THREE.Group();
-
-    // Scoop ball
-    const geo = new THREE.SphereGeometry(0.5, 32, 32);
-    const mat = new THREE.MeshStandardMaterial({
-      color: colorHex,
-      roughness: 0.3,
-      metalness: 0.05
-    });
-    const ball = new THREE.Mesh(geo, mat);
-    group.add(ball);
-
-    // Cone
-    const coneGeo = new THREE.ConeGeometry(0.35, 0.9, 16);
-    const coneMat = new THREE.MeshStandardMaterial({ color: 0xD4A96A, roughness: 0.7 });
-    const cone = new THREE.Mesh(coneGeo, coneMat);
-    cone.position.y = -0.7;
-    group.add(cone);
-
-    group.position.set(x, y, z);
-    group.scale.setScalar(scale);
-    scene.add(group);
-
-    return {
-      mesh: group,
-      rotSpeed: (Math.random() - 0.5) * 0.015,
-      floatSpeed: 0.3 + Math.random() * 0.4,
-      floatAmp: 0.15 + Math.random() * 0.2,
-      floatOffset: Math.random() * Math.PI * 2,
-      driftX: (Math.random() - 0.5) * 0.002,
-      driftY: (Math.random() - 0.5) * 0.001,
-      baseX: x, baseY: y
-    };
-  }
-
-  // Scatter scoops
-  const positions = [
-    [-3.5, 1.5, -1], [3.2, 1.2, -0.5], [0.5, 2.5, -1.5],
-    [-1.5, -1.8, -0.5], [2.5, -1.5, -1], [-4, -0.5, -2],
-    [4.5, 0, -2], [1, 0, -3], [-2.5, 2.8, -2.5], [3.8, 2.8, -2.5]
-  ];
-  positions.forEach(([x, y, z], i) => {
-    const scale = 0.6 + Math.random() * 0.6;
-    scoops.push(createScoop(x, y, z, scoopColors[i % scoopColors.length], scale));
+  // Scoops
+  const COLORS  = [0xF7498B,0xFFD93D,0x0DDDAA,0xFF9757,0xB48FE3,0x74C4A0,0xFF8FAB,0xA3D9FF,0xFFB347,0x9DE8BE];
+  const SLOTS   = [[-4,1.8,-1.5],[3.5,1.5,-.5],[.5,3,-.5],[-1.5,-2,-.8],[2.8,-1.8,-1],
+                   [-4.5,-.5,-2.5],[4.8,.2,-2],[1.2,.5,-3],[-2.5,3,-3],[3.6,3,-3]];
+  const scoops  = SLOTS.map(([x,y,z],i) => {
+    const g = new THREE.Group();
+    const sc= .55+Math.random()*.55;
+    const ball = new THREE.Mesh(
+      new THREE.SphereGeometry(.5,32,32),
+      new THREE.MeshStandardMaterial({color:COLORS[i%COLORS.length],roughness:.3,metalness:.05})
+    );
+    const cone = new THREE.Mesh(
+      new THREE.ConeGeometry(.34,.88,16),
+      new THREE.MeshStandardMaterial({color:0xD4A96A,roughness:.75})
+    );
+    cone.position.y = -.68;
+    g.add(ball,cone);
+    g.position.set(x,y,z);
+    g.scale.setScalar(sc);
+    scene.add(g);
+    return { g, ry:(Math.random()-.5)*.014, fs:.28+Math.random()*.45, fa:.12+Math.random()*.22, fo:Math.random()*Math.PI*2, bx:x, by:y };
   });
 
-  // Stars / particles
-  const starGeo = new THREE.BufferGeometry();
-  const starCount = 200;
-  const starPos = new Float32Array(starCount * 3);
-  for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 30;
-  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.06, transparent: true, opacity: 0.5 });
-  scene.add(new THREE.Points(starGeo, starMat));
+  let t=0;
+  function resize() {
+    const w=canvas.parentElement.clientWidth, h=canvas.parentElement.clientHeight;
+    renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+  }
+  resize(); window.addEventListener('resize',resize,{passive:true});
 
-  let t = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    t += 0.01;
+  (function tick() {
+    requestAnimationFrame(tick); t+=.01;
     scoops.forEach(s => {
-      s.mesh.rotation.y += s.rotSpeed;
-      s.mesh.rotation.x += s.rotSpeed * 0.5;
-      s.mesh.position.y = s.baseY + Math.sin(t * s.floatSpeed + s.floatOffset) * s.floatAmp;
-      s.mesh.position.x = s.baseX + Math.sin(t * 0.3 + s.floatOffset) * 0.12;
+      s.g.rotation.y += s.ry;
+      s.g.rotation.x += s.ry*.4;
+      s.g.position.y  = s.by + Math.sin(t*s.fs+s.fo)*s.fa;
+      s.g.position.x  = s.bx + Math.sin(t*.25+s.fo)*.1;
     });
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  function onResize() {
-    const w = canvas.parentElement.clientWidth;
-    const h = canvas.parentElement.clientHeight;
-    renderer.setSize(w, h);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-  window.addEventListener('resize', onResize);
-  onResize();
+    renderer.render(scene,camera);
+  })();
 }
 
-// ======== INIT ========
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   renderProducts();
+  renderMenu();
   renderTestimonials();
-  updateCartUI();
+  updateCart();
   observeReveal();
   initThree();
-
-  // Re-observe after dynamic content
-  setTimeout(observeReveal, 100);
-});
-
-// Close mobile menu on outside click
-document.addEventListener('click', (e) => {
-  const nav = document.getElementById('navLinks');
-  const ham = document.getElementById('hamburger');
-  if (nav.classList.contains('open') && !nav.contains(e.target) && !ham.contains(e.target)) {
-    closeMenu();
-  }
-});
-
-// Keyboard trap for modal
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
+  setTimeout(observeReveal, 200);
 });
 </script>
 </body>
