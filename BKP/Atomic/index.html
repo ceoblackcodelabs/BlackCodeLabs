@@ -44,7 +44,7 @@ body {
 body::before {
   content: '';
   position: fixed; inset: 0;
-  background-image: url("{% static 'images/home.jpg' %}");
+  background-image: url("../images/home.jpg");
   pointer-events: none; z-index: 9999; opacity: 0.4;
 }
 
@@ -182,7 +182,7 @@ nav.scrolled {
 }
 .hero-bg {
   position: absolute; inset: 0;
-  background-image: url('home.jpg');
+  background-image: url('../images/home.jpg');
   background-size: cover; background-position: center;
   background-color: #111;
   transform: scale(1.05);
