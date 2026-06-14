@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kingsley Black — Model Portfolio</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#0a0a0a;
+    --charcoal:#141414;
+    --panel:#1b1b1b;
+    --bone:#f2efe9;
+    --bone-dim:#cfc9bf;
+    --bronze:#c89b6c;
+    --bronze-dim:#8a6c4c;
+    --line:rgba(242,239,233,0.08);
+    --display:'Bebas Neue', sans-serif;
+    --body:'Archivo', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--bone);
+    font-family:var(--body);
+    font-weight:300;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--bronze);color:var(--black);}
+
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--black);}
+  ::-webkit-scrollbar-thumb{background:var(--bronze-dim);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ===== Utility / layout ===== */
+  .wrap{max-width:1280px;margin:0 auto;padding:0 6vw;}
+  .eyebrow{
+    font-family:var(--display);
+    letter-spacing:0.4em;
+    font-size:0.72rem;
+    color:var(--bronze);
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .eyebrow::before{
+    content:'';
+    display:block;
+    width:32px;height:1px;
+    background:var(--bronze);
+  }
+  h1,h2,h3{
+    font-family:var(--display);
+    font-weight:400;
+    letter-spacing:0.04em;
+    line-height:1.02;
+    text-transform:uppercase;
+  }
+  .section-title{
+    font-size:clamp(2.4rem,7vw,5.2rem);
+    margin-bottom:0.6em;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+
+  /* ===== Nav ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;
+    z-index:1000;
+    padding:28px 6vw;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:background 0.4s ease, padding 0.4s ease, border-color 0.4s ease;
+    border-bottom:1px solid transparent;
+    mix-blend-mode:normal;
+  }
+  header.scrolled{
+    background:rgba(10,10,10,0.78);
+    backdrop-filter:blur(14px);
+    padding:18px 6vw;
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    font-family:var(--display);
+    font-size:1.5rem;
+    letter-spacing:0.18em;
+  }
+  .logo span{color:var(--bronze);}
+  nav ul{
+    display:flex;
+    gap:38px;
+    list-style:none;
+  }
+  nav a{
+    font-family:var(--display);
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    position:relative;
+    padding-bottom:6px;
+  }
+  nav a::after{
+    content:'';
+    position:absolute;left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--bronze);
+    transition:width 0.35s ease;
+  }
+  nav a:hover::after{width:100%;}
+  .nav-toggle{display:none;}
+
+  @media (max-width:860px){
+    nav ul{
+      position:fixed;
+      top:0;right:0;
+      height:100vh;
+      width:78vw;
+      max-width:340px;
+      background:var(--charcoal);
+      flex-direction:column;
+      justify-content:center;
+      gap:34px;
+      padding-left:14vw;
+      transform:translateX(100%);
+      transition:transform 0.5s cubic-bezier(.7,0,.3,1);
+      border-left:1px solid var(--line);
+    }
+    nav ul.open{transform:translateX(0);}
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      cursor:pointer;
+      z-index:1001;
+      background:none;border:none;
+    }
+    .nav-toggle span{
+      display:block;width:26px;height:1px;background:var(--bone);
+      transition:transform 0.3s ease, opacity 0.3s ease;
+    }
+    .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .nav-toggle.open span:nth-child(2){opacity:0;}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:100vh;
+    min-height:680px;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  #hero-canvas{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    opacity:0.85;
+  }
+  .hero-bg-grad{
+    position:absolute;inset:0;
+    z-index:2;
+    background:
+      radial-gradient(ellipse at 70% 30%, rgba(200,155,108,0.10), transparent 60%),
+      linear-gradient(180deg, rgba(10,10,10,0) 30%, rgba(10,10,10,0.95) 92%);
+    pointer-events:none;
+  }
+  .hero-content{
+    position:relative;
+    z-index:3;
+    width:100%;
+    padding:0 6vw 8vh;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:40px;
+  }
+  .hero-title-block{max-width:880px;}
+  .hero-eyebrow{
+    font-family:var(--display);
+    letter-spacing:0.5em;
+    font-size:0.78rem;
+    color:var(--bronze);
+    margin-bottom:1.4rem;
+  }
+  .hero h1{
+    font-size:clamp(3.6rem,13vw,10.5rem);
+    letter-spacing:0.02em;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--bronze);
+    display:block;
+  }
+  .hero-sub{
+    font-family:var(--body);
+    font-weight:300;
+    font-size:clamp(0.95rem,1.6vw,1.2rem);
+    color:var(--bone-dim);
+    max-width:480px;
+    margin-top:1.6rem;
+    line-height:1.7;
+  }
+  .hero-tags{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    text-align:right;
+    flex-shrink:0;
+  }
+  .hero-tags span{
+    font-family:var(--display);
+    font-size:0.85rem;
+    letter-spacing:0.3em;
+    color:var(--bone-dim);
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-tags span:first-child{padding-top:0;}
+  .hero-tags span:last-child{border-bottom:none;}
+  .hero-tags strong{color:var(--bronze);font-weight:400;}
+
+  .scroll-cue{
+    position:absolute;
+    bottom:6vh;left:6vw;
+    z-index:3;
+    font-family:var(--display);
+    font-size:0.7rem;
+    letter-spacing:0.3em;
+    color:var(--bone-dim);
+    display:flex;align-items:center;gap:14px;
+  }
+  .scroll-cue .line{
+    width:1px;height:40px;
+    background:linear-gradient(180deg,var(--bronze),transparent);
+    animation:scrollline 2.4s ease-in-out infinite;
+  }
+  @keyframes scrollline{
+    0%,100%{transform:scaleY(1);transform-origin:top;}
+    50%{transform:scaleY(0.4);transform-origin:top;}
+  }
+
+  @media (max-width:860px){
+    .hero-content{flex-direction:column;align-items:flex-start;gap:32px;}
+    .hero-tags{flex-direction:row;text-align:left;gap:24px;}
+    .hero-tags span{border-bottom:none;padding:0;}
+  }
+
+  /* ===== Reveal ===== */
+  .reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* ===== Section spacing ===== */
+  section{
+    padding:clamp(80px,12vh,160px) 0;
+    position:relative;
+  }
+  section.border-top{border-top:1px solid var(--line);}
+
+  /* ===== About ===== */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:6vw;
+    align-items:center;
+  }
+  .about-img-wrap{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:var(--panel);
+  }
+  .about-img-wrap img{
+    width:100%;height:100%;object-fit:cover;
+    filter:grayscale(15%) contrast(1.05);
+    transition:transform 1.2s cubic-bezier(.2,.7,.2,1);
+  }
+  .about-img-wrap:hover img{transform:scale(1.05);}
+  .about-img-wrap::after{
+    content:'';position:absolute;inset:0;
+    border:1px solid var(--line);
+    pointer-events:none;
+  }
+  .about-frame-label{
+    position:absolute;bottom:18px;left:18px;
+    font-family:var(--display);
+    font-size:0.7rem;letter-spacing:0.3em;
+    color:var(--bone);
+    background:rgba(10,10,10,0.55);
+    padding:8px 14px;
+    backdrop-filter:blur(6px);
+  }
+  .about-copy p{
+    font-size:1.02rem;
+    line-height:1.85;
+    color:var(--bone-dim);
+    margin-bottom:1.4rem;
+    max-width:540px;
+  }
+  .about-copy p strong{color:var(--bone);font-weight:500;}
+  .pillars{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    margin-top:2.6rem;
+    border:1px solid var(--line);
+  }
+  .pillar{
+    padding:1.6rem 1.2rem;
+    border-right:1px solid var(--line);
+    background:var(--charcoal);
+  }
+  .pillar:last-child{border-right:none;}
+  .pillar .num{
+    font-family:var(--display);
+    color:var(--bronze);
+    font-size:0.75rem;letter-spacing:0.3em;
+    margin-bottom:0.6rem;
+    display:block;
+  }
+  .pillar .label{
+    font-family:var(--display);
+    font-size:1rem;letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  @media (max-width:860px){
+    .about-grid{grid-template-columns:1fr;gap:48px;}
+    .pillars{grid-template-columns:1fr;}
+    .pillar{border-right:none;border-bottom:1px solid var(--line);}
+    .pillar:last-child{border-bottom:none;}
+  }
+
+  /* ===== Gallery ===== */
+  .gallery-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:24px;
+    margin-bottom:3.5rem;
+  }
+  .gallery-header p{
+    color:var(--bone-dim);max-width:380px;font-size:0.98rem;line-height:1.7;
+  }
+  .gallery-tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .gallery-tab{
+    font-family:var(--display);
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    padding:12px 24px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--bone-dim);
+    cursor:pointer;
+    transition:all 0.3s ease;
+  }
+  .gallery-tab:hover{color:var(--bone);border-color:var(--bronze-dim);}
+  .gallery-tab.active{
+    background:var(--bronze);
+    color:var(--black);
+    border-color:var(--bronze);
+  }
+
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:200px;
+    gap:10px;
+  }
+  .gallery-item{
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    background:var(--panel);
+  }
+  .gallery-item img{
+    width:100%;height:100%;object-fit:cover;
+    filter:grayscale(20%) contrast(1.05) brightness(0.92);
+    transition:transform 1.4s cubic-bezier(.2,.7,.2,1), filter 0.6s ease;
+  }
+  .gallery-item:hover img{transform:scale(1.08);filter:grayscale(0%) contrast(1.1) brightness(1);}
+  .gallery-item .tag-overlay{
+    position:absolute;inset:0;
+    display:flex;align-items:flex-end;
+    padding:18px;
+    background:linear-gradient(180deg,transparent 40%, rgba(10,10,10,0.85) 100%);
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+  .gallery-item:hover .tag-overlay{opacity:1;}
+  .gallery-item .tag-overlay span{
+    font-family:var(--display);
+    font-size:0.78rem;letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--bone);
+  }
+  .gallery-item .tag-overlay span small{
+    display:block;color:var(--bronze);font-size:0.7rem;letter-spacing:0.3em;margin-top:6px;
+  }
+
+  .gi-tall{grid-row:span 2;}
+  .gi-wide{grid-column:span 2;}
+
+  .gallery-item.hide{display:none;}
+
+  @media (max-width:980px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px;}
+    .gi-wide{grid-column:span 2;}
+  }
+  @media (max-width:560px){
+    .gallery-grid{grid-template-columns:1fr;}
+    .gi-wide{grid-column:span 1;}
+    .gi-tall{grid-row:span 1;}
+  }
+
+  /* Lightbox */
+  .lightbox{
+    position:fixed;inset:0;
+    z-index:2000;
+    background:rgba(8,8,8,0.94);
+    backdrop-filter:blur(8px);
+    display:flex;
+    align-items:center;justify-content:center;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .lightbox.open{opacity:1;visibility:visible;}
+  .lightbox img{
+    max-width:86vw;max-height:80vh;
+    object-fit:contain;
+    box-shadow:0 30px 90px rgba(0,0,0,0.6);
+  }
+  .lightbox-caption{
+    position:absolute;bottom:6vh;left:0;right:0;
+    text-align:center;
+    font-family:var(--display);
+    letter-spacing:0.3em;
+    font-size:0.85rem;
+    color:var(--bone-dim);
+  }
+  .lightbox-caption strong{color:var(--bronze);}
+  .lightbox-close{
+    position:absolute;top:5vh;right:5vw;
+    font-family:var(--display);
+    font-size:0.8rem;letter-spacing:0.3em;
+    color:var(--bone);
+    cursor:pointer;
+    border:1px solid var(--line);
+    padding:12px 22px;
+    background:transparent;
+    transition:border-color 0.3s ease;
+  }
+  .lightbox-close:hover{border-color:var(--bronze);color:var(--bronze);}
+  .lightbox-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    font-family:var(--display);
+    font-size:1.4rem;
+    color:var(--bone);
+    background:none;border:none;
+    cursor:pointer;
+    padding:20px;
+    transition:color 0.3s ease;
+  }
+  .lightbox-nav:hover{color:var(--bronze);}
+  .lightbox-prev{left:2vw;}
+  .lightbox-next{right:2vw;}
+
+  /* ===== Stats ===== */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+  }
+  .stat{
+    padding:3.4rem 2rem;
+    text-align:center;
+    border-right:1px solid var(--line);
+    position:relative;
+  }
+  .stat:last-child{border-right:none;}
+  .stat .num{
+    font-family:var(--display);
+    font-size:clamp(2.6rem,6vw,4.6rem);
+    color:var(--bronze);
+    letter-spacing:0.02em;
+    line-height:1;
+  }
+  .stat .label{
+    margin-top:0.8rem;
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--bone-dim);
+    font-family:var(--display);
+  }
+  @media (max-width:860px){
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .stat{border-bottom:1px solid var(--line);}
+    .stat:nth-child(odd){border-right:1px solid var(--line);}
+  }
+
+  /* ===== Services ===== */
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+  }
+  .service-card{
+    background:var(--charcoal);
+    padding:3rem 2.2rem;
+    transition:background 0.4s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .service-card::before{
+    content:'';
+    position:absolute;top:0;left:0;
+    width:0%;height:2px;
+    background:var(--bronze);
+    transition:width 0.5s ease;
+  }
+  .service-card:hover{background:var(--panel);}
+  .service-card:hover::before{width:100%;}
+  .service-icon{
+    width:46px;height:46px;
+    margin-bottom:1.6rem;
+    color:var(--bronze);
+  }
+  .service-icon svg{width:100%;height:100%;}
+  .service-card h3{
+    font-size:1.3rem;
+    margin-bottom:0.8rem;
+    letter-spacing:0.05em;
+  }
+  .service-card p{
+    color:var(--bone-dim);
+    font-size:0.92rem;
+    line-height:1.7;
+  }
+  @media (max-width:860px){
+    .services-grid{grid-template-columns:1fr;}
+  }
+
+  /* ===== Featured Shoots ===== */
+  .featured-shoot{
+    position:relative;
+    height:88vh;
+    min-height:560px;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    margin-bottom:10px;
+  }
+  .featured-shoot img{
+    position:absolute;inset:0;
+    width:100%;height:100%;object-fit:cover;
+    filter:grayscale(25%) contrast(1.08) brightness(0.85);
+    transform:scale(1.02);
+    transition:transform 1.6s cubic-bezier(.2,.7,.2,1);
+  }
+  .featured-shoot:hover img{transform:scale(1.1);}
+  .featured-shoot::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,10,10,0.05) 30%, rgba(10,10,10,0.92) 100%);
+  }
+  .featured-content{
+    position:relative;z-index:2;
+    padding:5vh 6vw;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    width:100%;
+    gap:24px;
+  }
+  .featured-content .fnum{
+    font-family:var(--display);
+    font-size:0.85rem;letter-spacing:0.3em;
+    color:var(--bronze);
+    margin-bottom:0.8rem;
+    display:block;
+  }
+  .featured-content h3{
+    font-size:clamp(2.2rem,6vw,4.4rem);
+    max-width:760px;
+  }
+  .featured-meta{
+    text-align:right;
+    font-family:var(--display);
+    font-size:0.78rem;letter-spacing:0.25em;
+    color:var(--bone-dim);
+    text-transform:uppercase;
+    flex-shrink:0;
+  }
+  @media (max-width:700px){
+    .featured-content{flex-direction:column;align-items:flex-start;gap:14px;}
+    .featured-meta{text-align:left;}
+  }
+
+  /* ===== Testimonials ===== */
+  .testimonials-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+  }
+  .testimonial{
+    background:var(--charcoal);
+    padding:3rem 2.4rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    min-height:280px;
+  }
+  .testimonial p{
+    font-size:1.05rem;
+    line-height:1.75;
+    color:var(--bone);
+    font-style:italic;
+  }
+  .testimonial-author{
+    margin-top:2rem;
+    font-family:var(--display);
+    font-size:0.78rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--bronze);
+  }
+  .testimonial-author small{
+    display:block;
+    color:var(--bone-dim);
+    letter-spacing:0.15em;
+    margin-top:4px;
+    font-family:var(--body);
+    text-transform:none;
+    font-size:0.8rem;
+  }
+  @media (max-width:860px){
+    .testimonials-grid{grid-template-columns:1fr;}
+  }
+
+  /* ===== Booking ===== */
+  .booking-grid{
+    display:grid;
+    grid-template-columns:1fr 1.2fr;
+    gap:6vw;
+  }
+  .booking-info p{
+    color:var(--bone-dim);
+    font-size:1.05rem;
+    line-height:1.85;
+    margin-bottom:1.6rem;
+    max-width:440px;
+  }
+  .availability{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    font-family:var(--display);
+    font-size:0.78rem;letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:var(--bone);
+    border:1px solid var(--bronze-dim);
+    padding:14px 24px;
+    margin-top:1rem;
+  }
+  .availability .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--bronze);
+    box-shadow:0 0 0 0 rgba(200,155,108,0.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(200,155,108,0.5);}
+    70%{box-shadow:0 0 0 10px rgba(200,155,108,0);}
+    100%{box-shadow:0 0 0 0 rgba(200,155,108,0);}
+  }
+  .booking-contacts{
+    margin-top:2.4rem;
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+  }
+  .booking-contacts a{
+    font-family:var(--display);
+    font-size:1rem;
+    letter-spacing:0.1em;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    transition:color 0.3s ease;
+  }
+  .booking-contacts a:hover{color:var(--bronze);}
+  .booking-contacts svg{width:20px;height:20px;flex-shrink:0;color:var(--bronze);}
+
+  form.contact-form{
+    display:flex;flex-direction:column;gap:1.8rem;
+  }
+  .field{
+    position:relative;
+  }
+  .field input,.field textarea{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--bone);
+    font-family:var(--body);
+    font-size:1rem;
+    padding:14px 0;
+    outline:none;
+    transition:border-color 0.3s ease;
+    resize:none;
+  }
+  .field textarea{min-height:120px;}
+  .field input::placeholder,.field textarea::placeholder{color:var(--bone-dim);opacity:0.6;}
+  .field input:focus,.field textarea:focus{border-color:var(--bronze);}
+  .field label{
+    position:absolute;left:0;top:14px;
+    font-family:var(--display);
+    font-size:0.7rem;letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:var(--bone-dim);
+    pointer-events:none;
+    transition:all 0.3s ease;
+  }
+  .field input:focus + label,
+  .field input:not(:placeholder-shown) + label,
+  .field textarea:focus + label,
+  .field textarea:not(:placeholder-shown) + label{
+    top:-14px;
+    font-size:0.62rem;
+    color:var(--bronze);
+  }
+  .btn{
+    font-family:var(--display);
+    font-size:0.85rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    padding:18px 36px;
+    background:var(--bronze);
+    color:var(--black);
+    border:none;
+    cursor:pointer;
+    transition:background 0.3s ease, letter-spacing 0.3s ease;
+    align-self:flex-start;
+    margin-top:0.6rem;
+  }
+  .btn:hover{background:var(--bone);letter-spacing:0.4em;}
+  .btn:focus-visible, a:focus-visible, button:focus-visible, .gallery-tab:focus-visible{
+    outline:2px solid var(--bronze);
+    outline-offset:3px;
+  }
+
+  @media (max-width:860px){
+    .booking-grid{grid-template-columns:1fr;gap:50px;}
+  }
+
+  /* ===== Social ===== */
+  .social-strip{
+    display:flex;
+    justify-content:center;
+    gap:60px;
+    padding:5rem 0;
+    flex-wrap:wrap;
+  }
+  .social-link{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    font-family:var(--display);
+    font-size:0.85rem;letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--bone-dim);
+    transition:color 0.3s ease, transform 0.3s ease;
+  }
+  .social-link:hover{color:var(--bronze);transform:translateY(-4px);}
+  .social-link svg{width:32px;height:32px;}
+
+  /* ===== Footer ===== */
+  footer{
+    border-top:1px solid var(--line);
+    padding:4rem 0 2.4rem;
+  }
+  .footer-grid{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:30px;
+  }
+  .footer-logo{
+    font-family:var(--display);
+    font-size:1.8rem;letter-spacing:0.18em;
+  }
+  .footer-logo span{color:var(--bronze);}
+  .footer-tagline{
+    margin-top:0.6rem;
+    color:var(--bone-dim);
+    font-size:0.9rem;
+    letter-spacing:0.05em;
+    font-style:italic;
+  }
+  .footer-meta{
+    text-align:right;
+    font-family:var(--display);
+    font-size:0.75rem;letter-spacing:0.2em;
+    color:var(--bone-dim);
+    text-transform:uppercase;
+    line-height:2;
+  }
+  .footer-meta a:hover{color:var(--bronze);}
+  .footer-bottom{
+    margin-top:3rem;
+    padding-top:1.6rem;
+    border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:0.75rem;
+    color:var(--bone-dim);
+    letter-spacing:0.1em;
+  }
+  @media (max-width:700px){
+    .footer-grid{flex-direction:column;}
+    .footer-meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header id="site-header">
+  <a href="#top" class="logo">KINGSLEY<span>.</span>BLACK</a>
+  <nav>
+    <ul id="nav-list">
+      <li><a href="#about">Profile</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#featured">Editorials</a></li>
+      <li><a href="#booking">Booking</a></li>
+    </ul>
+  </nav>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-bg-grad"></div>
+  <div class="hero-content">
+    <div class="hero-title-block">
+      <div class="hero-eyebrow">International Standard — Model &amp; Athlete</div>
+      <h1>KINGSLEY<em>BLACK</em></h1>
+      <p class="hero-sub">Discipline-built physique, runway-trained presence, and a portfolio shaped for global campaigns. Available for fashion, fitness, and commercial collaboration.</p>
+    </div>
+    <div class="hero-tags">
+      <span>Runway <strong>·</strong> Catwalk</span>
+      <span>Fitness <strong>·</strong> Physique</span>
+      <span>Commercial <strong>·</strong> Lifestyle</span>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-img-wrap reveal">
+      <img src="about.jpg" alt="Kingsley Black portrait, studio lighting" loading="lazy" />
+      <div class="about-frame-label">PROFILE — 01</div>
+    </div>
+    <div class="about-copy reveal">
+      <div class="eyebrow">The Profile</div>
+      <h2 class="section-title">Built for<br>the Camera.</h2>
+      <p>Kingsley Black is a runway and commercial model trained to international agency standard — a presence shaped as much in the gym as on the catwalk. <strong>Years of disciplined strength conditioning</strong> translate into a physique that holds its line under studio light and on the move.</p>
+      <p>Equally at home walking for designer collections or anchoring a fitness campaign, Kingsley brings <strong>commercial versatility</strong> — fashion, athletic, and lifestyle work delivered with the same precision. Camera-ready, direction-responsive, and prepared for brand collaboration at any scale.</p>
+      <div class="pillars">
+        <div class="pillar"><span class="num">01</span><span class="label">Physique &amp; Fitness</span></div>
+        <div class="pillar"><span class="num">02</span><span class="label">Runway Presence</span></div>
+        <div class="pillar"><span class="num">03</span><span class="label">Commercial Range</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO GALLERY ================= -->
+<section id="portfolio" class="border-top">
+  <div class="wrap">
+    <div class="gallery-header reveal">
+      <div>
+        <div class="eyebrow">Portfolio</div>
+        <h2 class="section-title">Gallery</h2>
+        <p>A curated selection across runway, fitness, and commercial work — built for agency review and brand sourcing.</p>
+      </div>
+      <div class="gallery-tabs" role="tablist" aria-label="Filter portfolio by category">
+        <button class="gallery-tab active" data-filter="all">All</button>
+        <button class="gallery-tab" data-filter="runway">Runway</button>
+        <button class="gallery-tab" data-filter="fitness">Fitness</button>
+        <button class="gallery-tab" data-filter="commercial">Commercial</button>
+      </div>
+    </div>
+
+    <div class="gallery-grid reveal" id="gallery-grid">
+      <!-- Runway -->
+      <div class="gallery-item gi-tall" data-cat="runway">
+        <img src="about.jpg" alt="Runway catwalk shot, designer outfit" loading="lazy">
+        <div class="tag-overlay"><span>Catwalk Presence<small>Runway</small></span></div>
+      </div>
+      <div class="gallery-item gi-wide" data-cat="runway">
+        <img src="about.jpg" alt="Fashion show, designer outfit on runway" loading="lazy">
+        <div class="tag-overlay"><span>Designer Showcase<small>Runway</small></span></div>
+      </div>
+      <div class="gallery-item" data-cat="runway">
+        <img src="1.jpg" alt="Fashion show catwalk" loading="lazy">
+        <div class="tag-overlay"><span>Fashion Week<small>Runway</small></span></div>
+      </div>
+
+      <!-- Fitness -->
+      <div class="gallery-item gi-wide" data-cat="fitness">
+        <img src="3.jpg" alt="Athletic male model gym physique shot" loading="lazy">
+        <div class="tag-overlay"><span>Athletic Physique<small>Fitness</small></span></div>
+      </div>
+      <div class="gallery-item gi-tall" data-cat="fitness">
+        <img src="2.jpg" alt="Strength and conditioning pose" loading="lazy">
+        <div class="tag-overlay"><span>Strength &amp; Conditioning<small>Fitness</small></span></div>
+      </div>
+      <div class="gallery-item" data-cat="fitness">
+        <img src="4.jpg" alt="Gym physique shot" loading="lazy">
+        <div class="tag-overlay"><span>Gym Discipline<small>Fitness</small></span></div>
+      </div>
+
+      <!-- Commercial -->
+      <div class="gallery-item" data-cat="commercial">
+        <img src="5.jpg" alt="Studio brand campaign portrait" loading="lazy">
+        <div class="tag-overlay"><span>Studio Campaign<small>Commercial</small></span></div>
+      </div>
+      <div class="gallery-item gi-wide" data-cat="commercial">
+        <img src="about.jpg" alt="Lifestyle photography brand shoot" loading="lazy">
+        <div class="tag-overlay"><span>Lifestyle Story<small>Commercial</small></span></div>
+      </div>
+      <div class="gallery-item gi-tall" data-cat="commercial">
+        <img src="6.jpg" alt="Brand advertising studio shoot" loading="lazy">
+        <div class="tag-overlay"><span>Brand Advertising<small>Commercial</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">CLOSE ✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">‹</button>
+  <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">›</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<!-- ================= STATS ================= -->
+<section class="border-top">
+  <div class="wrap">
+    <div class="stats-grid reveal">
+      <div class="stat">
+        <div class="num" data-count="240">0</div>
+        <div class="label">Photoshoots Completed</div>
+      </div>
+      <div class="stat">
+        <div class="num" data-count="38">0</div>
+        <div class="label">Runway Shows Walked</div>
+      </div>
+      <div class="stat">
+        <div class="num" data-count="22">0</div>
+        <div class="label">Brand Collaborations</div>
+      </div>
+      <div class="stat">
+        <div class="num" data-count="9">0</div>
+        <div class="label">Years Of Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services" class="border-top">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <div class="eyebrow">Services</div>
+      <h2 class="section-title">Available For</h2>
+    </div>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2L4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z"/></svg></div>
+      <h3>Fashion Runway Modeling</h3>
+      <p>Catwalk presentation for designer collections, fashion weeks, and showroom presentations — composed, directional, camera-aware.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 9V6a2 2 0 012-2h2M16 4h2a2 2 0 012 2v3M18 15v3a2 2 0 01-2 2h-2M8 20H6a2 2 0 01-2-2v-3M3 12h18"/></svg></div>
+      <h3>Fitness Brand Campaigns</h3>
+      <p>Athletic and physique-led campaigns for performance apparel, supplement, and gym brands — strength visuals with editorial polish.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="14" rx="1"/><path d="M3 16l4-4 3 3 5-6 6 7"/></svg></div>
+      <h3>Commercial Advertising</h3>
+      <p>Studio and location advertising work across digital, print, and broadcast — direction-responsive and consistently camera-ready.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <h3>Product Promotion</h3>
+      <p>On-body and lifestyle product placement for launches and retail campaigns, with attention to fit, finish, and brand tone.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="3.2"/><path d="M5 21v-2a7 7 0 0114 0v2"/><path d="M3 8h2M19 8h2M12 1v2"/></svg></div>
+      <h3>Photoshoot Collaboration</h3>
+      <p>Direct collaboration with photographers and creative teams on editorial concepts, test shoots, and portfolio development.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></div>
+      <h3>Brand Ambassador Work</h3>
+      <p>Ongoing representation for fashion, fitness, and lifestyle brands — consistent presence across campaigns, events, and content.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURED SHOOTS ================= -->
+<section id="featured" class="border-top">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:3rem;">
+      <div class="eyebrow">Editorials</div>
+      <h2 class="section-title">Featured Shoots</h2>
+    </div>
+  </div>
+
+  <div class="featured-shoot reveal">
+    <img src="about.jpg" alt="Urban strength editorial shoot" loading="lazy">
+    <div class="featured-content">
+      <div>
+        <span class="fnum">EDITORIAL — 01</span>
+        <h3>Urban Strength Editorial</h3>
+      </div>
+      <div class="featured-meta">Concrete &amp; Steel<br>Fitness Direction</div>
+    </div>
+  </div>
+
+  <div class="featured-shoot reveal">
+    <img src="7.jpg" alt="Luxury runway presence editorial" loading="lazy">
+    <div class="featured-content">
+      <div>
+        <span class="fnum">EDITORIAL — 02</span>
+        <h3>Luxury Runway Presence</h3>
+      </div>
+      <div class="featured-meta">Designer Collection<br>Runway Direction</div>
+    </div>
+  </div>
+
+  <div class="featured-shoot reveal">
+    <img src="5.jpg" alt="Fitness discipline series editorial" loading="lazy">
+    <div class="featured-content">
+      <div>
+        <span class="fnum">EDITORIAL — 03</span>
+        <h3>Fitness Discipline Series</h3>
+      </div>
+      <div class="featured-meta">Studio &amp; Natural Light<br>Athletic Direction</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="border-top">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <div class="eyebrow">Endorsements</div>
+      <h2 class="section-title">Industry Word</h2>
+    </div>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial">
+      <p>"Kingsley arrives camera-ready every time. Direction-responsive, consistent, and the kind of physique that elevates a fitness campaign on sight."</p>
+      <div class="testimonial-author">A. Reyes<small>Brand Manager, Apex Athletics</small></div>
+    </div>
+    <div class="testimonial">
+      <p>"A genuinely international-standard runway walk — composed pacing, sharp posture, and an ease in designer garments that's rare to find."</p>
+      <div class="testimonial-author">M. Okafor<small>Fashion Designer</small></div>
+    </div>
+    <div class="testimonial">
+      <p>"One of the most reliable collaborators I've shot with. Strong instincts on set, professional, and the final frames always speak for themselves."</p>
+      <div class="testimonial-author">J. Lindqvist<small>Editorial Photographer</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BOOKING ================= -->
+<section id="booking" class="border-top">
+  <div class="wrap booking-grid">
+    <div class="booking-info reveal">
+      <div class="eyebrow">Booking</div>
+      <h2 class="section-title">Book<br>Kingsley</h2>
+      <p>For runway castings, fitness campaigns, commercial bookings, or brand ambassador inquiries — reach out directly. Responses within 24–48 hours.</p>
+      <div class="availability"><span class="dot"></span>Open for bookings &amp; collaborations</div>
+      <div class="booking-contacts">
+        <a href="mailto:denniskingsley@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7L22 6"/></svg>
+          denniskingsley@gmail.com
+        </a>
+        <a href="https://wa.me/00000000000" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 11.5a8.5 8.5 0 01-12.5 7.5L3 20l1.1-5.4A8.5 8.5 0 1121 11.5z"/></svg>
+          WhatsApp Inquiry
+        </a>
+      </div>
+    </div>
+    <div class="reveal">
+      <form class="contact-form" onsubmit="event.preventDefault(); this.querySelector('.btn').textContent='Message Sent ✓';">
+        <div class="field">
+          <input type="text" placeholder=" " required id="name" autocomplete="name">
+          <label for="name">Name</label>
+        </div>
+        <div class="field">
+          <input type="email" placeholder=" " required id="email" autocomplete="email">
+          <label for="email">Email</label>
+        </div>
+        <div class="field">
+          <textarea placeholder=" " required id="message"></textarea>
+          <label for="message">Message</label>
+        </div>
+        <button type="submit" class="btn">Send Inquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOCIAL ================= -->
+<section class="border-top">
+  <div class="social-strip reveal">
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/></svg>
+      Instagram
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16 3v10.5a4 4 0 11-3-3.87V3h3z"/><path d="M16 3a5 5 0 005 5"/></svg>
+      TikTok
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 11v5M8 8v.01M12 16v-5M12 11a2 2 0 014 0v5"/></svg>
+      Models.com
+    </a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">KINGSLEY<span>.</span>BLACK</div>
+        <div class="footer-tagline">"Built for the runway. Designed for impact."</div>
+      </div>
+      <div class="footer-meta">
+        <div><a href="mailto:denniskingsley@gmail.com">denniskingsley@gmail.com</a></div>
+        <div><a href="#about">Profile</a></div>
+        <div><a href="#portfolio">Portfolio</a></div>
+        <div><a href="#booking">Booking</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Kingsley Black. All rights reserved.</span>
+      <span>International Modeling Standard</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ================= NAV ================= */
+const header = document.getElementById('site-header');
+const navToggle = document.getElementById('nav-toggle');
+const navList = document.getElementById('nav-list');
+
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  navList.classList.toggle('open');
+});
+
+navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navToggle.classList.remove('open');
+  navList.classList.remove('open');
+}));
+
+/* ================= REVEAL ON SCROLL ================= */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => revealObserver.observe(el));
+
+/* ================= GALLERY FILTER ================= */
+const tabs = document.querySelectorAll('.gallery-tab');
+const items = document.querySelectorAll('.gallery-item');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const filter = tab.dataset.filter;
+    items.forEach(item => {
+      const show = filter === 'all' || item.dataset.cat === filter;
+      item.classList.toggle('hide', !show);
+    });
+  });
+});
+
+/* ================= LIGHTBOX ================= */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCaption = document.getElementById('lightbox-caption');
+const lightboxClose = document.getElementById('lightbox-close');
+const lightboxPrev = document.getElementById('lightbox-prev');
+const lightboxNext = document.getElementById('lightbox-next');
+
+let currentIndex = 0;
+function getVisibleItems(){
+  return Array.from(items).filter(i => !i.classList.contains('hide'));
+}
+
+function openLightbox(item){
+  const visible = getVisibleItems();
+  currentIndex = visible.indexOf(item);
+  updateLightbox();
+  lightbox.classList.add('open');
+}
+
+function updateLightbox(){
+  const visible = getVisibleItems();
+  const item = visible[currentIndex];
+  const img = item.querySelector('img');
+  const tagEl = item.querySelector('.tag-overlay span');
+  lightboxImg.src = img.src;
+  lightboxImg.alt = img.alt;
+  if (tagEl) {
+    const small = tagEl.querySelector('small');
+    lightboxCaption.innerHTML = `${tagEl.textContent.replace(small ? small.textContent : '', '')} — <strong>${small ? small.textContent : ''}</strong>`;
+  }
+}
+
+items.forEach(item => item.addEventListener('click', () => openLightbox(item)));
+
+lightboxClose.addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+
+lightboxPrev.addEventListener('click', () => {
+  const visible = getVisibleItems();
+  currentIndex = (currentIndex - 1 + visible.length) % visible.length;
+  updateLightbox();
+});
+lightboxNext.addEventListener('click', () => {
+  const visible = getVisibleItems();
+  currentIndex = (currentIndex + 1) % visible.length;
+  updateLightbox();
+});
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') lightbox.classList.remove('open');
+  if (e.key === 'ArrowLeft') lightboxPrev.click();
+  if (e.key === 'ArrowRight') lightboxNext.click();
+});
+
+/* ================= ANIMATED COUNTERS ================= */
+const statEls = document.querySelectorAll('.stat .num');
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const duration = 1600;
+      const start = performance.now();
+      function tick(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target) + (progress >= 1 ? '+' : '');
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target + '+';
+      }
+      requestAnimationFrame(tick);
+      statObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.4 });
+statEls.forEach(el => statObserver.observe(el));
+
+/* ================= FOOTER YEAR ================= */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ================= THREE.JS HERO SIGNATURE ================= */
+(function(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canvas = document.getElementById('hero-canvas');
+  const heroSection = document.querySelector('.hero');
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 32);
+
+  function resize(){
+    const w = heroSection.clientWidth;
+    const h = heroSection.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* Build a particle "constellation" silhouette — abstract human form
+     made of points + connecting lines, evoking a runway figure / wireframe physique */
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // Generate points roughly forming a standing figure silhouette
+  const points = [];
+  function addCluster(cx, cy, cz, count, spread){
+    for(let i=0;i<count;i++){
+      points.push(new THREE.Vector3(
+        cx + (Math.random()-0.5)*spread.x,
+        cy + (Math.random()-0.5)*spread.y,
+        cz + (Math.random()-0.5)*spread.z
+      ));
+    }
+  }
+  // head
+  addCluster(6, 11, 0, 18, {x:3,y:3,z:3});
+  // shoulders/chest
+  addCluster(6, 5, 0, 40, {x:9,y:5,z:5});
+  // torso/waist
+  addCluster(6, -2, 0, 30, {x:6,y:5,z:4});
+  // hips/legs
+  addCluster(6, -9, 0, 35, {x:7,y:8,z:4});
+  // legs lower
+  addCluster(6, -17, 0, 25, {x:6,y:6,z:4});
+  // ambient scattered field
+  addCluster(0, 0, -5, 60, {x:50,y:36,z:20});
+
+  const positions = new Float32Array(points.length * 3);
+  points.forEach((p, i) => {
+    positions[i*3] = p.x;
+    positions[i*3+1] = p.y;
+    positions[i*3+2] = p.z;
+  });
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  const mat = new THREE.PointsMaterial({
+    color: 0xc89b6c,
+    size: 0.22,
+    transparent: true,
+    opacity: 0.85,
+    sizeAttenuation: true
+  });
+  const particles = new THREE.Points(geo, mat);
+  group.add(particles);
+
+  // Connective lines between nearby points (constellation effect)
+  const lineVerts = [];
+  const maxDist = 2.6;
+  const figurePoints = points.slice(0, points.length - 60); // exclude ambient field from lines
+  for(let i=0;i<figurePoints.length;i++){
+    for(let j=i+1;j<figurePoints.length;j++){
+      if(figurePoints[i].distanceTo(figurePoints[j]) < maxDist){
+        lineVerts.push(figurePoints[i].x, figurePoints[i].y, figurePoints[i].z);
+        lineVerts.push(figurePoints[j].x, figurePoints[j].y, figurePoints[j].z);
+      }
+    }
+  }
+  const lineGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(lineVerts), 3));
+  const lineMat = new THREE.LineBasicMaterial({ color: 0x8a6c4c, transparent: true, opacity: 0.25 });
+  const lines = new THREE.LineSegments(lineGeo, lineMat);
+  group.add(lines);
+
+  // Soft secondary point cloud for depth (bone color)
+  const dustGeo = new THREE.BufferGeometry();
+  const dustCount = 200;
+  const dustPos = new Float32Array(dustCount*3);
+  for(let i=0;i<dustCount;i++){
+    dustPos[i*3] = (Math.random()-0.5)*70;
+    dustPos[i*3+1] = (Math.random()-0.5)*45;
+    dustPos[i*3+2] = (Math.random()-0.5)*40 - 10;
+  }
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+  const dustMat = new THREE.PointsMaterial({ color: 0xf2efe9, size: 0.06, transparent: true, opacity: 0.3 });
+  const dust = new THREE.Points(dustGeo, dustMat);
+  scene.add(dust);
+
+  group.position.x = 4;
+
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5);
+    mouseY = (e.clientY / window.innerHeight - 0.5);
+  });
+
+  let frame = 0;
+  function animate(){
+    frame += reduceMotion ? 0 : 0.0035;
+    group.rotation.y = Math.sin(frame) * 0.35 + mouseX * 0.4;
+    group.rotation.x = mouseY * 0.15;
+    dust.rotation.y -= 0.0006;
+    if(!reduceMotion){
+      particles.material.size = 0.22 + Math.sin(frame*6) * 0.02;
+    }
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
+
+</body>
+</html>
