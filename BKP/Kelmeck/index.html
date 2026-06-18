@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#000000">
+<title>Kelmeck Hotel | Notorious Nights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --ink:#000000;
+  --paper:#f5f0e8;
+  --cream:#ede8dc;
+  --bone:#d4ccb8;
+  --blood:#8b0000;
+  --blood-bright:#c41230;
+  --gold:#c9a84c;
+  --gold-dim:#8a6f2e;
+  --smoke:rgba(245,240,232,0.06);
+  --shadow-heavy:0 40px 80px rgba(0,0,0,0.9);
+  --r:0px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Playfair Display',serif;
+  background:var(--ink);
+  color:var(--paper);
+  overflow-x:hidden;
+  cursor:default;
+}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:#050505}
+::-webkit-scrollbar-thumb{background:var(--blood)}
+
+/* GRAIN OVERLAY */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9999;
+  opacity:0.4;
+}
+
+/* HORIZONTAL RULE / ORNAMENT */
+.ornament{
+  display:flex;align-items:center;gap:1rem;margin:1.5rem 0;
+}
+.ornament::before,.ornament::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
+}
+.ornament span{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;letter-spacing:4px;color:var(--gold-dim);
+  text-transform:uppercase;white-space:nowrap;
+}
+
+/* ============ NAV ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1.5rem,4vw,3.5rem);
+  height:64px;
+  transition:all 0.4s ease;
+}
+.nav.dark{
+  background:rgba(0,0,0,0.92);
+  border-bottom:1px solid rgba(201,168,76,0.12);
+  backdrop-filter:blur(20px);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;letter-spacing:4px;
+  color:var(--paper);text-decoration:none;
+  position:relative;
+}
+.nav-logo em{color:var(--blood-bright);font-style:normal;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  font-family:'Space Mono',monospace;
+  font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(245,240,232,0.55);text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--paper);}
+.nav-book{
+  font-family:'Space Mono',monospace;
+  font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;
+  border:1px solid var(--gold-dim);color:var(--gold);
+  padding:10px 22px;text-decoration:none;
+  transition:all 0.2s;
+  background:transparent;cursor:pointer;
+}
+.nav-book:hover{background:var(--gold);color:var(--ink);}
+.nav-ham{
+  display:none;background:none;border:none;
+  color:var(--paper);font-size:1.3rem;cursor:pointer;padding:8px;
+}
+@media(max-width:768px){
+  .nav-links,.nav-book{display:none;}
+  .nav-ham{display:block;}
+}
+
+/* MOBILE OVERLAY */
+.mob-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.97);z-index:499;
+  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+.mob-overlay.open{display:flex;}
+.mob-overlay a{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.5rem;letter-spacing:6px;color:var(--paper);
+  text-decoration:none;transition:color 0.2s;
+}
+.mob-overlay a:hover{color:var(--blood-bright);}
+.mob-close{
+  position:absolute;top:1.2rem;right:1.5rem;
+  background:none;border:none;color:var(--paper);
+  font-size:1.5rem;cursor:pointer;
+}
+
+/* BOTTOM NAV MOBILE */
+.bot-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(4,4,4,0.97);
+  border-top:1px solid rgba(201,168,76,0.15);
+  z-index:490;padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  justify-content:space-around;align-items:center;
+}
+.bot-nav a{
+  color:rgba(245,240,232,0.4);text-decoration:none;
+  font-family:'Space Mono',monospace;font-size:0.55rem;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  transition:color 0.2s;letter-spacing:1px;text-transform:uppercase;
+  padding:6px 10px;
+}
+.bot-nav a i{font-size:1.1rem;}
+.bot-nav a.active,.bot-nav a:hover{color:var(--blood-bright);}
+@media(max-width:768px){
+  .bot-nav{display:flex;}
+  body{padding-bottom:68px;}
+}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100dvh;position:relative;
+  display:flex;align-items:flex-end;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:#020202;
+}
+/* Stark geometric shapes for ambience */
+.hero-bg::before{
+  content:'';position:absolute;
+  top:-10%;right:-5%;width:55%;height:115%;
+  background:linear-gradient(135deg,rgba(139,0,0,0.07) 0%,transparent 60%);
+  transform:skewX(-8deg);
+}
+.hero-bg::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:50%;
+  background:linear-gradient(to top,rgba(0,0,0,1) 30%,transparent);
+}
+
+/* Vertical red stripe */
+.hero-stripe{
+  position:absolute;top:0;left:clamp(2rem,5vw,5rem);bottom:0;width:2px;
+  background:linear-gradient(to bottom,transparent,var(--blood) 20%,var(--blood) 80%,transparent);
+  z-index:2;
+}
+
+.hero-content{
+  position:relative;z-index:3;
+  width:100%;
+  padding:0 clamp(1.5rem,6vw,6rem) clamp(3rem,8vh,6rem);
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:flex-end;
+  gap:2rem;
+}
+
+.hero-eyebrow{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(0.6rem,1.5vw,0.75rem);
+  letter-spacing:6px;text-transform:uppercase;
+  color:var(--blood-bright);margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-eyebrow::before{
+  content:'';width:40px;height:1px;background:var(--blood-bright);
+}
+
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,16vw,14rem);
+  line-height:0.88;
+  letter-spacing:-1px;
+  color:var(--paper);
+  margin-bottom:0;
+}
+.hero-title .red-line{
+  color:var(--blood-bright);
+  display:block;
+}
+.hero-title .outline{
+  -webkit-text-stroke:1px var(--paper);
+  color:transparent;display:block;
+}
+
+.hero-tagline{
+  font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.5rem);
+  color:rgba(245,240,232,0.6);
+  margin-top:1.5rem;
+  max-width:500px;
+}
+
+.hero-meta{
+  display:flex;flex-direction:column;gap:1rem;
+  align-items:flex-end;min-width:180px;
+}
+.hero-meta-item{
+  font-family:'Space Mono',monospace;
+  font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.45);
+  text-align:right;
+  line-height:1.6;
+}
+.hero-meta-item a{color:var(--paper);text-decoration:none;}
+.hero-meta-item a:hover{color:var(--gold);}
+.hero-phone-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.4rem,3vw,2.2rem);
+  letter-spacing:3px;color:var(--paper);
+  text-decoration:none;transition:color 0.2s;
+  display:block;text-align:right;
+}
+.hero-phone-big:hover{color:var(--gold);}
+
+.hero-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Space Mono',monospace;
+  font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ink);background:var(--paper);
+  padding:14px 28px;text-decoration:none;
+  transition:all 0.2s;margin-top:2rem;
+}
+.hero-cta:hover{background:var(--gold);color:var(--ink);}
+.hero-cta i{font-size:0.8rem;}
+
+.hero-scroll{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:'Space Mono',monospace;font-size:0.55rem;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(245,240,232,0.3);z-index:4;
+  animation:scrollpulse 2.5s ease-in-out infinite;
+}
+.hero-scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--paper),transparent);
+}
+@keyframes scrollpulse{
+  0%,100%{opacity:0.4;transform:translateX(-50%) translateY(0);}
+  50%{opacity:1;transform:translateX(-50%) translateY(8px);}
+}
+
+@media(max-width:768px){
+  .hero-content{
+    grid-template-columns:1fr;
+    align-items:flex-start;
+    padding-top:90px;
+  }
+  .hero-meta{align-items:flex-start;}
+  .hero-meta-item,.hero-phone-big{text-align:left;}
+}
+
+/* ============ SECTION BASE ============ */
+.section{padding:clamp(4rem,10vh,7rem) 0;}
+.container{
+  max-width:1380px;margin:0 auto;
+  padding:0 clamp(1.5rem,5vw,4rem);
+}
+
+.sec-label{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;letter-spacing:5px;text-transform:uppercase;
+  color:var(--blood-bright);margin-bottom:1rem;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-label::before{content:'';width:24px;height:1px;background:var(--blood-bright);}
+
+.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,8vw,6rem);
+  line-height:0.9;color:var(--paper);letter-spacing:1px;
+}
+.sec-title em{color:var(--blood-bright);font-style:normal;}
+.sec-title .ghost{
+  -webkit-text-stroke:1px rgba(245,240,232,0.2);
+  color:transparent;
+}
+
+/* ============ SERVICES ============ */
+.services{
+  background:#020202;
+  border-top:1px solid rgba(245,240,232,0.05);
+}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1px;
+  border:1px solid rgba(245,240,232,0.07);
+  margin-top:3rem;
+}
+.svc-card{
+  padding:clamp(2rem,4vw,3rem);
+  background:#050505;
+  position:relative;overflow:hidden;
+  transition:background 0.3s;
+  cursor:default;
+}
+.svc-card::before{
+  content:'';position:absolute;
+  top:0;left:0;width:0;height:2px;
+  background:var(--blood-bright);
+  transition:width 0.4s ease;
+}
+.svc-card:hover{background:#0a0808;}
+.svc-card:hover::before{width:100%;}
+
+.svc-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;line-height:1;
+  color:rgba(245,240,232,0.04);
+  position:absolute;top:1rem;right:1.5rem;
+  letter-spacing:-2px;
+  transition:color 0.3s;
+}
+.svc-card:hover .svc-num{color:rgba(139,0,0,0.12);}
+
+.svc-icon{
+  font-size:1.8rem;color:var(--blood-bright);
+  margin-bottom:1.5rem;display:block;
+}
+.svc-card h3{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.6rem,3vw,2rem);
+  letter-spacing:2px;color:var(--paper);
+  margin-bottom:0.8rem;
+}
+.svc-card p{
+  font-size:0.9rem;line-height:1.7;
+  color:rgba(245,240,232,0.45);
+}
+
+/* ============ EVENTS ============ */
+.events{background:var(--ink);}
+.events-header{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;flex-wrap:wrap;gap:1.5rem;
+  margin-bottom:3rem;
+}
+.carousel-wrap{position:relative;}
+.carousel-overflow{overflow:hidden;}
+.carousel-track{
+  display:flex;gap:1.5rem;
+  transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  will-change:transform;
+}
+.ev-card{
+  flex:0 0 calc(33.333% - 1rem);min-width:280px;
+  background:#080808;
+  border:1px solid rgba(245,240,232,0.06);
+  overflow:hidden;position:relative;
+  transition:border-color 0.3s;cursor:pointer;
+}
+.ev-card:hover{border-color:rgba(196,18,48,0.4);}
+@media(max-width:1100px){.ev-card{flex:0 0 calc(50% - 0.75rem);}}
+@media(max-width:640px){.ev-card{flex:0 0 82%;}}
+
+.ev-img{
+  height:clamp(170px,22vw,240px);
+  background-size:cover;background-position:center;
+  position:relative;
+  transition:transform 0.5s ease;
+  overflow:hidden;
+}
+.ev-card:hover .ev-img{transform:scale(1.04);}
+.ev-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,transparent 55%);
+}
+.ev-date-badge{
+  position:absolute;top:1rem;left:1rem;
+  background:var(--blood);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:0.8rem;letter-spacing:2px;
+  color:var(--paper);padding:6px 12px;z-index:2;
+}
+.ev-body{padding:1.5rem;}
+.ev-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.4rem,3vw,1.8rem);
+  letter-spacing:2px;color:var(--paper);
+  margin-bottom:0.8rem;line-height:1.1;
+}
+.ev-detail{
+  font-family:'Space Mono',monospace;
+  font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.4);
+  display:flex;align-items:center;gap:8px;margin:6px 0;
+}
+.ev-detail i{color:var(--blood-bright);width:14px;}
+
+.carousel-controls{
+  display:flex;align-items:center;gap:1rem;
+}
+.carr-btn{
+  width:48px;height:48px;
+  border:1px solid rgba(245,240,232,0.15);
+  background:transparent;color:var(--paper);
+  font-size:0.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.carr-btn:hover{background:var(--blood);border-color:var(--blood);}
+.carr-dots{display:flex;gap:8px;align-items:center;}
+.carr-dot{
+  width:6px;height:6px;background:rgba(245,240,232,0.2);
+  border-radius:50%;border:none;cursor:pointer;padding:0;transition:all 0.3s;
+}
+.carr-dot.on{background:var(--blood-bright);width:20px;border-radius:3px;}
+
+/* ============ GALLERY ============ */
+.gallery{
+  background:#020202;
+  border-top:1px solid rgba(245,240,232,0.04);
+}
+.gallery-mosaic{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:repeat(3,clamp(120px,18vw,200px));
+  gap:3px;
+  margin-top:3rem;
+}
+.gal-item{
+  overflow:hidden;position:relative;cursor:pointer;
+  background:#0a0a0a;
+}
+.gal-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.6s ease,filter 0.3s;
+  filter:grayscale(20%) brightness(0.85);
+}
+.gal-item:hover img{transform:scale(1.08);filter:grayscale(0%) brightness(1);}
+.gal-item::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(139,0,0,0.15),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.gal-item:hover::after{opacity:1;}
+
+/* mosaic positions */
+.g1{grid-column:1/5;grid-row:1/3;}
+.g2{grid-column:5/9;grid-row:1/2;}
+.g3{grid-column:9/13;grid-row:1/3;}
+.g4{grid-column:5/7;grid-row:2/3;}
+.g5{grid-column:7/9;grid-row:2/3;}
+.g6{grid-column:1/4;grid-row:3/4;}
+.g7{grid-column:4/7;grid-row:3/4;}
+.g8{grid-column:7/13;grid-row:3/4;}
+
+@media(max-width:768px){
+  .gallery-mosaic{
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows:none;
+  }
+  .g1,.g2,.g3,.g4,.g5,.g6,.g7,.g8{
+    grid-column:auto;grid-row:auto;
+    aspect-ratio:1;
+  }
+}
+
+/* ============ TESTIMONIALS ============ */
+.testimonials{background:var(--ink);}
+.testi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1px;
+  border:1px solid rgba(245,240,232,0.06);
+  margin-top:3rem;
+}
+.testi-card{
+  padding:clamp(1.8rem,3vw,2.5rem);
+  background:#040404;
+  position:relative;
+  transition:background 0.3s;
+}
+.testi-card:hover{background:#080606;}
+.testi-quote{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;line-height:0.7;
+  color:rgba(196,18,48,0.15);
+  margin-bottom:1rem;
+}
+.testi-text{
+  font-style:italic;
+  font-size:clamp(0.9rem,1.8vw,1.05rem);
+  line-height:1.8;
+  color:rgba(245,240,232,0.65);
+  margin-bottom:1.5rem;
+}
+.testi-stars{
+  color:var(--gold);font-size:0.8rem;
+  letter-spacing:3px;margin-bottom:1rem;
+}
+.testi-author{
+  display:flex;align-items:center;gap:12px;
+  border-top:1px solid rgba(245,240,232,0.07);
+  padding-top:1rem;
+}
+.testi-ava{
+  width:42px;height:42px;border-radius:50%;object-fit:cover;
+  border:1px solid rgba(201,168,76,0.3);
+}
+.testi-name{
+  font-family:'Space Mono',monospace;
+  font-size:0.7rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--paper);
+  display:block;margin-bottom:2px;
+}
+.testi-role{font-size:0.75rem;color:rgba(245,240,232,0.35);}
+
+/* ============ RESERVATION ============ */
+.reservation{
+  background:#020202;
+  border-top:1px solid rgba(245,240,232,0.04);
+}
+.res-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3px;
+  margin-top:3rem;
+  border:1px solid rgba(245,240,232,0.07);
+}
+@media(max-width:900px){
+  .res-grid{grid-template-columns:1fr;}
+}
+
+.form-wrap{
+  background:#050505;padding:clamp(2rem,4vw,3.5rem);
+  position:relative;
+}
+.form-wrap::before{
+  content:'';position:absolute;
+  top:0;left:0;width:2px;height:100%;
+  background:linear-gradient(to bottom,var(--blood),transparent);
+}
+.form-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2rem,4vw,3rem);
+  letter-spacing:2px;color:var(--paper);margin-bottom:0.5rem;
+}
+.form-sub{
+  font-family:'Space Mono',monospace;
+  font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.35);margin-bottom:2rem;
+}
+
+.f-group{margin-bottom:1.2rem;}
+.f-group input,.f-group select{
+  width:100%;
+  background:#0a0a0a;
+  border:1px solid rgba(245,240,232,0.1);
+  border-bottom-color:rgba(245,240,232,0.25);
+  border-radius:0;
+  padding:14px 0;
+  color:var(--paper);
+  font-family:'Space Mono',monospace;
+  font-size:0.8rem;letter-spacing:1px;
+  outline:none;
+  -webkit-appearance:none;appearance:none;
+  transition:border-color 0.2s,background 0.2s;
+}
+.f-group input{
+  background:transparent;
+  border:none;border-bottom:1px solid rgba(245,240,232,0.2);
+  padding:12px 0;
+}
+.f-group input::placeholder{color:rgba(245,240,232,0.25);}
+.f-group input:focus{border-bottom-color:var(--blood-bright);}
+
+.f-group select{
+  background:#0a0a0a;
+  border:1px solid rgba(245,240,232,0.15);
+  padding:12px 16px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%238b0000'%3E%3Cpath d='M5 8L0 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+}
+.f-group select option{background:#0a0a0a;}
+.f-group select:focus{border-color:var(--blood-bright);outline:none;}
+
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:480px){.f-row{grid-template-columns:1fr;}}
+
+.btn-res{
+  width:100%;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem;letter-spacing:5px;
+  background:var(--blood);color:var(--paper);
+  border:none;padding:18px;cursor:pointer;
+  transition:background 0.2s,transform 0.1s;
+  margin-top:0.5rem;
+}
+.btn-res:hover{background:var(--blood-bright);}
+.btn-res:active{transform:scale(0.99);}
+.form-note{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;letter-spacing:2px;
+  color:rgba(245,240,232,0.25);
+  text-transform:uppercase;margin-top:1rem;
+  display:flex;align-items:center;gap:8px;
+}
+.form-note i{color:var(--gold-dim);}
+
+.map-wrap{
+  position:relative;overflow:hidden;
+  min-height:clamp(300px,50vh,600px);
+  background:#040404;
+}
+.map-wrap iframe{
+  width:100%;height:100%;min-height:clamp(300px,50vh,600px);
+  border:0;
+  filter:grayscale(1) invert(0.88) contrast(1.1) brightness(0.6);
+  transition:filter 0.4s;
+}
+.map-wrap:hover iframe{
+  filter:grayscale(0.7) invert(0) contrast(1.1) brightness(0.75);
+}
+.map-pin{
+  position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;
+  background:rgba(2,2,2,0.9);
+  border:1px solid rgba(201,168,76,0.2);
+  backdrop-filter:blur(10px);
+  padding:1rem 1.2rem;
+}
+.map-pin h4{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1rem;letter-spacing:2px;color:var(--gold);margin-bottom:2px;
+}
+.map-pin p{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;letter-spacing:1px;color:rgba(245,240,232,0.35);
+  text-transform:uppercase;
+}
+
+/* ============ FOOTER ============ */
+footer{
+  background:#000;
+  border-top:1px solid rgba(245,240,232,0.06);
+  padding:clamp(2rem,5vh,3rem) clamp(1.5rem,5vw,4rem);
+}
+.foot-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1.5rem;
+}
+.foot-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:4px;color:var(--paper);
+}
+.foot-logo em{color:var(--blood-bright);font-style:normal;}
+.foot-socials{display:flex;gap:1.2rem;}
+.foot-socials a{
+  width:40px;height:40px;
+  border:1px solid rgba(245,240,232,0.1);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(245,240,232,0.4);font-size:0.9rem;
+  text-decoration:none;transition:all 0.2s;
+}
+.foot-socials a:hover{
+  border-color:var(--gold);color:var(--gold);
+}
+.foot-copy{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.2);
+  width:100%;text-align:center;
+  padding-top:1.5rem;
+  border-top:1px solid rgba(245,240,232,0.05);
+  margin-top:1rem;
+}
+.foot-copy a{color:var(--blood-bright);text-decoration:none;}
+
+/* ============ TOAST ============ */
+.toast{
+  position:fixed;bottom:clamp(90px,12vh,110px);right:clamp(1rem,3vw,2rem);
+  background:#0a0a0a;
+  border-left:3px solid var(--blood-bright);
+  border:1px solid rgba(196,18,48,0.3);
+  border-left-width:3px;
+  padding:14px 20px;
+  font-family:'Space Mono',monospace;
+  font-size:0.7rem;letter-spacing:1px;
+  color:var(--paper);
+  max-width:340px;
+  z-index:1000;
+  animation:toastin 0.35s ease forwards;
+}
+@keyframes toastin{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ============ FADE IN ON SCROLL ============ */
+.reveal{
+  opacity:0;transform:translateY(28px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+}
+.reveal.shown{opacity:1;transform:translateY(0);}
+
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;}
+  *{animation:none!important;transition:none!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav-logo">Kelmeck <em>Hotel</em></a>
+  <ul class="nav-links">
+    <li><a href="#hero" class="active">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#reservation">Book</a></li>
+  </ul>
+  <a href="#reservation" class="nav-book">Reserve</a>
+  <button class="nav-ham" id="navHam" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+</nav>
+
+<!-- MOBILE OVERLAY -->
+<div class="mob-overlay" id="mobOverlay">
+  <button class="mob-close" id="mobClose"><i class="fas fa-times"></i></button>
+  <a href="#hero">Home</a>
+  <a href="#services">Services</a>
+  <a href="#events">Events</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#testimonials">Reviews</a>
+  <a href="#reservation">Book a Table</a>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bot-nav">
+  <a href="#hero" class="active"><i class="fas fa-home"></i>Home</a>
+  <a href="#services"><i class="fas fa-star"></i>Services</a>
+  <a href="#events"><i class="fas fa-calendar"></i>Events</a>
+  <a href="#gallery"><i class="fas fa-images"></i>Gallery</a>
+  <a href="#reservation"><i class="fas fa-crown"></i>Book</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <br><br><br><br>
+      <div class="hero-eyebrow">Migori's Most Wanted Nightlife</div>
+      <div class="hero-title">
+        <span>Kelmeck</span>
+        <span class="red-line">Hotel</span>
+        <span class="outline">NIGHTS</span>
+      </div>
+      <p class="hero-tagline">Infamous atmosphere. Legendary service.<br>Notorious every single night.</p>
+      <a href="#reservation" class="hero-cta"><i class="fas fa-crown"></i> Claim Your Table</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <i class="fas fa-map-marker-alt" style="color:var(--blood-bright);margin-right:6px;"></i>
+        Awendo Road, opp. Garden City<br>Migori, Kenya
+      </div>
+      <a href="tel:+254117444555" class="hero-phone-big">+254 123456789</a>
+      <div class="hero-meta-item" style="color:var(--gold-dim);letter-spacing:3px;">
+        ✦ LOUNGE &amp; GRILL ✦
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services section" id="services">
+  <div class="container">
+    <div class="sec-label">What We Offer</div>
+    <div class="sec-title">
+      Exclusive <em>Services</em><br>
+      <span class="ghost">Delivered</span>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal">
+        <span class="svc-num">01</span>
+        <i class="fas fa-birthday-cake svc-icon"></i>
+        <h3>Birthday Blast</h3>
+        <p>VIP booth, custom cake, bottle service &amp; DJ shoutout. Your night, your rules.</p>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-num">02</span>
+        <i class="fas fa-champagne-glasses svc-icon"></i>
+        <h3>Bottle Packages</h3>
+        <p>Premium spirits, mixers &amp; sparklers. The elite treatment you were born for.</p>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-num">03</span>
+        <i class="fas fa-utensils svc-icon"></i>
+        <h3>Exquisite Grill</h3>
+        <p>Gourmet grills, fusion bites &amp; midnight feasts crafted to perfection.</p>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-num">04</span>
+        <i class="fas fa-music svc-icon"></i>
+        <h3>Guest DJ Nights</h3>
+        <p>Afrobeats, hip-hop, amapiano fusion — soundtracks you'll never forget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="events section" id="events">
+  <div class="container">
+    <div class="events-header">
+      <div>
+        <div class="sec-label">What's Coming</div>
+        <div class="sec-title">Upcoming <em>Takeovers</em></div>
+      </div>
+      <div class="carousel-controls">
+        <div class="carr-dots" id="evDots"></div>
+        <button class="carr-btn" id="evPrev"><i class="fas fa-chevron-left"></i></button>
+        <button class="carr-btn" id="evNext"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel-overflow" id="evOverflow">
+        <div class="carousel-track" id="evTrack"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery section" id="gallery">
+  <div class="container">
+    <div class="sec-label">The Experience</div>
+    <div class="sec-title">Inside <em>Kelmeck</em></div>
+  </div>
+  <div class="gallery-mosaic" style="margin-top:2.5rem;padding:0 clamp(1rem,3vw,3rem);">
+    <div class="gal-item g1 reveal"><img src="https://images.unsplash.com/photo-1571266028243-3716f02d2f1b?w=800&fit=crop&q=80" alt="DJ"></div>
+    <div class="gal-item g2 reveal"><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&fit=crop&q=80" alt="Crowd"></div>
+    <div class="gal-item g3 reveal"><img src="https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=800&fit=crop&q=80" alt="VIP"></div>
+    <div class="gal-item g4 reveal"><img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=800&fit=crop&q=80" alt="Cocktails"></div>
+    <div class="gal-item g5 reveal"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&fit=crop&q=80" alt="Lights"></div>
+    <div class="gal-item g6 reveal"><img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&fit=crop&q=80" alt="Grill"></div>
+    <div class="gal-item g7 reveal"><img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=800&fit=crop&q=80" alt="Bottles"></div>
+    <div class="gal-item g8 reveal"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&fit=crop&q=80" alt="Party"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials section" id="testimonials">
+  <div class="container">
+    <div class="sec-label">The Verdict</div>
+    <div class="sec-title">Notorious <em>Voices</em></div>
+    <div class="testi-grid" id="testiGrid"></div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section class="reservation section" id="reservation">
+  <div class="container">
+    <div class="sec-label">Secure Your Spot</div>
+    <div class="sec-title">Reserve a <em>Table</em></div>
+    <div class="res-grid">
+      <div class="form-wrap">
+        <div class="form-title">Claim Your Night</div>
+        <div class="form-sub">VIP access · bottle packages · guestlist priority</div>
+        <form id="bookForm" novalidate>
+          <div class="f-group"><input type="text" id="rName" placeholder="Full Name" autocomplete="name" required></div>
+          <div class="f-group"><input type="email" id="rEmail" placeholder="Email Address" autocomplete="email" required></div>
+          <div class="f-group"><input type="tel" id="rPhone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" required></div>
+          <div class="f-row">
+            <div class="f-group"><input type="date" id="rDate" required></div>
+            <div class="f-group">
+              <select id="rGuests" required>
+                <option value="" disabled selected>Guests</option>
+                <option value="2">2 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="6">6 Guests</option>
+                <option value="8">8+ Guests</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-res">CLAIM YOUR NIGHT</button>
+          <p class="form-note"><i class="fas fa-clock"></i> Confirmation within 1h — Notorious treatment guaranteed.</p>
+        </form>
+      </div>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.3179169392465!2d34.529412375909054!3d-0.9074563353313766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182b538d0c4afc33%3A0xc25ef71f54cb9cef!2sKelmeck%20Lounge!5e0!3m2!1sen!2ske!4v1781782500562!5m2!1sen!2ske"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Kelmeck Capone Lounge Location"></iframe>
+        <div class="map-pin">
+          <h4><i class="fas fa-map-pin" style="margin-right:7px;color:var(--blood-bright);"></i>Find Us</h4>
+          <p>Awendo Road, opposite Garden City Mall, Migori</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-logo">Kelmeck <em>Hotel</em></div>
+    <div class="foot-socials">
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+    </div>
+  </div>
+  <p class="foot-copy">
+    © 2025 Kelmeck Hotel — Notorious Nights, Legendary Vybes.
+    Built by <a href="#">BlackCodeLabs</a> · Awendo Road, opposite Garden City
+  </p>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+// NAV SCROLL
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('dark',scrollY>40);
+});
+
+// MOBILE MENU
+const ham=document.getElementById('navHam');
+const overlay=document.getElementById('mobOverlay');
+const close=document.getElementById('mobClose');
+ham.onclick=()=>{overlay.classList.add('open');document.body.style.overflow='hidden';};
+close.onclick=()=>{overlay.classList.remove('open');document.body.style.overflow='';};
+overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{overlay.classList.remove('open');document.body.style.overflow='';}));
+
+// SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// NAV ACTIVE
+const navLinks=document.querySelectorAll('.nav-links a,.bot-nav a');
+const sections=document.querySelectorAll('section[id]');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const id=en.target.id;
+      navLinks.forEach(l=>{
+        l.classList.toggle('active',l.getAttribute('href')==='#'+id);
+      });
+    }
+  });
+},{rootMargin:'-40% 0px -40% 0px'});
+sections.forEach(s=>obs.observe(s));
+
+// REVEAL
+const reveals=document.querySelectorAll('.reveal');
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('shown');revObs.unobserve(en.target);}});
+},{threshold:0.12});
+reveals.forEach(r=>revObs.observe(r));
+
+// DATE MIN
+const dateInput=document.getElementById('rDate');
+if(dateInput) dateInput.min=new Date().toISOString().split('T')[0];
+
+// EVENTS DATA
+const events=[
+  {title:'DJ KALONDE · AFRO HOUSE',date:'Fri, June 13 · 10PM',loc:'Main Floor',badge:'TONIGHT',img:'https://images.unsplash.com/photo-1571266028243-3716f02d2f1b?w=800&fit=crop&q=80'},
+  {title:'AMAPIANO TAKEOVER: DJ ZURI',date:'Sat, June 21 · 11PM',loc:'Rooftop Lounge',badge:'NEXT WEEK',img:'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=800&fit=crop&q=80'},
+  {title:'HIP HOP LEGENDARY · DJ MADD',date:'Fri, June 27 · 10:30PM',loc:'Kelmeck Hotel Arena',badge:'JUNE',img:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&fit=crop&q=80'},
+  {title:'LATIN & REGGAETON NIGHT',date:'Sat, July 5 · 11PM',loc:'Garden City Terrace',badge:'JULY',img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&fit=crop&q=80'}
+];
+
+const evTrack=document.getElementById('evTrack');
+const evDots=document.getElementById('evDots');
+let evIdx=0,evCards=[];
+
+events.forEach(ev=>{
+  const c=document.createElement('div');
+  c.className='ev-card';
+  c.innerHTML=`<div class="ev-img" style="background-image:url('${ev.img}')">
+    <div class="ev-date-badge">${ev.badge}</div>
+  </div>
+  <div class="ev-body">
+    <div class="ev-title">${ev.title}</div>
+    <div class="ev-detail"><i class="far fa-calendar-alt"></i>${ev.date}</div>
+    <div class="ev-detail"><i class="fas fa-map-marker-alt"></i>${ev.loc}</div>
+  </div>`;
+  evTrack.appendChild(c);
+});
+evCards=Array.from(document.querySelectorAll('.ev-card'));
+
+events.forEach((_,i)=>{
+  const d=document.createElement('button');
+  d.className='carr-dot'+(i===0?' on':'');
+  d.setAttribute('aria-label','Slide '+(i+1));
+  d.onclick=()=>{evIdx=i;moveEv();};
+  evDots.appendChild(d);
+});
+
+function moveEv(){
+  if(!evCards.length) return;
+  const w=evCards[0].offsetWidth;
+  const g=16;
+  evTrack.style.transform=`translateX(-${evIdx*(w+g)}px)`;
+  document.querySelectorAll('.carr-dot').forEach((d,i)=>d.classList.toggle('on',i===evIdx));
+}
+
+document.getElementById('evPrev').onclick=()=>{evIdx=(evIdx-1+events.length)%events.length;moveEv();};
+document.getElementById('evNext').onclick=()=>{evIdx=(evIdx+1)%events.length;moveEv();};
+window.addEventListener('resize',moveEv);
+
+// auto-play
+let evAuto=setInterval(()=>{evIdx=(evIdx+1)%events.length;moveEv();},5000);
+evTrack.addEventListener('touchstart',()=>clearInterval(evAuto),{passive:true});
+
+// TOUCH SWIPE - events
+let tx0=0;
+const evOverflow=document.getElementById('evOverflow');
+evOverflow.addEventListener('touchstart',e=>{tx0=e.changedTouches[0].screenX;},{passive:true});
+evOverflow.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-tx0;
+  if(Math.abs(dx)>50){
+    evIdx=dx<0?(evIdx+1)%events.length:(evIdx-1+events.length)%events.length;
+    moveEv();
+    clearInterval(evAuto);
+    evAuto=setInterval(()=>{evIdx=(evIdx+1)%events.length;moveEv();},5000);
+  }
+},{passive:true});
+
+// TESTIMONIALS
+const testis=[
+  {text:"The vibes at Kelmeck Hotel are unmatched. Best bottle service in Migori — the sparklers alone had the whole club looking our way.",name:"Brian Ochieng",role:"Regular VIP Guest",img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face&q=80",stars:5},
+  {text:"Had my birthday here and they treated me like royalty. Custom cake, reserved booth, DJ shoutout. Best night of my life, no cap.",name:"Amara Wanjiku",role:"Birthday Celebrant",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face&q=80",stars:5},
+  {text:"The grill is insane. We came for the party and stayed for the food. Their midnight steak platter? This place is dangerously good.",name:"Kevin Mwangi",role:"Foodie & Partygoer",img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face&q=80",stars:5},
+  {text:"Guest DJ nights are something else. The sound system hits different. I've been to lounges across East Africa — Kelmeck Hotel sits at the throne.",name:"Zara Hassan",role:"Music Enthusiast",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face&q=80",stars:5},
+  {text:"Awendo Road needed this. The ambiance, the crowd, the energy — everything screams power. My go-to spot every Friday.",name:"David Kimani",role:"Loyal Patron",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face&q=80",stars:5}
+];
+
+const tGrid=document.getElementById('testiGrid');
+testis.forEach(t=>{
+  const c=document.createElement('div');
+  c.className='testi-card reveal';
+  c.innerHTML=`<div class="testi-quote">&ldquo;</div>
+  <div class="testi-stars">${'★'.repeat(t.stars)}</div>
+  <p class="testi-text">"${t.text}"</p>
+  <div class="testi-author">
+    <img class="testi-ava" src="${t.img}" alt="${t.name}" loading="lazy">
+    <div>
+      <span class="testi-name">${t.name}</span>
+      <div class="testi-role">${t.role}</div>
+    </div>
+  </div>`;
+  tGrid.appendChild(c);
+});
+// re-observe new reveals
+document.querySelectorAll('.reveal:not(.shown)').forEach(r=>revObs.observe(r));
+
+// FORM SUBMIT
+document.getElementById('bookForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=document.getElementById('rName').value.trim();
+  const email=document.getElementById('rEmail').value.trim();
+  const phone=document.getElementById('rPhone').value.trim();
+  const date=document.getElementById('rDate').value;
+  const gs=document.getElementById('rGuests');
+
+  if(!name||!email||!phone||!date||!gs.value) return toast('All fields required.',true);
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast('Please enter a valid email.',true);
+  if(phone.replace(/\D/g,'').length<9) return toast('Phone number seems invalid.',true);
+
+  const label=gs.options[gs.selectedIndex].text;
+  toast(`${name} — your table for ${label} on ${date} is confirmed. Notorious treatment awaits.`);
+  e.target.reset();
+});
+
+function toast(msg,isErr){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t=document.createElement('div');
+  t.className='toast';
+  t.setAttribute('role','alert');
+  t.innerHTML=`<i class="fas ${isErr?'fa-exclamation-triangle':'fa-check-circle'}" style="margin-right:10px;color:${isErr?'var(--blood-bright)':'var(--gold)'};"></i>${msg}`;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},4500);
+}
+
+})();
+</script>
+</body>
+</html>
