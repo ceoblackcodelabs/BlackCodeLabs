@@ -34,6 +34,7 @@ body{
   overflow-x:hidden;
   cursor:none;
 }
+
 /* Custom Cursor */
 #cursor{
   position:fixed;width:12px;height:12px;
@@ -51,7 +52,7 @@ body{
   transition:transform 0.15s var(--ease-out-expo),width 0.4s,height 0.4s,border-color 0.4s;
   opacity:0.6;
 }
-body:hover #cursor{opacity:1;}
+
 /* Scrollbar */
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:var(--black);}
@@ -69,28 +70,19 @@ body:hover #cursor{opacity:1;}
   display:flex;gap:0;margin-bottom:32px;
   animation:flagWave 2s ease-in-out infinite;
 }
-@keyframes flagWave{
-  0%,100%{transform:skewX(0deg);}
-  50%{transform:skewX(-5deg);}
-}
-.loader-flag span{
-  display:block;width:24px;height:60px;
-}
+@keyframes flagWave{0%,100%{transform:skewX(0deg);}50%{transform:skewX(-5deg);}}
+.loader-flag span{display:block;width:24px;height:60px;}
 .loader-flag .f1{background:#000;}
 .loader-flag .f2{background:#cc0001;}
 .loader-flag .f3{background:#006600;}
 .loader-text{
   font-family:'Bebas Neue',cursive;
   font-size:clamp(2rem,6vw,3.5rem);
-  letter-spacing:0.25em;
-  color:var(--gold);
+  letter-spacing:0.25em;color:var(--gold);
   animation:pulse 1.5s ease-in-out infinite;
 }
 @keyframes pulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
-.loader-bar{
-  width:200px;height:2px;background:var(--surface2);
-  margin-top:24px;border-radius:1px;overflow:hidden;
-}
+.loader-bar{width:200px;height:2px;background:var(--surface2);margin-top:24px;border-radius:1px;overflow:hidden;}
 .loader-bar-fill{
   height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-light));
   border-radius:1px;animation:loadFill 2.2s var(--ease-out-expo) forwards;
@@ -123,9 +115,7 @@ nav.scrolled{
   font-size:0.65rem;color:var(--black);font-family:'DM Sans',sans-serif;
   font-weight:600;letter-spacing:0.05em;text-align:center;line-height:1.1;
 }
-.nav-links{
-  display:flex;gap:36px;list-style:none;align-items:center;
-}
+.nav-links{display:flex;gap:36px;list-style:none;align-items:center;}
 .nav-links a{
   text-decoration:none;color:var(--text-muted);
   font-size:0.85rem;letter-spacing:0.08em;font-weight:500;
@@ -165,14 +155,98 @@ nav.scrolled{
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;
 }
-#hero-canvas{
+
+/* ---------- CAROUSEL BACKGROUND ---------- */
+.hero-carousel{
   position:absolute;inset:0;z-index:0;
 }
+.hero-carousel-slide{
+  position:absolute;inset:0;
+  background-size:cover;
+  background-position:top;
+  background-repeat:no-repeat;
+  opacity:0;
+  transition:opacity 1.4s cubic-bezier(0.4,0,0.2,1),
+             transform 8s cubic-bezier(0.25,0.46,0.45,0.94);
+  transform:scale(1.08);
+  will-change:opacity,transform;
+}
+.hero-carousel-slide.active{
+  opacity:1;
+  transform:scale(1);
+}
+/* Ken-Burns subtle drift on active */
+.hero-carousel-slide.active.kb-right{ transform:scale(1.05) translateX(1%); }
+.hero-carousel-slide.active.kb-left { transform:scale(1.05) translateX(-1%); }
+
+/* slide images */
+.hero-carousel-slide:nth-child(1){
+  background-image:url('./car1.jpeg');
+}
+.hero-carousel-slide:nth-child(2){
+  background-image:url('./car2.jpeg');
+}
+.hero-carousel-slide:nth-child(3){
+  background-image:url('./school.jpg');
+}
+.hero-carousel-slide:nth-child(4){
+  background-image:url('./whatsapp/10.jpeg');
+}
+.hero-carousel-slide:nth-child(5){
+  background-image:url('./whatsapp/9.jpeg');
+}
+.hero-carousel-slide:nth-child(6){
+  background-image:url('./whatsapp/five.jpeg');
+}
+
+/* Rich layered overlay: dark vignette + brand color wash */
 .hero-overlay{
   position:absolute;inset:0;z-index:1;
-  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(10,92,46,0.35),transparent),
-             linear-gradient(180deg,transparent 0%,var(--black) 100%);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 40%, rgba(6,11,7,0.25), transparent),
+    linear-gradient(160deg, rgba(10,92,46,0.45) 0%, rgba(6,11,7,0.0) 50%, rgba(6,11,7,0.0) 70%),
+    linear-gradient(180deg, rgba(6,11,7,0.45) 0%, rgba(6,11,7,0.1) 30%, rgba(6,11,7,0.1) 65%, rgba(6,11,7,0.98) 100%);
 }
+
+/* Carousel dots */
+.carousel-dots{
+  position:absolute;bottom:168px;left:50%;transform:translateX(-50%);
+  z-index:3;display:flex;gap:10px;
+}
+.carousel-dot{
+  width:28px;height:3px;border-radius:2px;
+  background:rgba(255,255,255,0.3);cursor:pointer;
+  transition:background 0.4s,width 0.4s;
+  border:none;
+}
+.carousel-dot.active{
+  background:var(--gold);width:48px;
+}
+
+/* Carousel arrows */
+.carousel-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  z-index:3;width:48px;height:48px;border-radius:50%;
+  background:rgba(201,168,76,0.15);border:1.5px solid rgba(201,168,76,0.35);
+  color:var(--gold);font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.3s,transform 0.3s;
+  backdrop-filter:blur(6px);
+}
+.carousel-arrow:hover{background:rgba(201,168,76,0.3);transform:translateY(-50%) scale(1.1);}
+.carousel-arrow.prev{left:32px;}
+.carousel-arrow.next{right:32px;}
+
+/* Slide counter */
+.carousel-counter{
+  position:absolute;bottom:168px;right:48px;
+  z-index:3;
+  font-family:'Bebas Neue',cursive;
+  font-size:0.9rem;letter-spacing:0.2em;
+  color:rgba(201,168,76,0.7);
+}
+
+/* Hero content */
 .hero-content{
   position:relative;z-index:2;
   text-align:center;padding:120px 24px 80px;
@@ -185,6 +259,7 @@ nav.scrolled{
   padding:8px 20px;border-radius:50px;margin-bottom:32px;
   text-transform:uppercase;
   animation:fadeSlideDown 1s var(--ease-out-expo) 0.3s both;
+  backdrop-filter:blur(6px);
 }
 .hero-ward-tag::before{
   content:'';width:8px;height:8px;border-radius:50%;
@@ -194,17 +269,16 @@ nav.scrolled{
 @keyframes fadeSlideDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:none;}}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
 .hero-name{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(3rem,10vw,7rem);
   font-weight:300;line-height:0.9;
-  letter-spacing:-0.02em;
-  color:var(--white);
+  letter-spacing:-0.02em;color:var(--white);
   animation:fadeSlideUp 1.2s var(--ease-out-expo) 0.5s both;
+  text-shadow:0 4px 40px rgba(0,0,0,0.6);
 }
-.hero-name em{
-  font-style:italic;color:var(--gold);font-weight:600;
-}
+.hero-name em{font-style:italic;color:var(--gold);font-weight:600;}
 .hero-title{
   font-family:'Bebas Neue',cursive;
   font-size:clamp(1rem,3vw,1.6rem);
@@ -214,9 +288,10 @@ nav.scrolled{
 }
 .hero-tagline{
   font-size:clamp(0.95rem,2vw,1.1rem);
-  color:var(--text-muted);line-height:1.8;
+  color:rgba(232,240,234,0.85);line-height:1.8;
   max-width:620px;margin:0 auto 48px;
   animation:fadeSlideUp 1.2s var(--ease-out-expo) 0.9s both;
+  text-shadow:0 2px 12px rgba(0,0,0,0.5);
 }
 .hero-btns{
   display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
@@ -239,16 +314,11 @@ nav.scrolled{
 }
 .btn:hover::before{transform:translateX(100%) skewX(-15deg);}
 .btn:hover{transform:translateY(-3px);}
-.btn-primary{
-  background:var(--gold);color:var(--black);
-  box-shadow:0 8px 30px rgba(201,168,76,0.3);
-}
+.btn-primary{background:var(--gold);color:var(--black);box-shadow:0 8px 30px rgba(201,168,76,0.3);}
 .btn-primary:hover{box-shadow:0 12px 40px rgba(201,168,76,0.5);}
-.btn-outline{
-  background:transparent;color:var(--text);
-  border:1.5px solid rgba(201,168,76,0.4);
-}
+.btn-outline{background:rgba(0,0,0,0.25);backdrop-filter:blur(6px);color:var(--text);border:1.5px solid rgba(201,168,76,0.4);}
 .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
 .hero-scroll-hint{
   position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
   z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;
@@ -265,9 +335,10 @@ nav.scrolled{
   51%{transform:scaleY(1);transform-origin:bottom;}
   100%{transform:scaleY(0);transform-origin:bottom;}
 }
+
 /* Floating stats */
 .hero-stats-float{
-  position:absolute;bottom:120px;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:100px;left:50%;transform:translateX(-50%);
   z-index:2;display:flex;gap:clamp(20px,4vw,60px);
   animation:fadeSlideUp 1.2s var(--ease-out-expo) 1.3s both;
 }
@@ -275,12 +346,12 @@ nav.scrolled{
 .hero-stat-num{
   font-family:'Bebas Neue',cursive;
   font-size:clamp(2rem,5vw,3rem);
-  color:var(--gold);letter-spacing:0.05em;
-  display:block;
+  color:var(--gold);letter-spacing:0.05em;display:block;
+  text-shadow:0 2px 20px rgba(0,0,0,0.5);
 }
 .hero-stat-label{
   font-size:0.7rem;letter-spacing:0.12em;
-  text-transform:uppercase;color:var(--text-muted);
+  text-transform:uppercase;color:rgba(138,170,144,0.9);
 }
 
 /* ===================== SECTION BASE ===================== */
@@ -289,12 +360,9 @@ section{padding:clamp(80px,10vw,140px) clamp(20px,5vw,80px);}
   font-family:'Bebas Neue',cursive;
   font-size:0.75rem;letter-spacing:0.3em;
   color:var(--gold);text-transform:uppercase;
-  display:flex;align-items:center;gap:12px;
-  margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
 }
-.section-label::before{
-  content:'';display:block;width:30px;height:1px;background:var(--gold);
-}
+.section-label::before{content:'';display:block;width:30px;height:1px;background:var(--gold);}
 .section-heading{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(2.2rem,5vw,3.8rem);
@@ -302,634 +370,236 @@ section{padding:clamp(80px,10vw,140px) clamp(20px,5vw,80px);}
   color:var(--white);margin-bottom:24px;
 }
 .section-heading em{font-style:italic;color:var(--gold);}
-.section-sub{
-  color:var(--text-muted);line-height:1.8;
-  max-width:600px;font-size:1rem;margin-bottom:60px;
-}
+.section-sub{color:var(--text-muted);line-height:1.8;max-width:600px;font-size:1rem;margin-bottom:60px;}
 
 /* Reveal animations */
-.reveal{
-  opacity:0;transform:translateY(50px);
-  transition:opacity 0.9s var(--ease-out-expo),transform 0.9s var(--ease-out-expo);
-}
+.reveal{opacity:0;transform:translateY(50px);transition:opacity 0.9s var(--ease-out-expo),transform 0.9s var(--ease-out-expo);}
 .reveal.visible{opacity:1;transform:none;}
-.reveal-left{
-  opacity:0;transform:translateX(-60px);
-  transition:opacity 0.9s var(--ease-out-expo),transform 0.9s var(--ease-out-expo);
-}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity 0.9s var(--ease-out-expo),transform 0.9s var(--ease-out-expo);}
 .reveal-left.visible{opacity:1;transform:none;}
-.reveal-right{
-  opacity:0;transform:translateX(60px);
-  transition:opacity 0.9s var(--ease-out-expo),transform 0.9s var(--ease-out-expo);
-}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity 0.9s var(--ease-out-expo),transform 0.9s var(--ease-out-expo);}
 .reveal-right.visible{opacity:1;transform:none;}
-.stagger-1{transition-delay:0.1s;}
-.stagger-2{transition-delay:0.2s;}
-.stagger-3{transition-delay:0.3s;}
-.stagger-4{transition-delay:0.4s;}
-.stagger-5{transition-delay:0.5s;}
-.stagger-6{transition-delay:0.6s;}
+.stagger-1{transition-delay:0.1s;}.stagger-2{transition-delay:0.2s;}.stagger-3{transition-delay:0.3s;}
+.stagger-4{transition-delay:0.4s;}.stagger-5{transition-delay:0.5s;}.stagger-6{transition-delay:0.6s;}
 
 /* ===================== ABOUT ===================== */
 #about{background:var(--dark);position:relative;overflow:hidden;}
 #about::before{
-  content:'';position:absolute;
-  top:-200px;right:-200px;
+  content:'';position:absolute;top:-200px;right:-200px;
   width:600px;height:600px;
   background:radial-gradient(circle,rgba(10,92,46,0.15),transparent 70%);
   pointer-events:none;
 }
-.about-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:80px;align-items:center;
-  max-width:1300px;margin:0 auto;
-}
-.about-img-wrap{
-  position:relative;
-}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1300px;margin:0 auto;}
+.about-img-wrap{position:relative;}
 .about-img-frame{
-  position:relative;
-  border-radius:4px;overflow:hidden;
+  position:relative;border-radius:4px;overflow:hidden;
   transform-style:preserve-3d;
   transform:perspective(1000px) rotateY(-5deg) rotateX(2deg);
   transition:transform 0.8s var(--ease-out-expo);
   box-shadow:30px 30px 80px rgba(0,0,0,0.6);
 }
-.about-img-frame:hover{
-  transform:perspective(1000px) rotateY(0deg) rotateX(0deg);
-}
-.about-img-frame img{
-  width:100%;display:block;
-  filter:saturate(0.9) contrast(1.05);
-}
-.about-img-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to bottom,transparent 50%,rgba(6,11,7,0.8));
-}
+.about-img-frame:hover{transform:perspective(1000px) rotateY(0deg) rotateX(0deg);}
+.about-img-frame img{width:100%;display:block;filter:saturate(0.9) contrast(1.05);}
+.about-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(6,11,7,0.8));}
 .about-img-badge{
   position:absolute;bottom:24px;left:24px;
-  background:rgba(201,168,76,0.95);
-  color:var(--black);padding:12px 20px;
-  border-radius:2px;
+  background:rgba(201,168,76,0.95);color:var(--black);padding:12px 20px;border-radius:2px;
 }
-.about-img-badge strong{
-  display:block;font-family:'Bebas Neue',cursive;
-  font-size:1.3rem;letter-spacing:0.1em;
-}
+.about-img-badge strong{display:block;font-family:'Bebas Neue',cursive;font-size:1.3rem;letter-spacing:0.1em;}
 .about-img-badge span{font-size:0.75rem;font-weight:500;}
-.about-gold-line{
-  position:absolute;top:24px;right:-20px;
-  width:4px;height:120px;background:var(--gold);
-  border-radius:2px;
-}
-.about-text p{
-  color:var(--text-muted);line-height:1.9;
-  font-size:0.98rem;margin-bottom:20px;
-}
+.about-gold-line{position:absolute;top:24px;right:-20px;width:4px;height:120px;background:var(--gold);border-radius:2px;}
+.about-text p{color:var(--text-muted);line-height:1.9;font-size:0.98rem;margin-bottom:20px;}
 .about-text p strong{color:var(--gold);}
-.about-pillars{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:16px;margin-top:36px;
-}
+.about-pillars{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;}
 .pillar{
   background:var(--surface);border:1px solid rgba(201,168,76,0.1);
   padding:16px 20px;border-radius:4px;
   transition:border-color 0.4s,transform 0.4s var(--ease-out-expo),box-shadow 0.4s;
 }
-.pillar:hover{
-  border-color:var(--gold);
-  transform:translateY(-4px);
-  box-shadow:0 12px 30px rgba(0,0,0,0.3);
-}
+.pillar:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.3);}
 .pillar-icon{font-size:1.4rem;margin-bottom:8px;}
-.pillar-name{
-  font-size:0.8rem;font-weight:600;
-  letter-spacing:0.05em;color:var(--text);
-}
+.pillar-name{font-size:0.8rem;font-weight:600;letter-spacing:0.05em;color:var(--text);}
 
 /* ===================== TICKER ===================== */
 .ticker-wrap{
-  background:var(--gold);
-  padding:12px 0;overflow:hidden;
-  border-top:1px solid var(--gold-dark);
-  border-bottom:1px solid var(--gold-dark);
+  background:var(--gold);padding:12px 0;overflow:hidden;
+  border-top:1px solid var(--gold-dark);border-bottom:1px solid var(--gold-dark);
 }
-.ticker-inner{
-  display:flex;white-space:nowrap;
-  animation:ticker 30s linear infinite;
-}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker 30s linear infinite;}
 .ticker-inner:hover{animation-play-state:paused;}
-.ticker-item{
-  font-family:'Bebas Neue',cursive;
-  font-size:1rem;letter-spacing:0.2em;
-  color:var(--black);padding:0 40px;
-  flex-shrink:0;
-}
+.ticker-item{font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:0.2em;color:var(--black);padding:0 40px;flex-shrink:0;}
 .ticker-sep{color:var(--green);}
 @keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 /* ===================== ACHIEVEMENTS ===================== */
 #achievements{background:var(--black);position:relative;}
-.achievements-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:24px;max-width:1300px;margin:0 auto;
-}
+.achievements-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1300px;margin:0 auto;}
 .achievement-card{
-  background:var(--surface);
-  border:1px solid rgba(201,168,76,0.1);
-  border-radius:6px;padding:36px 32px;
-  position:relative;overflow:hidden;
+  background:var(--surface);border:1px solid rgba(201,168,76,0.1);
+  border-radius:6px;padding:36px 32px;position:relative;overflow:hidden;
   transition:transform 0.5s var(--ease-out-expo),box-shadow 0.5s,border-color 0.4s;
   transform-style:preserve-3d;
 }
 .achievement-card::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:3px;
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
   background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-light));
-  transform:scaleX(0);transform-origin:left;
-  transition:transform 0.5s var(--ease-out-expo);
+  transform:scaleX(0);transform-origin:left;transition:transform 0.5s var(--ease-out-expo);
 }
-.achievement-card:hover{
-  transform:translateY(-8px) perspective(600px) rotateX(3deg);
-  box-shadow:0 30px 60px rgba(0,0,0,0.4);
-  border-color:rgba(201,168,76,0.3);
-}
+.achievement-card:hover{transform:translateY(-8px) perspective(600px) rotateX(3deg);box-shadow:0 30px 60px rgba(0,0,0,0.4);border-color:rgba(201,168,76,0.3);}
 .achievement-card:hover::before{transform:scaleX(1);}
-.achievement-card-number{
-  font-family:'Bebas Neue',cursive;
-  font-size:4rem;letter-spacing:0.02em;
-  color:rgba(201,168,76,0.15);
-  position:absolute;top:16px;right:24px;
-  line-height:1;
-}
-.achievement-icon{
-  width:52px;height:52px;border-radius:50%;
-  background:rgba(201,168,76,0.1);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.4rem;margin-bottom:20px;
-  border:1px solid rgba(201,168,76,0.2);
-}
-.achievement-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.4rem;font-weight:600;
-  color:var(--white);margin-bottom:12px;
-}
-.achievement-desc{
-  color:var(--text-muted);font-size:0.9rem;line-height:1.7;
-}
+.achievement-card-number{font-family:'Bebas Neue',cursive;font-size:4rem;letter-spacing:0.02em;color:rgba(201,168,76,0.15);position:absolute;top:16px;right:24px;line-height:1;}
+.achievement-icon{width:52px;height:52px;border-radius:50%;background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px;border:1px solid rgba(201,168,76,0.2);}
+.achievement-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--white);margin-bottom:12px;}
+.achievement-desc{color:var(--text-muted);font-size:0.9rem;line-height:1.7;}
 
 /* ===================== GALLERY ===================== */
 #gallery{background:var(--dark);}
-.gallery-header{
-  display:flex;justify-content:space-between;align-items:flex-end;
-  max-width:1300px;margin:0 auto 48px;flex-wrap:wrap;gap:20px;
-}
-.gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  grid-template-rows:auto;
-  gap:12px;max-width:1300px;margin:0 auto;
-}
-.gallery-item{
-  position:relative;overflow:hidden;border-radius:4px;cursor:pointer;
-  background:var(--surface);
-}
+.gallery-header{display:flex;justify-content:space-between;align-items:flex-end;max-width:1300px;margin:0 auto 48px;flex-wrap:wrap;gap:20px;}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto;gap:12px;max-width:1300px;margin:0 auto;}
+.gallery-item{position:relative;overflow:hidden;border-radius:4px;cursor:pointer;background:var(--surface);}
 .gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2;}
 .gallery-item:nth-child(5){grid-column:span 2;}
-.gallery-item img{
-  width:100%;height:100%;object-fit:cover;
-  display:block;
-  transition:transform 0.7s var(--ease-out-expo),filter 0.5s;
-  min-height:200px;
-}
-.gallery-item:hover img{
-  transform:scale(1.08);filter:saturate(1.2);
-}
-.gallery-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(6,11,7,0.9) 0%,transparent 50%);
-  opacity:0;transition:opacity 0.4s;
-  display:flex;align-items:flex-end;padding:20px;
-}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.7s var(--ease-out-expo),filter 0.5s;min-height:200px;}
+.gallery-item:hover img{transform:scale(1.08);filter:saturate(1.2);}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,11,7,0.9) 0%,transparent 50%);opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-end;padding:20px;}
 .gallery-item:hover .gallery-overlay{opacity:1;}
-.gallery-overlay-text{
-  color:var(--white);
-}
-.gallery-overlay-text strong{
-  display:block;font-family:'Cormorant Garamond',serif;
-  font-size:1rem;font-weight:600;
-}
-.gallery-overlay-text span{
-  font-size:0.8rem;color:var(--gold);
-}
+.gallery-overlay-text{color:var(--white);}
+.gallery-overlay-text strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;}
+.gallery-overlay-text span{font-size:0.8rem;color:var(--gold);}
 
 /* ===================== TESTIMONIALS ===================== */
-#testimonials{
-  background:var(--black);
-  position:relative;overflow:hidden;
-}
+#testimonials{background:var(--black);position:relative;overflow:hidden;}
 #testimonials::before{
-  content:'"';
-  position:absolute;top:-80px;left:40px;
+  content:'"';position:absolute;top:-80px;left:40px;
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(20rem,40vw,35rem);
-  color:rgba(201,168,76,0.03);
-  line-height:1;pointer-events:none;
-  font-weight:700;
+  color:rgba(201,168,76,0.03);line-height:1;pointer-events:none;font-weight:700;
 }
-.testimonials-track-wrap{
-  overflow:hidden;max-width:1300px;margin:0 auto;
-  position:relative;
-}
-.testimonials-track-wrap::before,
-.testimonials-track-wrap::after{
-  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;
-  pointer-events:none;
-}
-.testimonials-track-wrap::before{
-  left:0;background:linear-gradient(to right,var(--black),transparent);
-}
-.testimonials-track-wrap::after{
-  right:0;background:linear-gradient(to left,var(--black),transparent);
-}
-.testimonials-track{
-  display:flex;gap:24px;
-  animation:scrollTestimonials 35s linear infinite;
-}
+.testimonials-track-wrap{overflow:hidden;max-width:1300px;margin:0 auto;position:relative;}
+.testimonials-track-wrap::before,.testimonials-track-wrap::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none;}
+.testimonials-track-wrap::before{left:0;background:linear-gradient(to right,var(--black),transparent);}
+.testimonials-track-wrap::after{right:0;background:linear-gradient(to left,var(--black),transparent);}
+.testimonials-track{display:flex;gap:24px;animation:scrollTestimonials 35s linear infinite;}
 .testimonials-track:hover{animation-play-state:paused;}
-@keyframes scrollTestimonials{
-  from{transform:translateX(0);}
-  to{transform:translateX(-50%);}
-}
-.testimonial-card{
-  background:var(--surface);
-  border:1px solid rgba(201,168,76,0.1);
-  border-radius:6px;padding:32px 28px;
-  min-width:340px;max-width:340px;
-  flex-shrink:0;
-  position:relative;
-  transition:transform 0.4s var(--ease-out-expo),box-shadow 0.4s;
-}
-.testimonial-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 20px 50px rgba(0,0,0,0.4);
-}
-.t-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1rem;line-height:1.7;
-  color:var(--text);margin-bottom:24px;
-  font-style:italic;
-}
+@keyframes scrollTestimonials{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.testimonial-card{background:var(--surface);border:1px solid rgba(201,168,76,0.1);border-radius:6px;padding:32px 28px;min-width:340px;max-width:340px;flex-shrink:0;position:relative;transition:transform 0.4s var(--ease-out-expo),box-shadow 0.4s;}
+.testimonial-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.4);}
+.t-quote{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:var(--text);margin-bottom:24px;font-style:italic;}
 .t-author{display:flex;align-items:center;gap:14px;}
-.t-avatar{
-  width:44px;height:44px;border-radius:50%;
-  background:linear-gradient(135deg,var(--green),var(--gold-dark));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue',cursive;
-  font-size:1.1rem;color:var(--white);flex-shrink:0;
-}
-.t-name{
-  font-weight:600;font-size:0.9rem;
-  color:var(--white);
-}
+.t-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',cursive;font-size:1.1rem;color:var(--white);flex-shrink:0;}
+.t-name{font-weight:600;font-size:0.9rem;color:var(--white);}
 .t-role{font-size:0.78rem;color:var(--text-muted);}
 .t-stars{color:var(--gold);font-size:0.8rem;margin-bottom:4px;}
 
 /* ===================== VISION ===================== */
-#vision{
-  background:var(--dark);
-  position:relative;overflow:hidden;
-}
-.vision-hero{
-  max-width:1300px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:80px;align-items:start;
-}
-.vision-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.5rem,3.5vw,2.2rem);
-  font-weight:300;line-height:1.5;
-  color:var(--white);
-  border-left:3px solid var(--gold);
-  padding-left:32px;margin-bottom:40px;
-}
+#vision{background:var(--dark);position:relative;overflow:hidden;}
+.vision-hero{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.vision-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:300;line-height:1.5;color:var(--white);border-left:3px solid var(--gold);padding-left:32px;margin-bottom:40px;}
 .vision-quote em{color:var(--gold);font-style:italic;}
-.vision-projects{
-  display:flex;flex-direction:column;gap:20px;
-}
-.vision-project{
-  background:var(--surface);
-  border:1px solid rgba(201,168,76,0.1);
-  border-radius:6px;padding:28px;
-  position:relative;overflow:hidden;
-  transition:transform 0.5s var(--ease-out-expo),box-shadow 0.5s;
-}
-.vision-project:hover{
-  transform:translateX(8px);
-  box-shadow:0 15px 40px rgba(0,0,0,0.4);
-}
-.vision-project-header{
-  display:flex;justify-content:space-between;
-  align-items:flex-start;margin-bottom:12px;
-}
-.vision-project-tag{
-  background:rgba(201,168,76,0.12);
-  color:var(--gold);font-size:0.7rem;
-  letter-spacing:0.12em;padding:4px 12px;
-  border-radius:50px;text-transform:uppercase;
-}
-.vision-project-pct{
-  font-family:'Bebas Neue',cursive;
-  font-size:1.8rem;color:var(--gold);
-}
-.vision-project-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.3rem;font-weight:600;
-  color:var(--white);margin-bottom:8px;
-}
-.vision-project-desc{
-  font-size:0.85rem;color:var(--text-muted);
-  line-height:1.6;margin-bottom:16px;
-}
-.vision-progress-bar{
-  height:3px;background:rgba(201,168,76,0.15);
-  border-radius:2px;overflow:hidden;
-}
-.vision-progress-fill{
-  height:100%;
-  background:linear-gradient(90deg,var(--gold-dark),var(--gold));
-  border-radius:2px;width:0;
-  transition:width 1.5s var(--ease-out-expo) 0.5s;
-}
+.vision-projects{display:flex;flex-direction:column;gap:20px;}
+.vision-project{background:var(--surface);border:1px solid rgba(201,168,76,0.1);border-radius:6px;padding:28px;position:relative;overflow:hidden;transition:transform 0.5s var(--ease-out-expo),box-shadow 0.5s;}
+.vision-project:hover{transform:translateX(8px);box-shadow:0 15px 40px rgba(0,0,0,0.4);}
+.vision-project-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.vision-project-tag{background:rgba(201,168,76,0.12);color:var(--gold);font-size:0.7rem;letter-spacing:0.12em;padding:4px 12px;border-radius:50px;text-transform:uppercase;}
+.vision-project-pct{font-family:'Bebas Neue',cursive;font-size:1.8rem;color:var(--gold);}
+.vision-project-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white);margin-bottom:8px;}
+.vision-project-desc{font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;}
+.vision-progress-bar{height:3px;background:rgba(201,168,76,0.15);border-radius:2px;overflow:hidden;}
+.vision-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:2px;width:0;transition:width 1.5s var(--ease-out-expo) 0.5s;}
 .vision-project.visible .vision-progress-fill{width:var(--pct);}
-
-/* Vision Stats Row */
-.vision-milestone{
-  background:var(--surface);
-  border:1px solid rgba(201,168,76,0.15);
-  border-radius:6px;padding:24px 32px;
-  text-align:center;
-  max-width:1300px;margin:60px auto 0;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:0;
-}
-.vm-item{
-  padding:20px;border-right:1px solid rgba(201,168,76,0.1);
-}
+.vision-milestone{background:var(--surface);border:1px solid rgba(201,168,76,0.15);border-radius:6px;padding:24px 32px;text-align:center;max-width:1300px;margin:60px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.vm-item{padding:20px;border-right:1px solid rgba(201,168,76,0.1);}
 .vm-item:last-child{border-right:none;}
-.vm-number{
-  font-family:'Bebas Neue',cursive;
-  font-size:2.5rem;color:var(--gold);
-  display:block;
-}
-.vm-label{
-  font-size:0.75rem;letter-spacing:0.1em;
-  text-transform:uppercase;color:var(--text-muted);
-}
+.vm-number{font-family:'Bebas Neue',cursive;font-size:2.5rem;color:var(--gold);display:block;}
+.vm-label{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);}
 
 /* ===================== IMPACT COUNTER ===================== */
 #impact{
   background:linear-gradient(135deg,var(--green) 0%,var(--black) 60%);
-  position:relative;overflow:hidden;
-  padding:80px clamp(20px,5vw,80px);
+  position:relative;overflow:hidden;padding:80px clamp(20px,5vw,80px);
 }
 #impact::before{
   content:'';position:absolute;inset:0;
   background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
-.impact-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:40px;max-width:1100px;margin:0 auto;
-  position:relative;z-index:1;
-}
+.impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1100px;margin:0 auto;position:relative;z-index:1;}
 .impact-item{text-align:center;}
-.impact-num{
-  font-family:'Bebas Neue',cursive;
-  font-size:clamp(3rem,7vw,5rem);
-  color:var(--gold-light);
-  display:block;line-height:1;
-}
-.impact-label{
-  font-size:0.85rem;letter-spacing:0.08em;
-  text-transform:uppercase;color:rgba(255,255,255,0.7);
-  margin-top:8px;
-}
+.impact-num{font-family:'Bebas Neue',cursive;font-size:clamp(3rem,7vw,5rem);color:var(--gold-light);display:block;line-height:1;}
+.impact-label{font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-top:8px;}
 
 /* ===================== CONNECT ===================== */
 #connectNow{background:var(--black);}
-.connect-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:60px;max-width:1100px;margin:0 auto;
-}
-.connect-form-wrap{
-  background:var(--surface);
-  border:1px solid rgba(201,168,76,0.1);
-  border-radius:8px;padding:40px;
-}
-.form-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.6rem;color:var(--white);
-  margin-bottom:28px;
-}
+.connect-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1100px;margin:0 auto;}
+.connect-form-wrap{background:var(--surface);border:1px solid rgba(201,168,76,0.1);border-radius:8px;padding:40px;}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white);margin-bottom:28px;}
 .form-group{margin-bottom:20px;}
-.form-group label{
-  display:block;font-size:0.78rem;
-  letter-spacing:0.1em;text-transform:uppercase;
-  color:var(--text-muted);margin-bottom:8px;
-}
-.form-group input,
-.form-group textarea,
-.form-group select{
-  width:100%;background:var(--surface2);
-  border:1.5px solid rgba(201,168,76,0.15);
-  border-radius:4px;padding:12px 16px;
-  color:var(--text);font-family:'DM Sans',sans-serif;
-  font-size:0.95rem;
-  transition:border-color 0.3s,box-shadow 0.3s;
-  outline:none;
-}
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(201,168,76,0.1);
-}
+.form-group label{display:block;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:var(--surface2);border:1.5px solid rgba(201,168,76,0.15);border-radius:4px;padding:12px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.95rem;transition:border-color 0.3s,box-shadow 0.3s;outline:none;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1);}
 .form-group select option{background:var(--dark);}
 .form-group textarea{resize:vertical;min-height:100px;}
-.contact-info{
-  display:flex;flex-direction:column;gap:0;
-  justify-content:center;
-}
-.ci-item{
-  display:flex;align-items:flex-start;gap:20px;
-  padding:28px 0;
-  border-bottom:1px solid rgba(201,168,76,0.08);
-}
+.contact-info{display:flex;flex-direction:column;gap:0;justify-content:center;}
+.ci-item{display:flex;align-items:flex-start;gap:20px;padding:28px 0;border-bottom:1px solid rgba(201,168,76,0.08);}
 .ci-item:last-child{border-bottom:none;}
-.ci-icon{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(201,168,76,0.1);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;flex-shrink:0;
-  border:1px solid rgba(201,168,76,0.2);
-}
+.ci-icon{width:44px;height:44px;border-radius:50%;background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;border:1px solid rgba(201,168,76,0.2);}
 .ci-label{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);}
 .ci-value{font-weight:500;color:var(--white);margin-top:2px;}
 .ci-sub{font-size:0.8rem;color:var(--text-muted);margin-top:2px;}
 
 /* ===================== FOOTER ===================== */
-footer{
-  background:var(--dark);
-  border-top:1px solid rgba(201,168,76,0.1);
-  padding:60px clamp(20px,5vw,80px) 30px;
-}
-.footer-grid{
-  display:grid;grid-template-columns:2fr 1fr 1fr;
-  gap:60px;max-width:1100px;margin:0 auto 40px;
-}
-.footer-brand-name{
-  font-family:'Bebas Neue',cursive;
-  font-size:1.8rem;letter-spacing:0.1em;
-  color:var(--gold);margin-bottom:16px;
-}
-.footer-brand-desc{
-  font-size:0.88rem;line-height:1.7;
-  color:var(--text-muted);max-width:280px;
-}
-.footer-col-title{
-  font-family:'Bebas Neue',cursive;
-  font-size:0.85rem;letter-spacing:0.2em;
-  color:var(--gold);margin-bottom:20px;
-}
+footer{background:var(--dark);border-top:1px solid rgba(201,168,76,0.1);padding:60px clamp(20px,5vw,80px) 30px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;max-width:1100px;margin:0 auto 40px;}
+.footer-brand-name{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:16px;}
+.footer-brand-desc{font-size:0.88rem;line-height:1.7;color:var(--text-muted);max-width:280px;}
+.footer-col-title{font-family:'Bebas Neue',cursive;font-size:0.85rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:20px;}
 .footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-links a{
-  text-decoration:none;color:var(--text-muted);
-  font-size:0.88rem;transition:color 0.3s,padding-left 0.3s;
-}
+.footer-links a{text-decoration:none;color:var(--text-muted);font-size:0.88rem;transition:color 0.3s,padding-left 0.3s;}
 .footer-links a:hover{color:var(--gold);padding-left:6px;}
-.footer-bottom{
-  max-width:1100px;margin:0 auto;
-  display:flex;justify-content:space-between;align-items:center;
-  padding-top:24px;border-top:1px solid rgba(201,168,76,0.08);
-  flex-wrap:wrap;gap:16px;
-}
+.footer-bottom{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(201,168,76,0.08);flex-wrap:wrap;gap:16px;}
 .footer-bottom-text{font-size:0.8rem;color:var(--text-muted);}
 .footer-bottom-text span{color:var(--gold);}
 .footer-socials{display:flex;gap:12px;}
-.social-btn{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--surface);border:1px solid rgba(201,168,76,0.15);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--text-muted);font-size:0.85rem;text-decoration:none;
-  transition:background 0.3s,border-color 0.3s,color 0.3s,transform 0.3s;
-}
-.social-btn:hover{
-  background:var(--gold);border-color:var(--gold);
-  color:var(--black);transform:translateY(-3px);
-}
+.social-btn{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.85rem;text-decoration:none;transition:background 0.3s,border-color 0.3s,color 0.3s,transform 0.3s;}
+.social-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--black);transform:translateY(-3px);}
 
 /* ===================== MOBILE NAV ===================== */
-.mobile-menu{
-  position:fixed;inset:0;z-index:800;
-  background:rgba(6,11,7,0.97);
-  backdrop-filter:blur(20px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:32px;
-  transform:translateX(100%);
-  transition:transform 0.6s var(--ease-out-expo);
-}
+.mobile-menu{position:fixed;inset:0;z-index:800;background:rgba(6,11,7,0.97);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;transform:translateX(100%);transition:transform 0.6s var(--ease-out-expo);}
 .mobile-menu.open{transform:translateX(0);}
-.mobile-menu a{
-  font-family:'Bebas Neue',cursive;
-  font-size:2.2rem;letter-spacing:0.15em;
-  color:var(--text-muted);text-decoration:none;
-  transition:color 0.3s,transform 0.3s;
-}
+.mobile-menu a{font-family:'Bebas Neue',cursive;font-size:2.2rem;letter-spacing:0.15em;color:var(--text-muted);text-decoration:none;transition:color 0.3s,transform 0.3s;}
 .mobile-menu a:hover{color:var(--gold);transform:translateX(10px);}
 
 /* ===================== PROGRESS BAR ===================== */
-#progress-bar{
-  position:fixed;top:0;left:0;height:2px;
-  background:linear-gradient(90deg,var(--green-light),var(--gold));
-  z-index:1000;transform-origin:left;transform:scaleX(0);
-  transition:transform 0.1s;
-  box-shadow:0 0 10px var(--gold);
-}
+#progress-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--green-light),var(--gold));z-index:1000;transform-origin:left;transform:scaleX(0);transition:transform 0.1s;box-shadow:0 0 10px var(--gold);}
 
 /* ===================== BACK TO TOP ===================== */
-#back-top{
-  position:fixed;bottom:40px;right:40px;z-index:500;
-  width:46px;height:46px;border-radius:50%;
-  background:var(--gold);border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--black);font-size:1.1rem;
-  box-shadow:0 8px 24px rgba(201,168,76,0.4);
-  transform:translateY(100px);opacity:0;
-  transition:transform 0.5s var(--ease-out-expo),opacity 0.5s,background 0.3s;
-}
+#back-top{position:fixed;bottom:40px;right:40px;z-index:500;width:46px;height:46px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--black);font-size:1.1rem;box-shadow:0 8px 24px rgba(201,168,76,0.4);transform:translateY(100px);opacity:0;transition:transform 0.5s var(--ease-out-expo),opacity 0.5s,background 0.3s;}
 #back-top.show{transform:translateY(0);opacity:1;}
 #back-top:hover{background:var(--gold-light);}
 
 /* ===================== LIGHTBOX ===================== */
-#lightbox{
-  position:fixed;inset:0;z-index:9000;
-  background:rgba(6,11,7,0.95);backdrop-filter:blur(15px);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;
-  transition:opacity 0.4s;
-}
+#lightbox{position:fixed;inset:0;z-index:9000;background:rgba(6,11,7,0.95);backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s;}
 #lightbox.open{opacity:1;pointer-events:all;}
-#lightbox img{
-  max-width:90vw;max-height:85vh;object-fit:contain;
-  border-radius:4px;
-  transform:scale(0.85);
-  transition:transform 0.5s var(--ease-out-expo);
-}
+#lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:4px;transform:scale(0.85);transition:transform 0.5s var(--ease-out-expo);}
 #lightbox.open img{transform:scale(1);}
-#lb-close{
-  position:absolute;top:24px;right:24px;
-  width:44px;height:44px;background:rgba(255,255,255,0.1);
-  border:none;border-radius:50%;cursor:pointer;
-  color:var(--white);font-size:1.2rem;
-  transition:background 0.3s;
-}
+#lb-close{position:absolute;top:24px;right:24px;width:44px;height:44px;background:rgba(255,255,255,0.1);border:none;border-radius:50%;cursor:pointer;color:var(--white);font-size:1.2rem;transition:background 0.3s;}
 #lb-close:hover{background:var(--gold);color:var(--black);}
-#lb-caption{
-  position:absolute;bottom:32px;
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.1rem;color:var(--white);
-  text-align:center;padding:0 20px;
-}
+#lb-caption{position:absolute;bottom:32px;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);text-align:center;padding:0 20px;}
 
 /* ===================== FLOATING WHATSAPP ===================== */
-#wa-float{
-  position:fixed;bottom:100px;right:40px;z-index:500;
-  width:50px;height:50px;border-radius:50%;
-  background:#25d366;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 6px 20px rgba(37,211,102,0.4);
-  text-decoration:none;font-size:1.4rem;
-  animation:floatBob 3s ease-in-out infinite;
-  transition:transform 0.3s;
-}
+#wa-float{position:fixed;bottom:100px;right:40px;z-index:500;width:50px;height:50px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,0.4);text-decoration:none;font-size:1.4rem;animation:floatBob 3s ease-in-out infinite;transition:transform 0.3s;}
 #wa-float:hover{transform:scale(1.15);}
-@keyframes floatBob{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-6px);}
-}
+@keyframes floatBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 
 /* ===================== RESPONSIVE ===================== */
 @media(max-width:1024px){
-  .about-grid,.connect-grid,.vision-hero,.footer-grid{
-    grid-template-columns:1fr;gap:40px;
-  }
+  .about-grid,.connect-grid,.vision-hero,.footer-grid{grid-template-columns:1fr;gap:40px;}
   .gallery-grid{grid-template-columns:repeat(2,1fr);}
   .gallery-item:nth-child(1){grid-column:span 2;grid-row:span 1;}
   .gallery-item:nth-child(5){grid-column:span 2;}
   .about-img-frame{transform:none;}
   .vision-milestone{grid-template-columns:repeat(2,1fr);}
+  .carousel-arrow{display:none;}
 }
 @media(max-width:768px){
   .nav-links{display:none;}
@@ -938,20 +608,24 @@ footer{
   nav.scrolled{padding:12px 24px;}
   .hero-stats-float{bottom:80px;}
   .gallery-grid{grid-template-columns:1fr;}
-  .gallery-item:nth-child(1),
-  .gallery-item:nth-child(5){grid-column:span 1;}
+  .gallery-item:nth-child(1),.gallery-item:nth-child(5){grid-column:span 1;}
   .achievements-grid{grid-template-columns:1fr;}
   .about-pillars{grid-template-columns:1fr;}
   .vision-milestone{grid-template-columns:repeat(2,1fr);}
   #back-top,#wa-float{right:20px;}
   .connect-grid{grid-template-columns:1fr;}
   .footer-grid{grid-template-columns:1fr;gap:32px;}
+  .carousel-counter{display:none;}
 }
 @media(max-width:480px){
   .hero-btns{flex-direction:column;align-items:center;}
   .btn{width:100%;max-width:280px;justify-content:center;}
   .vision-milestone{grid-template-columns:1fr 1fr;}
   .impact-grid{grid-template-columns:1fr 1fr;}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-carousel-slide{transition:opacity 0.5s;}
+  .hero-carousel-slide.active{transform:scale(1) !important;}
 }
 </style>
 </head>
@@ -967,9 +641,7 @@ footer{
 <!-- Loader -->
 <div id="loader">
   <div class="loader-flag">
-    <span class="f1"></span>
-    <span class="f2"></span>
-    <span class="f3"></span>
+    <span class="f1"></span><span class="f2"></span><span class="f3"></span>
   </div>
   <div class="loader-text">HON. T.J. OYUGI</div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
@@ -1006,8 +678,31 @@ footer{
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="hero-canvas"></canvas>
+
+  <!-- CAROUSEL BACKGROUND -->
+  <div class="hero-carousel" id="heroCarousel">
+    <div class="hero-carousel-slide active"></div>
+    <div class="hero-carousel-slide"></div>
+    <div class="hero-carousel-slide"></div>
+    <div class="hero-carousel-slide"></div>
+    <div class="hero-carousel-slide"></div>
+    <div class="hero-carousel-slide"></div>
+  </div>
+
+  <!-- Overlay -->
   <div class="hero-overlay"></div>
+
+  <!-- Prev / Next arrows -->
+  <button class="carousel-arrow prev" id="carouselPrev" aria-label="Previous slide">&#8592;</button>
+  <button class="carousel-arrow next" id="carouselNext" aria-label="Next slide">&#8594;</button>
+
+  <!-- Dots -->
+  <div class="carousel-dots" id="carouselDots"></div>
+
+  <!-- Slide counter -->
+  <div class="carousel-counter" id="carouselCounter">01 / 06</div>
+
+  <!-- Hero text -->
   <div class="hero-content">
     <div class="hero-ward-tag">MCA · Central Sakwa Ward · Migori County</div>
     <h1 class="hero-name">Hon. T.J.<br/><em>OYUGI</em></h1>
@@ -1018,11 +713,14 @@ footer{
       <a href="#about" class="btn btn-outline">Discover More ↓</a>
     </div>
   </div>
+
+  <!-- Floating stats -->
   <div class="hero-stats-float">
     <div class="hero-stat"><span class="hero-stat-num" data-count="2000">0</span><span class="hero-stat-label">Lives Impacted</span></div>
     <div class="hero-stat"><span class="hero-stat-num" data-count="22">0</span><span class="hero-stat-label">Bills & Motions</span></div>
     <div class="hero-stat"><span class="hero-stat-num" data-count="40000">0</span><span class="hero-stat-label">Community Reached</span></div>
   </div>
+
   <div class="hero-scroll-hint">
     <span>Scroll</span>
     <div class="scroll-line"></div>
@@ -1041,7 +739,6 @@ footer{
     <span class="ticker-item">✦ GREEN ENERGY <span class="ticker-sep">•</span></span>
     <span class="ticker-item">✦ DIGITAL FUTURE <span class="ticker-sep">•</span></span>
     <span class="ticker-item">✦ PEOPLE FIRST LEADERSHIP <span class="ticker-sep">•</span></span>
-    <!-- duplicate for loop -->
     <span class="ticker-item">✦ EDUCATION FOR ALL <span class="ticker-sep">•</span></span>
     <span class="ticker-item">✦ CLEAN WATER ACCESS <span class="ticker-sep">•</span></span>
     <span class="ticker-item">✦ YOUTH EMPOWERMENT <span class="ticker-sep">•</span></span>
@@ -1059,7 +756,7 @@ footer{
   <div class="about-grid">
     <div class="about-img-wrap reveal-left">
       <div class="about-img-frame">
-        <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/whatsapp/six.jpeg" alt="Hon. T. J. Oyugi" loading="lazy"/>
+        <img src="./hon1.jpeg" alt="Hon. T. J. Oyugi" loading="lazy"/>
         <div class="about-img-overlay"></div>
         <div class="about-img-badge">
           <strong>HON. T.J. OYUGI</strong>
@@ -1088,26 +785,11 @@ footer{
 <!-- IMPACT COUNTER -->
 <section id="impact">
   <div class="impact-grid">
-    <div class="impact-item reveal stagger-1">
-      <span class="impact-num" data-count="12">0</span>
-      <div class="impact-label">Classrooms Built</div>
-    </div>
-    <div class="impact-item reveal stagger-2">
-      <span class="impact-num" data-count="2000">0</span>
-      <div class="impact-label">Medical Camp Patients</div>
-    </div>
-    <div class="impact-item reveal stagger-3">
-      <span class="impact-num" data-count="500">0</span>
-      <div class="impact-label">Youth Entrepreneurs</div>
-    </div>
-    <div class="impact-item reveal stagger-4">
-      <span class="impact-num" data-count="15">0</span>
-      <div class="impact-label">KM Roads Tarmacked</div>
-    </div>
-    <div class="impact-item reveal stagger-5">
-      <span class="impact-num" data-count="300">0</span>
-      <div class="impact-label">Women Supported</div>
-    </div>
+    <div class="impact-item reveal stagger-1"><span class="impact-num" data-count="12">0</span><div class="impact-label">Classrooms Built</div></div>
+    <div class="impact-item reveal stagger-2"><span class="impact-num" data-count="2000">0</span><div class="impact-label">Medical Camp Patients</div></div>
+    <div class="impact-item reveal stagger-3"><span class="impact-num" data-count="500">0</span><div class="impact-label">Youth Entrepreneurs</div></div>
+    <div class="impact-item reveal stagger-4"><span class="impact-num" data-count="15">0</span><div class="impact-label">KM Roads Tarmacked</div></div>
+    <div class="impact-item reveal stagger-5"><span class="impact-num" data-count="300">0</span><div class="impact-label">Women Supported</div></div>
   </div>
 </section>
 
@@ -1118,42 +800,12 @@ footer{
     <h2 class="section-heading reveal stagger-1">What We're <em>Building</em><br/>Together</h2>
     <p class="section-sub reveal stagger-2">A clear, actionable agenda for every family in Central Sakwa Ward — from the classroom to the clinic, from the farm to the future.</p>
     <div class="achievements-grid">
-      <div class="achievement-card reveal stagger-1">
-        <div class="achievement-card-number">01</div>
-        <div class="achievement-icon">🎓</div>
-        <div class="achievement-title">Education Transformation</div>
-        <div class="achievement-desc">Modern classrooms, digital labs, improved school transition rates, education bursaries, and teacher support programs across the ward.</div>
-      </div>
-      <div class="achievement-card reveal stagger-2">
-        <div class="achievement-card-number">02</div>
-        <div class="achievement-icon">🏥</div>
-        <div class="achievement-title">Better Healthcare</div>
-        <div class="achievement-desc">Upgraded health facilities, improved medical services, expanded mobile healthcare programs, and reduced patient travel distances.</div>
-      </div>
-      <div class="achievement-card reveal stagger-3">
-        <div class="achievement-card-number">03</div>
-        <div class="achievement-icon">💼</div>
-        <div class="achievement-title">Youth & Women Empowerment</div>
-        <div class="achievement-desc">Grants, business support programs, startup capital, professional training, and empowerment opportunities for local groups.</div>
-      </div>
-      <div class="achievement-card reveal stagger-4">
-        <div class="achievement-card-number">04</div>
-        <div class="achievement-icon">💧</div>
-        <div class="achievement-title">Clean Water Access</div>
-        <div class="achievement-desc">Expansion of boreholes, solar-powered water pumps, and community water projects to improve access to safe, clean water for all.</div>
-      </div>
-      <div class="achievement-card reveal stagger-2">
-        <div class="achievement-card-number">05</div>
-        <div class="achievement-icon">🛣️</div>
-        <div class="achievement-title">Road Infrastructure</div>
-        <div class="achievement-desc">Commissioning rural tarmac roads to reduce travel time, improve market access, and boost economic opportunities for farmers and traders.</div>
-      </div>
-      <div class="achievement-card reveal stagger-3">
-        <div class="achievement-card-number">06</div>
-        <div class="achievement-icon">⚡</div>
-        <div class="achievement-title">Green Energy Initiative</div>
-        <div class="achievement-desc">Solar electrification of villages, schools, and health centers — bringing light, productivity, and prosperity to every household.</div>
-      </div>
+      <div class="achievement-card reveal stagger-1"><div class="achievement-card-number">01</div><div class="achievement-icon">🎓</div><div class="achievement-title">Education Transformation</div><div class="achievement-desc">Modern classrooms, digital labs, improved school transition rates, education bursaries, and teacher support programs across the ward.</div></div>
+      <div class="achievement-card reveal stagger-2"><div class="achievement-card-number">02</div><div class="achievement-icon">🏥</div><div class="achievement-title">Better Healthcare</div><div class="achievement-desc">Upgraded health facilities, improved medical services, expanded mobile healthcare programs, and reduced patient travel distances.</div></div>
+      <div class="achievement-card reveal stagger-3"><div class="achievement-card-number">03</div><div class="achievement-icon">💼</div><div class="achievement-title">Youth & Women Empowerment</div><div class="achievement-desc">Grants, business support programs, startup capital, professional training, and empowerment opportunities for local groups.</div></div>
+      <div class="achievement-card reveal stagger-4"><div class="achievement-card-number">04</div><div class="achievement-icon">💧</div><div class="achievement-title">Clean Water Access</div><div class="achievement-desc">Expansion of boreholes, solar-powered water pumps, and community water projects to improve access to safe, clean water for all.</div></div>
+      <div class="achievement-card reveal stagger-2"><div class="achievement-card-number">05</div><div class="achievement-icon">🛣️</div><div class="achievement-title">Road Infrastructure</div><div class="achievement-desc">Commissioning rural tarmac roads to reduce travel time, improve market access, and boost economic opportunities for farmers and traders.</div></div>
+      <div class="achievement-card reveal stagger-3"><div class="achievement-card-number">06</div><div class="achievement-icon">⚡</div><div class="achievement-title">Green Energy Initiative</div><div class="achievement-desc">Solar electrification of villages, schools, and health centers — bringing light, productivity, and prosperity to every household.</div></div>
     </div>
   </div>
 </section>
@@ -1168,38 +820,14 @@ footer{
     <p class="section-sub reveal stagger-2" style="margin-bottom:0;max-width:360px;">Real work. Real people. Real change happening across Central Sakwa Ward.</p>
   </div>
   <div class="gallery-grid">
-    <div class="gallery-item reveal stagger-1" data-caption="Community Town Hall — Engaging residents on development priorities">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/whatsapp/two.jpeg" alt="Community Town Hall" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Community Town Hall</strong><span>Engaging residents on development priorities</span></div></div>
-    </div>
-    <div class="gallery-item reveal stagger-2" data-caption="School Opening Ceremony — 12 new classrooms handed over">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/school.jpg" alt="School Opening" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>School Opening Ceremony</strong><span>12 new classrooms for the community</span></div></div>
-    </div>
-    <div class="gallery-item reveal stagger-3" data-caption="Youth Empowerment Summit — 500+ entrepreneurs equipped with skills">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/youth.jpg" alt="Youth Empowerment" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Youth Empowerment Summit</strong><span>500+ young entrepreneurs equipped</span></div></div>
-    </div>
-    <div class="gallery-item reveal stagger-4" data-caption="Free Medical Camp — Serving 2,000+ residents">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/health.jpg" alt="Healthcare Outreach" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Healthcare Outreach</strong><span>Free medical camp: 2,000+ served</span></div></div>
-    </div>
-    <div class="gallery-item reveal stagger-3" data-caption="Road Infrastructure — 15km of tarmac rural roads commissioned">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/road.jpg" alt="Road Infrastructure" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Road Infrastructure</strong><span>15km tarmac roads commissioned</span></div></div>
-    </div>
-    <div class="gallery-item reveal stagger-4" data-caption="Women Cooperative — 300 women supported in agribusiness">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/women.jpg" alt="Women Cooperative" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Women Cooperative Launch</strong><span>300 women in agribusiness</span></div></div>
-    </div>
-    <div class="gallery-item reveal stagger-5" data-caption="Clean Water Project — Solar-powered boreholes inaugurated">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/water.jpg" alt="Water Project" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Clean Water Project</strong><span>Solar-powered boreholes</span></div></div>
-    </div>
-    <div class="gallery-item reveal stagger-6" data-caption="County Assembly Session — Advocating for Central Sakwa Ward">
-      <img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/county.jpg" alt="County Assembly" loading="lazy"/>
-      <div class="gallery-overlay"><div class="gallery-overlay-text"><strong>County Assembly</strong><span>Advocacy for Central Sakwa</span></div></div>
-    </div>
+    <div class="gallery-item reveal stagger-1" data-caption="Community Town Hall — Engaging residents on development priorities"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/whatsapp/two.jpeg" alt="Community Town Hall" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Community Town Hall</strong><span>Engaging residents on development priorities</span></div></div></div>
+    <div class="gallery-item reveal stagger-2" data-caption="School Opening Ceremony — 12 new classrooms handed over"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/school.jpg" alt="School Opening" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>School Opening Ceremony</strong><span>12 new classrooms for the community</span></div></div></div>
+    <div class="gallery-item reveal stagger-3" data-caption="Youth Empowerment Summit — 500+ entrepreneurs equipped with skills"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/youth.jpg" alt="Youth Empowerment" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Youth Empowerment Summit</strong><span>500+ young entrepreneurs equipped</span></div></div></div>
+    <div class="gallery-item reveal stagger-4" data-caption="Free Medical Camp — Serving 2,000+ residents"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/health.jpg" alt="Healthcare Outreach" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Healthcare Outreach</strong><span>Free medical camp: 2,000+ served</span></div></div></div>
+    <div class="gallery-item reveal stagger-3" data-caption="Road Infrastructure — 15km of tarmac rural roads commissioned"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/road.jpg" alt="Road Infrastructure" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Road Infrastructure</strong><span>15km tarmac roads commissioned</span></div></div></div>
+    <div class="gallery-item reveal stagger-4" data-caption="Women Cooperative — 300 women supported in agribusiness"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/women.jpg" alt="Women Cooperative" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Women Cooperative Launch</strong><span>300 women in agribusiness</span></div></div></div>
+    <div class="gallery-item reveal stagger-5" data-caption="Clean Water Project — Solar-powered boreholes inaugurated"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/water.jpg" alt="Water Project" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>Clean Water Project</strong><span>Solar-powered boreholes</span></div></div></div>
+    <div class="gallery-item reveal stagger-6" data-caption="County Assembly Session — Advocating for Central Sakwa Ward"><img src="https://ceoblackcodelabs.github.io/BlackCodeLabs/BKP/Oyugi/county.jpg" alt="County Assembly" loading="lazy"/><div class="gallery-overlay"><div class="gallery-overlay-text"><strong>County Assembly</strong><span>Advocacy for Central Sakwa</span></div></div></div>
   </div>
 </section>
 
@@ -1218,68 +846,19 @@ footer{
   </div>
   <div class="testimonials-track-wrap">
     <div class="testimonials-track" id="testimonials-track">
-      <!-- Cards x2 for seamless loop -->
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"Hon. Oyugi will bring electricity to our village after years of darkness. His leadership will transform our community, and our children will finally be able to study comfortably at night."</p>
-        <div class="t-author"><div class="t-avatar">GA</div><div><div class="t-name">Grace Akinyi</div><div class="t-role">Parent & Community Leader</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The youth empowerment program will create opportunities for young people like me. With startup grants and training, many youths will establish successful businesses."</p>
-        <div class="t-author"><div class="t-avatar">JO</div><div><div class="t-name">James Ochieng</div><div class="t-role">Youth Entrepreneur</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"Our schools will experience a new era of transformation through improved classrooms, digital learning tools, and better support for students and teachers."</p>
-        <div class="t-author"><div class="t-avatar">MA</div><div><div class="t-name">Mary Atieno</div><div class="t-role">Head Teacher, Sakwa Primary</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The new roads will improve transport and reduce travel time for farmers and traders. Our produce will reach markets faster, opening more economic opportunities."</p>
-        <div class="t-author"><div class="t-avatar">PO</div><div><div class="t-name">Peter Otieno</div><div class="t-role">Farmers Association Chair</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The women's cooperative fund will empower women with capital and business support. Many families will improve their livelihoods through sustainable projects."</p>
-        <div class="t-author"><div class="t-avatar">AA</div><div><div class="t-name">Agnes Auma</div><div class="t-role">Cooperative Chairperson</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The planned health center upgrade will improve services significantly. Residents will access quality treatment locally without traveling long distances for emergencies."</p>
-        <div class="t-author"><div class="t-avatar">KO</div><div><div class="t-name">Dr. Ken Onyango</div><div class="t-role">Medical Officer in Charge</div></div></div>
-      </div>
-      <!-- Duplicates -->
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"Hon. Oyugi will bring electricity to our village after years of darkness. His leadership will transform our community, and our children will finally be able to study comfortably at night."</p>
-        <div class="t-author"><div class="t-avatar">GA</div><div><div class="t-name">Grace Akinyi</div><div class="t-role">Parent & Community Leader</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The youth empowerment program will create opportunities for young people like me. With startup grants and training, many youths will establish successful businesses."</p>
-        <div class="t-author"><div class="t-avatar">JO</div><div><div class="t-name">James Ochieng</div><div class="t-role">Youth Entrepreneur</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"Our schools will experience a new era of transformation through improved classrooms, digital learning tools, and better support for students and teachers."</p>
-        <div class="t-author"><div class="t-avatar">MA</div><div><div class="t-name">Mary Atieno</div><div class="t-role">Head Teacher, Sakwa Primary</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The new roads will improve transport and reduce travel time for farmers and traders. Our produce will reach markets faster, opening more economic opportunities."</p>
-        <div class="t-author"><div class="t-avatar">PO</div><div><div class="t-name">Peter Otieno</div><div class="t-role">Farmers Association Chair</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The women's cooperative fund will empower women with capital and business support. Many families will improve their livelihoods through sustainable projects."</p>
-        <div class="t-author"><div class="t-avatar">AA</div><div><div class="t-name">Agnes Auma</div><div class="t-role">Cooperative Chairperson</div></div></div>
-      </div>
-      <div class="testimonial-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The planned health center upgrade will improve services significantly. Residents will access quality treatment locally without traveling long distances for emergencies."</p>
-        <div class="t-author"><div class="t-avatar">KO</div><div><div class="t-name">Dr. Ken Onyango</div><div class="t-role">Medical Officer in Charge</div></div></div>
-      </div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"Hon. Oyugi will bring electricity to our village after years of darkness. His leadership will transform our community, and our children will finally be able to study comfortably at night."</p><div class="t-author"><div class="t-avatar">GA</div><div><div class="t-name">Grace Akinyi</div><div class="t-role">Parent & Community Leader</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The youth empowerment program will create opportunities for young people like me. With startup grants and training, many youths will establish successful businesses."</p><div class="t-author"><div class="t-avatar">JO</div><div><div class="t-name">James Ochieng</div><div class="t-role">Youth Entrepreneur</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"Our schools will experience a new era of transformation through improved classrooms, digital learning tools, and better support for students and teachers."</p><div class="t-author"><div class="t-avatar">MA</div><div><div class="t-name">Mary Atieno</div><div class="t-role">Head Teacher, Sakwa Primary</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The new roads will improve transport and reduce travel time for farmers and traders. Our produce will reach markets faster, opening more economic opportunities."</p><div class="t-author"><div class="t-avatar">PO</div><div><div class="t-name">Peter Otieno</div><div class="t-role">Farmers Association Chair</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The women's cooperative fund will empower women with capital and business support. Many families will improve their livelihoods through sustainable projects."</p><div class="t-author"><div class="t-avatar">AA</div><div><div class="t-name">Agnes Auma</div><div class="t-role">Cooperative Chairperson</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The planned health center upgrade will improve services significantly. Residents will access quality treatment locally without traveling long distances for emergencies."</p><div class="t-author"><div class="t-avatar">KO</div><div><div class="t-name">Dr. Ken Onyango</div><div class="t-role">Medical Officer in Charge</div></div></div></div>
+      <!-- duplicates for loop -->
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"Hon. Oyugi will bring electricity to our village after years of darkness. His leadership will transform our community, and our children will finally be able to study comfortably at night."</p><div class="t-author"><div class="t-avatar">GA</div><div><div class="t-name">Grace Akinyi</div><div class="t-role">Parent & Community Leader</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The youth empowerment program will create opportunities for young people like me. With startup grants and training, many youths will establish successful businesses."</p><div class="t-author"><div class="t-avatar">JO</div><div><div class="t-name">James Ochieng</div><div class="t-role">Youth Entrepreneur</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"Our schools will experience a new era of transformation through improved classrooms, digital learning tools, and better support for students and teachers."</p><div class="t-author"><div class="t-avatar">MA</div><div><div class="t-name">Mary Atieno</div><div class="t-role">Head Teacher, Sakwa Primary</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The new roads will improve transport and reduce travel time for farmers and traders. Our produce will reach markets faster, opening more economic opportunities."</p><div class="t-author"><div class="t-avatar">PO</div><div><div class="t-name">Peter Otieno</div><div class="t-role">Farmers Association Chair</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The women's cooperative fund will empower women with capital and business support. Many families will improve their livelihoods through sustainable projects."</p><div class="t-author"><div class="t-avatar">AA</div><div><div class="t-name">Agnes Auma</div><div class="t-role">Cooperative Chairperson</div></div></div></div>
+      <div class="testimonial-card"><div class="t-stars">★★★★★</div><p class="t-quote">"The planned health center upgrade will improve services significantly. Residents will access quality treatment locally without traveling long distances for emergencies."</p><div class="t-author"><div class="t-avatar">KO</div><div><div class="t-name">Dr. Ken Onyango</div><div class="t-role">Medical Officer in Charge</div></div></div></div>
     </div>
   </div>
 </section>
@@ -1295,52 +874,16 @@ footer{
         <footer style="margin-top:16px;font-size:0.85rem;font-style:normal;color:var(--text-muted);font-family:'DM Sans',sans-serif;">— Hon. T. J. OYUGI MCA</footer>
       </blockquote>
       <div class="vision-milestone reveal stagger-3">
-        <div class="vm-item">
-          <span class="vm-number">8K+</span>
-          <span class="vm-label">Jobs to Create</span>
-        </div>
-        <div class="vm-item">
-          <span class="vm-number">10K</span>
-          <span class="vm-label">Youth in Digital</span>
-        </div>
-        <div class="vm-item">
-          <span class="vm-number">70%</span>
-          <span class="vm-label">Youth Employment</span>
-        </div>
-        <div class="vm-item">
-          <span class="vm-number">5G</span>
-          <span class="vm-label">Ready by 2026</span>
-        </div>
+        <div class="vm-item"><span class="vm-number">8K+</span><span class="vm-label">Jobs to Create</span></div>
+        <div class="vm-item"><span class="vm-number">10K</span><span class="vm-label">Youth in Digital</span></div>
+        <div class="vm-item"><span class="vm-number">70%</span><span class="vm-label">Youth Employment</span></div>
+        <div class="vm-item"><span class="vm-number">5G</span><span class="vm-label">Ready by 2026</span></div>
       </div>
     </div>
     <div class="vision-projects">
-      <div class="vision-project reveal stagger-1" style="--pct:45%;">
-        <div class="vision-project-header">
-          <span class="vision-project-tag">Economic</span>
-          <span class="vision-project-pct">45%</span>
-        </div>
-        <div class="vision-project-name">Agro‑industrial Park</div>
-        <div class="vision-project-desc">Value addition for sugarcane, dairy & horticulture — creating 8,000+ direct jobs. First phase Q4 2025, boosting local farmers' income by 35%.</div>
-        <div class="vision-progress-bar"><div class="vision-progress-fill"></div></div>
-      </div>
-      <div class="vision-project reveal stagger-2" style="--pct:30%;">
-        <div class="vision-project-header">
-          <span class="vision-project-tag">Youth & Sports</span>
-          <span class="vision-project-pct">30%</span>
-        </div>
-        <div class="vision-project-name">Central Sakwa Sports City</div>
-        <div class="vision-project-desc">Multi-sport arena, Olympic pool + talent academy. Partnership with Ministry of Sports — targeting 5,000 youths in professional training.</div>
-        <div class="vision-progress-bar"><div class="vision-progress-fill"></div></div>
-      </div>
-      <div class="vision-project reveal stagger-3" style="--pct:60%;">
-        <div class="vision-project-header">
-          <span class="vision-project-tag">Digital Leap</span>
-          <span class="vision-project-pct">60%</span>
-        </div>
-        <div class="vision-project-name">Digital Central Sakwa Hub</div>
-        <div class="vision-project-desc">Free Wi-Fi zones, tech incubation, e-learning. 10,000 youth skilled in AI, data science & digital marketing by 2027.</div>
-        <div class="vision-progress-bar"><div class="vision-progress-fill"></div></div>
-      </div>
+      <div class="vision-project reveal stagger-1" style="--pct:45%;"><div class="vision-project-header"><span class="vision-project-tag">Economic</span><span class="vision-project-pct">45%</span></div><div class="vision-project-name">Agro‑industrial Park</div><div class="vision-project-desc">Value addition for sugarcane, dairy & horticulture — creating 8,000+ direct jobs. First phase Q4 2025, boosting local farmers' income by 35%.</div><div class="vision-progress-bar"><div class="vision-progress-fill"></div></div></div>
+      <div class="vision-project reveal stagger-2" style="--pct:30%;"><div class="vision-project-header"><span class="vision-project-tag">Youth & Sports</span><span class="vision-project-pct">30%</span></div><div class="vision-project-name">Central Sakwa Sports City</div><div class="vision-project-desc">Multi-sport arena, Olympic pool + talent academy. Partnership with Ministry of Sports — targeting 5,000 youths in professional training.</div><div class="vision-progress-bar"><div class="vision-progress-fill"></div></div></div>
+      <div class="vision-project reveal stagger-3" style="--pct:60%;"><div class="vision-project-header"><span class="vision-project-tag">Digital Leap</span><span class="vision-project-pct">60%</span></div><div class="vision-project-name">Digital Central Sakwa Hub</div><div class="vision-project-desc">Free Wi-Fi zones, tech incubation, e-learning. 10,000 youth skilled in AI, data science & digital marketing by 2027.</div><div class="vision-progress-bar"><div class="vision-progress-fill"></div></div></div>
     </div>
   </div>
 </section>
@@ -1355,65 +898,18 @@ footer{
   <div class="connect-grid">
     <div class="connect-form-wrap reveal stagger-1">
       <div class="form-title">📅 Request an Appointment</div>
-      <div class="form-group">
-        <label>Full Name *</label>
-        <input type="text" placeholder="Your full name"/>
-      </div>
-      <div class="form-group">
-        <label>Phone / Email *</label>
-        <input type="text" placeholder="+254 xxx xxx xxx"/>
-      </div>
-      <div class="form-group">
-        <label>Preferred Date *</label>
-        <input type="date"/>
-      </div>
-      <div class="form-group">
-        <label>Reason for Meeting</label>
-        <textarea placeholder="Briefly describe the purpose of your meeting..."></textarea>
-      </div>
+      <div class="form-group"><label>Full Name *</label><input type="text" placeholder="Your full name"/></div>
+      <div class="form-group"><label>Phone / Email *</label><input type="text" placeholder="+254 xxx xxx xxx"/></div>
+      <div class="form-group"><label>Preferred Date *</label><input type="date"/></div>
+      <div class="form-group"><label>Reason for Meeting</label><textarea placeholder="Briefly describe the purpose of your meeting..."></textarea></div>
       <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitForm(this)">Submit Request →</button>
     </div>
     <div class="contact-info reveal stagger-2">
-      <div class="ci-item">
-        <div class="ci-icon">📍</div>
-        <div>
-          <div class="ci-label">Office Location</div>
-          <div class="ci-value">Central Sakwa Ward Town Centre</div>
-          <div class="ci-sub">Migori County, Kenya</div>
-        </div>
-      </div>
-      <div class="ci-item">
-        <div class="ci-icon">📞</div>
-        <div>
-          <div class="ci-label">Phone / WhatsApp</div>
-          <div class="ci-value">+254 723 733519</div>
-          <div class="ci-sub">Open Door Fridays: 9AM – 1PM</div>
-        </div>
-      </div>
-      <div class="ci-item">
-        <div class="ci-icon">✉️</div>
-        <div>
-          <div class="ci-label">Email</div>
-          <div class="ci-value">oyugi@gmail.com</div>
-          <div class="ci-sub">Response time &lt; 24 hours</div>
-        </div>
-      </div>
-      <div class="ci-item">
-        <div class="ci-icon">🏛️</div>
-        <div>
-          <div class="ci-label">Town Hall Meetings</div>
-          <div class="ci-value">Every Last Thursday</div>
-          <div class="ci-sub">Community engagement sessions</div>
-        </div>
-      </div>
-      <div class="ci-item">
-        <div class="ci-icon">🟢</div>
-        <div>
-          <div class="ci-label">Office Status</div>
-          <div class="ci-value" style="color:var(--green-light);">Constituency Office: LIVE</div>
-          <div class="ci-sub">Currently accepting walk-ins</div>
-        </div>
-      </div>
+      <div class="ci-item"><div class="ci-icon">📍</div><div><div class="ci-label">Office Location</div><div class="ci-value">Central Sakwa Ward Town Centre</div><div class="ci-sub">Migori County, Kenya</div></div></div>
+      <div class="ci-item"><div class="ci-icon">📞</div><div><div class="ci-label">Phone / WhatsApp</div><div class="ci-value">+254 723 733519</div><div class="ci-sub">Open Door Fridays: 9AM – 1PM</div></div></div>
+      <div class="ci-item"><div class="ci-icon">✉️</div><div><div class="ci-label">Email</div><div class="ci-value">oyugi@gmail.com</div><div class="ci-sub">Response time &lt; 24 hours</div></div></div>
+      <div class="ci-item"><div class="ci-icon">🏛️</div><div><div class="ci-label">Town Hall Meetings</div><div class="ci-value">Every Last Thursday</div><div class="ci-sub">Community engagement sessions</div></div></div>
+      <div class="ci-item"><div class="ci-icon">🟢</div><div><div class="ci-label">Office Status</div><div class="ci-value" style="color:var(--green-light);">Constituency Office: LIVE</div><div class="ci-sub">Currently accepting walk-ins</div></div></div>
     </div>
   </div>
 </section>
@@ -1468,111 +964,84 @@ footer{
 <script>
 /* ===================== LOADER ===================== */
 window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    document.getElementById('loader').classList.add('hide');
-  },2400);
+  setTimeout(()=>{ document.getElementById('loader').classList.add('hide'); },2400);
 });
 
 /* ===================== CURSOR ===================== */
 const cursor=document.getElementById('cursor');
 const cursorRing=document.getElementById('cursor-ring');
 let cx=0,cy=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  cx=e.clientX;cy=e.clientY;
-  cursor.style.left=cx+'px';cursor.style.top=cy+'px';
-});
-function animCursor(){
-  rx+=(cx-rx)*0.12;ry+=(cy-ry)*0.12;
-  cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';
-  requestAnimationFrame(animCursor);
-}
-animCursor();
+document.addEventListener('mousemove',e=>{ cx=e.clientX; cy=e.clientY; cursor.style.left=cx+'px'; cursor.style.top=cy+'px'; });
+(function animCursor(){rx+=(cx-rx)*0.12;ry+=(cy-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animCursor);})();
 document.querySelectorAll('a,button,.gallery-item,.achievement-card,.vision-project,.pillar').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cursor.style.width='20px';cursor.style.height='20px';
-    cursorRing.style.width='60px';cursorRing.style.height='60px';
-    cursorRing.style.borderColor='var(--gold-light)';
-  });
-  el.addEventListener('mouseleave',()=>{
-    cursor.style.width='12px';cursor.style.height='12px';
-    cursorRing.style.width='40px';cursorRing.style.height='40px';
-    cursorRing.style.borderColor='var(--gold)';
-  });
+  el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';cursorRing.style.width='60px';cursorRing.style.height='60px';cursorRing.style.borderColor='var(--gold-light)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';cursorRing.style.width='40px';cursorRing.style.height='40px';cursorRing.style.borderColor='var(--gold)';});
 });
 
-/* ===================== HERO CANVAS ===================== */
-const canvas=document.getElementById('hero-canvas');
-const ctx=canvas.getContext('2d');
-let W,H,particles=[];
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-resize();
-window.addEventListener('resize',resize);
+/* ===================== HERO CAROUSEL ===================== */
+const carouselSlides=document.querySelectorAll('.hero-carousel-slide');
+const TOTAL=carouselSlides.length;
+let currentSlide=0;
+let carouselTimer=null;
+const kbClasses=['kb-right','kb-left'];
 
-class Particle{
-  constructor(){this.reset();}
-  reset(){
-    this.x=Math.random()*W;
-    this.y=Math.random()*H;
-    this.z=Math.random()*2+0.2;
-    this.vx=(Math.random()-0.5)*0.4*this.z;
-    this.vy=-Math.random()*0.5*this.z-0.1;
-    this.size=Math.random()*2+0.5;
-    this.alpha=Math.random()*0.6+0.1;
-    this.color=Math.random()>0.5?'201,168,76':'10,92,46';
-  }
-  update(){
-    this.x+=this.vx;this.y+=this.vy;
-    this.alpha-=0.001;
-    if(this.y<-10||this.alpha<=0)this.reset();
-  }
-  draw(){
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fillStyle=`rgba(${this.color},${this.alpha})`;
-    ctx.fill();
-  }
-}
-
-for(let i=0;i<120;i++)particles.push(new Particle());
-
-// Mouse parallax
-let mouseX=0,mouseY=0;
-document.addEventListener('mousemove',e=>{
-  mouseX=(e.clientX/window.innerWidth-0.5)*30;
-  mouseY=(e.clientY/window.innerHeight-0.5)*20;
+// Build dots
+const dotsContainer=document.getElementById('carouselDots');
+const counter=document.getElementById('carouselCounter');
+carouselSlides.forEach((_,i)=>{
+  const dot=document.createElement('button');
+  dot.className='carousel-dot'+(i===0?' active':'');
+  dot.setAttribute('aria-label','Slide '+(i+1));
+  dot.addEventListener('click',()=>goTo(i));
+  dotsContainer.appendChild(dot);
 });
 
-// 3D grid lines
-function drawGrid(){
-  const horizon=H*0.5+mouseY*2;
-  const vp={x:W/2+mouseX*2,y:horizon};
-  ctx.strokeStyle='rgba(10,92,46,0.12)';
-  ctx.lineWidth=1;
-  // Horizontal
-  for(let i=0;i<8;i++){
-    const y=horizon+(H-horizon)*(i/7);
-    const scl=0.3+0.7*(i/7);
-    ctx.beginPath();
-    ctx.moveTo(0,y);ctx.lineTo(W,y);
-    ctx.globalAlpha=0.15*scl;ctx.stroke();
-  }
-  // Vertical lines converging to vp
-  for(let i=-6;i<=6;i++){
-    const baseX=W/2+i*(W/7);
-    ctx.beginPath();
-    ctx.moveTo(vp.x,vp.y);ctx.lineTo(baseX,H);
-    ctx.globalAlpha=0.1;ctx.stroke();
-  }
-  ctx.globalAlpha=1;
+function updateDots(idx){
+  document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  counter.textContent=String(idx+1).padStart(2,'0')+' / '+String(TOTAL).padStart(2,'0');
 }
 
-function animCanvas(){
-  ctx.clearRect(0,0,W,H);
-  drawGrid();
-  particles.forEach(p=>{p.update();p.draw();});
-  requestAnimationFrame(animCanvas);
+function goTo(idx, dir){
+  // Remove active + kb classes from current
+  carouselSlides[currentSlide].classList.remove('active','kb-right','kb-left');
+  currentSlide=((idx%TOTAL)+TOTAL)%TOTAL;
+  const slide=carouselSlides[currentSlide];
+  // Alternate ken-burns direction
+  const kb=kbClasses[currentSlide%2];
+  slide.classList.add('active',kb);
+  updateDots(currentSlide);
 }
-animCanvas();
+
+function next(){ goTo(currentSlide+1); }
+function prev(){ goTo(currentSlide-1); }
+
+function startTimer(){
+  clearInterval(carouselTimer);
+  carouselTimer=setInterval(next, 5000);
+}
+
+document.getElementById('carouselNext').addEventListener('click',()=>{ next(); startTimer(); });
+document.getElementById('carouselPrev').addEventListener('click',()=>{ prev(); startTimer(); });
+
+// Touch / swipe on hero
+let touchStartX=0;
+document.getElementById('hero').addEventListener('touchstart',e=>{ touchStartX=e.touches[0].clientX; },{passive:true});
+document.getElementById('hero').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchStartX;
+  if(Math.abs(dx)>50){ dx<0?next():prev(); startTimer(); }
+},{passive:true});
+
+// Keyboard left/right when hero is in viewport
+document.addEventListener('keydown',e=>{
+  if(window.scrollY<window.innerHeight){
+    if(e.key==='ArrowRight'){ next(); startTimer(); }
+    if(e.key==='ArrowLeft') { prev(); startTimer(); }
+  }
+});
+
+// Init first slide ken-burns
+carouselSlides[0].classList.add('kb-right');
+startTimer();
 
 /* ===================== NAVBAR ===================== */
 const navbar=document.getElementById('navbar');
@@ -1580,10 +1049,8 @@ const navToggle=document.getElementById('nav-toggle');
 const mobileMenu=document.getElementById('mobile-menu');
 window.addEventListener('scroll',()=>{
   navbar.classList.toggle('scrolled',window.scrollY>60);
-  // progress bar
   const pct=window.scrollY/(document.body.scrollHeight-window.innerHeight);
   document.getElementById('progress-bar').style.transform=`scaleX(${pct})`;
-  // back to top
   document.getElementById('back-top').classList.toggle('show',window.scrollY>500);
 });
 navToggle.addEventListener('click',()=>{
@@ -1591,50 +1058,39 @@ navToggle.addEventListener('click',()=>{
   mobileMenu.classList.toggle('open');
   document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':'';
 });
-function closeMobile(){
-  navToggle.classList.remove('open');
-  mobileMenu.classList.remove('open');
-  document.body.style.overflow='';
-}
+function closeMobile(){navToggle.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';}
 
 /* ===================== HERO STAT COUNTERS ===================== */
-function animCounter(el,target,duration=2000,suffix=''){
-  let start=0;const step=timestamp=>{
-    if(!start)start=timestamp;
-    const prog=(timestamp-start)/duration;
+function animCounter(el,target,duration=2000){
+  let start=0;
+  const step=ts=>{
+    if(!start)start=ts;
+    const prog=(ts-start)/duration;
     const val=Math.min(Math.floor(prog*target),target);
-    el.textContent=(val>=1000?(val/1000).toFixed(1)+'K':val)+suffix;
+    el.textContent=(val>=1000?(val/1000).toFixed(1)+'K':val);
     if(prog<1)requestAnimationFrame(step);
-    else el.textContent=(target>=1000?(target/1000).toFixed(0)+'K+':target)+suffix;
+    else el.textContent=(target>=1000?(target/1000).toFixed(0)+'K+':target);
   };
   requestAnimationFrame(step);
 }
-// Hero counters on load after delay
 setTimeout(()=>{
-  document.querySelectorAll('.hero-stat-num[data-count]').forEach(el=>{
-    animCounter(el,parseInt(el.dataset.count),2500);
-  });
+  document.querySelectorAll('.hero-stat-num[data-count]').forEach(el=>animCounter(el,parseInt(el.dataset.count),2500));
 },2500);
 
 /* ===================== INTERSECTION OBSERVER ===================== */
-const revealObs=new IntersectionObserver((entries)=>{
+const revealObs=new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
     if(entry.isIntersecting){
       entry.target.classList.add('visible');
-      // Counter
-      const countEl=entry.target.querySelector('[data-count]')||
-                     (entry.target.dataset&&entry.target.dataset.count?entry.target:null);
       if(entry.target.classList.contains('impact-num')){
         animCounter(entry.target,parseInt(entry.target.dataset.count),1800);
       }
-      // Vision progress bars
       entry.target.querySelectorAll&&entry.target.querySelectorAll('.vision-progress-fill').forEach(bar=>{
         bar.style.width=bar.closest('.vision-project').style.getPropertyValue('--pct');
       });
     }
   });
 },{threshold:0.15});
-
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revealObs.observe(el));
 document.querySelectorAll('.impact-num').forEach(el=>revealObs.observe(el));
 document.querySelectorAll('.vision-project').forEach(el=>revealObs.observe(el));
@@ -1653,10 +1109,7 @@ document.querySelectorAll('.gallery-item').forEach(item=>{
 });
 document.getElementById('lb-close').addEventListener('click',closeLightbox);
 lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox();});
-function closeLightbox(){
-  lightbox.classList.remove('open');
-  document.body.style.overflow='';
-}
+function closeLightbox(){lightbox.classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
 
 /* ===================== 3D CARD TILT ===================== */
@@ -1667,19 +1120,14 @@ document.querySelectorAll('.achievement-card,.vision-project,.testimonial-card')
     const y=(e.clientY-rect.top)/rect.height-0.5;
     card.style.transform=`perspective(600px) rotateY(${x*10}deg) rotateX(${-y*8}deg) translateY(-6px)`;
   });
-  card.addEventListener('mouseleave',()=>{
-    card.style.transform='';
-  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
 });
 
 /* ===================== SMOOTH SCROLL ===================== */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const target=document.querySelector(a.getAttribute('href'));
-    if(target){
-      e.preventDefault();
-      target.scrollIntoView({behavior:'smooth',block:'start'});
-    }
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
   });
 });
 
@@ -1687,23 +1135,16 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 function submitForm(btn){
   btn.textContent='Sending...';btn.disabled=true;
   setTimeout(()=>{
-    btn.textContent='✓ Request Sent!';
-    btn.style.background='var(--green-light)';
-    setTimeout(()=>{
-      btn.textContent='Submit Request →';
-      btn.style.background='';btn.disabled=false;
-    },3000);
+    btn.textContent='✓ Request Sent!';btn.style.background='var(--green-light)';
+    setTimeout(()=>{btn.textContent='Submit Request →';btn.style.background='';btn.disabled=false;},3000);
   },1500);
 }
 
 /* ===================== PARALLAX HERO TEXT ===================== */
 window.addEventListener('scroll',()=>{
   const sy=window.scrollY;
-  const heroContent=document.querySelector('.hero-content');
-  if(heroContent){
-    heroContent.style.transform=`translateY(${sy*0.3}px)`;
-    heroContent.style.opacity=1-sy/500;
-  }
+  const hc=document.querySelector('.hero-content');
+  if(hc){hc.style.transform=`translateY(${sy*0.3}px)`;hc.style.opacity=1-sy/500;}
 });
 
 /* ===================== ABOUT IMG 3D ON SCROLL ===================== */
@@ -1712,8 +1153,7 @@ if(aboutFrame){
   window.addEventListener('scroll',()=>{
     const rect=aboutFrame.getBoundingClientRect();
     const cy=rect.top+rect.height/2-window.innerHeight/2;
-    const rx=-cy/60;
-    aboutFrame.style.transform=`perspective(1000px) rotateX(${rx}deg) rotateY(-3deg)`;
+    aboutFrame.style.transform=`perspective(1000px) rotateX(${-cy/60}deg) rotateY(-3deg)`;
   });
 }
 </script>
