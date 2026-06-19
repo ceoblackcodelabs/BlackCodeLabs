@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Empress Jasmin – Spiritual Guidance, Tarot Readings, and Life Coaching. 240.9K+ TikTok followers. Book your reading today." />
+  <meta name="keywords" content="Tarot Readings, Spiritual Counseling, Life Coach, Spiritual Guidance, Energy Healing, The Empress Jasmin" />
+  <title>The Empress Jasmin | Spiritual Guidance & Tarot Readings</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 120px 20px 80px;
+    }
+
+    .hero-bg-layers {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .hero-orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+      top: -150px; left: -150px;
+    }
+
+    .hero-orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%);
+      bottom: -100px; right: -100px;
+      animation-delay: -4s;
+    }
+
+    .hero-orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(233,166,179,0.1) 0%, transparent 70%);
+      top: 40%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -2s;
+    }
+
+    .hero-moon {
+      position: absolute;
+      top: 60px; right: 8%;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff8e7 0%, #ffe882 30%, #D4AF37 60%, #8B6914 100%);
+      box-shadow:
+        0 0 60px rgba(212,175,55,0.5),
+        0 0 120px rgba(212,175,55,0.2),
+        inset -20px -20px 40px rgba(0,0,0,0.3);
+      z-index: 1;
+      animation: moonGlow 8s ease-in-out infinite;
+    }
+
+    .hero-moon::after {
+      content: '';
+      position: absolute;
+      top: 20px; left: 15px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.15);
+      box-shadow:
+        40px 10px 0 5px rgba(0,0,0,0.1),
+        20px 50px 0 2px rgba(0,0,0,0.08);
+    }
+
+    @keyframes moonGlow {
+      0%, 100% { box-shadow: 0 0 60px rgba(212,175,55,0.5), 0 0 120px rgba(212,175,55,0.2), inset -20px -20px 40px rgba(0,0,0,0.3); }
+      50%       { box-shadow: 0 0 90px rgba(212,175,55,0.7), 0 0 180px rgba(212,175,55,0.3), inset -20px -20px 40px rgba(0,0,0,0.3); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '✦';
+      font-size: 0.5rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 6vw, 5.5rem);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 1.8rem;
+      color: var(--white);
+      text-shadow: 0 0 60px rgba(212,175,55,0.15);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-serif);
+      font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      max-width: 65ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-bottom: 4rem;
+    }
+
+    .hero-social-proof {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 18px 36px;
+      border: 1px solid var(--border);
+      background: rgba(212,175,55,0.04);
+      backdrop-filter: blur(10px);
+    }
+
+    .social-proof-icon {
+      font-size: 1.8rem;
+      filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));
+    }
+
+    .social-proof-text {
+      text-align: left;
+    }
+
+    .social-proof-count {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .social-proof-label {
+      font-family: var(--font-sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .social-proof-handle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--rose);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      z-index: 2;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+
+    .hero-scroll span {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── About Preview ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-image-wrap {
+      position: relative;
+    }
+
+    .about-portrait {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, #1a0a3a 0%, #0d1a2e 50%, #1a0d0a 100%);
+      overflow: hidden;
+    }
+
+    .about-portrait-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .about-portrait-symbol {
+      font-size: 8rem;
+      filter: drop-shadow(0 0 30px rgba(212,175,55,0.5));
+      animation: moonFloat 6s ease-in-out infinite;
+    }
+
+    .about-portrait-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center 60%, rgba(212,175,55,0.15) 0%, transparent 70%);
+    }
+
+    .about-frame {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .about-frame::before {
+      content: '';
+      position: absolute;
+      top: -15px; left: -15px;
+      width: 60%; height: 60%;
+      border-top: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
+      opacity: 0.5;
+    }
+
+    .about-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -15px; right: -15px;
+      width: 60%; height: 60%;
+      border-bottom: 2px solid var(--gold);
+      border-right: 2px solid var(--gold);
+      opacity: 0.5;
+    }
+
+    .about-badge {
+      position: absolute;
+      bottom: -20px; right: -20px;
+      z-index: 4;
+      width: 110px; height: 110px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-deep);
+      font-family: var(--font-display);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 12px;
+      line-height: 1.4;
+      box-shadow: 0 10px 40px rgba(212,175,55,0.5);
+    }
+
+    .about-badge strong {
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: block;
+      line-height: 1;
+    }
+
+    .about-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .value-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 12px 16px;
+      border: 1px solid rgba(212,175,55,0.12);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .value-item:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .value-item::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Services Preview ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--gold);
+      transition: height 0.4s ease;
+    }
+
+    .service-card:hover {
+      background: #141414;
+    }
+
+    .service-card:hover::before { height: 100%; }
+
+    .service-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+      display: block;
+      filter: drop-shadow(0 0 15px rgba(212,175,55,0.3));
+      transition: var(--transition);
+    }
+
+    .service-card:hover .service-icon {
+      filter: drop-shadow(0 0 25px rgba(212,175,55,0.6));
+      transform: scale(1.1);
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .service-desc {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+    }
+
+    .service-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 2rem;
+    }
+
+    .service-features li {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .service-features li::before {
+      content: '◆';
+      color: var(--gold);
+      font-size: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .service-actions {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    /* ── Why Work With Me ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .why-card {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .why-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .why-card:hover {
+      border-color: rgba(212,175,55,0.3);
+      transform: translateY(-8px);
+    }
+
+    .why-card:hover::after { transform: scaleX(1); }
+
+    .why-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .why-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .why-text {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── Testimonials ── */
+    .testimonial-section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(124,58,237,0.08) 0%, transparent 60%);
+    }
+
+    .testimonial-slider {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      min-height: 320px;
+    }
+
+    .testimonial-card {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .testimonial-card.active { display: flex; }
+
+    .testimonial-card::before {
+      content: '❝';
+      position: absolute;
+      top: 20px; left: 30px;
+      font-family: var(--font-serif);
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--gold);
+      opacity: 0.15;
+    }
+
+    .testimonial-text {
+      font-family: var(--font-serif);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.85;
+      margin-bottom: 2rem;
+      max-width: 60ch;
+    }
+
+    .testimonial-author {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .testimonial-name {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+    }
+
+    .testimonial-detail {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .slider-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .slider-prev,
+    .slider-next {
+      width: 44px; height: 44px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--gold);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slider-prev:hover,
+    .slider-next:hover {
+      border-color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    .slider-dots {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .slider-dot {
+      width: 6px; height: 6px;
+      background: rgba(212,175,55,0.3);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .slider-dot.active {
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(212,175,55,0.5);
+    }
+
+    /* ── Journey Timeline ── */
+    .journey-timeline {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .journey-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+      transform: translateX(-50%);
+    }
+
+    .journey-step {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .journey-step:nth-child(even) {
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+
+    .journey-step-content {
+      flex: 1;
+    }
+
+    .journey-step-num {
+      flex-shrink: 0;
+      width: 54px; height: 54px;
+      background: var(--bg-deep);
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--gold);
+      position: relative;
+      z-index: 2;
+    }
+
+    .journey-phase {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.08em;
+    }
+
+    .journey-desc {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Booking CTA ── */
+    .booking-section {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0a0520 0%, #050505 50%, #1a0a05 100%);
+      padding: 120px 0;
+      text-align: center;
+    }
+
+    .booking-moon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, rgba(124,58,237,0.06) 40%, transparent 70%);
+      border-radius: 50%;
+      animation: orbPulse 6s ease-in-out infinite;
+    }
+
+    .booking-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .booking-title {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .booking-title span { color: var(--gold); }
+
+    .booking-text {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+
+    .booking-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--gold);
+      color: var(--bg-deep);
+      padding: 20px 48px;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 0 rgba(212,175,55,0);
+      animation: ctaPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 10px 40px rgba(212,175,55,0.4), 0 0 80px rgba(212,175,55,0.1); }
+      50%       { box-shadow: 0 10px 60px rgba(212,175,55,0.7), 0 0 120px rgba(212,175,55,0.2); }
+    }
+
+    .booking-cta:hover {
+      background: var(--gold-light);
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .booking-cta::after {
+      content: '→';
+      font-size: 1.2rem;
+    }
+
+    /* ── Gallery Grid ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 220px);
+      gap: 3px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gallery-item:first-child {
+      grid-column: 1 / 3;
+      grid-row: 1 / 3;
+    }
+
+    .gallery-inner {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      transition: transform 0.6s ease;
+      position: relative;
+    }
+
+    .gallery-item:first-child .gallery-inner { font-size: 5rem; }
+
+    .gallery-item:nth-child(1) .gallery-inner { background: linear-gradient(135deg, #1a0a3a, #0d0a1a); }
+    .gallery-item:nth-child(2) .gallery-inner { background: linear-gradient(135deg, #1a0d05, #0d0a00); }
+    .gallery-item:nth-child(3) .gallery-inner { background: linear-gradient(135deg, #0a1a0d, #050d05); }
+    .gallery-item:nth-child(4) .gallery-inner { background: linear-gradient(135deg, #1a050a, #0d0005); }
+    .gallery-item:nth-child(5) .gallery-inner { background: linear-gradient(135deg, #0a0a1a, #050510); }
+    .gallery-item:nth-child(6) .gallery-inner { background: linear-gradient(135deg, #1a1005, #0d0800); }
+    .gallery-item:nth-child(7) .gallery-inner { background: linear-gradient(135deg, #0d1a15, #051008); }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(5,5,5,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .gallery-overlay span {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 8px 20px;
+    }
+
+    .gallery-item:hover .gallery-inner { transform: scale(1.08); }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+      .gallery-item:first-child { grid-column: 1 / 3; }
+      .journey-timeline::before { left: 30px; }
+      .journey-step { flex-direction: row !important; text-align: left !important; }
+      .hero-moon { width: 100px; height: 100px; top: 80px; right: 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .gallery-item:first-child { grid-column: 1; }
+      .gallery-item { height: 200px; }
+      .about-values { grid-template-columns: 1fr; }
+      .hero-social-proof { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Starfield ─── -->
+<canvas id="starfield"></canvas>
+
+<!-- ─── Sticky Book ─── -->
+<div class="sticky-book">
+  <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener">
+    ✦ Book Reading
+  </a>
+</div>
+
+<!-- ─── Navigation ─── -->
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" style="text-decoration:none;">
+        <span class="nav-logo-main">The Empress Jasmin</span>
+        <span class="nav-logo-sub">Spiritual Guidance</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://stan.store/Theempressjasmin" target="_blank" class="nav-cta">Book A Reading</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="nav-mobile">
+  <button class="nav-mobile-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="contact.html">Contact</a>
+  <a href="https://stan.store/Theempressjasmin" target="_blank" style="color:var(--gold)">Book A Reading</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg-layers">
+    <div class="orb hero-orb-1"></div>
+    <div class="orb hero-orb-2"></div>
+    <div class="orb hero-orb-3"></div>
+  </div>
+
+  <div class="hero-moon"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Spiritual Guide &amp; Tarot Reader</div>
+
+    <h1 class="hero-title">
+      "The Answers You Seek<br>
+      <em>Are Already Within You."</em>
+    </h1>
+
+    <p class="hero-subtitle">
+      Spiritual Guidance, Tarot Readings, and Life Coaching to Help You Navigate Your Journey With Clarity and Confidence.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener" class="btn btn-primary">
+        ✦ Book A Reading
+      </a>
+      <a href="services.html" class="btn btn-outline">Explore Services</a>
+      <a href="contact.html" class="btn btn-outline">Contact Me</a>
+    </div>
+
+    <div class="hero-social-proof">
+      <div class="social-proof-icon">✦</div>
+      <div class="social-proof-text">
+        <div class="social-proof-count">
+          <span data-count="240900" data-suffix="+">0</span>
+        </div>
+        <div class="social-proof-label">TikTok Followers</div>
+      </div>
+      <div class="social-proof-text">
+        <div class="social-proof-handle">@thegoddessempressmother</div>
+        <div class="social-proof-label">Follow on TikTok</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    Scroll <span></span>
+  </div>
+</section>
+
+<!-- ─── ABOUT PREVIEW ─── -->
+<section class="section bg-secondary">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-wrap reveal">
+        <div class="about-portrait">
+          <div class="about-portrait-inner">
+            <div class="about-portrait-symbol">🌙</div>
+            <div class="about-portrait-glow"></div>
+          </div>
+        </div>
+        <div class="about-frame"></div>
+        <div class="about-badge">
+          <strong>10+</strong>
+          Years of<br>Spiritual<br>Practice
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <span class="section-eyebrow">Meet The Guide</span>
+        <h2 class="section-title">The Empress <span>Jasmin</span></h2>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <div class="divider-gem"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <p class="section-lead" style="margin-bottom:1.5rem;">
+          Through tarot, intuition, spiritual wisdom, and compassionate guidance, The Empress Jasmin helps individuals gain clarity, healing, direction, and empowerment in every stage of life.
+        </p>
+
+        <p style="font-family:var(--font-serif);font-style:italic;color:var(--text-muted);line-height:1.8;margin-bottom:2rem;">
+          With over a decade of spiritual practice and a deeply devoted community of 240.9K+ followers, she brings ancient wisdom into modern life — meeting you exactly where you are and guiding you toward who you are meant to become.
+        </p>
+
+        <div class="about-values">
+          <div class="value-item">Spiritual Growth</div>
+          <div class="value-item">Self Discovery</div>
+          <div class="value-item">Healing</div>
+          <div class="value-item">Empowerment</div>
+          <div class="value-item">Transformation</div>
+          <div class="value-item">Divine Alignment</div>
+        </div>
+
+        <a href="about.html" class="btn btn-ghost" style="margin-top:2rem;">Learn My Story →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES PREVIEW ─── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">Sacred Offerings</span>
+      <h2 class="section-title reveal">How I Can <span>Guide You</span></h2>
+      <div class="divider" style="margin:1.5rem auto;">
+        <div class="divider-line"></div>
+        <div class="divider-gem"></div>
+        <div class="divider-line"></div>
+      </div>
+      <p class="section-lead reveal">Each session is a sacred space created just for you — to illuminate your path, heal your spirit, and align you with your highest truth.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-icon">🃏</span>
+        <h3 class="service-title">Tarot Readings</h3>
+        <p class="service-desc">Let the cards reveal what your soul already knows — past, present, and the possibilities that await you.</p>
+        <ul class="service-features">
+          <li>Love &amp; Relationships</li>
+          <li>Career &amp; Life Purpose</li>
+          <li>Spiritual Direction</li>
+          <li>Future Possibilities</li>
+        </ul>
+        <div class="service-actions">
+          <a href="services.html#tarot" class="btn btn-ghost btn-sm">Learn More</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary btn-sm">Book Session</a>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-icon">💜</span>
+        <h3 class="service-title">Spiritual Counseling</h3>
+        <p class="service-desc">Deep, compassionate support to help you navigate life's challenges with grace, clarity, and renewed strength.</p>
+        <ul class="service-features">
+          <li>Energy Balancing</li>
+          <li>Emotional Healing</li>
+          <li>Personal Challenges</li>
+          <li>Spiritual Growth</li>
+        </ul>
+        <div class="service-actions">
+          <a href="services.html#counseling" class="btn btn-ghost btn-sm">Learn More</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary btn-sm">Book Session</a>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <span class="service-icon">🌟</span>
+        <h3 class="service-title">Life Coaching</h3>
+        <p class="service-desc">Transform your mindset, unlock your potential, and build the life your soul has been calling you toward.</p>
+        <ul class="service-features">
+          <li>Goal Setting</li>
+          <li>Confidence Building</li>
+          <li>Mindset Transformation</li>
+          <li>Purpose Discovery</li>
+        </ul>
+        <div class="service-actions">
+          <a href="services.html#coaching" class="btn btn-ghost btn-sm">Learn More</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary btn-sm">Book Session</a>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-icon">✨</span>
+        <h3 class="service-title">Intuitive Guidance</h3>
+        <p class="service-desc">Channel divine wisdom and intuitive insight to illuminate the crossroads before you and help you move forward with confidence.</p>
+        <ul class="service-features">
+          <li>Personal Clarity</li>
+          <li>Decision Making</li>
+          <li>Life Transitions</li>
+          <li>Relationship Support</li>
+        </ul>
+        <div class="service-actions">
+          <a href="services.html#intuitive" class="btn btn-ghost btn-sm">Learn More</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary btn-sm">Book Session</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:3rem;">
+      <a href="services.html" class="btn btn-outline">View All Services →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY WORK WITH ME ─── -->
+<section class="section bg-secondary">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">Why Choose The Empress</span>
+      <h2 class="section-title reveal">A <span>Sacred Space</span> Made For You</h2>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <span class="why-icon">🔮</span>
+        <div class="why-title">Experienced Guidance</div>
+        <p class="why-text">Over a decade of deep spiritual practice and thousands of readings — bringing wisdom you can trust.</p>
+      </div>
+
+      <div class="why-card reveal reveal-delay-1">
+        <span class="why-icon">💛</span>
+        <div class="why-title">Compassionate Support</div>
+        <p class="why-text">Every session is held with warmth, empathy, and genuine care for your wellbeing and spiritual growth.</p>
+      </div>
+
+      <div class="why-card reveal reveal-delay-2">
+        <span class="why-icon">🕊️</span>
+        <div class="why-title">Judgment-Free Space</div>
+        <p class="why-text">Come as you are. This is a sanctuary — a safe, non-judgmental space where your truth is welcome.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <span class="why-icon">👁️</span>
+        <div class="why-title">Deep Spiritual Insight</div>
+        <p class="why-text">Receive guidance that goes beyond the surface — connecting you to the deeper wisdom within your soul.</p>
+      </div>
+
+      <div class="why-card reveal reveal-delay-1">
+        <span class="why-icon">🌙</span>
+        <div class="why-title">Personalized Sessions</div>
+        <p class="why-text">Every reading and coaching session is tailored uniquely to you, your energy, and your specific journey.</p>
+      </div>
+
+      <div class="why-card reveal reveal-delay-2">
+        <span class="why-icon">✦</span>
+        <div class="why-title">Safe Sacred Space</div>
+        <p class="why-text">A divine container for your healing, growth, and transformation — held with reverence and intention.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section class="section testimonial-section">
+  <div class="testimonial-bg"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">Sacred Testimonials</span>
+      <h2 class="section-title reveal">Words From the <span>Community</span></h2>
+    </div>
+
+    <div class="testimonial-slider reveal">
+      <div class="testimonial-card active">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Her reading gave me clarity during one of the most confusing periods of my life. I left the session feeling like I could finally breathe again. She didn't just read cards — she read my soul."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-name">— M. Williams</div>
+          <div class="testimonial-detail">Love & Relationship Reading</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"I came to Jasmin lost about my career and life path. After just one session, I had a roadmap — and the confidence to actually follow it. She is extraordinary."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-name">— K. Thompson</div>
+          <div class="testimonial-detail">Life Coaching Session</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"The spiritual counseling session was unlike anything I've ever experienced. She held such a safe, loving space while guiding me through deep emotional healing. Truly transformative."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-name">— S. Reyes</div>
+          <div class="testimonial-detail">Spiritual Counseling</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"As someone who was skeptical, I'm now a true believer. Her intuitive insight into my situation was almost impossible to explain — she knew things no one could have known."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-name">— D. Okafor</div>
+          <div class="testimonial-detail">Intuitive Guidance Session</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-controls">
+      <button class="slider-prev" aria-label="Previous">←</button>
+      <div class="slider-dots">
+        <button class="slider-dot active"></button>
+        <button class="slider-dot"></button>
+        <button class="slider-dot"></button>
+        <button class="slider-dot"></button>
+      </div>
+      <button class="slider-next" aria-label="Next">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── JOURNEY TIMELINE ─── -->
+<section class="section bg-secondary">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">The Sacred Path</span>
+      <h2 class="section-title reveal">Your Spiritual <span>Journey</span></h2>
+      <p class="section-lead reveal">Every soul's path is unique — and yet, the journey toward wholeness follows certain sacred stages.</p>
+    </div>
+
+    <div class="journey-timeline">
+      <div class="journey-step reveal">
+        <div class="journey-step-content">
+          <div class="journey-phase">Awareness</div>
+          <div class="journey-desc">The moment you begin to sense that something greater is possible — that you are more than your circumstances.</div>
+        </div>
+        <div class="journey-step-num">✦</div>
+        <div style="flex:1"></div>
+      </div>
+
+      <div class="journey-step reveal">
+        <div style="flex:1"></div>
+        <div class="journey-step-num">🌙</div>
+        <div class="journey-step-content">
+          <div class="journey-phase">Healing</div>
+          <div class="journey-desc">Releasing old wounds, patterns, and energies that no longer serve your highest path forward.</div>
+        </div>
+      </div>
+
+      <div class="journey-step reveal">
+        <div class="journey-step-content">
+          <div class="journey-phase">Growth</div>
+          <div class="journey-desc">Embracing new wisdom, expanding your capacity for love, clarity, and spiritual understanding.</div>
+        </div>
+        <div class="journey-step-num">🌱</div>
+        <div style="flex:1"></div>
+      </div>
+
+      <div class="journey-step reveal">
+        <div style="flex:1"></div>
+        <div class="journey-step-num">🔥</div>
+        <div class="journey-step-content">
+          <div class="journey-phase">Transformation</div>
+          <div class="journey-desc">The deep inner shift where your old self gives way to the authentic, empowered version of who you truly are.</div>
+        </div>
+      </div>
+
+      <div class="journey-step reveal">
+        <div class="journey-step-content">
+          <div class="journey-phase">Alignment</div>
+          <div class="journey-desc">Coming into harmony with your soul's purpose, values, and the divine plan designed specifically for you.</div>
+        </div>
+        <div class="journey-step-num">☯</div>
+        <div style="flex:1"></div>
+      </div>
+
+      <div class="journey-step reveal">
+        <div style="flex:1"></div>
+        <div class="journey-step-num">⭐</div>
+        <div class="journey-step-content">
+          <div class="journey-phase">Manifestation</div>
+          <div class="journey-desc">Bringing your highest vision into reality — living with intention, abundance, and divine flow.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">Sacred Gallery</span>
+      <h2 class="section-title reveal">The <span>Spiritual Realm</span></h2>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-inner">🌙</div>
+        <div class="gallery-overlay"><span>Moon Rituals</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">🕯️</div>
+        <div class="gallery-overlay"><span>Candlelight</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">💎</div>
+        <div class="gallery-overlay"><span>Crystals</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">🃏</div>
+        <div class="gallery-overlay"><span>Tarot Cards</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">🌸</div>
+        <div class="gallery-overlay"><span>Spiritual Setup</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">⭐</div>
+        <div class="gallery-overlay"><span>Celestial</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">🧘</div>
+        <div class="gallery-overlay"><span>Meditation</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BOOKING CTA ─── -->
+<section class="booking-section">
+  <div class="booking-moon"></div>
+  <canvas id="particles-canvas" data-particles style="position:absolute;inset:0;pointer-events:none;"></canvas>
+  <svg id="constellation-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></svg>
+
+  <div class="container">
+    <div class="booking-content reveal">
+      <span class="section-eyebrow" style="font-size:0.75rem;">Your Destiny Awaits</span>
+      <h2 class="booking-title">Your <span>Guidance</span> Awaits.</h2>
+
+      <div class="divider" style="margin:1.5rem auto;">
+        <div class="divider-line"></div>
+        <div class="divider-gem"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="booking-text">
+        Take the next step toward clarity, healing, and spiritual growth. The universe has been preparing this moment for you.
+      </p>
+
+      <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener" class="booking-cta">
+        Book on Stan Store
+      </a>
+
+      <p style="margin-top:2rem;font-family:var(--font-serif);font-style:italic;color:var(--text-muted);font-size:0.9rem;">
+        All sessions are held with care, intention, and deep respect for your journey.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">The Empress Jasmin</div>
+        <div class="footer-brand-tagline">Spiritual Guidance & Tarot Readings</div>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem;max-width:30ch;">
+          Helping souls find clarity, healing, and empowerment through tarot, spiritual counseling, and life coaching.
+        </p>
+        <div class="footer-social">
+          <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" class="social-link">♪ TikTok</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="social-link">✦ Stan Store</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="services.html#tarot">Tarot Readings</a></li>
+          <li><a href="services.html#counseling">Spiritual Counseling</a></li>
+          <li><a href="services.html#coaching">Life Coaching</a></li>
+          <li><a href="services.html#intuitive">Intuitive Guidance</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="https://stan.store/Theempressjasmin" target="_blank">Book A Reading</a></li>
+          <li><a href="https://tiktok.com/@thegoddessempressmother" target="_blank">@thegoddessempressmother</a></li>
+          <li><a href="contact.html">Send a Message</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-quote">"Trust your intuition. The universe is always speaking."</p>
+      <p class="footer-copy">© 2025 The Empress Jasmin. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

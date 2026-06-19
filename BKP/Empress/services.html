@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore all spiritual services offered by The Empress Jasmin — Tarot Readings, Spiritual Counseling, Life Coaching, Intuitive Guidance, and more." />
+  <title>Services | The Empress Jasmin</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ── Services Hero ── */
+    .services-hero {
+      min-height: 50vh;
+      display: flex;
+      align-items: center;
+      padding-top: 130px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .services-hero-orb {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, rgba(124,58,237,0.08) 40%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ── Service Detail Cards ── */
+    .service-detail {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .service-detail:nth-child(even) {
+      background: var(--bg-secondary);
+    }
+
+    .service-detail-inner {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .service-detail:nth-child(even) .service-detail-inner {
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .service-detail:nth-child(even) .service-sidebar {
+      order: 2;
+    }
+
+    .service-sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .service-icon-large {
+      width: 120px; height: 120px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .service-icon-large::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(135deg, var(--gold), transparent, var(--purple));
+      opacity: 0.3;
+    }
+
+    .service-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--gold-dim);
+      border: 1px solid var(--border);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .service-heading {
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .service-heading span { color: var(--gold); }
+
+    .service-body p {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-body p.lead {
+      color: var(--white);
+      font-size: 1.2rem;
+      font-style: italic;
+    }
+
+    .included-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 2rem 0;
+    }
+
+    .included-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .included-list li::before {
+      content: '◆';
+      color: var(--gold);
+      font-size: 0.45rem;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .service-cta-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-cta-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .service-cta-box h4 {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .service-cta-box p {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    /* ── What's Included Tags ── */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 1.5rem 0;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      background: var(--purple-dim);
+      border: 1px solid rgba(124,58,237,0.2);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--purple-light);
+    }
+
+    /* ── Approach Section ── */
+    .approach-section {
+      background: linear-gradient(135deg, #0d0520 0%, #050505 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .approach-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 3rem;
+    }
+
+    .approach-step {
+      background: var(--bg-card);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .approach-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      color: rgba(212,175,55,0.12);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .approach-title {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .approach-desc {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── FAQ Section ── */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--white);
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      text-align: left;
+      gap: 1rem;
+      transition: color var(--transition);
+    }
+
+    .faq-question:hover { color: var(--gold); }
+
+    .faq-toggle {
+      color: var(--gold);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+
+    .faq-item.open .faq-toggle { transform: rotate(45deg); }
+
+    .faq-answer {
+      display: none;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      padding-bottom: 1.5rem;
+    }
+
+    .faq-item.open .faq-answer { display: block; }
+
+    /* ── Final Booking ── */
+    .services-booking {
+      text-align: center;
+      background: linear-gradient(135deg, #0a0520 0%, #050505 50%, #1a0a05 100%);
+      border-top: 1px solid var(--border);
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .services-booking .orb {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, rgba(212,175,55,0.06) 40%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .service-detail-inner,
+      .service-detail:nth-child(even) .service-detail-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .service-detail:nth-child(even) .service-sidebar { order: 0; }
+      .service-sidebar { position: static; }
+      .approach-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .approach-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<div class="sticky-book">
+  <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener">✦ Book Reading</a>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" style="text-decoration:none;">
+        <span class="nav-logo-main">The Empress Jasmin</span>
+        <span class="nav-logo-sub">Spiritual Guidance</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html" class="active">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://stan.store/Theempressjasmin" target="_blank" class="nav-cta">Book A Reading</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile">
+  <button class="nav-mobile-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="contact.html">Contact</a>
+  <a href="https://stan.store/Theempressjasmin" target="_blank" style="color:var(--gold)">Book A Reading</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="services-hero">
+  <div class="orb services-hero-orb"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <span class="section-eyebrow">Sacred Offerings</span>
+    <h1 style="font-size:clamp(2.8rem,6vw,5.5rem);margin:1rem 0;">
+      Services & <span style="color:var(--gold)">Sessions</span>
+    </h1>
+    <div class="divider" style="margin:1.5rem auto;">
+      <div class="divider-line"></div>
+      <div class="divider-gem"></div>
+      <div class="divider-line"></div>
+    </div>
+    <p style="font-family:var(--font-serif);font-style:italic;font-size:1.25rem;color:var(--text-muted);max-width:55ch;margin:0 auto;">
+      Every session is a sacred space created for you — to illuminate your path, heal your spirit, and align you with your highest truth.
+    </p>
+  </div>
+</section>
+
+<!-- ─── TAROT READINGS ─── -->
+<section id="tarot" class="service-detail">
+  <div class="container">
+    <div class="service-detail-inner">
+      <div class="service-sidebar reveal">
+        <div class="service-icon-large">🃏</div>
+        <div class="service-cta-box">
+          <h4>Book a Tarot Reading</h4>
+          <p>Let the cards illuminate what your soul already knows.</p>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Book on Stan Store
+          </a>
+        </div>
+      </div>
+
+      <div class="service-body">
+        <div class="service-badge">Sacred Reading</div>
+        <h2 class="service-heading reveal">Tarot <span>Readings</span></h2>
+        <div class="divider reveal" style="margin:1.5rem 0;">
+          <div class="divider-line"></div>
+          <div class="divider-gem"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <p class="lead reveal">The cards do not predict a fixed future — they reveal the energies at play in your life, illuminating choices, patterns, and possibilities that your conscious mind may have overlooked.</p>
+
+        <p class="reveal">Drawing on years of study, intuitive gifts, and deep reverence for the tarot tradition, I bring a uniquely compassionate and illuminating approach to every reading. Each card that appears has something important to say to you — and I am here to translate that sacred language.</p>
+
+        <p class="reveal">Whether you are seeking clarity about love and relationships, direction in your career and purpose, or a deeper understanding of your spiritual path, a tarot reading provides the guidance your soul has been seeking.</p>
+
+        <ul class="included-list reveal">
+          <li>Love &amp; Relationship Readings — navigating matters of the heart with clarity and wisdom</li>
+          <li>Career &amp; Life Purpose Readings — discovering your professional path and soul's calling</li>
+          <li>Spiritual Direction Readings — deepening your connection to your spiritual journey</li>
+          <li>Future Possibilities Readings — exploring the energies and potentials ahead</li>
+          <li>General Clarity Readings — gaining insight across multiple areas of your life</li>
+        </ul>
+
+        <div class="tag-list reveal">
+          <span class="tag">Love & Relationships</span>
+          <span class="tag">Career Guidance</span>
+          <span class="tag">Life Purpose</span>
+          <span class="tag">Spiritual Direction</span>
+          <span class="tag">Future Possibilities</span>
+          <span class="tag">Personal Clarity</span>
+        </div>
+
+        <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary reveal">Book Your Reading ✦</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SPIRITUAL COUNSELING ─── -->
+<section id="counseling" class="service-detail">
+  <div class="container">
+    <div class="service-detail-inner">
+      <div class="service-body">
+        <div class="service-badge">Deep Healing</div>
+        <h2 class="service-heading reveal">Spiritual <span>Counseling</span></h2>
+        <div class="divider reveal" style="margin:1.5rem 0;">
+          <div class="divider-line"></div>
+          <div class="divider-gem"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <p class="lead reveal">Sometimes what we need is not just guidance — but a profound, held space where healing can begin. That is what spiritual counseling offers.</p>
+
+        <p class="reveal">In these sessions, I hold a sacred container for your healing — meeting you with compassion, deep listening, and spiritual insight that goes beyond the surface of your challenges to the root of what your soul is calling for.</p>
+
+        <p class="reveal">Whether you are processing grief, navigating a difficult transition, healing from emotional wounds, or seeking greater alignment with your spiritual truth, these sessions create the conditions for genuine, lasting transformation.</p>
+
+        <ul class="included-list reveal">
+          <li>Energy Balancing — realigning your energetic field and restoring harmony</li>
+          <li>Emotional Healing — processing and releasing emotions that have been held too long</li>
+          <li>Navigating Personal Challenges — gaining spiritual perspective on life's difficult passages</li>
+          <li>Spiritual Growth Coaching — deepening your practice and expanding your spiritual awareness</li>
+        </ul>
+
+        <div class="tag-list reveal">
+          <span class="tag">Energy Balancing</span>
+          <span class="tag">Emotional Healing</span>
+          <span class="tag">Personal Challenges</span>
+          <span class="tag">Spiritual Growth</span>
+        </div>
+
+        <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary reveal">Book Your Session ✦</a>
+      </div>
+
+      <div class="service-sidebar reveal" style="order:2;">
+        <div class="service-icon-large">💜</div>
+        <div class="service-cta-box">
+          <h4>Book Spiritual Counseling</h4>
+          <p>Step into a sacred space for healing and deep spiritual support.</p>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Book on Stan Store
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── LIFE COACHING ─── -->
+<section id="coaching" class="service-detail">
+  <div class="container">
+    <div class="service-detail-inner">
+      <div class="service-sidebar reveal">
+        <div class="service-icon-large">🌟</div>
+        <div class="service-cta-box">
+          <h4>Book Life Coaching</h4>
+          <p>Transform your mindset and build the life your soul is calling for.</p>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Book on Stan Store
+          </a>
+        </div>
+      </div>
+
+      <div class="service-body">
+        <div class="service-badge">Transformation</div>
+        <h2 class="service-heading reveal">Life <span>Coaching</span></h2>
+        <div class="divider reveal" style="margin:1.5rem 0;">
+          <div class="divider-line"></div>
+          <div class="divider-gem"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <p class="lead reveal">You are not here to live a small, contracted life. You are here to step fully into who you are — and life coaching is the practical, spiritual bridge between where you are and where you are meant to be.</p>
+
+        <p class="reveal">My approach to life coaching integrates spiritual wisdom with practical strategy — helping you identify what you truly want, dismantle the beliefs and patterns blocking your path, and build the confidence, clarity, and momentum to move forward.</p>
+
+        <p class="reveal">This is not just motivation. This is a deep, personalized, transformational partnership designed to help you finally live the life that feels true to your soul.</p>
+
+        <ul class="included-list reveal">
+          <li>Goal Setting with Soul — clarifying and aligning your goals with your deepest values and purpose</li>
+          <li>Confidence Building — dismantling self-doubt and stepping into your authentic power</li>
+          <li>Mindset Transformation — shifting limiting beliefs and opening to a more expansive reality</li>
+          <li>Purpose Discovery — uncovering and embracing your unique gifts and life's calling</li>
+        </ul>
+
+        <div class="tag-list reveal">
+          <span class="tag">Goal Setting</span>
+          <span class="tag">Confidence Building</span>
+          <span class="tag">Mindset Transformation</span>
+          <span class="tag">Purpose Discovery</span>
+        </div>
+
+        <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary reveal">Book Your Session ✦</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── INTUITIVE GUIDANCE ─── -->
+<section id="intuitive" class="service-detail">
+  <div class="container">
+    <div class="service-detail-inner">
+      <div class="service-body">
+        <div class="service-badge">Divine Insight</div>
+        <h2 class="service-heading reveal">Intuitive <span>Guidance</span></h2>
+        <div class="divider reveal" style="margin:1.5rem 0;">
+          <div class="divider-line"></div>
+          <div class="divider-gem"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <p class="lead reveal">Beyond tarot and beyond technique, there is pure intuitive knowing — the divine language spoken through silence, sensation, and soul. This is where intuitive guidance lives.</p>
+
+        <p class="reveal">In these sessions, I channel direct intuitive insight — reading the energies, patterns, and spiritual currents flowing through your life. I bring through guidance that comes not from analysis, but from a deeper attunement to the truth of who you are and what your soul needs.</p>
+
+        <p class="reveal">Whether you are at a crossroads, navigating a major life transition, or simply sensing that something is calling you forward and need clarity on what that is — intuitive guidance provides the illumination you need.</p>
+
+        <ul class="included-list reveal">
+          <li>Personal Clarity Sessions — receiving clear, direct guidance on what matters most to you</li>
+          <li>Decision Making Support — gaining spiritual clarity to navigate important choices</li>
+          <li>Life Transition Guidance — support through major shifts in relationships, career, or identity</li>
+          <li>Relationship Support — intuitive insight into the dynamics and potentials of your relationships</li>
+        </ul>
+
+        <div class="tag-list reveal">
+          <span class="tag">Personal Clarity</span>
+          <span class="tag">Decision Making</span>
+          <span class="tag">Life Transitions</span>
+          <span class="tag">Relationship Support</span>
+        </div>
+
+        <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary reveal">Book Your Session ✦</a>
+      </div>
+
+      <div class="service-sidebar reveal" style="order:2;">
+        <div class="service-icon-large">✨</div>
+        <div class="service-cta-box">
+          <h4>Book Intuitive Guidance</h4>
+          <p>Receive direct spiritual insight to illuminate your path forward.</p>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Book on Stan Store
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MY APPROACH ─── -->
+<section class="section approach-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">How I Work</span>
+      <h2 class="section-title reveal">My Sacred <span>Approach</span></h2>
+      <p class="section-lead reveal">Every session follows a sacred rhythm — a container built for your safety, clarity, and transformation.</p>
+    </div>
+
+    <div class="approach-grid reveal">
+      <div class="approach-step">
+        <div class="approach-num">01</div>
+        <div class="approach-title">Sacred Space</div>
+        <p class="approach-desc">We open the session with intention, creating a safe, energetically held container for your healing and guidance.</p>
+      </div>
+      <div class="approach-step">
+        <div class="approach-num">02</div>
+        <div class="approach-title">Deep Listening</div>
+        <p class="approach-desc">I tune into your energy, your questions, and what your soul is expressing — both spoken and unspoken.</p>
+      </div>
+      <div class="approach-step">
+        <div class="approach-num">03</div>
+        <div class="approach-title">Illumination</div>
+        <p class="approach-desc">I bring through guidance, insight, and wisdom — through tarot, intuition, or coaching — specific to your unique situation.</p>
+      </div>
+      <div class="approach-step">
+        <div class="approach-num">04</div>
+        <div class="approach-title">Empowerment</div>
+        <p class="approach-desc">We close with clarity, integration, and actionable steps — leaving you grounded, empowered, and ready to move forward.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">Common Questions</span>
+      <h2 class="section-title reveal">Frequently <span>Asked</span></h2>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question">
+          How do I know which service is right for me?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Trust your instinct — often what you feel drawn to is exactly what you need. If you are unsure, reach out through the contact page and I will help you find the right fit for where you are on your journey.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Are sessions conducted in person or virtually?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          All sessions are conducted virtually, which allows me to serve souls from all over the world. Energy and intuition are not limited by physical distance — the connection we create in a session is just as powerful online.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What should I expect in my first session?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Come as you are — there is no need to prepare or perform. We will open the session with a centering moment, I will tune into your energy, and then we will allow the guidance to flow naturally. Most clients describe feeling heard, seen, and deeply supported.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How do I book a session?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          All bookings are made through my Stan Store at stan.store/Theempressjasmin. You will be able to browse available session types, choose your preferred time, and complete your booking with ease.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is everything I share kept confidential?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Absolutely. Everything shared within a session is held in complete confidence. Your sacred space is protected — what you share stays with me.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Do I need to believe in tarot for a reading to work?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          Not at all. Many of the most powerful readings I have delivered have been for curious skeptics. Come with an open mind and a willingness to receive — that is all you need. The guidance speaks for itself.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL BOOKING ─── -->
+<section class="services-booking">
+  <div class="orb"></div>
+  <div class="container" style="position:relative;z-index:2;text-align:center;">
+    <div class="reveal">
+      <span class="section-eyebrow">Your Next Step</span>
+      <h2 class="section-title" style="font-size:clamp(2.5rem,5vw,4.5rem);">Ready to <span>Begin?</span></h2>
+      <div class="divider" style="margin:1.5rem auto;">
+        <div class="divider-line"></div>
+        <div class="divider-gem"></div>
+        <div class="divider-line"></div>
+      </div>
+      <p style="font-family:var(--font-serif);font-style:italic;font-size:1.2rem;color:var(--text-muted);margin-bottom:3rem;max-width:55ch;margin-left:auto;margin-right:auto;line-height:1.8;">
+        Every transformation begins with a single, courageous step. Your session is waiting for you.
+      </p>
+      <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener" 
+         style="display:inline-flex;align-items:center;gap:1rem;background:var(--gold);color:var(--bg-deep);padding:20px 48px;font-family:var(--font-display);font-size:0.9rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;text-decoration:none;box-shadow:0 10px 50px rgba(212,175,55,0.5);transition:var(--transition);">
+        Book on Stan Store →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">The Empress Jasmin</div>
+        <div class="footer-brand-tagline">Spiritual Guidance & Tarot Readings</div>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem;max-width:30ch;">Helping souls find clarity, healing, and empowerment through tarot, spiritual counseling, and life coaching.</p>
+        <div class="footer-social">
+          <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" class="social-link">♪ TikTok</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="social-link">✦ Stan Store</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#tarot">Tarot Readings</a></li>
+          <li><a href="#counseling">Spiritual Counseling</a></li>
+          <li><a href="#coaching">Life Coaching</a></li>
+          <li><a href="#intuitive">Intuitive Guidance</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="https://stan.store/Theempressjasmin" target="_blank">Book A Reading</a></li>
+          <li><a href="https://tiktok.com/@thegoddessempressmother" target="_blank">@thegoddessempressmother</a></li>
+          <li><a href="contact.html">Send a Message</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-quote">"Trust your intuition. The universe is always speaking."</p>
+      <p class="footer-copy">© 2025 The Empress Jasmin. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
