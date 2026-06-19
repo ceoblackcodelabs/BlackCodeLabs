@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contact The Empress Jasmin — reach out for questions, bookings, or to connect with your spiritual guide." />
+  <title>Contact | The Empress Jasmin</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ── Contact Hero ── */
+    .contact-hero {
+      min-height: 45vh;
+      display: flex;
+      align-items: center;
+      padding-top: 130px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .contact-hero .orb {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(233,166,179,0.1) 0%, rgba(124,58,237,0.08) 40%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ── Contact Layout ── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    /* ── Contact Sidebar ── */
+    .contact-sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .contact-intro {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 3rem;
+    }
+
+    .contact-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .contact-method {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .contact-method:hover {
+      border-color: rgba(212,175,55,0.4);
+      background: #141414;
+    }
+
+    .contact-method-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-method-content {
+      flex: 1;
+    }
+
+    .contact-method-label {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .contact-method-value {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--white);
+    }
+
+    .contact-method-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Sacred Hours ── */
+    .sacred-hours {
+      padding: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .sacred-hours::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    }
+
+    .sacred-hours h4 {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 1.2rem;
+    }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--text-muted);
+    }
+
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row span:last-child { color: var(--white); }
+
+    /* ── Contact Form ── */
+    .contact-form-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      position: relative;
+    }
+
+    .contact-form-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-heading {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .form-subheading {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .form-success.visible { display: block; }
+
+    .form-success-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .form-success h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .form-success p {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* ── Social Grid ── */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 3rem;
+    }
+
+    .social-card {
+      background: var(--bg-card);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      text-decoration: none;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .social-card:hover {
+      background: #141414;
+    }
+
+    .social-card-icon {
+      font-size: 2.5rem;
+      filter: drop-shadow(0 0 15px rgba(212,175,55,0.3));
+      transition: var(--transition);
+    }
+
+    .social-card:hover .social-card-icon {
+      filter: drop-shadow(0 0 25px rgba(212,175,55,0.6));
+      transform: scale(1.1);
+    }
+
+    .social-card-name {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .social-card-handle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .social-card-action {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.5);
+      margin-top: 0.5rem;
+      transition: color var(--transition);
+    }
+
+    .social-card:hover .social-card-action { color: var(--gold); }
+
+    /* ── Booking Reminder ── */
+    .booking-reminder {
+      background: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(212,175,55,0.06) 100%);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      text-align: center;
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .booking-reminder::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-sidebar { position: static; }
+      .social-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<div class="sticky-book">
+  <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener">✦ Book Reading</a>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" style="text-decoration:none;">
+        <span class="nav-logo-main">The Empress Jasmin</span>
+        <span class="nav-logo-sub">Spiritual Guidance</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="https://stan.store/Theempressjasmin" target="_blank" class="nav-cta">Book A Reading</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile">
+  <button class="nav-mobile-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="contact.html">Contact</a>
+  <a href="https://stan.store/Theempressjasmin" target="_blank" style="color:var(--gold)">Book A Reading</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="contact-hero">
+  <div class="orb"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <span class="section-eyebrow">Reach Out</span>
+    <h1 style="font-size:clamp(2.8rem,6vw,5.5rem);margin:1rem 0;">
+      Let's <span style="color:var(--gold)">Connect</span>
+    </h1>
+    <div class="divider" style="margin:1.5rem auto;">
+      <div class="divider-line"></div>
+      <div class="divider-gem"></div>
+      <div class="divider-line"></div>
+    </div>
+    <p style="font-family:var(--font-serif);font-style:italic;font-size:1.2rem;color:var(--text-muted);max-width:50ch;margin:0 auto;">
+      Whether you have questions, need guidance, or are ready to begin your journey — I am here for you.
+    </p>
+  </div>
+</section>
+
+<!-- ─── CONTACT SECTION ─── -->
+<section class="section">
+  <div class="container">
+    <div class="contact-layout">
+      <!-- Sidebar -->
+      <div class="contact-sidebar reveal">
+        <span class="section-eyebrow">Get In Touch</span>
+        <h2 style="font-family:var(--font-display);font-size:1.8rem;color:var(--white);margin-bottom:1.5rem;">
+          Sacred <span style="color:var(--gold)">Connections</span>
+        </h2>
+        <div class="divider" style="margin:1.5rem 0;">
+          <div class="divider-line"></div>
+          <div class="divider-gem"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <p class="contact-intro">
+          I read every message with care and intention. Whether you are seeking guidance, have questions about a session, or simply feel called to connect — your words are welcome here.
+        </p>
+
+        <div class="contact-methods">
+          <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" class="contact-method">
+            <div class="contact-method-icon">♪</div>
+            <div class="contact-method-content">
+              <div class="contact-method-label">TikTok</div>
+              <div class="contact-method-value">@thegoddessempressmother</div>
+              <div class="contact-method-sub">240.9K+ Followers · Follow for daily spiritual guidance</div>
+            </div>
+          </a>
+
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="contact-method">
+            <div class="contact-method-icon">✦</div>
+            <div class="contact-method-content">
+              <div class="contact-method-label">Book a Session</div>
+              <div class="contact-method-value">stan.store/Theempressjasmin</div>
+              <div class="contact-method-sub">All session bookings are made through Stan Store</div>
+            </div>
+          </a>
+
+          <a href="https://instagram.com/thegoddessempressmother" target="_blank" class="contact-method">
+            <div class="contact-method-icon">◈</div>
+            <div class="contact-method-content">
+              <div class="contact-method-label">Instagram</div>
+              <div class="contact-method-value">@thegoddessempressmother</div>
+              <div class="contact-method-sub">Behind the scenes and spiritual inspiration</div>
+            </div>
+          </a>
+
+          <div class="contact-method" style="cursor:default;">
+            <div class="contact-method-icon">✉</div>
+            <div class="contact-method-content">
+              <div class="contact-method-label">Business Inquiries</div>
+              <div class="contact-method-value">Use the form below</div>
+              <div class="contact-method-sub">For collaborations, media, and business inquiries</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sacred-hours">
+          <h4>✦ Session Availability</h4>
+          <div class="hours-row">
+            <span>Monday – Friday</span>
+            <span>By Appointment</span>
+          </div>
+          <div class="hours-row">
+            <span>Weekends</span>
+            <span>Selected Dates</span>
+          </div>
+          <div class="hours-row">
+            <span>Response Time</span>
+            <span>Within 48 Hours</span>
+          </div>
+          <div class="hours-row">
+            <span>Session Format</span>
+            <span>Virtual (Worldwide)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="reveal reveal-delay-2">
+        <div class="contact-form-wrap">
+          <h3 class="form-heading">Send a Message</h3>
+          <p class="form-subheading">Every message is received with care and intention.</p>
+
+          <form id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Your full name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number <span style="color:var(--text-muted);font-size:0.85em;">(Optional)</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="+1 (000) 000-0000" />
+            </div>
+
+            <div class="form-group">
+              <label for="service">Service of Interest</label>
+              <select id="service" name="service">
+                <option value="" disabled selected>Select a service...</option>
+                <option value="tarot">Tarot Reading</option>
+                <option value="counseling">Spiritual Counseling</option>
+                <option value="coaching">Life Coaching</option>
+                <option value="intuitive">Intuitive Guidance</option>
+                <option value="collaboration">Collaboration / Media</option>
+                <option value="other">General Inquiry</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea id="message" name="message" placeholder="Share what's on your heart — what you're seeking, what you're navigating, or any questions you have..." required></textarea>
+            </div>
+
+            <div style="margin-bottom:2rem;">
+              <p style="font-size:0.7rem;color:var(--text-muted);line-height:1.7;">
+                ✦ Please note: for session bookings, please visit
+                <a href="https://stan.store/Theempressjasmin" target="_blank" style="color:var(--gold);">stan.store/Theempressjasmin</a>
+                directly. This form is for general inquiries and messages.
+              </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:0.8rem;padding:16px;">
+              Send Your Message ✦
+            </button>
+          </form>
+
+          <div class="form-success" id="form-success">
+            <span class="form-success-icon">🌙</span>
+            <h3>Message Received</h3>
+            <p>
+              Thank you for reaching out. Your message has been received with care and intention. 
+              I will respond within 48 hours. In the meantime, remember — the universe is always speaking to you.
+            </p>
+            <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary" style="margin-top:2rem;">
+              Book a Session →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SOCIAL GRID ─── -->
+<section class="section bg-secondary">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">Join the Community</span>
+      <h2 class="section-title reveal">Follow the <span>Journey</span></h2>
+      <p class="section-lead reveal">Daily spiritual wisdom, tarot insights, and guidance — available wherever you are.</p>
+    </div>
+
+    <div class="social-grid reveal">
+      <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" class="social-card">
+        <div class="social-card-icon">♪</div>
+        <div class="social-card-name">TikTok</div>
+        <div class="social-card-handle">@thegoddessempressmother</div>
+        <div style="font-family:var(--font-sans);font-size:0.75rem;color:var(--gold);font-weight:500;">240.9K+ Followers</div>
+        <div class="social-card-action">Follow Now →</div>
+      </a>
+
+      <a href="https://stan.store/Theempressjasmin" target="_blank" class="social-card">
+        <div class="social-card-icon">✦</div>
+        <div class="social-card-name">Stan Store</div>
+        <div class="social-card-handle">stan.store/Theempressjasmin</div>
+        <div style="font-family:var(--font-serif);font-style:italic;font-size:0.85rem;color:var(--text-muted);">All session bookings</div>
+        <div class="social-card-action">Book Now →</div>
+      </a>
+
+      <a href="https://instagram.com/thegoddessempressmother" target="_blank" class="social-card">
+        <div class="social-card-icon">◈</div>
+        <div class="social-card-name">Instagram</div>
+        <div class="social-card-handle">@thegoddessempressmother</div>
+        <div style="font-family:var(--font-serif);font-style:italic;font-size:0.85rem;color:var(--text-muted);">Spiritual inspiration</div>
+        <div class="social-card-action">Follow Now →</div>
+      </a>
+    </div>
+
+    <!-- Booking Reminder -->
+    <div class="booking-reminder reveal">
+      <div class="moon-symbol" style="font-size:2rem;margin-bottom:1rem;display:block;">🌙</div>
+      <h3 style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:1rem;">
+        Ready for Your <span style="color:var(--gold)">Reading?</span>
+      </h3>
+      <p style="font-family:var(--font-serif);font-style:italic;font-size:1rem;color:var(--text-muted);margin-bottom:2rem;line-height:1.8;max-width:50ch;margin-left:auto;margin-right:auto;">
+        For session bookings, please visit my Stan Store where you can browse available sessions and choose your preferred time.
+      </p>
+      <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary">
+        Book on Stan Store ✦
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">The Empress Jasmin</div>
+        <div class="footer-brand-tagline">Spiritual Guidance & Tarot Readings</div>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem;max-width:30ch;">Helping souls find clarity, healing, and empowerment through tarot, spiritual counseling, and life coaching.</p>
+        <div class="footer-social">
+          <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" class="social-link">♪ TikTok</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="social-link">✦ Stan Store</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="services.html#tarot">Tarot Readings</a></li>
+          <li><a href="services.html#counseling">Spiritual Counseling</a></li>
+          <li><a href="services.html#coaching">Life Coaching</a></li>
+          <li><a href="services.html#intuitive">Intuitive Guidance</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="https://stan.store/Theempressjasmin" target="_blank">Book A Reading</a></li>
+          <li><a href="https://tiktok.com/@thegoddessempressmother" target="_blank">@thegoddessempressmother</a></li>
+          <li><a href="contact.html">Send a Message</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-quote">"Trust your intuition. The universe is always speaking."</p>
+      <p class="footer-copy">© 2025 The Empress Jasmin. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !message) {
+      // Simple shake animation on empty fields
+      [document.getElementById('name'), document.getElementById('email'), document.getElementById('message')].forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = 'var(--rose)';
+          field.style.animation = 'none';
+          setTimeout(() => {
+            field.style.borderColor = '';
+          }, 3000);
+        }
+      });
+      return;
+    }
+
+    // Simulate form submission
+    this.style.display = 'none';
+    document.getElementById('form-success').classList.add('visible');
+  });
+</script>
+</body>
+</html>

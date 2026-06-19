@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Meet The Empress Jasmin — spiritual guide, tarot reader, and life coach with 240.9K+ TikTok followers. Learn about her journey and mission." />
+  <title>About | The Empress Jasmin</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ── Page Hero ── */
+    .about-hero {
+      min-height: 55vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 130px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .about-hero-orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+      top: -100px; right: -100px;
+    }
+
+    .about-hero-orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
+      bottom: 0; left: -50px;
+      animation-delay: -3s;
+    }
+
+    .about-hero-content {
+      position: relative; z-index: 2;
+    }
+
+    .about-hero h1 {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      margin-bottom: 1rem;
+    }
+
+    .about-hero p {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Story Section ── */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .story-portrait {
+      position: sticky;
+      top: 120px;
+    }
+
+    .portrait-frame {
+      position: relative;
+      aspect-ratio: 3/4;
+      background: linear-gradient(145deg, #1a0a3a 0%, #0a0a1a 40%, #1a0a0a 100%);
+      overflow: hidden;
+    }
+
+    .portrait-inner {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .portrait-symbol {
+      font-size: 9rem;
+      filter: drop-shadow(0 0 40px rgba(212,175,55,0.5));
+      animation: moonFloat 7s ease-in-out infinite;
+      z-index: 2;
+      position: relative;
+    }
+
+    .portrait-constellation {
+      position: absolute; inset: 0;
+      opacity: 0.4;
+    }
+
+    .portrait-border {
+      position: absolute; inset: 0;
+      border: 1px solid rgba(212,175,55,0.2);
+      pointer-events: none;
+    }
+
+    .portrait-corner {
+      position: absolute;
+      width: 40px; height: 40px;
+    }
+
+    .portrait-corner.tl { top: 15px; left: 15px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .portrait-corner.tr { top: 15px; right: 15px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+    .portrait-corner.bl { bottom: 15px; left: 15px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+    .portrait-corner.br { bottom: 15px; right: 15px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+
+    .portrait-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin-top: 1px;
+    }
+
+    .stat-item {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Story Content ── */
+    .story-body h2 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      margin-bottom: 1.5rem;
+      color: var(--white);
+    }
+
+    .story-body h2 span { color: var(--gold); }
+
+    .story-para {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .story-para.highlight {
+      color: var(--white);
+      font-style: italic;
+      font-size: 1.2rem;
+      padding-left: 1.5rem;
+      border-left: 2px solid var(--gold);
+    }
+
+    /* ── Mission Section ── */
+    .mission-section {
+      background: linear-gradient(135deg, #0a0520 0%, var(--bg-secondary) 50%, #0a0a00 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mission-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .mission-text {
+      font-family: var(--font-serif);
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.8;
+    }
+
+    .mission-text em { color: var(--gold); font-style: normal; }
+
+    /* ── Values Grid ── */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+    }
+
+    .value-card {
+      background: var(--bg-card);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .value-card:hover {
+      background: #141414;
+    }
+
+    .value-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+      filter: drop-shadow(0 0 15px rgba(212,175,55,0.3));
+    }
+
+    .value-name {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .value-desc {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── TikTok Social Proof ── */
+    .social-proof-section {
+      text-align: center;
+      background: var(--bg-deep);
+    }
+
+    .tiktok-number {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 10vw, 8rem);
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+      text-shadow: 0 0 60px rgba(212,175,55,0.3);
+    }
+
+    .tiktok-desc {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin: 1rem 0 2rem;
+    }
+
+    /* ── Final CTA ── */
+    .about-cta-section {
+      background: linear-gradient(135deg, rgba(124,58,237,0.1) 0%, transparent 50%, rgba(212,175,55,0.08) 100%);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .story-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .story-portrait { position: static; }
+      .values-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .values-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<div class="sticky-book">
+  <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener">✦ Book Reading</a>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" style="text-decoration:none;">
+        <span class="nav-logo-main">The Empress Jasmin</span>
+        <span class="nav-logo-sub">Spiritual Guidance</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://stan.store/Theempressjasmin" target="_blank" class="nav-cta">Book A Reading</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile">
+  <button class="nav-mobile-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="contact.html">Contact</a>
+  <a href="https://stan.store/Theempressjasmin" target="_blank" style="color:var(--gold)">Book A Reading</a>
+</div>
+
+<!-- ─── PAGE HERO ─── -->
+<section class="about-hero">
+  <div class="orb about-hero-orb-1"></div>
+  <div class="orb about-hero-orb-2"></div>
+
+  <div class="about-hero-content container">
+    <span class="section-eyebrow">My Story</span>
+    <h1>The Empress <span style="color:var(--gold)">Jasmin</span></h1>
+    <div class="divider" style="margin:1.5rem auto;">
+      <div class="divider-line"></div>
+      <div class="divider-gem"></div>
+      <div class="divider-line"></div>
+    </div>
+    <p>Spiritual Guide · Tarot Reader · Life Coach · Intuitive Counselor</p>
+  </div>
+</section>
+
+<!-- ─── STORY ─── -->
+<section class="section">
+  <div class="container">
+    <div class="story-grid">
+      <!-- Portrait -->
+      <div class="story-portrait reveal">
+        <div class="portrait-frame">
+          <div class="portrait-inner">
+            <svg class="portrait-constellation" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+              <circle cx="80" cy="60" r="2" fill="rgba(212,175,55,0.5)"/>
+              <circle cx="320" cy="100" r="1.5" fill="rgba(212,175,55,0.4)"/>
+              <circle cx="150" cy="200" r="1.5" fill="rgba(212,175,55,0.3)"/>
+              <circle cx="280" cy="300" r="2" fill="rgba(212,175,55,0.5)"/>
+              <circle cx="60" cy="380" r="1.5" fill="rgba(212,175,55,0.4)"/>
+              <circle cx="360" cy="420" r="1.5" fill="rgba(212,175,55,0.3)"/>
+              <line x1="80" y1="60" x2="320" y2="100" stroke="rgba(212,175,55,0.15)" stroke-width="0.8"/>
+              <line x1="320" y1="100" x2="280" y2="300" stroke="rgba(212,175,55,0.15)" stroke-width="0.8"/>
+              <line x1="150" y1="200" x2="280" y2="300" stroke="rgba(212,175,55,0.15)" stroke-width="0.8"/>
+              <line x1="60" y1="380" x2="280" y2="300" stroke="rgba(212,175,55,0.15)" stroke-width="0.8"/>
+            </svg>
+            <div class="portrait-symbol">♕</div>
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center 60%, rgba(212,175,55,0.12) 0%, transparent 60%);"></div>
+          </div>
+          <div class="portrait-corner tl"></div>
+          <div class="portrait-corner tr"></div>
+          <div class="portrait-corner bl"></div>
+          <div class="portrait-corner br"></div>
+        </div>
+
+        <div class="portrait-stats">
+          <div class="stat-item">
+            <div class="stat-num"><span data-count="240900" data-suffix="+">240K+</span></div>
+            <div class="stat-label">TikTok Followers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">10+</div>
+            <div class="stat-label">Years Practice</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">5K+</div>
+            <div class="stat-label">Sessions Held</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">8</div>
+            <div class="stat-label">Services Offered</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story Text -->
+      <div class="story-body">
+        <span class="section-eyebrow reveal">My Journey</span>
+        <h2 class="reveal">A Life Lived in <span>Service to Spirit</span></h2>
+        <div class="divider reveal" style="margin:1.5rem 0;">
+          <div class="divider-line"></div>
+          <div class="divider-gem"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <p class="story-para reveal">
+          From an early age, I felt a profound connection to something beyond the visible world — a deep, quiet knowing that spirit was real, guidance was available, and every soul held within it the answers it was seeking.
+        </p>
+
+        <p class="story-para highlight reveal">
+          "I didn't choose the spiritual path. The spiritual path chose me — and I said yes with my whole heart."
+        </p>
+
+        <p class="story-para reveal">
+          Over the years, that calling transformed into a sacred vocation. I studied tarot with devotion, immersed myself in the ancient wisdom traditions, developed my intuitive gifts, and discovered a profound ability to see clearly into the patterns, energies, and possibilities within a person's life.
+        </p>
+
+        <p class="story-para reveal">
+          Through tarot, intuition, spiritual wisdom, and compassionate guidance, I help individuals gain clarity, healing, direction, and empowerment in every stage of life. My sessions are not performances — they are sacred partnerships, co-created in the space between us, guided by Spirit, grounded in love.
+        </p>
+
+        <p class="story-para reveal">
+          Today, with over 240,000 souls in my TikTok community and thousands of private sessions completed, I continue to show up every single day with one mission: to help you remember who you are, and to walk confidently into who you are becoming.
+        </p>
+
+        <div style="margin-top:2.5rem;" class="reveal">
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary">Book Your Session ✦</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MISSION ─── -->
+<section class="section mission-section cosmic-border">
+  <div class="container">
+    <div class="mission-inner reveal">
+      <span class="section-eyebrow">My Mission</span>
+      <div class="moon-symbol">🌙</div>
+      <p class="mission-text">
+        To create a sacred, <em>judgment-free sanctuary</em> where every soul who arrives — in pain, in confusion, in search of something more — leaves with greater clarity, deeper healing, and an unshakeable <em>knowing of their own worth and power.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VALUES ─── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">What I Believe</span>
+      <h2 class="section-title reveal">Core <span>Values</span></h2>
+    </div>
+
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <span class="value-icon">🌱</span>
+        <div class="value-name">Spiritual Growth</div>
+        <p class="value-desc">Every soul is on a journey toward its highest expression. I am here to support and honor that sacred unfolding.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-1">
+        <span class="value-icon">🔍</span>
+        <div class="value-name">Self Discovery</div>
+        <p class="value-desc">The answers you seek are already within you. My role is to help you access the deep wisdom you already carry.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-2">
+        <span class="value-icon">💚</span>
+        <div class="value-name">Healing</div>
+        <p class="value-desc">True healing is both ancient and deeply personal. I create space for the specific healing that your soul needs most.</p>
+      </div>
+      <div class="value-card reveal">
+        <span class="value-icon">⚡</span>
+        <div class="value-name">Empowerment</div>
+        <p class="value-desc">You are not broken. You are powerful beyond measure. My work is to remind you of that — and to help you live from that truth.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-1">
+        <span class="value-icon">🦋</span>
+        <div class="value-name">Transformation</div>
+        <p class="value-desc">Change is the soul's greatest gift. I walk with you through the tender, difficult, glorious process of becoming.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-2">
+        <span class="value-icon">✨</span>
+        <div class="value-name">Divine Alignment</div>
+        <p class="value-desc">When we align with our highest truth, life moves with us rather than against us. I help you find and hold that alignment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SOCIAL PROOF ─── -->
+<section class="section social-proof-section bg-secondary">
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">A Growing Community</span>
+      <span class="tiktok-number" data-count="240900" data-suffix="+">0</span>
+      <p class="tiktok-desc">souls in the TikTok community — and counting.</p>
+      <p style="font-family:var(--font-display);font-size:0.75rem;letter-spacing:0.2em;color:var(--text-muted);text-transform:uppercase;">@thegoddessempressmother</p>
+      <div style="margin-top:2rem;">
+        <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" class="btn btn-ghost">Follow on TikTok</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL CTA ─── -->
+<section class="section about-cta-section">
+  <div class="container">
+    <div class="section-header reveal" style="max-width:700px;margin:0 auto;">
+      <span class="section-eyebrow">Begin Your Journey</span>
+      <h2 class="section-title">Ready to <span>Step Into Your Power?</span></h2>
+      <div class="divider" style="margin:1.5rem auto;">
+        <div class="divider-line"></div>
+        <div class="divider-gem"></div>
+        <div class="divider-line"></div>
+      </div>
+      <p class="section-lead" style="margin:0 auto 2.5rem;">
+        Every transformation begins with a single, courageous step. I am here, ready and honored to walk this sacred path with you.
+      </p>
+      <a href="https://stan.store/Theempressjasmin" target="_blank" class="btn btn-primary" style="font-size:0.8rem;padding:18px 44px;">
+        Book Your Reading ✦
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">The Empress Jasmin</div>
+        <div class="footer-brand-tagline">Spiritual Guidance & Tarot Readings</div>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem;max-width:30ch;">Helping souls find clarity, healing, and empowerment through tarot, spiritual counseling, and life coaching.</p>
+        <div class="footer-social">
+          <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" class="social-link">♪ TikTok</a>
+          <a href="https://stan.store/Theempressjasmin" target="_blank" class="social-link">✦ Stan Store</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="services.html#tarot">Tarot Readings</a></li>
+          <li><a href="services.html#counseling">Spiritual Counseling</a></li>
+          <li><a href="services.html#coaching">Life Coaching</a></li>
+          <li><a href="services.html#intuitive">Intuitive Guidance</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="https://stan.store/Theempressjasmin" target="_blank">Book A Reading</a></li>
+          <li><a href="https://tiktok.com/@thegoddessempressmother" target="_blank">@thegoddessempressmother</a></li>
+          <li><a href="contact.html">Send a Message</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-quote">"Trust your intuition. The universe is always speaking."</p>
+      <p class="footer-copy">© 2025 The Empress Jasmin. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
