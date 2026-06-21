@@ -1,11 +1,11 @@
-  =>  Template Name    : Makaan - Real Estate HTML Template
+  =>  Template Name    : Reality Boris - Real Estate HTML Template
 
-  =>  Template Link    : https://htmlcodex.com/real-estate-html-template-free
+  =>  Template Link    : https://blackcodelab.com/real-estate-html-template-free
 
-  =>  Template License : https://htmlcodex.com/license (or read the LICENSE.txt file)
+  =>  Template License : https://blackcodelab.com/license (or read the LICENSE.txt file)
 
-  =>  Template Author  : HTML Codex
+  =>  Template Author  : BlackCodeLabs
 
-  =>  Author Website   : https://htmlcodex.com
+  =>  Author Website   : https://blackcodelab.com
 
-  =>  About HTML Codex : HTML Codex is one of the top creators and publishers of Free HTML templates, HTML landing pages, HTML email templates and HTML snippets in the world. Read more at ( https://htmlcodex.com/about-us )
+  =>  About BlackCodeLabs : BlackCodeLabs is one of the top creators and publishers of Free HTML templates, HTML landing pages, HTML email templates and HTML snippets in the world. Read more at ( https://blackcodelab.com/about-us )
