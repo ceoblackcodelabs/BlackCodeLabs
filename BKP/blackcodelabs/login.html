@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign In — BlackCodeLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+body { overflow: hidden; }
+#auth-canvas { position: fixed; inset: 0; z-index: 0; }
+
+.auth-wrap {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 2rem 5vw 2rem 2rem;
+}
+.auth-left {
+  position: fixed;
+  left: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 480px;
+  display: none;
+}
+@media(min-width:900px){ .auth-left{display:block;} }
+
+.auth-left .brand {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  margin-bottom: 3rem;
+}
+.auth-left .brand em { color: var(--accent); font-style: normal; }
+.auth-left h2 {
+  font-family: var(--font-d);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+.auth-left h2 em { color: var(--accent); font-style: italic; }
+.auth-left p { color: var(--text2); font-size: 0.92rem; line-height: 1.75; max-width: 380px; }
+.auth-perks {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.auth-perk {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text2);
+}
+.auth-perk-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.auth-card {
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.8rem 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+.auth-tab-bar {
+  display: flex;
+  margin-bottom: 2.2rem;
+  border-bottom: 1px solid var(--border);
+  gap: 0;
+}
+.auth-tab {
+  flex: 1;
+  padding: 0.7rem;
+  text-align: center;
+  font-family: var(--font-m);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.3s, border-color 0.3s;
+}
+.auth-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+
+.auth-form-pane { display: none; }
+.auth-form-pane.active { display: block; }
+
+.auth-form-pane h3 {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.auth-form-pane p { font-size: 0.83rem; color: var(--text2); margin-bottom: 1.8rem; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+.form-group label {
+  font-family: var(--font-m);
+  font-size: 0.65rem;
+  color: var(--text3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.form-group input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 0.85rem 1rem;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 0.88rem;
+  border-radius: var(--r);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+}
+.form-group input:focus {
+  border-color: rgba(192,57,43,0.5);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.06);
+}
+.form-group input::placeholder { color: var(--text3); }
+
+.forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  margin-top: -0.5rem;
+}
+.forgot-row a {
+  font-size: 0.75rem;
+  color: var(--text3);
+  text-decoration: none;
+  font-family: var(--font-m);
+  transition: color 0.3s;
+}
+.forgot-row a:hover { color: var(--accent); }
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-family: var(--font-b);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.35s var(--ease);
+  letter-spacing: 0.03em;
+  margin-top: 0.5rem;
+}
+.submit-btn:hover {
+  background: var(--accent-h);
+  box-shadow: 0 0 24px rgba(192,57,43,0.4);
+  transform: translateY(-1px);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.divider span {
+  font-size: 0.72rem;
+  color: var(--text3);
+  font-family: var(--font-m);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.social-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--r);
+  font-family: var(--font-b);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+.social-btn:hover { border-color: rgba(192,57,43,0.3); color: var(--text); background: rgba(192,57,43,0.04); }
+
+.terms-note {
+  font-size: 0.72rem;
+  color: var(--text3);
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.5;
+  font-family: var(--font-m);
+}
+.terms-note a { color: var(--accent); text-decoration: none; }
+
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+
+/* Top nav for auth page */
+.auth-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.2rem 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.auth-nav-logo {
+  font-family: var(--font-d);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+.auth-nav-logo em { color: var(--accent); font-style: normal; }
+.auth-nav a:not(.auth-nav-logo) {
+  font-size: 0.82rem;
+  color: var(--text2);
+  text-decoration: none;
+  font-family: var(--font-m);
+  transition: color 0.3s;
+}
+.auth-nav a:not(.auth-nav-logo):hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="page-veil"></div>
+<canvas id="auth-canvas"></canvas>
+
+<div class="auth-nav">
+  <a href="index.html" class="auth-nav-logo">Black<em>Code</em>Labs</a>
+  <a href="index.html">← Back to site</a>
+</div>
+
+<div class="auth-wrap">
+  <div class="auth-left">
+    <a href="index.html" class="brand">Black<em>Code</em>Labs</a>
+    <h2>Your digital<br><em>empire</em><br>starts here.</h2>
+    <p>Join hundreds of businesses building world-class software with BlackCodeLabs. Sign in to your client portal or create your account.</p>
+    <div class="auth-perks">
+      <div class="auth-perk"><div class="auth-perk-dot"></div><span>Access your project dashboard</span></div>
+      <div class="auth-perk"><div class="auth-perk-dot"></div><span>Track your affiliate commissions</span></div>
+      <div class="auth-perk"><div class="auth-perk-dot"></div><span>Communicate with your team</span></div>
+      <div class="auth-perk"><div class="auth-perk-dot"></div><span>Review deliverables and give feedback</span></div>
+    </div>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-tab-bar">
+      <div class="auth-tab active" onclick="switchTab('login')">Sign In</div>
+      <div class="auth-tab" onclick="switchTab('register')">Register</div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="auth-form-pane active" id="tab-login">
+      <h3>Welcome back</h3>
+      <p>Sign in to your BlackCodeLabs account.</p>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Your password"/>
+      </div>
+      <div class="forgot-row"><a href="#">Forgot password?</a></div>
+      <button class="submit-btn" onclick="doLogin()">Sign In →</button>
+      <div class="divider"><span>or continue with</span></div>
+      <button class="social-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="auth-form-pane" id="tab-register">
+      <h3>Create account</h3>
+      <p>Start your journey with BlackCodeLabs.</p>
+      <div class="form-row-2">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="John"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe"/></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="Create a strong password"/></div>
+      <div class="form-group"><label>Confirm Password</label><input type="password" placeholder="Repeat password"/></div>
+      <button class="submit-btn" onclick="doRegister()">Create Account →</button>
+      <p class="terms-note">By registering you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+// Auth 3D
+(function(){
+  const c=document.getElementById('auth-canvas');
+  const r=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  r.setPixelRatio(Math.min(devicePixelRatio,2));
+  r.setSize(innerWidth,innerHeight);
+  const s=new THREE.Scene(), cam=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,0.1,200);
+  cam.position.z=40;
+
+  // Particles
+  const N=2500, pos=new Float32Array(N*3), col=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    pos[i*3]=(Math.random()-.5)*160;pos[i*3+1]=(Math.random()-.5)*160;pos[i*3+2]=(Math.random()-.5)*120;
+    const t=Math.random(); col[i*3]=t>0.6?0.75:0.1;col[i*3+1]=0.08;col[i*3+2]=0.08;
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.Float32BufferAttribute(col,3));
+  s.add(new THREE.Points(geo,new THREE.PointsMaterial({size:0.2,vertexColors:true,transparent:true,opacity:0.55})));
+
+  // Wire icosahedron
+  const iGeo=new THREE.IcosahedronGeometry(12,1);
+  const iMat=new THREE.MeshBasicMaterial({color:0x8a1010,wireframe:true,transparent:true,opacity:0.04});
+  const ico=new THREE.Mesh(iGeo,iMat); s.add(ico);
+
+  let mx=0,my=0;
+  document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5);my=(e.clientY/innerHeight-.5);});
+  let t=0;
+  (function a(){
+    requestAnimationFrame(a); t+=0.008;
+    ico.rotation.y=t*0.12; ico.rotation.x=t*0.07;
+    cam.position.x+=(mx*4-cam.position.x)*0.02;
+    cam.position.y+=(-my*3-cam.position.y)*0.02;
+    r.render(s,cam);
+  })();
+  addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight);});
+})();
+
+function switchTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='register'&&i===1)));
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-register').classList.toggle('active', tab==='register');
+  document.title = tab==='login' ? 'Sign In — BlackCodeLabs' : 'Register — BlackCodeLabs';
+}
+function doLogin(){
+  const btn=event.target;btn.textContent='Signing in...';btn.disabled=true;
+  setTimeout(()=>{window.location.href='profile.html';},1000);
+}
+function doRegister(){
+  const btn=event.target;btn.textContent='Creating account...';btn.disabled=true;
+  setTimeout(()=>{window.location.href='profile.html';},1200);
+}
+</script>
+</body>
+</html>

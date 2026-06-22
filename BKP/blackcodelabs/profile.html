@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Profile — BlackCodeLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.profile-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 9rem 5vw 5rem;
+}
+.profile-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2.5rem;
+  align-items: center;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3rem;
+}
+.avatar-wrap {
+  position: relative;
+}
+.avatar {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7b1010);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-d);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  border: 3px solid rgba(192,57,43,0.3);
+  box-shadow: 0 0 40px rgba(192,57,43,0.15);
+}
+.avatar-badge {
+  position: absolute;
+  bottom: 4px; right: 4px;
+  width: 18px; height: 18px;
+  background: #27ae60;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+.profile-meta h1 {
+  font-family: var(--font-d);
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+.profile-meta p {
+  color: var(--text2);
+  font-size: 0.88rem;
+  margin-top: 0.3rem;
+}
+.profile-meta .tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+.tag {
+  font-family: var(--font-m);
+  font-size: 0.65rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.tag-plan {
+  background: var(--accent-g);
+  color: var(--accent);
+  border: 1px solid rgba(192,57,43,0.3);
+}
+.tag-affiliate {
+  background: rgba(39,174,96,0.1);
+  color: #27ae60;
+  border: 1px solid rgba(39,174,96,0.25);
+}
+.tag-verified {
+  background: rgba(255,255,255,0.05);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.profile-header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+/* STATS ROW */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+.pstat {
+  background: var(--bg2);
+  padding: 1.8rem 1.5rem;
+  text-align: center;
+}
+.pstat h3 {
+  font-family: var(--font-d);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+.pstat p {
+  font-family: var(--font-m);
+  font-size: 0.67rem;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  margin-top: 0.4rem;
+  text-transform: uppercase;
+}
+
+/* BODY GRID */
+.profile-body {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+}
+.panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.panel-head {
+  padding: 1.3rem 1.8rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.panel-head h3 {
+  font-family: var(--font-d);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.panel-head a {
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-family: var(--font-m);
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s;
+}
+.panel-head a:hover { opacity: 0.7; }
+.panel-body { padding: 1.8rem; }
+
+/* INFO LIST */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.info-row label {
+  font-family: var(--font-m);
+  font-size: 0.65rem;
+  color: var(--text3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.info-row span {
+  font-size: 0.88rem;
+  color: var(--text);
+}
+.info-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.3rem 0;
+}
+
+/* AFFILIATE PANEL */
+.aff-code-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.aff-code-box code {
+  font-family: var(--font-m);
+  font-size: 0.85rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+.copy-btn {
+  font-family: var(--font-m);
+  font-size: 0.7rem;
+  padding: 0.3rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.08em;
+}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+.progress-block { margin-bottom: 1.5rem; }
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.progress-label span:first-child {
+  font-family: var(--font-m);
+  font-size: 0.68rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.progress-label span:last-child {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--accent);
+}
+.progress-bar {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--accent), var(--accent-h));
+  border-radius: 2px;
+  transition: width 1.5s var(--ease);
+}
+
+/* ACTIVITY */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.activity-dot.grey { background: var(--text3); }
+.activity-text { flex: 1; }
+.activity-text p { font-size: 0.85rem; }
+.activity-text span { font-size: 0.75rem; color: var(--text3); font-family: var(--font-m); }
+.activity-amount {
+  font-family: var(--font-m);
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-align: right;
+}
+.activity-amount.grey { color: var(--text3); }
+
+/* PROJECTS */
+.project-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  transition: border-color 0.3s;
+}
+.project-card:hover { border-color: rgba(192,57,43,0.3); }
+.project-card:last-child { margin-bottom: 0; }
+.project-icon {
+  width: 40px; height: 40px;
+  border-radius: 6px;
+  background: var(--accent-g);
+  border: 1px solid rgba(192,57,43,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.project-info { flex: 1; min-width: 0; }
+.project-info h4 { font-family: var(--font-d); font-size: 0.9rem; font-weight: 700; }
+.project-info p { font-size: 0.78rem; color: var(--text2); margin-top: 0.2rem; }
+.status-pill {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.status-active { background: rgba(39,174,96,0.1); color:#27ae60; border:1px solid rgba(39,174,96,.2); }
+.status-review { background: rgba(241,196,15,.1); color:#f1c40f; border:1px solid rgba(241,196,15,.2); }
+.status-done   { background: rgba(255,255,255,0.04); color:var(--text3); border:1px solid var(--border); }
+
+/* 3D CANVAS BG */
+#profile-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (max-width:900px){
+  .profile-header{grid-template-columns:auto 1fr;gap:1.5rem}
+  .profile-header-actions{flex-direction:row;grid-column:1/-1}
+  .profile-stats{grid-template-columns:1fr 1fr}
+  .profile-body{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .profile-stats{grid-template-columns:1fr 1fr}
+  .profile-header{grid-template-columns:1fr;text-align:center}
+  .avatar{margin:0 auto}
+  .tags{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<canvas id="profile-canvas"></canvas>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="page-veil"></div>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="career.html">Careers</a>
+  <a href="affiliate.html">Affiliate</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="career.html">Careers</a></li>
+    <li><a href="affiliate.html">Affiliate</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="profile.html" class="btn btn-outline">My Profile</a>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="profile-wrap">
+
+  <!-- HEADER -->
+  <div class="profile-header reveal">
+    <div class="avatar-wrap">
+      <div class="avatar">JD</div>
+      <div class="avatar-badge"></div>
+    </div>
+    <div class="profile-meta">
+      <h1>John Doe</h1>
+      <p>john.doe@example.com · Member since January 2025</p>
+      <div class="tags">
+        <span class="tag tag-plan">Premium Plan</span>
+        <span class="tag tag-affiliate">Affiliate — Silver</span>
+        <span class="tag tag-verified">✓ Verified</span>
+      </div>
+    </div>
+    <div class="profile-header-actions">
+      <a href="updateprofile.html" class="btn btn-red">Edit Profile</a>
+      <a href="login.html" class="btn btn-outline">Sign Out</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="profile-stats reveal" data-delay="150">
+    <div class="pstat"><h3>1,240</h3><p>Affiliate Points</p></div>
+    <div class="pstat"><h3>3</h3><p>Active Projects</p></div>
+    <div class="pstat"><h3>$480</h3><p>Total Earned</p></div>
+    <div class="pstat"><h3>8</h3><p>Referrals Made</p></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="profile-body">
+
+    <!-- LEFT COL -->
+    <div style="display:flex;flex-direction:column;gap:1.5rem">
+
+      <!-- Personal Info -->
+      <div class="panel reveal" data-delay="100">
+        <div class="panel-head">
+          <h3>Personal Information</h3>
+          <a href="updateprofile.html">Edit →</a>
+        </div>
+        <div class="panel-body">
+          <div class="info-list">
+            <div class="info-row"><label>Full Name</label><span>John Doe</span></div>
+            <div class="info-divider"></div>
+            <div class="info-row"><label>Email</label><span>john.doe@example.com</span></div>
+            <div class="info-divider"></div>
+            <div class="info-row"><label>Phone</label><span>+1 (555) 000-1234</span></div>
+            <div class="info-divider"></div>
+            <div class="info-row"><label>Location</label><span>Lagos, Nigeria</span></div>
+            <div class="info-divider"></div>
+            <div class="info-row"><label>Company</label><span>Doe Ventures Ltd.</span></div>
+            <div class="info-divider"></div>
+            <div class="info-row"><label>Website</label><span>doeventures.co</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Affiliate Panel -->
+      <div class="panel reveal" data-delay="200">
+        <div class="panel-head">
+          <h3>Affiliate Dashboard</h3>
+          <a href="affiliate.html">View Program</a>
+        </div>
+        <div class="panel-body">
+          <div class="aff-code-box">
+            <code>BCL-JDOE-8X42</code>
+            <button class="copy-btn" onclick="this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)">Copy</button>
+          </div>
+          <div class="progress-block">
+            <div class="progress-label">
+              <span>Silver Tier Progress</span>
+              <span>1,240 / 5,000 pts</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+          </div>
+          <div class="progress-block">
+            <div class="progress-label">
+              <span>Monthly Referral Goal</span>
+              <span>3 / 5 referrals</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+          </div>
+          <a href="affiliate.html" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:.5rem;font-size:.82rem">View Full Affiliate Dashboard</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COL -->
+    <div style="display:flex;flex-direction:column;gap:1.5rem">
+
+      <!-- Projects -->
+      <div class="panel reveal" data-delay="150">
+        <div class="panel-head">
+          <h3>My Projects</h3>
+          <a href="contact.html">+ New Project</a>
+        </div>
+        <div class="panel-body">
+          <div class="project-card">
+            <div class="project-icon">🌐</div>
+            <div class="project-info">
+              <h4>E-Commerce Platform</h4>
+              <p>Full-stack web app · Delivery: March 2025</p>
+            </div>
+            <span class="status-pill status-active">Active</span>
+          </div>
+          <div class="project-card">
+            <div class="project-icon">📱</div>
+            <div class="project-info">
+              <h4>iOS Delivery App</h4>
+              <p>Flutter · Under review by QA team</p>
+            </div>
+            <span class="status-pill status-review">In Review</span>
+          </div>
+          <div class="project-card">
+            <div class="project-icon">📈</div>
+            <div class="project-info">
+              <h4>SEO Campaign — Q1</h4>
+              <p>Technical SEO + content · Completed</p>
+            </div>
+            <span class="status-pill status-done">Done</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity -->
+      <div class="panel reveal" data-delay="250">
+        <div class="panel-head"><h3>Recent Activity</h3></div>
+        <div class="panel-body" style="padding:0 1.8rem">
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text"><p>Referral converted — Starter Plan</p><span>2 days ago</span></div>
+              <div class="activity-amount">+200 pts</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text"><p>Commission payout processed</p><span>5 days ago</span></div>
+              <div class="activity-amount">$60.00</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot grey"></div>
+              <div class="activity-text"><p>Profile updated</p><span>1 week ago</span></div>
+              <div class="activity-amount grey">—</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text"><p>New project started — iOS App</p><span>2 weeks ago</span></div>
+              <div class="activity-amount grey">—</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text"><p>Referral link shared on LinkedIn</p><span>2 weeks ago</span></div>
+              <div class="activity-amount">+10 pts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer style="margin-top:4rem">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+      <p>Elite software engineering for the digital age.</p>
+    </div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="index.html">Home</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="career.html">Careers</a></li></ul></div>
+    <div class="footer-col"><h5>Account</h5><ul><li><a href="profile.html">My Profile</a></li><li><a href="updateprofile.html">Edit Profile</a></li><li><a href="affiliate.html">Affiliate</a></li><li><a href="login.html">Sign Out</a></li></ul></div>
+    <div class="footer-col"><h5>Support</h5><ul><li><a href="contact.html">Contact</a></li><li><a href="mailto:hello@blackcodelabs.dev">Email Us</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 <em>BlackCodeLabs</em>. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+// Ambient 3D background
+(function(){
+  const c = document.getElementById('profile-canvas');
+  const r = new THREE.WebGLRenderer({canvas:c, antialias:true, alpha:true});
+  r.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  r.setSize(innerWidth, innerHeight);
+  const s=new THREE.Scene(), cam=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,0.1,200);
+  cam.position.z=40;
+  const N=1200, pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*130;pos[i*3+2]=(Math.random()-.5)*100;}
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  s.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0xc0392b,size:0.18,transparent:true,opacity:0.2})));
+  (function a(){requestAnimationFrame(a);s.rotation.y+=0.0003;r.render(s,cam);})();
+  addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight);});
+})();
+</script>
+</body>
+</html>

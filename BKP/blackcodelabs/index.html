@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>BlackCodeLabs — We Build Digital Empires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-h) + 3rem) 5vw 4rem;
+  overflow: hidden;
+}
+#hero-canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hero-inner { position: relative; z-index: 2; max-width: 820px; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fUp 0.9s var(--ease) 0.2s forwards;
+}
+.hero-eyebrow::before { content:''; width:18px; height:1px; background:var(--accent); }
+.hero-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(2.8rem, 10vw, 7rem);
+  font-weight: 900; line-height: 1.02; letter-spacing: -0.025em;
+  opacity: 0; animation: fUp 1s var(--ease) 0.35s forwards;
+}
+.hero-h1 em { font-style: italic; color: var(--accent); }
+.hero-sub {
+  margin-top: 1.4rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+  color: var(--text2); max-width: 480px; line-height: 1.75;
+  opacity: 0; animation: fUp 1s var(--ease) 0.5s forwards;
+}
+.hero-btns {
+  margin-top: 2.2rem;
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+  opacity: 0; animation: fUp 1s var(--ease) 0.65s forwards;
+}
+.hero-scroll {
+  position: absolute; bottom: 1.8rem; left: 5vw; z-index: 2;
+  display: flex; align-items: center; gap: 0.7rem;
+  font-family: var(--font-m); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--text3);
+  opacity: 0; animation: fUp 1s var(--ease) 1s forwards;
+}
+.scroll-bar { width: 36px; height: 1px; background: var(--text3); position: relative; overflow: hidden; }
+.scroll-bar::after {
+  content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+  background: var(--accent); animation: scanLine 2.4s ease infinite;
+}
+@keyframes fUp { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:none} }
+@keyframes scanLine { 0%{left:-100%} 100%{left:200%} }
+
+/* ── ABOUT ── */
+#about { background: var(--bg2); border-top: 1px solid var(--border); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+.about-body { font-size: 0.9rem; color: var(--text2); line-height: 1.85; margin-bottom: 0.9rem; }
+.about-stats {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; margin-top: 2.5rem;
+}
+.stat-cell {
+  padding: 1.4rem 0.8rem; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-cell h3 { font-family: var(--font-d); font-size: clamp(1.6rem,5vw,2.4rem); font-weight: 900; color: var(--accent); line-height: 1; }
+.stat-cell p { font-family: var(--font-m); font-size: 0.6rem; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.35rem; }
+.about-visual-box {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; position: relative; aspect-ratio: 4/3;
+}
+.about-canvas-wrap { position: absolute; inset: 0; }
+.about-quote {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(5,5,5,0.9); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border); border-left: 2px solid var(--accent);
+  padding: 1.2rem 1.3rem;
+}
+.about-quote p { font-family: var(--font-d); font-style: italic; font-size: 0.88rem; line-height: 1.6; }
+.about-quote span { display: block; margin-top: 0.4rem; font-family: var(--font-m); font-size: 0.62rem; color: var(--accent); letter-spacing: 0.08em; }
+
+/* ── SERVICES ── */
+#services {}
+.services-head {
+  display: flex; flex-direction: column; gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;
+}
+.svc-item {
+  background: var(--bg2); padding: 1.8rem 1.5rem;
+  position: relative; overflow: hidden;
+  transition: background 0.35s;
+}
+.svc-item::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+.svc-item:hover { background: var(--bg3); }
+.svc-item:hover::before { transform: scaleX(1); }
+.svc-num { font-family: var(--font-m); font-size: 0.6rem; color: var(--accent); letter-spacing: 0.18em; display: block; margin-bottom: 0.8rem; }
+.svc-icon { font-size: 1.3rem; margin-bottom: 0.9rem; display: block; }
+.svc-item h3 { font-family: var(--font-d); font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.svc-item p { font-size: 0.83rem; color: var(--text2); line-height: 1.7; }
+.svc-arrow { position: absolute; top: 1.5rem; right: 1.5rem; color: var(--text3); font-size: 1rem; transition: all 0.3s; }
+.svc-item:hover .svc-arrow { color: var(--accent); transform: translate(3px,-3px); }
+
+/* ── TESTIMONIALS ── */
+#testimonials { background: var(--bg2); border-top: 1px solid var(--border); }
+.testi-head { text-align: center; margin-bottom: 2.5rem; }
+.carousel-wrap { position: relative; overflow: hidden; }
+.carousel-track {
+  display: flex;
+  transition: transform 0.55s var(--ease);
+}
+.testi-slide { min-width: 100%; padding: 0 0.5rem; }
+.testi-card {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: clamp(1.4rem, 4vw, 2.5rem); position: relative;
+}
+.testi-card::before {
+  content: '\201C'; position: absolute; top: 1rem; right: 1.5rem;
+  font-family: var(--font-d); font-size: 5rem; color: var(--accent);
+  opacity: 0.1; line-height: 1;
+}
+.testi-stars { display: flex; gap: 0.25rem; margin-bottom: 1.2rem; }
+.testi-stars span {
+  width: 9px; height: 9px; background: var(--accent); flex-shrink: 0;
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.testi-card blockquote {
+  font-family: var(--font-d); font-style: italic;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem); line-height: 1.75;
+  margin-bottom: 1.5rem; color: var(--text);
+}
+.testi-author { display: flex; align-items: center; gap: 0.8rem; }
+.testi-av {
+  width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), #7b0d1e);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d); font-weight: 700; font-size: 0.88rem; color: #fff;
+}
+.testi-info h4 { font-family: var(--font-d); font-size: 0.88rem; font-weight: 700; }
+.testi-info span { font-size: 0.73rem; color: var(--text2); font-family: var(--font-m); }
+.carousel-ctrl {
+  display: flex; justify-content: center; align-items: center;
+  gap: 1.2rem; margin-top: 2rem;
+}
+.c-btn {
+  width: 40px; height: 40px;
+  border: 1px solid var(--border); border-radius: 50%;
+  background: transparent; color: var(--text);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem; transition: all 0.3s;
+}
+.c-btn:hover { border-color: var(--accent); color: var(--accent); }
+.c-dots { display: flex; gap: 0.4rem; align-items: center; }
+.c-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--text3);
+  cursor: pointer; transition: all 0.3s;
+}
+.c-dot.on { background: var(--accent); width: 18px; border-radius: 3px; }
+
+/* ── NEWSLETTER ── */
+#newsletter { border-top: 1px solid var(--border); }
+.nl-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+.nl-inner p { font-size: 0.9rem; color: var(--text2); margin-top: 0.8rem; margin-bottom: 2rem; line-height: 1.75; }
+.nl-form { display: flex; flex-direction: column; gap: 0.7rem; }
+.nl-form input {
+  background: var(--bg2); border: 1px solid var(--border); padding: 0.85rem 1rem;
+  color: var(--text); font-family: var(--font-b); font-size: 0.87rem;
+  border-radius: var(--r); outline: none; transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+.nl-form input:focus { border-color: rgba(192,57,43,0.5); }
+.nl-form input::placeholder { color: var(--text3); }
+
+/* ── MEDIUM ── */
+@media (min-width: 640px) {
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .nl-form { flex-direction: row; }
+  .nl-form input { flex: 1; }
+  .services-head { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+}
+/* ── LARGE ── */
+@media (min-width: 1024px) {
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .services-grid { grid-template-columns: repeat(3,1fr); }
+  .testi-slide { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="page-veil"></div>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer">
+  <a href="index.html">Home</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="career.html">Careers</a>
+  <a href="affiliate.html">Affiliate</a>
+  <a href="contact.html">Contact</a>
+  <div class="drawer-actions">
+    <a href="login.html" class="btn btn-outline btn-full">Sign In</a>
+    <a href="register.html" class="btn btn-red btn-full">Get Started</a>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="career.html">Careers</a></li>
+    <li><a href="affiliate.html">Affiliate</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+    <a href="register.html" class="btn btn-red btn-sm">Get Started</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Elite Software Engineering</div>
+    <h1 class="hero-h1">We build<br><em>digital</em><br>empires.</h1>
+    <p class="hero-sub">BlackCodeLabs crafts world-class software, APIs, mobile apps, and web experiences that scale with your ambitions.</p>
+    <div class="hero-btns">
+      <a href="solutions.html" class="btn btn-red btn-lg">Explore Solutions</a>
+      <a href="contact.html" class="btn btn-outline btn-lg">Let's Talk →</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-bar"></div><span>Scroll</span></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <div class="ticker-item">Software Development<span class="ticker-dot">◆</span>API Engineering<span class="ticker-dot">◆</span>SEO Optimisation<span class="ticker-dot">◆</span>Bug Bounty<span class="ticker-dot">◆</span>App Development<span class="ticker-dot">◆</span>Web Applications<span class="ticker-dot">◆</span>Cloud Architecture<span class="ticker-dot">◆</span>UI&nbsp;&amp;&nbsp;UX Design<span class="ticker-dot">◆</span></div>
+    <div class="ticker-item">Software Development<span class="ticker-dot">◆</span>API Engineering<span class="ticker-dot">◆</span>SEO Optimisation<span class="ticker-dot">◆</span>Bug Bounty<span class="ticker-dot">◆</span>App Development<span class="ticker-dot">◆</span>Web Applications<span class="ticker-dot">◆</span>Cloud Architecture<span class="ticker-dot">◆</span>UI&nbsp;&amp;&nbsp;UX Design<span class="ticker-dot">◆</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container about-grid">
+    <div class="reveal">
+      <span class="s-label">About Us</span>
+      <h2 class="s-title">We don't just write code.<br><em>We engineer outcomes.</em></h2>
+      <div class="s-div"></div>
+      <p class="about-body">BlackCodeLabs is a premium software engineering studio helping businesses around the globe build technology that truly performs. From elegant websites to complex enterprise platforms, we bring craft and precision to every project.</p>
+      <p class="about-body">We work with startups finding product-market fit and enterprises modernising legacy systems. Whatever stage you're at, we bring the same relentless commitment to excellence.</p>
+      <div class="about-stats">
+        <div class="stat-cell"><h3>150+</h3><p>Projects</p></div>
+        <div class="stat-cell"><h3>98%</h3><p>Satisfaction</p></div>
+        <div class="stat-cell"><h3>40+</h3><p>Engineers</p></div>
+      </div>
+    </div>
+    <div class="reveal about-visual-box">
+      <canvas class="about-canvas-wrap" id="about-canvas"></canvas>
+      <div class="about-quote">
+        <p>"The measure of great technology is invisible infrastructure — it just works, every time."</p>
+        <span>— BlackCodeLabs Engineering Principle</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="services-head reveal">
+      <div>
+        <span class="s-label">What We Do</span>
+        <h2 class="s-title">Services built for <em>real results.</em></h2>
+      </div>
+      <a href="solutions.html" class="btn btn-outline btn-sm" style="flex-shrink:0">All Solutions →</a>
+    </div>
+    <div class="services-grid" data-stagger>
+      <div class="svc-item reveal" data-stagger-item><span class="svc-num">01</span><span class="svc-icon">⚡</span><h3>Software Development</h3><p>Custom enterprise software built for scale. Clean architecture, robust testing, continuous delivery.</p><span class="svc-arrow">↗</span></div>
+      <div class="svc-item reveal" data-stagger-item><span class="svc-num">02</span><span class="svc-icon">🔌</span><h3>API Engineering</h3><p>Fast, documented, and secure REST and GraphQL APIs that connect your systems seamlessly.</p><span class="svc-arrow">↗</span></div>
+      <div class="svc-item reveal" data-stagger-item><span class="svc-num">03</span><span class="svc-icon">📈</span><h3>SEO Optimisation</h3><p>Technical SEO and growth strategies that drive organic traffic and convert visitors into clients.</p><span class="svc-arrow">↗</span></div>
+      <div class="svc-item reveal" data-stagger-item><span class="svc-num">04</span><span class="svc-icon">🛡️</span><h3>Bug Bounty &amp; Security</h3><p>Ethical penetration testing and vulnerability programs that keep your platform airtight.</p><span class="svc-arrow">↗</span></div>
+      <div class="svc-item reveal" data-stagger-item><span class="svc-num">05</span><span class="svc-icon">📱</span><h3>App Development</h3><p>Native iOS and Android apps and cross-platform solutions users return to again and again.</p><span class="svc-arrow">↗</span></div>
+      <div class="svc-item reveal" data-stagger-item><span class="svc-num">06</span><span class="svc-icon">🌐</span><h3>Web &amp; Web App Dev</h3><p>From landing pages to full SaaS platforms — beautiful, fast, and built to convert.</p><span class="svc-arrow">↗</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="testi-head reveal">
+      <span class="s-label">Client Stories</span>
+      <h2 class="s-title">Trusted by builders <em>worldwide.</em></h2>
+    </div>
+    <div class="carousel-wrap reveal" data-delay="150">
+      <div class="carousel-track" id="cTrack">
+        <div class="testi-slide"><div class="testi-card"><div class="testi-stars"><span></span><span></span><span></span><span></span><span></span></div><blockquote>"BlackCodeLabs rebuilt our entire backend. The API they engineered handles two million daily requests flawlessly. Our platform has never been more stable or reliable."</blockquote><div class="testi-author"><div class="testi-av">AO</div><div class="testi-info"><h4>Amara Osei</h4><span>CTO, NovaTech</span></div></div></div></div>
+        <div class="testi-slide"><div class="testi-card"><div class="testi-stars"><span></span><span></span><span></span><span></span><span></span></div><blockquote>"From design to deployment in three weeks. Our e-commerce web app is converting at 8.4%. These engineers are genuinely exceptional at what they do — precise and fast."</blockquote><div class="testi-author"><div class="testi-av">KM</div><div class="testi-info"><h4>Kwame Mensah</h4><span>CEO, MarketHub Africa</span></div></div></div></div>
+        <div class="testi-slide"><div class="testi-card"><div class="testi-stars"><span></span><span></span><span></span><span></span><span></span></div><blockquote>"Their SEO team took us from page five to position two in six weeks. Organic traffic up 340%. I didn't think results this fast were possible. Absolutely transformed our business."</blockquote><div class="testi-author"><div class="testi-av">ZN</div><div class="testi-info"><h4>Zara Ndalo</h4><span>Marketing Director, Savanah Brands</span></div></div></div></div>
+        <div class="testi-slide"><div class="testi-card"><div class="testi-stars"><span></span><span></span><span></span><span></span><span></span></div><blockquote>"The mobile app they built has a 4.9-star rating with over 12,000 reviews. Smooth, intuitive, rock-solid. BlackCodeLabs sets the standard for quality delivery."</blockquote><div class="testi-author"><div class="testi-av">TJ</div><div class="testi-info"><h4>Taiwo Johnson</h4><span>Founder, Flexi Finance</span></div></div></div></div>
+      </div>
+      <div class="carousel-ctrl">
+        <button class="c-btn" id="cPrev">&#8592;</button>
+        <div class="c-dots" id="cDots"></div>
+        <button class="c-btn" id="cNext">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="container nl-inner reveal">
+    <span class="s-label" style="text-align:center">Stay Informed</span>
+    <h2 class="s-title" style="text-align:center">Insights, monthly.<br><em>No noise, just value.</em></h2>
+    <p>Get our latest thinking on software, growth, and technology. Unsubscribe anytime.</p>
+    <div class="nl-form">
+      <input type="email" placeholder="Your email address"/>
+      <button class="btn btn-red" onclick="this.textContent='Subscribed ✓';this.style.background='#27ae60'">Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+        <p>Elite software engineering for the digital age. We build systems that power tomorrow's most ambitious businesses.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="career.html">Careers</a></li>
+          <li><a href="affiliate.html">Affiliate</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="contact.html">Get in Touch</a></li>
+          <li><a href="mailto:hello@blackcodelabs.dev">hello@blackcodelabs.dev</a></li>
+          <li><a href="login.html">Client Portal</a></li>
+          <li><a href="register.html">Register</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <em>BlackCodeLabs</em>. All rights reserved.</p>
+      <p>Built with precision by <em>BlackCodeLabs</em> engineers.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+/* 3D HERO */
+(function(){
+  const cvs = document.getElementById('hero-canvas');
+  const R = new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:true});
+  R.setPixelRatio(Math.min(devicePixelRatio,2));
+  R.setSize(innerWidth,innerHeight);
+  const S=new THREE.Scene(), C=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,200);
+  C.position.z=36;
+  const N=2400,pos=new Float32Array(N*3),col=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*130;pos[i*3+2]=(Math.random()-.5)*130;
+    const t=Math.random();col[i*3]=t>.6?.75:.12;col[i*3+1]=.07;col[i*3+2]=.07;
+  }
+  const pG=new THREE.BufferGeometry();
+  pG.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  pG.setAttribute('color',new THREE.BufferAttribute(col,3));
+  S.add(new THREE.Points(pG,new THREE.PointsMaterial({size:.22,vertexColors:true,transparent:true,opacity:.6})));
+  const sG=new THREE.IcosahedronGeometry(8,1);
+  const sMesh=new THREE.Mesh(sG,new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.06}));
+  sMesh.position.set(14,0,0);S.add(sMesh);
+  const rG=new THREE.TorusGeometry(13,.4,8,70);
+  const rMesh=new THREE.Mesh(rG,new THREE.MeshBasicMaterial({color:0x8a1010,wireframe:true,transparent:true,opacity:.05}));
+  rMesh.rotation.x=Math.PI/2.5;S.add(rMesh);
+  let mx=0,my=0;
+  document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
+  let t=0;
+  (function a(){requestAnimationFrame(a);t+=.008;sMesh.rotation.y=t*.2;sMesh.rotation.x=t*.1;rMesh.rotation.z=t*.06;C.position.x+=(mx*3-C.position.x)*.022;C.position.y+=(-my*2-C.position.y)*.022;R.render(S,C);})();
+  addEventListener('resize',()=>{C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix();R.setSize(innerWidth,innerHeight);});
+})();
+
+/* ABOUT MINI 3D */
+(function(){
+  const c=document.getElementById('about-canvas');if(!c)return;
+  const r=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  const w=c.parentElement.offsetWidth,h=c.parentElement.offsetHeight;
+  r.setSize(w,h);
+  const s=new THREE.Scene(),cam=new THREE.PerspectiveCamera(60,w/h,.1,200);cam.position.z=20;
+  const g=new THREE.OctahedronGeometry(5.5,0);
+  const m=new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.12});
+  const mesh=new THREE.Mesh(g,m);s.add(mesh);
+  (function a(){requestAnimationFrame(a);mesh.rotation.y+=.006;mesh.rotation.x+=.003;r.render(s,cam);})();
+})();
+
+/* CAROUSEL */
+(function(){
+  const track=document.getElementById('cTrack');
+  const dotsWrap=document.getElementById('cDots');
+  const slides=track.querySelectorAll('.testi-slide');
+  let cur=0;const total=slides.length;
+  slides.forEach((_,i)=>{
+    const d=document.createElement('div');d.className='c-dot'+(i===0?' on':'');
+    d.onclick=()=>go(i);dotsWrap.appendChild(d);
+  });
+  function go(n){
+    cur=(n+total)%total;
+    track.style.transform=`translateX(-${cur*100}%)`;
+    dotsWrap.querySelectorAll('.c-dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  }
+  document.getElementById('cPrev').onclick=()=>go(cur-1);
+  document.getElementById('cNext').onclick=()=>go(cur+1);
+  let id=setInterval(()=>go(cur+1),5500);
+  track.parentElement.addEventListener('mouseenter',()=>clearInterval(id));
+  track.parentElement.addEventListener('mouseleave',()=>id=setInterval(()=>go(cur+1),5500));
+  let sx=0;
+  track.parentElement.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  track.parentElement.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?cur+1:cur-1);},{passive:true});
+})();
+</script>
+</body>
+</html>

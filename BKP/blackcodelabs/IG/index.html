@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Loopsta</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="theme-color" content="#0a0a0f">
+</head>
+<body>
+
+<!-- ===== AUTH PAGE ===== -->
+<div id="authPage" class="auth-page page active">
+  <div class="auth-card">
+    <div class="auth-logo">Loopsta</div>
+    <p id="authSub" class="auth-tagline">Create your account and start creating</p>
+
+    <!-- SIGNUP FORM (shown first) -->
+    <div id="signupForm">
+      <div class="role-select">
+        <div class="role-option selected" data-role="user" onclick="selectRole('user')">
+          <div class="role-icon">👤</div>
+          <div class="role-label">Normal User</div>
+          <div class="role-desc">Browse, like & follow</div>
+        </div>
+        <div class="role-option" data-role="creator" onclick="selectRole('creator')">
+          <div class="role-icon">🎨</div>
+          <div class="role-label">Creator</div>
+          <div class="role-desc">Post, earn & grow</div>
+        </div>
+      </div>
+
+      <form onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input class="form-input" type="text" placeholder="@yourhandle" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="you@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" placeholder="Min 8 characters" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;padding:14px">
+          Create Account
+        </button>
+      </form>
+
+      <div class="auth-divider">or continue with</div>
+
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" style="flex:1" onclick="handleSignup(event)">🌐 Google</button>
+        <button class="btn btn-ghost" style="flex:1" onclick="handleSignup(event)">🍎 Apple</button>
+      </div>
+
+      <div class="auth-switch">Already have an account? <a href="#" onclick="showLogin()">Sign in</a></div>
+    </div>
+
+    <!-- LOGIN FORM (hidden initially) -->
+    <div id="loginForm" style="display:none">
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email or Username</label>
+          <input class="form-input" type="text" placeholder="you@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" placeholder="Your password" required>
+        </div>
+        <div style="text-align:right;margin-bottom:16px">
+          <a href="#" style="font-size:13px;color:var(--accent2)">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;padding:14px">Sign In</button>
+      </form>
+
+      <div class="auth-divider">or continue with</div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" style="flex:1" onclick="handleLogin(event)">🌐 Google</button>
+        <button class="btn btn-ghost" style="flex:1" onclick="handleLogin(event)">🍎 Apple</button>
+      </div>
+
+      <div class="auth-switch">New to Loopsta? <a href="#" onclick="showSignup()">Create account</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP LAYOUT ===== -->
+<div class="app-layout">
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text">Loopsta</div>
+      <div class="logo-tag">Social · Creative</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+
+      <div class="nav-item active" data-page="feed" onclick="navigate('feed')">
+        <span class="nav-icon">🏠</span><span>Home</span>
+      </div>
+      <div class="nav-item" data-page="explore" onclick="navigate('explore')">
+        <span class="nav-icon">🔭</span><span>Explore</span>
+      </div>
+      <div class="nav-item" data-page="reels" onclick="navigate('reels')">
+        <span class="nav-icon">🎬</span><span>Reels</span>
+      </div>
+      <div class="nav-item" data-page="messages" onclick="navigate('messages')">
+        <span class="nav-icon">💬</span><span>Messages</span>
+        <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item" data-page="notifications" onclick="navigate('notifications')">
+        <span class="nav-icon">🔔</span><span>Notifications</span>
+        <span class="nav-badge">8</span>
+      </div>
+
+      <div class="nav-section-label">You</div>
+      <div class="nav-item" data-page="profile" onclick="navigate('profile')">
+        <span class="nav-icon">👤</span><span>Profile</span>
+      </div>
+      <div class="nav-item" data-page="saved" onclick="navigate('saved')">
+        <span class="nav-icon">🔖</span><span>Saved</span>
+      </div>
+      <div class="nav-item" onclick="openCreateModal()">
+        <span class="nav-icon">➕</span><span>Create</span>
+      </div>
+
+      <div class="nav-section-label">Account</div>
+      <div class="nav-item" data-page="settings" onclick="navigate('settings')">
+        <span class="nav-icon">⚙️</span><span>Settings</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-user" onclick="navigate('profile')">
+      <img class="avatar" src="https://i.pravatar.cc/150?img=13" width="36" height="36" alt="You">
+      <div class="user-info">
+        <div class="user-name">Alex Kamau</div>
+        <div class="user-handle">@alex.kamau · <span style="color:var(--accent2)">Creator</span></div>
+      </div>
+      <span style="color:var(--text3);font-size:16px">⋯</span>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- Mobile Top Bar -->
+    <div class="mobile-topbar">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <span class="logo-text">Loopsta</span>
+      <div class="mobile-nav-icons">
+        <button class="icon-btn" onclick="navigate('notifications')">
+          🔔 <span class="badge">8</span>
+        </button>
+        <button class="icon-btn" onclick="navigate('messages')">
+          💬 <span class="badge">3</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== FEED PAGE ===== -->
+    <div class="page feed-page" id="page-feed">
+      <div class="feed-layout">
+        <div class="feed-main">
+          <!-- Stories -->
+          <div class="stories-row" id="storiesRow"></div>
+          <!-- Posts -->
+          <div id="feedPosts"></div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:14px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)">
+            <img class="avatar" src="https://i.pravatar.cc/150?img=13" width="48" height="48" alt="You">
+            <div style="flex:1">
+              <div style="font-weight:700;font-size:14px">Alex Kamau</div>
+              <div style="font-size:12px;color:var(--text3)">@alex.kamau</div>
+            </div>
+            <button class="btn btn-outline btn-xs" onclick="navigate('profile')">View</button>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Suggested for you</div>
+            <div id="suggestionsList"></div>
+            <div style="font-size:13px;color:var(--accent2);cursor:pointer;margin-top:4px" onclick="navigate('explore')">See all →</div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">🔥 Trending</div>
+            <div id="trendingList"></div>
+          </div>
+
+          <div style="font-size:11px;color:var(--text3);line-height:1.8">
+            About · Privacy · Terms · Advertising · Help<br>
+            © 2025 Loopsta Inc.
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ===== EXPLORE PAGE ===== -->
+    <div class="page" id="page-explore">
+      <div class="explore-search-bar">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="search" placeholder="Search people, posts, tags…" oninput="handleSearch(this)" id="exploreSearch">
+        </div>
+      </div>
+
+      <!-- Category pills -->
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:14px 24px;border-bottom:1px solid var(--border)">
+        <button class="btn btn-primary btn-sm" onclick="showToast('All 🌐','info')">All</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Photos 📸','info')">📸 Photos</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Videos 🎬','info')">🎬 Videos</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Reels 🔁','info')">🔁 Reels</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('People 👥','info')">👥 People</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Tags 🏷️','info')">🏷️ Tags</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Live 🔴','info')">🔴 Live</button>
+      </div>
+
+      <div class="explore-grid" id="exploreGrid"></div>
+    </div>
+
+    <!-- ===== REELS PAGE ===== -->
+    <div class="page" id="page-reels">
+      <div class="page-header">
+        <h1 class="page-title">Reels</h1>
+        <p class="page-subtitle">Short videos from creators you follow</p>
+      </div>
+
+      <div style="padding:20px 24px">
+        <!-- Featured Reel -->
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px">
+          <div style="position:relative;background:var(--gradient);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center">
+            <img src="https://picsum.photos/seed/featured/800/450" alt="Featured" style="width:100%;height:100%;object-fit:cover;opacity:0.6;position:absolute;inset:0">
+            <div style="position:relative;text-align:center">
+              <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;cursor:pointer;backdrop-filter:blur(4px)" onclick="showToast('Playing featured reel 🎬','info')">▶</div>
+              <span class="live-badge">FEATURED</span>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);padding:20px 16px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <img class="avatar" src="https://i.pravatar.cc/150?img=8" width="28" height="28" alt="">
+                <span style="font-weight:600;font-size:13px;color:#fff">@kwame_a</span>
+                <span class="tag tag-creator" style="font-size:10px">creator</span>
+              </div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.8)">Golden hour at the coast — best light ever ✨</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--text2)">More Reels</div>
+        <div class="reels-grid" id="reelsGrid"></div>
+      </div>
+    </div>
+
+    <!-- ===== MESSAGES PAGE ===== -->
+    <div class="page messages-page" id="page-messages">
+      <div class="messages-layout">
+        <div class="messages-list">
+          <div class="messages-list-header">
+            <div class="messages-list-title">Messages</div>
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="search" placeholder="Search messages…">
+            </div>
+          </div>
+          <!-- Requests banner -->
+          <div style="padding:10px 20px;background:rgba(124,92,252,0.08);border-bottom:1px solid var(--border);cursor:pointer" onclick="showToast('2 message requests 📬','info')">
+            <div style="font-size:13px;font-weight:600;color:var(--accent2)">📬 2 Message Requests</div>
+          </div>
+          <div id="threadList"></div>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+          <div class="chat-header" id="chatHeader"></div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="chat-input-area">
+            <button class="icon-btn" onclick="showToast('Attachment 📎','info')" style="font-size:22px">📎</button>
+            <button class="icon-btn" onclick="showToast('Image 🖼️','info')" style="font-size:22px">🖼️</button>
+            <input class="chat-input" id="chatInputField" placeholder="Message…">
+            <button class="send-btn" onclick="sendMessage()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NOTIFICATIONS PAGE ===== -->
+    <div class="page" id="page-notifications">
+      <div style="padding:20px 24px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;max-width:640px;margin:0 auto;width:100%">
+        <h1 style="font-size:22px;font-weight:800">Notifications</h1>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('All marked as read ✓','success')">Mark all read</button>
+      </div>
+
+      <!-- Filter tabs -->
+      <div style="display:flex;border-bottom:1px solid var(--border);padding:0 24px;max-width:640px;margin:0 auto;width:100%">
+        <div class="profile-tab active" onclick="this.parentElement.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">All</div>
+        <div class="profile-tab" onclick="this.parentElement.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Likes</div>
+        <div class="profile-tab" onclick="this.parentElement.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Comments</div>
+        <div class="profile-tab" onclick="this.parentElement.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Follows</div>
+      </div>
+
+      <div class="notif-list" id="notifList" style="max-width:640px;margin:0 auto"></div>
+    </div>
+
+    <!-- ===== PROFILE PAGE ===== -->
+    <div class="page" id="page-profile">
+      <div style="max-width:860px;margin:0 auto">
+        <!-- Cover -->
+        <div class="profile-cover">
+          <img src="https://picsum.photos/seed/cover1/1200/400" alt="Cover" loading="lazy">
+          <div class="profile-cover-overlay"></div>
+          <button class="btn btn-ghost btn-xs" style="position:absolute;right:16px;top:16px;background:rgba(0,0,0,0.5);border-color:rgba(255,255,255,0.2);color:#fff" onclick="showToast('Edit cover photo 🖼️','info')">✏️ Edit Cover</button>
+        </div>
+
+        <div class="profile-info-section">
+          <div class="profile-avatar-wrap">
+            <img class="profile-avatar" src="https://i.pravatar.cc/150?img=13" alt="Alex Kamau" loading="lazy">
+            <div style="position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:2px solid var(--bg)" onclick="showToast('Change profile photo 📸','info')">✏️</div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn btn-primary btn-sm" onclick="openCreateModal()">➕ New Post</button>
+            <button class="btn btn-ghost btn-sm" onclick="navigate('settings')">⚙️ Edit Profile</button>
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Profile link copied! 🔗','success')">↗️ Share</button>
+          </div>
+
+          <div class="profile-name">
+            Alex Kamau
+            <span class="verified">✦</span>
+            <span class="tag tag-creator">creator</span>
+          </div>
+          <div class="profile-handle">@alex.kamau</div>
+          <div class="profile-bio">
+            📸 Visual storyteller & content creator<br>
+            🌍 Based in Nairobi, Kenya<br>
+            ✨ Capturing moments that matter
+          </div>
+          <a class="profile-link" href="#" onclick="return false">🔗 alexkamau.co</a>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value">147</div>
+            <div class="stat-label">Posts</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">12.4K</div>
+            <div class="stat-label">Followers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">389</div>
+            <div class="stat-label">Following</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">2.1M</div>
+            <div class="stat-label">Reach</div>
+          </div>
+        </div>
+
+        <!-- Creator Analytics (only for creators) -->
+        <div style="padding:16px 24px;background:rgba(124,92,252,0.06);border-bottom:1px solid var(--border);display:flex;gap:20px;overflow-x:auto">
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-size:18px;font-weight:800;color:var(--accent2)">↑ 24%</div>
+            <div style="font-size:11px;color:var(--text3)">Reach growth</div>
+          </div>
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-size:18px;font-weight:800;color:#48bb78">↑ 12%</div>
+            <div style="font-size:11px;color:var(--text3)">Engagement</div>
+          </div>
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-size:18px;font-weight:800;color:var(--pink)">89%</div>
+            <div style="font-size:11px;color:var(--text3)">Retention</div>
+          </div>
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-size:18px;font-weight:800;color:var(--orange)">4.8★</div>
+            <div style="font-size:11px;color:var(--text3)">Content score</div>
+          </div>
+          <button class="btn btn-outline btn-xs" style="flex-shrink:0;align-self:center" onclick="navigate('settings')">Full Analytics →</button>
+        </div>
+
+        <div class="profile-tabs">
+          <div class="profile-tab active" onclick="switchProfileTab(this, 'posts')">📸 Posts</div>
+          <div class="profile-tab" onclick="switchProfileTab(this, 'reels')">🎬 Reels</div>
+          <div class="profile-tab" onclick="switchProfileTab(this, 'tagged')">🏷️ Tagged</div>
+          <div class="profile-tab" onclick="switchProfileTab(this, 'saved')">🔖 Saved</div>
+        </div>
+
+        <div class="posts-grid" id="profileGrid"></div>
+      </div>
+    </div>
+
+    <!-- ===== SAVED PAGE ===== -->
+    <div class="page" id="page-saved">
+      <div style="max-width:860px;margin:0 auto;padding:28px 24px">
+        <h1 class="page-title" style="margin-bottom:6px">Saved</h1>
+        <p style="color:var(--text2);font-size:14px;margin-bottom:24px">Only you can see what you've saved</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+          <div style="background:var(--surface2);border:2px dashed var(--border2);border-radius:var(--radius);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer" onclick="showToast('Create a collection 📁','info')">
+            <div style="font-size:32px">➕</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text3)">New Collection</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer" onclick="showToast('Opening All Posts 📂','info')">
+            <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:1;gap:1px">
+              <img src="https://picsum.photos/seed/sv1/150/150" style="width:100%;height:100%;object-fit:cover" alt="">
+              <img src="https://picsum.photos/seed/sv2/150/150" style="width:100%;height:100%;object-fit:cover" alt="">
+              <img src="https://picsum.photos/seed/sv3/150/150" style="width:100%;height:100%;object-fit:cover" alt="">
+              <img src="https://picsum.photos/seed/sv4/150/150" style="width:100%;height:100%;object-fit:cover" alt="">
+            </div>
+            <div style="padding:10px 12px">
+              <div style="font-size:13px;font-weight:700">All Posts</div>
+              <div style="font-size:11px;color:var(--text3)">47 posts</div>
+            </div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer" onclick="showToast('Opening Inspiration ✨','info')">
+            <div style="aspect-ratio:1;overflow:hidden">
+              <img src="https://picsum.photos/seed/sv5/300/300" style="width:100%;height:100%;object-fit:cover" alt="">
+            </div>
+            <div style="padding:10px 12px">
+              <div style="font-size:13px;font-weight:700">✨ Inspiration</div>
+              <div style="font-size:11px;color:var(--text3)">12 posts</div>
+            </div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer" onclick="showToast('Opening Fashion Inspo 👗','info')">
+            <div style="aspect-ratio:1;overflow:hidden">
+              <img src="https://picsum.photos/seed/sv6/300/300" style="width:100%;height:100%;object-fit:cover" alt="">
+            </div>
+            <div style="padding:10px 12px">
+              <div style="font-size:13px;font-weight:700">👗 Fashion</div>
+              <div style="font-size:11px;color:var(--text3)">8 posts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div class="page" id="page-settings">
+      <div class="settings-layout">
+        <nav class="settings-nav">
+          <div class="settings-nav-item active" onclick="this.parentElement.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">👤 Account</div>
+          <div class="settings-nav-item" onclick="this.parentElement.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">🔒 Privacy</div>
+          <div class="settings-nav-item" onclick="this.parentElement.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">🔔 Notifications</div>
+          <div class="settings-nav-item" onclick="this.parentElement.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">🎨 Appearance</div>
+          <div class="settings-nav-item" onclick="this.parentElement.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">📊 Analytics</div>
+          <div class="settings-nav-item" onclick="this.parentElement.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">💜 Creator Hub</div>
+          <div class="settings-nav-item" onclick="this.parentElement.querySelectorAll('.settings-nav-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">🆘 Help</div>
+          <div class="settings-nav-item" style="color:var(--pink)" onclick="showToast('Logged out! 👋','info');setTimeout(()=>{navigate('feed');document.getElementById('authPage').classList.add('active');document.querySelectorAll(\'.page:not(#authPage)\').forEach(p=>p.classList.remove(\'active\'))},1000)">🚪 Log Out</div>
+        </nav>
+
+        <div class="settings-panel">
+          <!-- Edit Profile -->
+          <div class="settings-section">
+            <div class="settings-section-title">Edit Profile</div>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+              <img class="avatar" src="https://i.pravatar.cc/150?img=13" width="64" height="64" alt="">
+              <div>
+                <button class="btn btn-outline btn-sm" onclick="showToast('Uploading new photo 📸','info')">Change Photo</button>
+                <div style="font-size:12px;color:var(--text3);margin-top:4px">JPG, PNG. Max 5MB.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Display Name</label>
+              <input class="form-input" type="text" value="Alex Kamau">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input class="form-input" type="text" value="alex.kamau">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bio</label>
+              <textarea class="form-input" rows="3" style="resize:vertical">📸 Visual storyteller & content creator
+🌍 Based in Nairobi, Kenya
+✨ Capturing moments that matter</textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Website</label>
+              <input class="form-input" type="url" placeholder="https://yoursite.com" value="https://alexkamau.co">
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Profile saved! ✓','success')">Save Changes</button>
+          </div>
+
+          <!-- Privacy -->
+          <div class="settings-section">
+            <div class="settings-section-title">Privacy & Security</div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Private Account</div>
+                <div class="settings-row-desc">Only approved followers can see your posts</div>
+              </div>
+              <button class="toggle" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Show Activity Status</div>
+                <div class="settings-row-desc">Let others see when you were last active</div>
+              </div>
+              <button class="toggle on" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Allow DMs from Everyone</div>
+                <div class="settings-row-desc">Non-followers can send you message requests</div>
+              </div>
+              <button class="toggle on" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Two-Factor Authentication</div>
+                <div class="settings-row-desc">Extra security for your account</div>
+              </div>
+              <button class="toggle" onclick="toggleSwitch(this);showToast('2FA setup — check your email 📧','info')"></button>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="settings-section">
+            <div class="settings-section-title">Notifications</div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Push Notifications</div>
+                <div class="settings-row-desc">Receive alerts on your device</div>
+              </div>
+              <button class="toggle on" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Likes</div>
+              </div>
+              <button class="toggle on" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Comments</div>
+              </div>
+              <button class="toggle on" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">New Followers</div>
+              </div>
+              <button class="toggle on" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Direct Messages</div>
+              </div>
+              <button class="toggle on" onclick="toggleSwitch(this)"></button>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <div class="settings-row-label">Email Digest</div>
+                <div class="settings-row-desc">Weekly summary of your performance</div>
+              </div>
+              <button class="toggle" onclick="toggleSwitch(this)"></button>
+            </div>
+          </div>
+
+          <!-- Creator Hub -->
+          <div class="settings-section" style="background:rgba(124,92,252,0.06);border-color:rgba(124,92,252,0.2)">
+            <div class="settings-section-title" style="color:var(--accent2)">💜 Creator Hub</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;cursor:pointer" onclick="showToast('Opening Monetization 💰','info')">
+                <div style="font-size:28px;margin-bottom:6px">💰</div>
+                <div style="font-size:13px;font-weight:600">Monetization</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:3px">Earn from content</div>
+              </div>
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;cursor:pointer" onclick="showToast('Opening Analytics 📊','info')">
+                <div style="font-size:28px;margin-bottom:6px">📊</div>
+                <div style="font-size:13px;font-weight:600">Analytics</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:3px">Track performance</div>
+              </div>
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;cursor:pointer" onclick="showToast('Opening Brand Deals 🤝','info')">
+                <div style="font-size:28px;margin-bottom:6px">🤝</div>
+                <div style="font-size:13px;font-weight:600">Brand Deals</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:3px">Collabs & sponsors</div>
+              </div>
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;cursor:pointer" onclick="showToast('Opening Scheduler 📅','info')">
+                <div style="font-size:28px;margin-bottom:6px">📅</div>
+                <div style="font-size:13px;font-weight:600">Scheduler</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:3px">Plan your posts</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== CREATE POST MODAL ===== -->
+<div class="create-modal-backdrop" id="createModal">
+  <div class="create-modal">
+    <div class="modal-header">
+      <div class="modal-title">Create New Post</div>
+      <button class="modal-close" onclick="closeCreateModal()">✕</button>
+    </div>
+
+    <div style="padding:16px 20px 0">
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn btn-primary btn-xs" onclick="this.parentElement.querySelectorAll('.btn').forEach(b=>b.className='btn btn-ghost btn-xs');this.className='btn btn-primary btn-xs'">📸 Post</button>
+        <button class="btn btn-ghost btn-xs" onclick="this.parentElement.querySelectorAll('.btn').forEach(b=>b.className='btn btn-ghost btn-xs');this.className='btn btn-primary btn-xs'">🎬 Reel</button>
+        <button class="btn btn-ghost btn-xs" onclick="this.parentElement.querySelectorAll('.btn').forEach(b=>b.className='btn btn-ghost btn-xs');this.className='btn btn-primary btn-xs'">📖 Story</button>
+        <button class="btn btn-ghost btn-xs" onclick="this.parentElement.querySelectorAll('.btn').forEach(b=>b.className='btn btn-ghost btn-xs');this.className='btn btn-primary btn-xs'">🔴 Live</button>
+      </div>
+    </div>
+
+    <div class="upload-zone" onclick="showToast('Select files from your device 📂','info')">
+      <div class="upload-icon">🖼️</div>
+      <div class="upload-text">Drag & drop or click to upload</div>
+      <div class="upload-subtext">PNG, JPG, GIF, MP4 up to 50MB</div>
+    </div>
+
+    <div style="padding:0 20px 16px">
+      <textarea class="form-input" rows="3" placeholder="Write a caption... #hashtags @mentions" style="resize:none;margin-bottom:12px"></textarea>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <button class="btn btn-ghost btn-xs" onclick="showToast('Tag people 👥','info')">👥 Tag People</button>
+        <button class="btn btn-ghost btn-xs" onclick="showToast('Add location 📍','info')">📍 Location</button>
+        <button class="btn btn-ghost btn-xs" onclick="showToast('Add music 🎵','info')">🎵 Music</button>
+        <button class="btn btn-ghost btn-xs" onclick="showToast('Alt text added ♿','success')">♿ Alt Text</button>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%" onclick="showToast('Post shared! 🎉','success');closeCreateModal()">
+        Share Post
+      </button>
+    </div>
+
+    <!-- Creator Tools -->
+    <div class="creator-tools">
+      <div class="creator-tools-title">🎨 Creator Tools</div>
+      <div class="tools-grid">
+        <div class="tool-btn" onclick="showToast('Opening Filters 🎨','info')">
+          <div class="tool-icon">🎨</div>
+          <div class="tool-label">Filters</div>
+        </div>
+        <div class="tool-btn" onclick="showToast('Opening Editor ✂️','info')">
+          <div class="tool-icon">✂️</div>
+          <div class="tool-label">Editor</div>
+        </div>
+        <div class="tool-btn" onclick="showToast('Opening Text 🔤','info')">
+          <div class="tool-icon">🔤</div>
+          <div class="tool-label">Text</div>
+        </div>
+        <div class="tool-btn" onclick="showToast('Opening Stickers 🎭','info')">
+          <div class="tool-icon">🎭</div>
+          <div class="tool-label">Stickers</div>
+        </div>
+        <div class="tool-btn" onclick="showToast('Opening Schedule 📅','info')">
+          <div class="tool-icon">📅</div>
+          <div class="tool-label">Schedule</div>
+        </div>
+        <div class="tool-btn" onclick="showToast('Opening AI Enhance ✨','info')">
+          <div class="tool-icon">✨</div>
+          <div class="tool-label">AI Enhance</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MOBILE BOTTOM NAV ===== -->
+<nav class="mobile-bottom-nav">
+  <div class="bottom-nav-items">
+    <button class="bottom-nav-item active" data-page="feed" onclick="navigate('feed')">
+      <span class="bottom-nav-icon">🏠</span>
+      <span class="bottom-nav-label">Home</span>
+    </button>
+    <button class="bottom-nav-item" data-page="explore" onclick="navigate('explore')">
+      <span class="bottom-nav-icon">🔭</span>
+      <span class="bottom-nav-label">Explore</span>
+    </button>
+    <button class="bottom-nav-item" onclick="openCreateModal()">
+      <span class="bottom-nav-icon" style="width:40px;height:40px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:-2px">➕</span>
+      <span class="bottom-nav-label"></span>
+    </button>
+    <button class="bottom-nav-item" data-page="reels" onclick="navigate('reels')">
+      <span class="bottom-nav-icon">🎬</span>
+      <span class="bottom-nav-label">Reels</span>
+    </button>
+    <button class="bottom-nav-item" data-page="profile" onclick="navigate('profile')">
+      <img src="https://i.pravatar.cc/150?img=13" alt="You" style="width:28px;height:28px;border-radius:50%;object-fit:cover">
+      <span class="bottom-nav-label">Profile</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// Populate right sidebar suggestions
+window.addEventListener('DOMContentLoaded', () => {
+  const sugg = document.getElementById('suggestionsList');
+  if (sugg) {
+    const items = [
+      {name:'Zara Osei', handle:'zara.osei', avatar:'https://i.pravatar.cc/150?img=1', meta:'Followed by kwame_a'},
+      {name:'Nia Carter', handle:'nia.carter', avatar:'https://i.pravatar.cc/150?img=4', meta:'Creator · 201K followers'},
+      {name:'Kwame Asante', handle:'kwame_a', avatar:'https://i.pravatar.cc/150?img=8', meta:'Creator · 320K followers'},
+      {name:'Chidi Eze', handle:'chidi_eze', avatar:'https://i.pravatar.cc/150?img=6', meta:'New to Loopsta'},
+    ];
+    sugg.innerHTML = items.map(u => `
+      <div class="suggestion-item">
+        <img class="avatar" src="${u.avatar}" width="36" height="36" alt="${u.name}" onclick="navigate('profile')" style="cursor:pointer">
+        <div class="suggestion-info">
+          <div class="suggestion-name" onclick="navigate('profile')" style="cursor:pointer">${u.name}</div>
+          <div class="suggestion-meta">${u.meta}</div>
+        </div>
+        <button class="btn btn-outline btn-xs" id="sug-${u.handle}" onclick="toggleFollow(this,'${u.handle}')">Follow</button>
+      </div>`).join('');
+  }
+
+  const trending = document.getElementById('trendingList');
+  if (trending) {
+    const tags = [
+      {name:'#AfricanCreatives', posts:'12.4K'},
+      {name:'#NairobiVibes', posts:'8.9K'},
+      {name:'#LoopstaLife', posts:'34.2K'},
+      {name:'#GoldenHour', posts:'5.7K'},
+    ];
+    trending.innerHTML = tags.map(t => `
+      <div class="trending-tag" onclick="showToast('Exploring ${t.name} 🔍','info')">
+        <div>
+          <div class="trending-tag-name">${t.name}</div>
+          <div class="trending-tag-posts">${t.posts} posts</div>
+        </div>
+        <span style="font-size:18px;color:var(--text3)">→</span>
+      </div>`).join('');
+  }
+});
+</script>
+
+<script src="js/app.js"></script>
+</body>
+</html>

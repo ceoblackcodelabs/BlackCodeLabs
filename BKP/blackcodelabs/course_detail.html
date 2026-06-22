@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Course Detail — BlackCodeLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+/* ── HERO ── */
+.course-hero{position:relative;padding:calc(var(--nav-h) + 3rem) 5vw 3rem;overflow:hidden;border-bottom:1px solid var(--border)}
+#cd-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ch-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:2.5rem;align-items:start}
+.ch-breadcrumb{display:flex;align-items:center;gap:.5rem;font-family:var(--font-m);font-size:.65rem;color:var(--text3);margin-bottom:1.2rem;flex-wrap:wrap}
+.ch-breadcrumb a{color:var(--text3);text-decoration:none;transition:color .25s}
+.ch-breadcrumb a:hover{color:var(--accent)}
+.ch-breadcrumb span{color:var(--text3)}
+.ch-cat{font-family:var(--font-m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;display:block}
+.ch-title{font-family:var(--font-d);font-size:clamp(1.8rem,5vw,3rem);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:.8rem}
+.ch-desc{font-size:.9rem;color:var(--text2);line-height:1.8;margin-bottom:1.4rem;max-width:620px}
+.ch-meta-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-bottom:1.4rem}
+.ch-meta-chip{display:flex;align-items:center;gap:.4rem;font-family:var(--font-m);font-size:.68rem;color:var(--text2)}
+.ch-meta-chip em{font-style:normal;color:var(--text)}
+.ch-rating{display:flex;align-items:center;gap:.4rem}
+.stars{display:flex;gap:.2rem}
+.star{width:9px;height:9px;background:var(--accent);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.ch-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.8rem}
+.ch-tag{font-family:var(--font-m);font-size:.6rem;padding:.25rem .65rem;border:1px solid var(--border);border-radius:20px;color:var(--text3)}
+/* STICKY ENROL CARD */
+.enrol-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;position:relative}
+.enrol-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--accent),transparent)}
+.enrol-thumb{height:180px;background:linear-gradient(135deg,#1a0505,#050505);display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden}
+#thumb-canvas{position:absolute;inset:0}
+.enrol-body{padding:1.5rem}
+.enrol-price{font-family:var(--font-d);font-size:2.2rem;font-weight:900;color:var(--text);line-height:1;margin-bottom:.3rem}
+.enrol-price span{font-family:var(--font-m);font-size:.72rem;color:var(--text3)}
+.enrol-note{font-family:var(--font-m);font-size:.7rem;color:var(--text3);margin-bottom:1.3rem}
+.enrol-perks{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.5rem}
+.enrol-perks li{display:flex;align-items:center;gap:.7rem;font-size:.82rem;color:var(--text2)}
+.enrol-perks li::before{content:'✓';color:var(--accent);font-family:var(--font-m);font-size:.75rem;flex-shrink:0}
+.enrol-btn{width:100%;padding:1rem;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-b);font-size:.9rem;font-weight:500;cursor:pointer;transition:all .3s var(--ease);margin-bottom:.7rem}
+.enrol-btn:hover{background:var(--accent-h);box-shadow:0 0 20px rgba(192,57,43,.35);transform:translateY(-1px)}
+.enrol-secondary{width:100%;padding:.75rem;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:var(--r);font-family:var(--font-b);font-size:.83rem;cursor:pointer;transition:all .3s}
+.enrol-secondary:hover{border-color:rgba(192,57,43,.4);color:var(--accent)}
+.enrol-guarantee{text-align:center;font-family:var(--font-m);font-size:.65rem;color:var(--text3);margin-top:.8rem}
+
+/* ── MAIN LAYOUT ── */
+.course-body{max-width:1200px;margin:0 auto;padding:clamp(2rem,5vw,4rem) 5vw;display:grid;grid-template-columns:1fr;gap:2.5rem}
+.course-main{}
+
+/* SECTION BLOCKS */
+.cb-section{margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.cb-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.cb-section h2{font-family:var(--font-d);font-size:clamp(1.3rem,3.5vw,1.7rem);font-weight:700;margin-bottom:1.2rem;letter-spacing:-.01em}
+.cb-section h2 em{font-style:italic;color:var(--accent)}
+
+/* WHAT YOU LEARN */
+.learn-grid{display:grid;grid-template-columns:1fr;gap:.65rem}
+.learn-item{display:flex;align-items:flex-start;gap:.7rem;font-size:.85rem;color:var(--text2);line-height:1.5}
+.learn-item::before{content:'✓';color:var(--accent);font-family:var(--font-m);font-size:.75rem;flex-shrink:0;margin-top:.1rem}
+
+/* CURRICULUM */
+.curriculum-list{display:flex;flex-direction:column;gap:.5rem}
+.mod-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.mod-head{display:flex;align-items:center;justify-content:space-between;padding:.95rem 1.2rem;cursor:pointer;user-select:none;transition:background .25s;gap:.8rem}
+.mod-head:hover{background:var(--bg3)}
+.mod-head-left{display:flex;align-items:center;gap:.8rem;min-width:0}
+.mod-num{font-family:var(--font-m);font-size:.62rem;color:var(--accent);letter-spacing:.1em;flex-shrink:0}
+.mod-title{font-family:var(--font-d);font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-head-right{display:flex;align-items:center;gap:.8rem;flex-shrink:0}
+.mod-meta{font-family:var(--font-m);font-size:.62rem;color:var(--text3)}
+.mod-arrow{color:var(--accent);font-size:.85rem;transition:transform .32s var(--ease);flex-shrink:0}
+.mod-item.open .mod-arrow{transform:rotate(90deg)}
+.mod-lessons{max-height:0;overflow:hidden;transition:max-height .42s var(--ease)}
+.mod-item.open .mod-lessons{max-height:600px}
+.lesson-row{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.2rem;border-top:1px solid var(--border);gap:.8rem}
+.lesson-row:hover{background:rgba(255,255,255,.02)}
+.lesson-left{display:flex;align-items:center;gap:.7rem;min-width:0}
+.lesson-type{width:22px;height:22px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.62rem;flex-shrink:0}
+.lesson-title{font-size:.82rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lesson-dur{font-family:var(--font-m);font-size:.62rem;color:var(--text3);flex-shrink:0}
+.lesson-free{font-family:var(--font-m);font-size:.58rem;color:var(--accent);padding:.15rem .45rem;border:1px solid rgba(192,57,43,.25);border-radius:20px;flex-shrink:0}
+
+/* INSTRUCTOR */
+.instructor-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.5rem;display:flex;flex-direction:column;gap:1.2rem}
+.instr-top{display:flex;align-items:center;gap:1rem}
+.instr-av-lg{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#7b0d1e);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:700;font-size:1.2rem;color:#fff;flex-shrink:0}
+.instr-info h4{font-family:var(--font-d);font-size:1rem;font-weight:700}
+.instr-info span{font-size:.78rem;color:var(--text2);font-family:var(--font-m)}
+.instr-stats{display:flex;flex-wrap:wrap;gap:.8rem}
+.instr-stat{font-family:var(--font-m);font-size:.68rem;color:var(--text2)}
+.instr-stat em{font-style:normal;color:var(--text)}
+.instr-bio{font-size:.85rem;color:var(--text2);line-height:1.8}
+
+/* CERTIFICATE SECTION */
+.cert-section{background:var(--bg2);border:1px solid rgba(192,57,43,.2);border-radius:10px;padding:1.8rem;position:relative;overflow:hidden}
+.cert-section::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(192,57,43,.07),transparent 70%);pointer-events:none}
+.cert-top{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem}
+.cert-icon{width:52px;height:52px;background:var(--accent-g);border:1px solid rgba(192,57,43,.25);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.cert-info h3{font-family:var(--font-d);font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.cert-info p{font-size:.82rem;color:var(--text2);line-height:1.7}
+.cert-preview{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin-bottom:1.2rem;position:relative;overflow:hidden;text-align:center}
+.cert-preview-inner{border:2px solid rgba(192,57,43,.25);border-radius:6px;padding:2rem 1.5rem;position:relative}
+.cert-preview-inner::before,.cert-preview-inner::after{content:'';position:absolute;width:40px;height:40px;border:2px solid rgba(192,57,43,.2)}
+.cert-preview-inner::before{top:8px;left:8px;border-right:none;border-bottom:none}
+.cert-preview-inner::after{bottom:8px;right:8px;border-left:none;border-top:none}
+.cert-logo-text{font-family:var(--font-d);font-size:.85rem;font-weight:700;color:var(--text3);letter-spacing:.08em;margin-bottom:.8rem}
+.cert-logo-text em{color:var(--accent);font-style:normal}
+.cert-headline{font-family:var(--font-d);font-size:.7rem;color:var(--text3);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
+.cert-name-preview{font-family:var(--font-d);font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;color:var(--text);margin:.5rem 0}
+.cert-course-name{font-family:var(--font-d);font-size:.85rem;color:var(--accent);font-style:italic;margin-bottom:.8rem}
+.cert-seal{font-size:2rem;margin:.5rem 0}
+.cert-date-line{font-family:var(--font-m);font-size:.6rem;color:var(--text3);letter-spacing:.1em}
+.cert-actions{display:flex;flex-direction:column;gap:.7rem}
+
+/* REGISTRATION MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;align-items:flex-end;justify-content:center;padding:0}
+.modal-overlay.open{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-sheet{background:var(--bg2);border:1px solid var(--border);border-radius:16px 16px 0 0;width:100%;max-width:600px;max-height:92svh;overflow-y:auto;padding:0;position:relative}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:1rem auto .5rem}
+.modal-head{padding:1rem 1.5rem 0.8rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1}
+.modal-head h3{font-family:var(--font-d);font-size:1.1rem;font-weight:700}
+.modal-head p{font-size:.75rem;color:var(--text2);font-family:var(--font-m);margin-top:.2rem}
+.modal-close-btn{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:var(--text2);font-size:1.2rem;cursor:pointer;transition:color .25s}
+.modal-close-btn:hover{color:var(--text)}
+.modal-body{padding:1.5rem}
+.modal-course-pill{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent-g);border:1px solid rgba(192,57,43,.22);border-radius:6px;padding:.5rem .8rem;margin-bottom:1.4rem;font-size:.8rem;color:var(--text2)}
+.modal-course-pill em{font-style:normal;color:var(--accent);font-family:var(--font-d);font-weight:700}
+.form-row-2{display:grid;grid-template-columns:1fr;gap:.8rem}
+.form-gap{margin-bottom:.8rem}
+.radio-group{display:flex;flex-direction:column;gap:.5rem;margin-top:.3rem}
+.radio-opt{display:flex;align-items:center;gap:.7rem;cursor:pointer;padding:.7rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);transition:border-color .25s}
+.radio-opt:hover{border-color:rgba(192,57,43,.3)}
+.radio-opt.selected{border-color:rgba(192,57,43,.45);background:var(--accent-g)}
+.radio-opt input[type=radio]{accent-color:var(--accent);width:16px;height:16px;flex-shrink:0}
+.radio-opt-info{}
+.radio-opt-info h4{font-size:.83rem;font-weight:500}
+.radio-opt-info span{font-family:var(--font-m);font-size:.68rem;color:var(--text3)}
+.modal-total{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-top:1px solid var(--border);margin-top:.5rem}
+.modal-total p{font-size:.85rem;color:var(--text2)}
+.modal-total span{font-family:var(--font-d);font-size:1.5rem;font-weight:900;color:var(--text)}
+.modal-submit{width:100%;padding:1rem;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-b);font-size:.9rem;font-weight:500;cursor:pointer;transition:all .3s var(--ease);margin-top:.3rem}
+.modal-submit:hover{background:var(--accent-h);box-shadow:0 0 20px rgba(192,57,43,.35)}
+.modal-terms{font-size:.68rem;color:var(--text3);font-family:var(--font-m);text-align:center;margin-top:.7rem;line-height:1.5}
+.modal-terms a{color:var(--accent);text-decoration:none}
+
+/* SUCCESS STATE */
+#success-view{display:none;padding:2.5rem 1.5rem;text-align:center}
+.suc-circle{width:72px;height:72px;border-radius:50%;background:rgba(39,174,96,.1);border:1px solid rgba(39,174,96,.25);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.2rem;animation:popIn .5s var(--ease)}
+@keyframes popIn{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+#success-view h3{font-family:var(--font-d);font-size:1.4rem;font-weight:700;margin-bottom:.5rem}
+#success-view p{font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1.4rem}
+.next-steps{display:flex;flex-direction:column;gap:.6rem}
+.ns-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;display:flex;align-items:center;gap:.8rem;text-align:left}
+.ns-item em{font-size:1.1rem;flex-shrink:0;font-style:normal}
+.ns-item div h4{font-size:.82rem;font-weight:500;margin-bottom:.1rem}
+.ns-item div p{font-size:.75rem;color:var(--text2);font-family:var(--font-m)}
+
+/* CERT DOWNLOAD MODAL */
+.cert-modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px 16px 0 0;width:100%;max-width:700px;max-height:92svh;overflow-y:auto;padding:0;position:relative}
+.cert-modal-body{padding:1.5rem}
+#certCanvas{width:100%;border-radius:6px;display:block;border:1px solid var(--border)}
+
+@media(min-width:640px){
+  .learn-grid{grid-template-columns:1fr 1fr}
+  .form-row-2{grid-template-columns:1fr 1fr}
+  .modal-overlay{align-items:center;padding:2rem}
+  .modal-sheet,.cert-modal{border-radius:12px;max-height:85vh}
+  .modal-handle{display:none}
+  .cert-actions{flex-direction:row}
+  .instructor-card{flex-direction:row;gap:1.5rem;align-items:flex-start}
+  .instr-top{flex-direction:column;align-items:center;text-align:center;min-width:100px}
+}
+@media(min-width:1024px){
+  .ch-inner{grid-template-columns:1fr 360px;gap:3.5rem}
+  .enrol-card{position:sticky;top:calc(var(--nav-h) + 1.5rem)}
+  .course-body{grid-template-columns:1fr 360px;gap:3rem}
+  .course-main{}
+  .course-sidebar{order:-1}
+  .course-sidebar{display:none}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="page-veil"></div>
+<div class="mobile-drawer">
+  <a href="index.html">Home</a><a href="solutions.html">Solutions</a><a href="courses.html">Courses</a>
+  <a href="pricing.html">Pricing</a><a href="career.html">Careers</a><a href="affiliate.html">Affiliate</a><a href="contact.html">Contact</a>
+  <div class="drawer-actions"><a href="login.html" class="btn btn-outline btn-full">Sign In</a><a href="register.html" class="btn btn-red btn-full">Get Started</a></div>
+</div>
+<nav>
+  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="solutions.html">Solutions</a></li>
+    <li><a href="courses.html" class="active">Courses</a></li><li><a href="pricing.html">Pricing</a></li>
+    <li><a href="career.html">Careers</a></li><li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions"><a href="login.html" class="btn btn-outline btn-sm">Sign In</a><a href="register.html" class="btn btn-red btn-sm">Enrol Now</a><button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button></div>
+</nav>
+
+<!-- HERO -->
+<div class="course-hero">
+  <canvas id="cd-canvas"></canvas>
+  <div class="ch-inner">
+    <div>
+      <div class="ch-breadcrumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="courses.html">Courses</a><span>/</span>
+        <span id="breadCat">Web Development</span>
+      </div>
+      <span class="ch-cat" id="herocat">Web Development</span>
+      <h1 class="ch-title" id="heroTitle">Full-Stack Web Development Bootcamp</h1>
+      <p class="ch-desc" id="heroDesc">Master HTML, CSS, JavaScript, React, Node.js, and databases. Build 5 real-world projects from scratch and earn a verified certificate.</p>
+      <div class="ch-meta-row">
+        <div class="ch-rating">
+          <div class="stars"><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span></div>
+          <span style="font-family:var(--font-m);font-size:.72rem;color:var(--accent)" id="heroRating">4.9</span>
+          <span style="font-family:var(--font-m);font-size:.68rem;color:var(--text3)" id="heroStudents">(1,240 students)</span>
+        </div>
+        <span class="ch-meta-chip">⏱ <em id="heroDuration">12 weeks</em></span>
+        <span class="ch-meta-chip">📚 <em id="heroLessons">84 lessons</em></span>
+        <span class="ch-meta-chip">🏅 <em>Certificate included</em></span>
+      </div>
+      <div class="ch-tags">
+        <span class="ch-tag" id="heroLevel">Beginner</span>
+        <span class="ch-tag">English</span>
+        <span class="ch-tag">Lifetime Access</span>
+        <span class="ch-tag">Project-Based</span>
+      </div>
+      <p style="font-size:.78rem;color:var(--text3);font-family:var(--font-m)">Instructor: <span style="color:var(--text2)" id="heroInstructor">Daniel Okafor</span></p>
+    </div>
+
+    <!-- ENROL CARD (desktop sticks, mobile inline) -->
+    <div class="enrol-card">
+      <div class="enrol-thumb">
+        <canvas id="thumb-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+        <span id="heroIcon" style="position:relative;z-index:2;font-size:3.5rem">💻</span>
+      </div>
+      <div class="enrol-body">
+        <div class="enrol-price" id="heroPrice">$299 <span>USD one-time</span></div>
+        <div class="enrol-note">💳 Secure checkout · 30-day money-back guarantee</div>
+        <ul class="enrol-perks">
+          <li id="heroDurationPerk">12 weeks of structured content</li>
+          <li id="heroLessonsPerk">84 on-demand video lessons</li>
+          <li>Downloadable resources &amp; code files</li>
+          <li>Project assignments with feedback</li>
+          <li>Verified completion certificate</li>
+          <li>Private student community access</li>
+          <li>Lifetime access — learn at your own pace</li>
+        </ul>
+        <button class="enrol-btn" onclick="openModal()">Enrol Now — Start Learning</button>
+        <button class="enrol-secondary" onclick="document.getElementById('certSect').scrollIntoView({behavior:'smooth'})">Preview Certificate →</button>
+        <p class="enrol-guarantee">🔒 30-Day Money-Back Guarantee</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COURSE BODY -->
+<div class="course-body">
+  <div class="course-main">
+
+    <!-- WHAT YOU LEARN -->
+    <div class="cb-section">
+      <h2>What you'll <em>learn</em></h2>
+      <div class="learn-grid" id="learnGrid"></div>
+    </div>
+
+    <!-- CURRICULUM -->
+    <div class="cb-section">
+      <h2>Course <em>curriculum</em></h2>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:1.2rem" id="curriculumMeta">12 modules · 84 lessons · approx. 48 hours of content</p>
+      <div class="curriculum-list" id="curriculumList"></div>
+    </div>
+
+    <!-- REQUIREMENTS -->
+    <div class="cb-section">
+      <h2>Requirements &amp; <em>prerequisites</em></h2>
+      <ul class="enrol-perks" id="requirementsList"></ul>
+    </div>
+
+    <!-- INSTRUCTOR -->
+    <div class="cb-section">
+      <h2>Your <em>instructor</em></h2>
+      <div class="instructor-card">
+        <div class="instr-top">
+          <div class="instr-av-lg" id="instrAv">DO</div>
+          <div class="instr-info">
+            <h4 id="instrName">Daniel Okafor</h4>
+            <span id="instrTitle">Senior Full-Stack Engineer · BlackCodeLabs</span>
+          </div>
+        </div>
+        <div>
+          <div class="instr-stats" style="margin-bottom:.8rem">
+            <span class="instr-stat">⭐ <em id="instrRating">4.9</em> rating</span>
+            <span class="instr-stat">👥 <em id="instrStudents">3,400+</em> students</span>
+            <span class="instr-stat">📚 <em id="instrCourses">4</em> courses</span>
+          </div>
+          <p class="instr-bio" id="instrBio">Daniel is a senior full-stack engineer at BlackCodeLabs with over 8 years of experience shipping production software. He has led engineering teams across fintech, e-commerce, and SaaS platforms across Africa and Europe. His teaching style is practical and project-driven — no fluff, just real-world skills.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CERTIFICATE -->
+    <div class="cb-section" id="certSect">
+      <h2>Your <em>certificate</em></h2>
+      <div class="cert-section">
+        <div class="cert-top">
+          <div class="cert-icon">🏅</div>
+          <div class="cert-info">
+            <h3>BlackCodeLabs Verified Certificate</h3>
+            <p>Upon completing all lessons and passing the final assessment, you will receive a downloadable, shareable certificate of completion — verified and signed by BlackCodeLabs.</p>
+          </div>
+        </div>
+        <div class="cert-preview">
+          <div class="cert-preview-inner">
+            <div class="cert-logo-text">Black<em>Code</em>Labs</div>
+            <div class="cert-headline">Certificate of Completion</div>
+            <div style="font-family:var(--font-m);font-size:.62rem;color:var(--text3);margin-bottom:.3rem">This certifies that</div>
+            <div class="cert-name-preview" id="certNamePreview">Your Name Here</div>
+            <div style="font-family:var(--font-m);font-size:.62rem;color:var(--text3);margin-bottom:.3rem">has successfully completed</div>
+            <div class="cert-course-name" id="certCoursePreview">Full-Stack Web Development Bootcamp</div>
+            <div class="cert-seal">🏅</div>
+            <div class="cert-date-line" id="certDatePreview">Issued: January 2025 · Credential ID: BCL-XXXX</div>
+          </div>
+        </div>
+        <div class="cert-actions">
+          <button class="btn btn-red btn-lg" onclick="openCertModal()">Preview &amp; Download Certificate</button>
+          <button class="btn btn-outline btn-lg" onclick="openModal()">Enrol to Earn Certificate</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR (mobile: hidden above fold, shown below on desktop) -->
+  <div class="course-sidebar">
+    <div class="enrol-card" style="position:sticky;top:calc(var(--nav-h) + 1.5rem)">
+      <div class="enrol-body" style="padding-top:1.5rem">
+        <div class="enrol-price" id="sidePrice">$299 <span>USD</span></div>
+        <button class="enrol-btn" onclick="openModal()" style="margin-top:.8rem">Enrol Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── REGISTRATION MODAL ── -->
+<div class="modal-overlay" id="regModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <h3>Enrol in Course</h3>
+      <p>// Fill in your details to secure your spot</p>
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+    </div>
+
+    <div id="reg-view">
+      <div class="modal-body">
+        <div class="modal-course-pill">📚 Enrolling in: <em id="modalCourseTitle">Full-Stack Web Development Bootcamp</em></div>
+        <div class="form-row-2 form-gap">
+          <div class="form-group"><label>First Name *</label><input type="text" id="mFirst" placeholder="John"/></div>
+          <div class="form-group"><label>Last Name *</label><input type="text" id="mLast" placeholder="Doe"/></div>
+        </div>
+        <div class="form-group form-gap"><label>Email Address *</label><input type="email" id="mEmail" placeholder="john@example.com" oninput="updateCertPreview()"/></div>
+        <div class="form-group form-gap"><label>Phone Number</label><input type="tel" id="mPhone" placeholder="+1 555..."/></div>
+        <div class="form-group form-gap"><label>Country *</label>
+          <select id="mCountry">
+            <option value="">Select country...</option>
+            <option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>South Africa</option>
+            <option>United Kingdom</option><option>United States</option><option>Canada</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group form-gap">
+          <label>Experience Level</label>
+          <div class="radio-group">
+            <label class="radio-opt" onclick="selectRadio(this)"><input type="radio" name="exp" value="none"/><div class="radio-opt-info"><h4>No experience</h4><span>Complete beginner to this topic</span></div></label>
+            <label class="radio-opt selected" onclick="selectRadio(this)"><input type="radio" name="exp" value="some" checked/><div class="radio-opt-info"><h4>Some experience</h4><span>I know the basics but want to go deeper</span></div></label>
+            <label class="radio-opt" onclick="selectRadio(this)"><input type="radio" name="exp" value="experienced"/><div class="radio-opt-info"><h4>Experienced</h4><span>Looking to fill gaps and get certified</span></div></label>
+          </div>
+        </div>
+        <div class="form-group form-gap"><label>How did you hear about us?</label>
+          <select>
+            <option value="">Select...</option>
+            <option>Google Search</option><option>Social Media</option><option>Friend / Referral</option>
+            <option>BlackCodeLabs Newsletter</option><option>Affiliate Link</option><option>Other</option>
+          </select>
+        </div>
+        <div class="modal-total">
+          <p>Total due today</p>
+          <span id="modalPrice">$299</span>
+        </div>
+        <button class="modal-submit" onclick="submitEnrol()">Complete Enrolment →</button>
+        <p class="modal-terms">By enrolling you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. 30-day money-back guarantee.</p>
+      </div>
+    </div>
+
+    <div id="success-view">
+      <div class="suc-circle">🎉</div>
+      <h3>You're enrolled!</h3>
+      <p>Welcome to <strong id="successCourseName" style="color:var(--accent)">the course</strong>. Check your inbox for your access link and getting-started guide.</p>
+      <div class="next-steps">
+        <div class="ns-item"><em>📧</em><div><h4>Confirmation email sent</h4><p>Check your inbox (and spam folder)</p></div></div>
+        <div class="ns-item"><em>🎓</em><div><h4>Start learning immediately</h4><p>Access your course dashboard now</p></div></div>
+        <div class="ns-item"><em>🏅</em><div><h4>Certificate waiting for you</h4><p>Complete the course to unlock it</p></div></div>
+        <div class="ns-item"><em>👥</em><div><h4>Join the student community</h4><p>Link in your welcome email</p></div></div>
+      </div>
+      <button class="btn btn-red btn-full" style="margin-top:1.5rem" onclick="closeModal()">Go to My Dashboard →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CERTIFICATE MODAL ── -->
+<div class="modal-overlay" id="certModal">
+  <div class="cert-modal">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <h3>Certificate Preview &amp; Download</h3>
+      <p>// Enter your name to generate your certificate</p>
+      <button class="modal-close-btn" onclick="closeCertModal()">✕</button>
+    </div>
+    <div class="cert-modal-body">
+      <div class="form-group form-gap">
+        <label>Your Full Name (as it will appear on certificate)</label>
+        <input type="text" id="certNameInput" placeholder="e.g. John Adewale Doe" oninput="renderCert()" value="Your Name Here"/>
+      </div>
+      <div class="form-group form-gap">
+        <label>Completion Date</label>
+        <input type="date" id="certDateInput" oninput="renderCert()"/>
+      </div>
+      <canvas id="certCanvas" width="900" height="620" style="width:100%;border-radius:6px;border:1px solid var(--border);margin:1rem 0;display:block"></canvas>
+      <div style="display:flex;flex-direction:column;gap:.7rem">
+        <button class="btn btn-red btn-full btn-lg" onclick="downloadCert()">⬇ Download Certificate (PNG)</button>
+        <button class="btn btn-outline btn-full" onclick="closeCertModal()">Close Preview</button>
+      </div>
+      <p style="font-size:.68rem;color:var(--text3);font-family:var(--font-m);text-align:center;margin-top:.8rem">Note: Official certificates are issued automatically upon completing all course requirements.</p>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+/* ── COURSE DATA ── */
+const COURSES = {
+  'fullstack-web':{
+    id:'fullstack-web',cat:'Web Development',title:'Full-Stack Web Development Bootcamp',
+    desc:'Master HTML, CSS, JavaScript, React, Node.js, and databases. Build 5 real-world projects from scratch and earn a verified certificate.',
+    level:'Beginner',duration:'12 weeks',lessons:84,students:'1,240',rating:'4.9',price:299,icon:'💻',
+    instructor:'Daniel Okafor',initials:'DO',instrTitle:'Senior Full-Stack Engineer · BlackCodeLabs',
+    instrRating:'4.9',instrStudents:'3,400+',instrCourses:'4',
+    instrBio:"Daniel is a senior full-stack engineer at BlackCodeLabs with over 8 years of experience shipping production software. His teaching style is practical and project-driven — no fluff, just real-world skills.",
+    learn:['Build and deploy full-stack web applications from scratch','Master modern JavaScript (ES6+) and TypeScript fundamentals','Create dynamic UIs with React and state management','Build RESTful APIs with Node.js and Express','Design and query relational databases with PostgreSQL','Implement user authentication and authorisation','Deploy applications to AWS and Vercel','Write automated tests and set up CI/CD pipelines'],
+    curriculum:[
+      {title:'Web Foundations',lessons:['Introduction & Setup (Preview)','HTML5 Semantics & Structure','CSS3, Flexbox & Grid','Responsive Design Principles','Git & Version Control Basics'],durations:['5:30','18:22','24:14','21:08','14:55']},
+      {title:'JavaScript Deep Dive',lessons:['JavaScript Fundamentals','ES6+ Features','DOM Manipulation','Async JS — Callbacks, Promises, Async/Await','Working with APIs & Fetch'],durations:['12:00','22:18','19:44','28:10','20:33']},
+      {title:'React & State Management',lessons:['React Fundamentals & JSX','Components, Props & State','React Hooks in Depth','Context API & Redux Toolkit','React Router & Code Splitting'],durations:['15:20','21:05','34:18','28:44','22:10']},
+      {title:'Node.js & Express APIs',lessons:['Node.js Fundamentals','Express Framework & Routing','Middleware & Error Handling','JWT Authentication','REST API Best Practices'],durations:['14:00','20:12','18:30','24:55','16:40']},
+      {title:'Databases & Data Modelling',lessons:['PostgreSQL Fundamentals','SQL Queries & Joins','ORM with Prisma','MongoDB & NoSQL Basics','Caching with Redis'],durations:['18:00','22:30','19:44','15:20','12:10']},
+      {title:'Deployment & Production',lessons:['Environment Variables & Config','Docker Basics','Deploying to Vercel & AWS','Setting up CI/CD with GitHub Actions','Monitoring & Performance'],durations:['10:00','22:00','28:14','20:33','18:20']},
+    ],
+    requirements:['A computer with internet access (Windows, Mac or Linux)','No prior coding experience required — we start from zero','Willingness to practise and complete projects','At least 8–10 hours per week to dedicate to learning'],
+  }
+};
+
+/* Load course by URL param or default */
+const params=new URLSearchParams(location.search);
+const courseId=params.get('id')||'fullstack-web';
+const C=COURSES[courseId]||COURSES['fullstack-web'];
+
+/* Populate page */
+document.getElementById('breadCat').textContent=C.cat;
+document.getElementById('herocat').textContent=C.cat;
+document.getElementById('heroTitle').textContent=C.title;
+document.getElementById('heroDesc').textContent=C.desc;
+document.getElementById('heroRating').textContent=C.rating;
+document.getElementById('heroStudents').textContent=`(${C.students} students)`;
+document.getElementById('heroDuration').textContent=C.duration;
+document.getElementById('heroLessons').textContent=C.lessons+' lessons';
+document.getElementById('heroLevel').textContent=C.level;
+document.getElementById('heroInstructor').textContent=C.instructor;
+document.getElementById('heroIcon').textContent=C.icon;
+document.getElementById('heroPrice').innerHTML=`$${C.price} <span>USD one-time</span>`;
+document.getElementById('heroDurationPerk').textContent=C.duration+' of structured content';
+document.getElementById('heroLessonsPerk').textContent=C.lessons+' on-demand video lessons';
+document.getElementById('sidePrice').innerHTML=`$${C.price} <span>USD</span>`;
+document.getElementById('modalCourseTitle').textContent=C.title;
+document.getElementById('modalPrice').textContent=`$${C.price}`;
+document.getElementById('certCoursePreview').textContent=C.title;
+document.getElementById('instrName').textContent=C.instructor;
+document.getElementById('instrAv').textContent=C.initials;
+document.getElementById('instrTitle').textContent=C.instrTitle;
+document.getElementById('instrRating').textContent=C.instrRating;
+document.getElementById('instrStudents').textContent=C.instrStudents;
+document.getElementById('instrCourses').textContent=C.instrCourses;
+document.getElementById('instrBio').textContent=C.instrBio;
+document.title=C.title+' — BlackCodeLabs';
+
+/* Learn grid */
+document.getElementById('learnGrid').innerHTML=C.learn.map(l=>`<div class="learn-item">${l}</div>`).join('');
+
+/* Curriculum */
+document.getElementById('curriculumMeta').textContent=`${C.curriculum.length} modules · ${C.lessons} lessons`;
+document.getElementById('curriculumList').innerHTML=C.curriculum.map((m,mi)=>`
+  <div class="mod-item ${mi===0?'open':''}">
+    <div class="mod-head" onclick="this.parentElement.classList.toggle('open')">
+      <div class="mod-head-left">
+        <span class="mod-num">MODULE ${String(mi+1).padStart(2,'0')}</span>
+        <span class="mod-title">${m.title}</span>
+      </div>
+      <div class="mod-head-right">
+        <span class="mod-meta">${m.lessons.length} lessons</span>
+        <span class="mod-arrow">▶</span>
+      </div>
+    </div>
+    <div class="mod-lessons">
+      ${m.lessons.map((l,li)=>`
+        <div class="lesson-row">
+          <div class="lesson-left">
+            <div class="lesson-type">▶</div>
+            <span class="lesson-title">${l}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0">
+            ${(mi===0&&li===0)?'<span class="lesson-free">Preview</span>':''}
+            <span class="lesson-dur">${m.durations[li]||'--:--'}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+`).join('');
+
+/* Requirements */
+document.getElementById('requirementsList').innerHTML=C.requirements.map(r=>`<li>${r}</li>`).join('');
+
+/* ── 3D HERO CANVAS ── */
+(function(){
+  const c=document.getElementById('cd-canvas');
+  const R=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);
+  const S=new THREE.Scene(),CC=new THREE.PerspectiveCamera(55,c.parentElement.offsetWidth/c.parentElement.offsetHeight,.1,200);CC.position.z=36;
+  const N=1800,pos=new Float32Array(N*3),col=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*110;pos[i*3+2]=(Math.random()-.5)*120;const t=Math.random();col[i*3]=t>.6?.75:.1;col[i*3+1]=.07;col[i*3+2]=.07;}
+  const pG=new THREE.BufferGeometry();pG.setAttribute('position',new THREE.BufferAttribute(pos,3));pG.setAttribute('color',new THREE.BufferAttribute(col,3));
+  S.add(new THREE.Points(pG,new THREE.PointsMaterial({size:.2,vertexColors:true,transparent:true,opacity:.5})));
+  const iG=new THREE.IcosahedronGeometry(8,1);const iM=new THREE.Mesh(iG,new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.06}));iM.position.set(18,0,0);S.add(iM);
+  let mx=0,my=0;document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
+  (function a(){requestAnimationFrame(a);iM.rotation.y+=.004;iM.rotation.x+=.002;CC.position.x+=(mx*3-CC.position.x)*.02;CC.position.y+=(-my*2-CC.position.y)*.02;R.render(S,CC);})();
+  addEventListener('resize',()=>{CC.aspect=c.parentElement.offsetWidth/c.parentElement.offsetHeight;CC.updateProjectionMatrix();R.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);});
+})();
+
+/* THUMB 3D */
+(function(){
+  const cv=document.getElementById('thumb-canvas');if(!cv)return;
+  const rr=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+  rr.setSize(cv.parentElement.offsetWidth||360,180);
+  const ss=new THREE.Scene(),cc=new THREE.PerspectiveCamera(55,cv.parentElement.offsetWidth/180,.1,100);cc.position.z=14;
+  const N=400,pts=[];for(let i=0;i<N;i++)pts.push((Math.random()-.5)*40,(Math.random()-.5)*28,(Math.random()-.5)*30);
+  const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
+  ss.add(new THREE.Points(gg,new THREE.PointsMaterial({color:0xc0392b,size:.18,transparent:true,opacity:.3})));
+  const wg=new THREE.OctahedronGeometry(3.5,0);const wm=new THREE.Mesh(wg,new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.12}));ss.add(wm);
+  let tt=0;(function a(){requestAnimationFrame(a);tt+=.01;wm.rotation.y=tt*.3;wm.rotation.x=tt*.15;rr.render(ss,cc);})();
+})();
+
+/* MODAL */
+function openModal(){document.getElementById('regModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('regModal').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('regModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+function selectRadio(el){document.querySelectorAll('.radio-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');}
+function updateCertPreview(){const n=document.getElementById('mFirst').value+' '+document.getElementById('mLast').value;document.getElementById('certNamePreview').textContent=n.trim()||'Your Name Here';}
+function submitEnrol(){
+  const f=document.getElementById('mFirst').value.trim();
+  const e=document.getElementById('mEmail').value.trim();
+  const country=document.getElementById('mCountry').value;
+  if(!f||!e||!country){
+    const btn=document.querySelector('.modal-submit');
+    btn.style.transform='translateX(-5px)';setTimeout(()=>btn.style.transform='translateX(5px)',80);setTimeout(()=>btn.style.transform='none',160);return;
+  }
+  document.querySelector('.modal-submit').textContent='Processing…';
+  setTimeout(()=>{
+    document.getElementById('reg-view').style.display='none';
+    document.getElementById('success-view').style.display='block';
+    document.getElementById('successCourseName').textContent=C.title;
+  },1200);
+}
+
+/* CERTIFICATE MODAL */
+function openCertModal(){
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('certDateInput').value=today;
+  document.getElementById('certModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(renderCert,100);
+}
+function closeCertModal(){document.getElementById('certModal').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('certModal').addEventListener('click',function(e){if(e.target===this)closeCertModal();});
+
+function renderCert(){
+  const canvas=document.getElementById('certCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=900,H=620;
+  canvas.width=W;canvas.height=H;
+  const name=document.getElementById('certNameInput').value||'Your Name Here';
+  const rawDate=document.getElementById('certDateInput').value;
+  const dateStr=rawDate?new Date(rawDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'—';
+  const credId='BCL-'+Math.random().toString(36).substring(2,8).toUpperCase();
+
+  /* Background */
+  ctx.fillStyle='#050505';ctx.fillRect(0,0,W,H);
+
+  /* Outer border */
+  ctx.strokeStyle='rgba(192,57,43,0.35)';ctx.lineWidth=1.5;ctx.strokeRect(18,18,W-36,H-36);
+  /* Inner border */
+  ctx.strokeStyle='rgba(192,57,43,0.15)';ctx.lineWidth=1;ctx.strokeRect(28,28,W-56,H-56);
+
+  /* Corner ornaments */
+  const corners=[[36,36],[W-36,36],[36,H-36],[W-36,H-36]];
+  corners.forEach(([x,y],i)=>{
+    ctx.strokeStyle='rgba(192,57,43,0.5)';ctx.lineWidth=1.5;
+    const sx=i%2===0?1:-1,sy=i<2?1:-1;
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+sx*28,y);ctx.moveTo(x,y);ctx.lineTo(x,y+sy*28);ctx.stroke();
+  });
+
+  /* Subtle dot pattern */
+  ctx.fillStyle='rgba(192,57,43,0.04)';
+  for(let r=0;r<H;r+=22)for(let c=0;c<W;c+=22)ctx.fillRect(c,r,1.5,1.5);
+
+  /* Header — company */
+  ctx.textAlign='center';
+  ctx.fillStyle='rgba(192,57,43,0.8)';
+  ctx.font='bold 13px "DM Mono", monospace';
+  ctx.letterSpacing='4px';
+  ctx.fillText('BLACKCODELABS',W/2,80);
+  ctx.letterSpacing='0px';
+
+  /* Red divider line */
+  const grd=ctx.createLinearGradient(W/2-150,0,W/2+150,0);
+  grd.addColorStop(0,'transparent');grd.addColorStop(.5,'rgba(192,57,43,0.7)');grd.addColorStop(1,'transparent');
+  ctx.strokeStyle=grd;ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W/2-180,96);ctx.lineTo(W/2+180,96);ctx.stroke();
+
+  /* CERTIFICATE OF COMPLETION */
+  ctx.fillStyle='rgba(240,240,240,0.5)';
+  ctx.font='11px "DM Mono", monospace';
+  ctx.letterSpacing='5px';
+  ctx.fillText('CERTIFICATE OF COMPLETION',W/2,122);
+  ctx.letterSpacing='0px';
+
+  /* This certifies */
+  ctx.fillStyle='rgba(154,149,144,0.7)';
+  ctx.font='italic 15px "Playfair Display", Georgia, serif';
+  ctx.fillText('This is to certify that',W/2,162);
+
+  /* Student Name */
+  ctx.fillStyle='#f4f1ed';
+  ctx.font='bold 52px "Playfair Display", Georgia, serif';
+  ctx.fillText(name,W/2,228);
+
+  /* Underline name */
+  const nw=ctx.measureText(name).width;
+  ctx.strokeStyle='rgba(192,57,43,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W/2-nw/2,236);ctx.lineTo(W/2+nw/2,236);ctx.stroke();
+
+  /* has successfully completed */
+  ctx.fillStyle='rgba(154,149,144,0.7)';
+  ctx.font='italic 15px "Playfair Display", Georgia, serif';
+  ctx.fillText('has successfully completed the course',W/2,268);
+
+  /* Course Title */
+  ctx.fillStyle='rgba(192,57,43,0.9)';
+  ctx.font='italic bold 26px "Playfair Display", Georgia, serif';
+  const maxW=700;
+  const title=C.title;
+  if(ctx.measureText(title).width>maxW){
+    ctx.font='italic bold 20px "Playfair Display", Georgia, serif';
+  }
+  ctx.fillText(title,W/2,308);
+
+  /* Medal emoji */
+  ctx.font='36px serif';
+  ctx.fillText('🏅',W/2,362);
+
+  /* Bottom divider */
+  ctx.strokeStyle=grd;ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W/2-180,390);ctx.lineTo(W/2+180,390);ctx.stroke();
+
+  /* Footer details */
+  ctx.fillStyle='rgba(74,69,64,0.9)';
+  ctx.font='11px "DM Mono", monospace';
+  ctx.letterSpacing='1px';
+  /* Left */
+  ctx.textAlign='left';
+  ctx.fillText('ISSUED: '+dateStr,60,430);
+  /* Center */
+  ctx.textAlign='center';
+  ctx.fillText('CREDENTIAL ID: '+credId,W/2,430);
+  /* Right */
+  ctx.textAlign='right';
+  ctx.fillText('blackcodelabs.dev',W-60,430);
+  ctx.letterSpacing='0px';
+
+  /* Signature line */
+  ctx.textAlign='center';
+  ctx.strokeStyle='rgba(74,69,64,0.5)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W/2-80,492);ctx.lineTo(W/2+80,492);ctx.stroke();
+  ctx.fillStyle='rgba(154,149,144,0.6)';
+  ctx.font='12px "DM Sans", sans-serif';
+  ctx.fillText('Authorised Signature',W/2,508);
+  ctx.font='bold 11px "DM Mono", monospace';
+  ctx.fillStyle='rgba(192,57,43,0.6)';
+  ctx.letterSpacing='1px';
+  ctx.fillText('BLACKCODELABS',W/2,528);
+  ctx.letterSpacing='0px';
+}
+
+function downloadCert(){
+  renderCert();
+  const canvas=document.getElementById('certCanvas');
+  const name=(document.getElementById('certNameInput').value||'certificate').replace(/\s+/g,'-').toLowerCase();
+  const link=document.createElement('a');
+  link.download=`blackcodelabs-certificate-${name}.png`;
+  link.href=canvas.toDataURL('image/png',1.0);
+  link.click();
+}
+
+/* Set today's date default */
+document.getElementById('certDateInput').value=new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>

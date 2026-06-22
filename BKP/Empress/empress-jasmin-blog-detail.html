@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="The Moon Card & What Your Subconscious Is Trying to Tell You — A spiritual blog by The Empress Jasmin."/>
+<title>The Moon Card & Your Subconscious | The Empress Jasmin Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@200;300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════
+   EMPRESS JASMIN — Blog Detail Page
+═══════════════════════════════════════ */
+:root {
+  --void:    #060409;
+  --deep:    #0c0812;
+  --violet:  #130d20;
+  --ink:     #1a1028;
+  --gold:    #c9a84c;
+  --gold-hi: #e2c36b;
+  --rose:    #c47a8a;
+  --mist:    rgba(255,255,255,0.55);
+  --chalk:   #f0ece8;
+  --serif:   'Libre Baskerville', Georgia, serif;
+  --display: 'Cinzel', serif;
+  --sans:    'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--chalk);
+  font-family: var(--sans);
+  font-weight: 300;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+#bg-canvas {
+  position: fixed; inset: 0;
+  z-index: 0; pointer-events: none;
+}
+
+.page { position: relative; z-index: 1; }
+
+/* ── Nav ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 5vw;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(6,4,9,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+
+.nav-logo {
+  font-family: var(--display);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex; gap: 2.5rem; list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.65rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--mist);
+  text-decoration: none; transition: color 0.25s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+.nav-book {
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--void); background: var(--gold);
+  border: none; padding: 9px 20px; cursor: pointer;
+  text-decoration: none; transition: background 0.25s;
+  white-space: nowrap;
+}
+.nav-book:hover { background: var(--gold-hi); }
+
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 6px; background: none; border: none;
+}
+.hamburger span { width: 22px; height: 1px; background: var(--gold); display: block; }
+
+.mob-nav {
+  display: none; position: fixed; inset: 0;
+  background: rgba(6,4,9,0.97); z-index: 99;
+  flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+}
+.mob-nav.open { display: flex; }
+.mob-nav a {
+  font-family: var(--display); font-size: 2rem; color: var(--chalk);
+  text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s;
+}
+.mob-nav a:hover { color: var(--gold); }
+.mob-nav-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; color: var(--gold);
+  font-size: 1.6rem; cursor: pointer; line-height: 1;
+}
+
+/* ── Hero Banner ── */
+.post-hero {
+  padding-top: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.post-hero-art {
+  height: 55vh;
+  min-height: 380px;
+  max-height: 600px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.post-hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #1a0e2e 0%, #0c0812 55%, #120a1e 100%);
+}
+
+.post-hero-pattern {
+  position: absolute; inset: 0;
+  opacity: 0.15;
+}
+
+.post-hero-vignette {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, var(--void) 100%);
+  z-index: 2;
+}
+
+.post-hero-symbol {
+  font-size: 10rem;
+  position: relative;
+  z-index: 3;
+  filter: drop-shadow(0 0 60px rgba(201,168,76,0.45));
+  animation: heroFloat 7s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%,100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-18px) rotate(3deg); }
+}
+
+.post-hero-meta {
+  position: relative;
+  z-index: 4;
+  padding: 3rem 5vw 0;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.post-hero-cats {
+  display: flex; align-items: center; gap: 0.8rem;
+  flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+
+.post-cat {
+  font-size: 0.58rem; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--gold);
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.18);
+  padding: 3px 10px;
+}
+
+.post-hero-title {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  color: var(--chalk);
+  line-height: 1.18;
+  margin-bottom: 1.8rem;
+  letter-spacing: -0.01em;
+}
+
+.post-byline {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+
+.post-author {
+  display: flex; align-items: center; gap: 0.9rem;
+}
+
+.post-author-avatar {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--violet), var(--ink));
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.post-author-info { line-height: 1.3; }
+
+.post-author-name {
+  font-family: var(--display);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.post-author-role {
+  font-size: 0.65rem; color: var(--mist);
+  letter-spacing: 0.05em; margin-top: 2px;
+}
+
+.post-byline-sep {
+  width: 1px; height: 32px;
+  background: rgba(255,255,255,0.1);
+}
+
+.post-info-item {
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.post-info-label {
+  font-size: 0.55rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: rgba(201,168,76,0.5);
+}
+
+.post-info-val {
+  font-size: 0.75rem; color: var(--mist);
+}
+
+/* ── Main Layout ── */
+.post-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 5rem;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 5rem 5vw 8rem;
+  align-items: start;
+}
+
+/* ── Article Body ── */
+.post-body {
+  min-width: 0;
+}
+
+.post-body p {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  line-height: 1.95;
+  color: rgba(240,236,232,0.82);
+  margin-bottom: 1.8rem;
+}
+
+.post-body p.lead {
+  font-size: 1.25rem;
+  color: var(--chalk);
+  line-height: 1.75;
+  font-style: italic;
+}
+
+.post-body h2 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--chalk);
+  margin: 3.5rem 0 1.4rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+
+.post-body h3 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin: 2.5rem 0 1rem;
+  font-style: italic;
+}
+
+.post-body blockquote {
+  border-left: 2px solid var(--gold);
+  padding: 1.5rem 2rem;
+  margin: 3rem 0;
+  background: rgba(201,168,76,0.03);
+  position: relative;
+}
+
+.post-body blockquote::before {
+  content: '\201C';
+  font-family: var(--serif);
+  font-size: 5rem;
+  line-height: 0.7;
+  color: rgba(201,168,76,0.12);
+  position: absolute;
+  top: 1rem; left: 1rem;
+  pointer-events: none;
+}
+
+.post-body blockquote p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--chalk);
+  line-height: 1.8;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.post-body blockquote cite {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.6);
+  font-style: normal;
+}
+
+.post-body ul,
+.post-body ol {
+  margin: 1.5rem 0 2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.post-body li {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: rgba(240,236,232,0.78);
+  line-height: 1.8;
+  padding-left: 0.5rem;
+}
+
+.post-body ul li { list-style: none; position: relative; margin-left: 1rem; }
+.post-body ul li::before {
+  content: '◇';
+  color: var(--gold);
+  font-size: 0.5rem;
+  position: absolute;
+  left: -1.4rem;
+  top: 0.55rem;
+}
+
+/* Pull-out card */
+.post-callout {
+  background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(124,58,237,0.06) 100%);
+  border: 1px solid rgba(201,168,76,0.18);
+  padding: 2.5rem;
+  margin: 3rem 0;
+  position: relative;
+}
+
+.post-callout::before {
+  content: '✦';
+  position: absolute;
+  top: -0.7rem; left: 50%;
+  transform: translateX(-50%);
+  background: var(--void);
+  padding: 0 12px;
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+.post-callout p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.12rem;
+  color: var(--chalk) !important;
+  line-height: 1.8;
+  text-align: center;
+  margin: 0 !important;
+}
+
+/* Divider glyph */
+.post-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 3.5rem 0;
+  color: rgba(201,168,76,0.3);
+}
+
+.post-divider::before,
+.post-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.12);
+}
+
+.post-divider span {
+  font-size: 1rem;
+  color: var(--gold);
+  opacity: 0.5;
+}
+
+/* Tags */
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 3rem 0;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.post-tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mist);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 5px 14px;
+  transition: border-color 0.2s, color 0.2s;
+  cursor: default;
+}
+
+.post-tag:hover { border-color: rgba(201,168,76,0.35); color: var(--gold); }
+
+/* Share */
+.post-share {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.post-share-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+  white-space: nowrap;
+}
+
+.share-btn {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: none;
+  color: var(--mist);
+  padding: 7px 16px;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.share-btn:hover { border-color: rgba(201,168,76,0.4); color: var(--gold); }
+
+/* Author card at bottom */
+.post-author-card {
+  background: var(--ink);
+  border: 1px solid rgba(201,168,76,0.12);
+  padding: 2.5rem;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-top: 3rem;
+  position: relative;
+}
+
+.post-author-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.post-author-card-avatar {
+  width: 70px; height: 70px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--violet), var(--void));
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+}
+
+.post-author-card-body {}
+
+.post-author-card-name {
+  font-family: var(--display);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.post-author-card-bio {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--mist);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.post-author-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--void);
+  background: var(--gold);
+  padding: 8px 20px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.post-author-card-cta:hover { background: var(--gold-hi); }
+
+/* ── Sidebar ── */
+.post-sidebar {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.sidebar-widget {
+  background: var(--ink);
+  border: 1px solid rgba(201,168,76,0.1);
+  padding: 1.8rem;
+  position: relative;
+}
+
+.sidebar-widget::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.sidebar-widget-title {
+  font-family: var(--display);
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.4rem;
+  display: block;
+}
+
+/* Book CTA widget */
+.sidebar-book {
+  background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(124,58,237,0.06) 100%);
+  border: 1px solid rgba(201,168,76,0.18);
+  padding: 2rem 1.8rem;
+  text-align: center;
+  position: sticky;
+  top: 88px;
+}
+
+.sidebar-book-moon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: heroFloat 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(201,168,76,0.4));
+}
+
+.sidebar-book h4 {
+  font-family: var(--display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--chalk);
+  margin-bottom: 0.8rem;
+  line-height: 1.4;
+}
+
+.sidebar-book p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--mist);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-book a {
+  display: block;
+  background: var(--gold);
+  color: var(--void);
+  padding: 12px 20px;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.sidebar-book a:hover { background: var(--gold-hi); }
+
+/* TOC */
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.toc-item a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.65rem 0;
+  font-size: 0.78rem;
+  color: var(--mist);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: color 0.2s;
+  line-height: 1.4;
+}
+
+.toc-item:last-child a { border-bottom: none; }
+.toc-item a:hover { color: var(--gold); }
+
+.toc-item a::before {
+  content: attr(data-n);
+  font-family: var(--display);
+  font-size: 0.55rem;
+  color: rgba(201,168,76,0.4);
+  flex-shrink: 0;
+}
+
+/* Related posts */
+.related-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.related-mini-item {
+  display: flex;
+  gap: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+
+.related-mini-item:hover { opacity: 0.75; }
+
+.related-mini-icon {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  background: var(--violet);
+  border: 1px solid rgba(201,168,76,0.1);
+}
+
+.related-mini-title {
+  font-family: var(--serif);
+  font-size: 0.82rem;
+  color: var(--chalk);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.related-mini-cat {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.65;
+  margin-bottom: 3px;
+  display: block;
+}
+
+/* ── Related Posts Below ── */
+.related-section {
+  background: var(--violet);
+  border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 80px 5vw;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 50px;
+}
+
+.related-card {
+  background: var(--ink);
+  border: 1px solid rgba(201,168,76,0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s, transform 0.3s;
+  overflow: hidden;
+}
+
+.related-card:hover {
+  border-color: rgba(201,168,76,0.3);
+  transform: translateY(-4px);
+}
+
+.related-card-art {
+  height: 160px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem;
+  position: relative; overflow: hidden;
+}
+
+.related-card-art .rbg {
+  position: absolute; inset: 0;
+  transition: transform 0.6s ease;
+}
+
+.related-card:hover .rbg { transform: scale(1.05); }
+.related-card-art span { position: relative; z-index: 2; filter: drop-shadow(0 0 15px rgba(201,168,76,0.3)); }
+
+.related-card-body { padding: 1.5rem 1.8rem 2rem; }
+
+.related-card-cat {
+  font-size: 0.55rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold);
+  display: block; margin-bottom: 0.7rem;
+}
+
+.related-card-title {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 0.95rem; color: var(--chalk);
+  line-height: 1.4; margin-bottom: 0.8rem;
+  transition: color 0.25s;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.related-card:hover .related-card-title { color: var(--gold); }
+
+.related-card-read {
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(201,168,76,0.5);
+}
+
+/* ── Footer ── */
+footer {
+  background: var(--void);
+  border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 50px 5vw 30px;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.footer-brand {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.footer-tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--mist);
+}
+
+.footer-links {
+  display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; justify-content: center;
+}
+
+.footer-links a {
+  font-size: 0.65rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--mist);
+  text-decoration: none; transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--gold); }
+
+.footer-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(240,236,232,0.25);
+}
+
+.footer-copy {
+  font-size: 0.62rem; letter-spacing: 0.1em;
+  color: rgba(240,236,232,0.18);
+}
+
+/* ── Reveal ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.22s; }
+.delay-3 { transition-delay: 0.34s; }
+
+/* Progress bar */
+.read-progress {
+  position: fixed;
+  top: 64px; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--rose));
+  z-index: 200;
+  transition: width 0.1s linear;
+}
+
+/* Back to blog */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mist);
+  text-decoration: none;
+  transition: color 0.2s;
+  margin-bottom: 2.5rem;
+  display: block;
+}
+
+.back-link:hover { color: var(--gold); }
+
+/* Sticky book */
+.sticky {
+  position: fixed; bottom: 24px; right: 24px; z-index: 50;
+  display: none;
+}
+.sticky.show { display: block; }
+.sticky a {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--gold); color: var(--void);
+  padding: 12px 22px; font-size: 0.62rem;
+  font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 8px 28px rgba(201,168,76,0.45);
+  animation: stickyGlow 2.8s ease-in-out infinite;
+}
+@keyframes stickyGlow {
+  0%,100% { box-shadow: 0 8px 28px rgba(201,168,76,0.45); }
+  50%      { box-shadow: 0 8px 48px rgba(201,168,76,0.75); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .post-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .post-sidebar { position: static; }
+  .related-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links, .nav-book { display: none; }
+  .hamburger { display: flex; }
+}
+
+@media (max-width: 600px) {
+  .post-hero-art { height: 40vh; min-height: 260px; }
+  .post-hero-symbol { font-size: 6rem; }
+  .post-hero-title { font-size: 1.6rem; }
+  .related-grid { grid-template-columns: 1fr; }
+  .post-byline { gap: 0.8rem; }
+  .post-byline-sep { display: none; }
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.4); }
+::selection { background: rgba(201,168,76,0.2); color: var(--gold); }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="read-progress" id="read-progress"></div>
+
+<div class="sticky" id="sticky-btn">
+  <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener">✦ Book Reading</a>
+</div>
+
+<!-- Mobile Nav -->
+<div class="mob-nav" id="mob-nav">
+  <button class="mob-nav-close" id="mob-close">✕</button>
+  <a href="empress-jasmin-v2.html#about" onclick="document.getElementById('mob-nav').classList.remove('open')">About</a>
+  <a href="empress-jasmin-v2.html#services" onclick="document.getElementById('mob-nav').classList.remove('open')">Services</a>
+  <a href="empress-jasmin-v2.html#blog" onclick="document.getElementById('mob-nav').classList.remove('open')">Blog</a>
+  <a href="empress-jasmin-v2.html#contact" onclick="document.getElementById('mob-nav').classList.remove('open')">Contact</a>
+  <a href="https://stan.store/Theempressjasmin" target="_blank" style="color:var(--gold)">Book A Reading</a>
+</div>
+
+<div class="page">
+
+<!-- NAV -->
+<nav>
+  <a href="empress-jasmin-v2.html" class="nav-logo">The Empress Jasmin</a>
+  <ul class="nav-links">
+    <li><a href="empress-jasmin-v2.html#about">About</a></li>
+    <li><a href="empress-jasmin-v2.html#services">Services</a></li>
+    <li><a href="empress-jasmin-v2.html#blog">Blog</a></li>
+    <li><a href="empress-jasmin-v2.html#contact">Contact</a></li>
+  </ul>
+  <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener" class="nav-book">Book A Reading</a>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO BANNER -->
+<div class="post-hero">
+  <div class="post-hero-art">
+    <div class="post-hero-bg"></div>
+    <svg class="post-hero-pattern" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <circle cx="400" cy="250" r="200" stroke="#c9a84c" stroke-width="0.6" fill="none"/>
+      <circle cx="400" cy="250" r="140" stroke="#c9a84c" stroke-width="0.4" fill="none"/>
+      <circle cx="400" cy="250" r="80"  stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+      <polygon points="400,50 600,163 600,337 400,450 200,337 200,163" stroke="#c9a84c" stroke-width="0.5" fill="none"/>
+      <polygon points="400,450 600,163 200,163" stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+      <polygon points="400,50 600,337 200,337" stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+      <circle cx="100" cy="80" r="2" fill="rgba(201,168,76,0.5)"/>
+      <circle cx="700" cy="100" r="1.5" fill="rgba(201,168,76,0.4)"/>
+      <circle cx="120" cy="400" r="1.5" fill="rgba(201,168,76,0.35)"/>
+      <circle cx="680" cy="420" r="2" fill="rgba(201,168,76,0.45)"/>
+    </svg>
+    <div class="post-hero-vignette"></div>
+    <span class="post-hero-symbol">🌙</span>
+  </div>
+
+  <div class="post-hero-meta reveal">
+    <a href="empress-jasmin-v2.html#blog" class="back-link">← Back to Journal</a>
+    <div class="post-hero-cats">
+      <span class="post-cat">Tarot Wisdom</span>
+      <span class="post-cat">Spiritual Guidance</span>
+    </div>
+    <h1 class="post-hero-title">The Moon Card &amp; What Your Subconscious Is Trying to Tell You</h1>
+    <div class="post-byline">
+      <div class="post-author">
+        <div class="post-author-avatar">♕</div>
+        <div class="post-author-info">
+          <div class="post-author-name">The Empress Jasmin</div>
+          <div class="post-author-role">Spiritual Guide · Tarot Reader · Life Coach</div>
+        </div>
+      </div>
+      <div class="post-byline-sep"></div>
+      <div class="post-info-item">
+        <span class="post-info-label">Published</span>
+        <span class="post-info-val">June 12, 2025</span>
+      </div>
+      <div class="post-byline-sep"></div>
+      <div class="post-info-item">
+        <span class="post-info-label">Read Time</span>
+        <span class="post-info-val">8 min read</span>
+      </div>
+      <div class="post-byline-sep"></div>
+      <div class="post-info-item">
+        <span class="post-info-label">Category</span>
+        <span class="post-info-val">Tarot Wisdom</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="post-layout">
+
+  <!-- Article -->
+  <article class="post-body reveal">
+
+    <p class="lead">When the Moon card appears in a reading, most people feel a flicker of unease. Its imagery — the howling wolves, the crayfish emerging from deep water, the twin pillars standing in silent guard — can feel unsettling at first glance. But the Moon is not a card of darkness. It is a card of revelation.</p>
+
+    <p>It is the universe holding up a lantern to the parts of yourself you have been too afraid — or too busy — to look at.</p>
+
+    <p>In over a decade of tarot readings and spiritual guidance, I have seen the Moon card show up at the most pivotal moments of my clients' lives — not as a warning, but as an invitation. An invitation to stop pretending. To stop performing. To finally see what is really there beneath the surface of your carefully constructed life.</p>
+
+    <div class="post-callout">
+      <p>"The Moon does not create the shadows. It simply illuminates what was always already there — waiting for you to be ready to see it."</p>
+    </div>
+
+    <h2 id="s1">What the Moon Card Actually Means</h2>
+
+    <p>The Moon sits at position XVIII in the Major Arcana — and in numerology, 18 reduces to 9, the number of completion, wisdom, and the turning of cycles. This alone tells you something important: the Moon is not the beginning of a journey into the unknown. It is the final threshold before clarity arrives.</p>
+
+    <p>Traditional interpretations of the Moon include illusion, confusion, anxiety, the subconscious, and hidden truths. But in my experience, these labels miss the deeper point. The Moon is not about being confused. It is about the courage it takes to sit with uncertainty long enough for the truth to reveal itself.</p>
+
+    <p>The creatures in the card — the crayfish, the wolf, the dog — represent three aspects of our inner world:</p>
+
+    <ul>
+      <li><strong>The crayfish</strong> is the deep subconscious — the primal, instinctive self rising from the waters of the unconscious mind, carrying what we have suppressed.</li>
+      <li><strong>The wolf</strong> is our wild, untamed nature — the part of us that howls at what we cannot control, that fears the darkness of the unknown.</li>
+      <li><strong>The dog</strong> is our domesticated self — the version of us shaped by societal expectations, relationships, and the roles we have been taught to play.</li>
+    </ul>
+
+    <p>All three stand beneath the same moon. All three are you.</p>
+
+    <div class="post-divider"><span>✦</span></div>
+
+    <h2 id="s2">Why Your Subconscious Sends This Card</h2>
+
+    <p>In my practice, the Moon card rarely arrives out of nowhere. It almost always appears when something has been building beneath the surface — a feeling you have been pushing down, a truth you have been avoiding, a pattern you have been repeating without fully understanding why.</p>
+
+    <p>Your subconscious is extraordinarily patient. It will whisper to you first — through dreams, through that persistent low-level anxiety, through the same emotional trigger showing up in different relationships, different jobs, different chapters of your life. It is only when the whisper goes unheard for long enough that it escalates.</p>
+
+    <blockquote>
+      <p>The Moon card is that escalation. It is your subconscious saying, clearly and firmly: we need to look at this now.</p>
+      <cite>— From a private reading session, 2024</cite>
+    </blockquote>
+
+    <p>The beautiful thing is that the subconscious is never trying to destabilize you. It is always, without exception, trying to protect you. It surfaces what is hidden because what is hidden is the very thing standing between you and the life — the love, the peace, the purpose — that you are meant to be living.</p>
+
+    <h2 id="s3">Three Questions to Ask When the Moon Appears</h2>
+
+    <h3>1. What am I pretending not to know?</h3>
+
+    <p>This is almost always the first and most important question. There is typically something in your life — a relationship, a situation, a choice — where you already sense the truth but are not quite ready to fully own it. The Moon is permission to own it.</p>
+
+    <h3>2. What do I feel in my body that I have been ignoring?</h3>
+
+    <p>The body is an extraordinary messenger. Anxiety without a clear source, recurring tension in specific parts of your body, exhaustion that sleep does not cure — these are your subconscious speaking through flesh and nerve and bone. When the Moon appears, pay close attention to what your body is already telling you.</p>
+
+    <h3>3. What story am I telling myself that might not be true?</h3>
+
+    <p>The Moon governs illusion — and not all illusions are external. Some of the most powerful illusions we live inside are the ones we have built ourselves, brick by careful brick, to make sense of things that happened to us before we had the tools to understand them. Childhood stories. Old wounds. Beliefs about what we deserve, what love looks like, what is possible for us.</p>
+
+    <p>The Moon invites you to examine these stories. Not to destroy yourself with them — but to see them clearly, and then to ask: is this still true? Does this still serve me?</p>
+
+    <div class="post-callout">
+      <p>"You are not your patterns. You are not your past. You are the awareness that can see them — and the power that can choose differently."</p>
+    </div>
+
+    <div class="post-divider"><span>✦</span></div>
+
+    <h2 id="s4">Working With the Moon's Energy</h2>
+
+    <p>When the Moon appears in your reading, here is what I recommend to the souls I work with:</p>
+
+    <ul>
+      <li><strong>Slow down.</strong> This is not a card that rewards urgency. The Moon asks you to move with the rhythm of the tides — steadily, patiently, trusting that clarity is coming even when you cannot yet see it.</li>
+      <li><strong>Journal.</strong> Write without editing. Write what you feel, not what you think you should feel. The subconscious speaks most freely when the critical mind is not curating every word.</li>
+      <li><strong>Pay attention to your dreams.</strong> The liminal space between sleep and waking is where the Moon's wisdom is most accessible. Keep a notebook by your bed. Even fragments of dreams carry meaning.</li>
+      <li><strong>Resist the urge to force resolution.</strong> The Moon's cycle teaches us that after darkness comes the new moon — a clean slate. What needs to emerge will emerge, in its own time, if you create the conditions for it to do so safely.</li>
+      <li><strong>Trust your intuition above all else.</strong> During a Moon period, your logical mind may feel foggy and unreliable. This is not a malfunction. This is the universe directing your attention away from the head and toward the deeper knowing that lives in your gut, your heart, your bones.</li>
+    </ul>
+
+    <div class="post-divider"><span>✦</span></div>
+
+    <h2 id="s5">A Final Word on the Moon</h2>
+
+    <p>The Moon card used to unsettle me too — back in the early years of my practice, when I was still learning to trust what I could not fully see. I wanted certainty. I wanted maps and answers and clear instructions.</p>
+
+    <p>What the Moon taught me — and what I now carry into every reading I give — is that the most profound clarity does not arrive through force. It arrives through presence. Through the willingness to sit in the beautiful, terrifying, sacred uncertainty of not yet knowing — and to trust that the light is coming.</p>
+
+    <p>It always does.</p>
+
+    <p>If the Moon card has appeared in your life recently and you feel called to explore what your subconscious is trying to show you, I would be honoured to sit with you in that space. A reading is not about predicting your future — it is about helping you see yourself, and your life, more clearly.</p>
+
+    <p>That clarity changes everything.</p>
+
+    <!-- Tags -->
+    <div class="post-tags">
+      <span class="post-tag">Tarot</span>
+      <span class="post-tag">Moon Card</span>
+      <span class="post-tag">Subconscious</span>
+      <span class="post-tag">Spiritual Growth</span>
+      <span class="post-tag">Intuition</span>
+      <span class="post-tag">Shadow Work</span>
+      <span class="post-tag">Major Arcana</span>
+    </div>
+
+    <!-- Share -->
+    <div class="post-share">
+      <span class="post-share-label">Share this post</span>
+      <button class="share-btn" onclick="copyLink()">Copy Link</button>
+      <button class="share-btn" onclick="shareTwitter()">Twitter / X</button>
+      <button class="share-btn" onclick="shareFacebook()">Facebook</button>
+    </div>
+
+    <!-- Author Card -->
+    <div class="post-author-card">
+      <div class="post-author-card-avatar">♕</div>
+      <div class="post-author-card-body">
+        <div class="post-author-card-name">The Empress Jasmin</div>
+        <p class="post-author-card-bio">
+          Spiritual guide, tarot reader, and life coach with over a decade of practice and a community of 240.9K+ on TikTok. She writes to illuminate, to heal, and to remind every soul that the answers they seek are already within them.
+        </p>
+        <a href="https://stan.store/Theempressjasmin" target="_blank" class="post-author-card-cta">Book a Session with Jasmin ✦</a>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- Sidebar -->
+  <aside class="post-sidebar">
+
+    <!-- Book CTA -->
+    <div class="sidebar-book reveal">
+      <span class="sidebar-book-moon">🌙</span>
+      <h4>Ready for Your Own Reading?</h4>
+      <p>Let the cards illuminate what your soul already knows. Book a personal session with The Empress Jasmin.</p>
+      <a href="https://stan.store/Theempressjasmin" target="_blank" rel="noopener">Book on Stan Store ✦</a>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="sidebar-widget reveal delay-1">
+      <span class="sidebar-widget-title">In This Post</span>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#s1" data-n="01">What the Moon Card Actually Means</a></li>
+        <li class="toc-item"><a href="#s2" data-n="02">Why Your Subconscious Sends This Card</a></li>
+        <li class="toc-item"><a href="#s3" data-n="03">Three Questions to Ask</a></li>
+        <li class="toc-item"><a href="#s4" data-n="04">Working With the Moon's Energy</a></li>
+        <li class="toc-item"><a href="#s5" data-n="05">A Final Word on the Moon</a></li>
+      </ul>
+    </div>
+
+    <!-- Related Mini -->
+    <div class="sidebar-widget reveal delay-2">
+      <span class="sidebar-widget-title">Read Next</span>
+      <div class="related-mini">
+        <a href="#" class="related-mini-item">
+          <div class="related-mini-icon">🃏</div>
+          <div>
+            <span class="related-mini-cat">Tarot</span>
+            <div class="related-mini-title">5 Tarot Spreads for Clarity When Life Feels Overwhelming</div>
+          </div>
+        </a>
+        <a href="#" class="related-mini-item">
+          <div class="related-mini-icon">✨</div>
+          <div>
+            <span class="related-mini-cat">Spirituality</span>
+            <div class="related-mini-title">What Is Spiritual Alignment — And How Do You Know When You've Lost It?</div>
+          </div>
+        </a>
+        <a href="#" class="related-mini-item">
+          <div class="related-mini-icon">🌱</div>
+          <div>
+            <span class="related-mini-cat">Growth</span>
+            <div class="related-mini-title">How to Use the New Moon as a Manifestation Portal</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- TikTok -->
+    <div class="sidebar-widget reveal delay-3" style="text-align:center;">
+      <span class="sidebar-widget-title">Follow the Journey</span>
+      <p style="font-size:1.8rem;margin-bottom:0.8rem;">♪</p>
+      <p style="font-family:var(--serif);font-style:italic;font-size:0.82rem;color:var(--mist);line-height:1.7;margin-bottom:1.2rem;">Daily wisdom, tarot insights &amp; free guidance for 240.9K+ souls.</p>
+      <a href="https://tiktok.com/@thegoddessempressmother" target="_blank" style="display:block;border:1px solid rgba(201,168,76,0.25);color:var(--gold);padding:9px 16px;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.06)'" onmouseout="this.style.background='none'">@thegoddessempressmother →</a>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- RELATED POSTS -->
+<section class="related-section">
+  <div style="max-width:1160px;margin:0 auto;">
+    <span class="label reveal" style="font-size:0.58px;letter-spacing:0.38em;text-transform:uppercase;color:var(--gold);display:block;font-size:0.58rem;">More from the Journal</span>
+    <h2 class="reveal delay-1" style="font-family:var(--serif);font-style:italic;font-size:clamp(1.8rem,3.5vw,3rem);color:var(--chalk);margin-top:0.5rem;line-height:1.2;">You might also <em style="color:var(--gold);font-style:normal;">enjoy</em></h2>
+
+    <div class="related-grid">
+      <a href="#" class="related-card reveal delay-1">
+        <div class="related-card-art">
+          <div class="rbg" style="background:linear-gradient(145deg,#200a1a,#0c0812);position:absolute;inset:0;"></div>
+          <span>🃏</span>
+        </div>
+        <div class="related-card-body">
+          <span class="related-card-cat">Tarot</span>
+          <h3 class="related-card-title">5 Tarot Spreads for Clarity When Life Feels Overwhelming</h3>
+          <span class="related-card-read">6 min read →</span>
+        </div>
+      </a>
+
+      <a href="#" class="related-card reveal delay-2">
+        <div class="related-card-art">
+          <div class="rbg" style="background:linear-gradient(145deg,#0a1a2e,#060409);position:absolute;inset:0;"></div>
+          <span>✨</span>
+        </div>
+        <div class="related-card-body">
+          <span class="related-card-cat">Spirituality</span>
+          <h3 class="related-card-title">What Is Spiritual Alignment — And How Do You Know When You've Lost It?</h3>
+          <span class="related-card-read">7 min read →</span>
+        </div>
+      </a>
+
+      <a href="#" class="related-card reveal delay-3">
+        <div class="related-card-art">
+          <div class="rbg" style="background:linear-gradient(145deg,#1a1205,#0c0812);position:absolute;inset:0;"></div>
+          <span>💜</span>
+        </div>
+        <div class="related-card-body">
+          <span class="related-card-cat">Healing</span>
+          <h3 class="related-card-title">Healing Is Not Linear: A Gentle Reminder for Your Journey</h3>
+          <span class="related-card-read">5 min read →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">The Empress Jasmin</div>
+    <div class="footer-tagline">Spiritual Guidance & Tarot Readings</div>
+    <ul class="footer-links">
+      <li><a href="empress-jasmin-v2.html#about">About</a></li>
+      <li><a href="empress-jasmin-v2.html#services">Services</a></li>
+      <li><a href="empress-jasmin-v2.html#blog">Blog</a></li>
+      <li><a href="empress-jasmin-v2.html#contact">Contact</a></li>
+      <li><a href="https://stan.store/Theempressjasmin" target="_blank">Book A Reading</a></li>
+    </ul>
+    <p class="footer-quote">"Trust your intuition. The universe is always speaking."</p>
+    <p class="footer-copy">© 2025 The Empress Jasmin. All rights reserved.</p>
+  </div>
+</footer>
+
+</div><!-- .page -->
+
+<script>
+/* ── Stars ── */
+(function(){
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let W, H, stars = [];
+  function resize(){ W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+  function init(){
+    stars = [];
+    const n = Math.min(160, Math.floor(W*H/7000));
+    for(let i=0;i<n;i++){
+      stars.push({
+        x:Math.random()*W, y:Math.random()*H,
+        r:Math.random()*1.2+0.2,
+        speed:Math.random()*0.01+0.002,
+        phase:Math.random()*Math.PI*2,
+        ps:Math.random()*0.012+0.004,
+        color:Math.random()>0.88?[201,168,76]:Math.random()>0.75?[180,130,220]:[240,236,232]
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.phase+=s.ps; s.y-=s.speed;
+      if(s.y<-3){s.y=H+3;s.x=Math.random()*W;}
+      const a=0.2+0.3*Math.abs(Math.sin(s.phase));
+      const [r,g,b]=s.color;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${r},${g},${b},${a})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize(); init(); draw();
+  window.addEventListener('resize',()=>{resize();init();});
+})();
+
+/* ── Reading Progress ── */
+const bar = document.getElementById('read-progress');
+const sticky = document.getElementById('sticky-btn');
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrolled = doc.scrollTop;
+  const total = doc.scrollHeight - doc.clientHeight;
+  bar.style.width = Math.min(100, (scrolled / total) * 100) + '%';
+  sticky.classList.toggle('show', scrolled > 500);
+}, { passive: true });
+
+/* ── Nav ── */
+document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mob-nav').classList.add('open'));
+document.getElementById('mob-close').addEventListener('click', () => document.getElementById('mob-nav').classList.remove('open'));
+
+/* ── Reveal ── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ── Smooth scroll TOC ── */
+document.querySelectorAll('.toc-item a').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    const target = document.querySelector(id);
+    if(target){ e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+/* ── Share ── */
+function copyLink(){
+  navigator.clipboard.writeText(window.location.href).then(()=>{
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    setTimeout(()=>btn.textContent=orig,2000);
+  });
+}
+function shareTwitter(){
+  window.open('https://twitter.com/intent/tweet?text=The Moon Card %26 What Your Subconscious Is Trying to Tell You — by The Empress Jasmin&url='+encodeURIComponent(window.location.href),'_blank');
+}
+function shareFacebook(){
+  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href),'_blank');
+}
+</script>
+</body>
+</html>
