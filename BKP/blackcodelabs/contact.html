@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact — BlackCodeLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+/* ── HERO ── */
+.page-hero{position:relative;padding:calc(var(--nav-h) + 3.5rem) 5vw 3.5rem;min-height:50svh;display:flex;align-items:center;overflow:hidden}
+#ct-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ph-inner{position:relative;z-index:2;max-width:680px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-m);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4rem;opacity:0;animation:fUp .9s var(--ease) .2s forwards}
+.hero-eyebrow::before{content:'';width:18px;height:1px;background:var(--accent)}
+.ph-inner h1{font-family:var(--font-d);font-size:clamp(2.4rem,8vw,5rem);font-weight:900;line-height:1.03;letter-spacing:-.022em;opacity:0;animation:fUp 1s var(--ease) .35s forwards}
+.ph-inner h1 em{font-style:italic;color:var(--accent)}
+.ph-inner p{margin-top:1.2rem;font-size:clamp(.85rem,2.2vw,.98rem);color:var(--text2);max-width:440px;line-height:1.8;opacity:0;animation:fUp 1s var(--ease) .5s forwards}
+@keyframes fUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* ── CONTACT BODY ── */
+.contact-section{padding:clamp(3rem,7vw,6rem) 5vw}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:2.5rem;max-width:1200px;margin:0 auto}
+
+/* LEFT — INFO */
+.info-intro{font-family:var(--font-d);font-size:clamp(1.2rem,3vw,1.5rem);font-weight:700;line-height:1.35;margin-bottom:.7rem}
+.info-intro em{color:var(--accent);font-style:italic}
+.info-body{font-size:.87rem;color:var(--text2);line-height:1.85;margin-bottom:2rem}
+.info-cards{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.8rem}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1rem;display:flex;align-items:flex-start;gap:.8rem;transition:border-color .3s}
+.info-card:hover{border-color:rgba(192,57,43,.25)}
+.info-ic{width:36px;height:36px;background:var(--accent-g);border:1px solid rgba(192,57,43,.18);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.info-card h4{font-family:var(--font-d);font-size:.82rem;font-weight:700;margin-bottom:.15rem}
+.info-card p,.info-card a{font-size:.75rem;color:var(--text2);font-family:var(--font-m);text-decoration:none;transition:color .3s;display:block;word-break:break-all}
+.info-card a:hover{color:var(--accent)}
+.hours-card{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:var(--r);padding:1.3rem;margin-bottom:1.5rem}
+.hours-card h4{font-family:var(--font-m);font-size:.62rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:.9rem}
+.h-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.78rem}
+.h-row:last-child{border:none}
+.h-row span:first-child{color:var(--text2)}
+.h-row span:last-child{font-family:var(--font-m);font-size:.72rem;color:var(--text)}
+.h-row span.on{color:var(--accent)}
+.resp-badge{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text2);font-family:var(--font-m)}
+.r-dot{width:8px;height:8px;border-radius:50%;background:#27ae60;flex-shrink:0;box-shadow:0 0 8px rgba(39,174,96,.5);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 6px rgba(39,174,96,.35)}50%{box-shadow:0 0 14px rgba(39,174,96,.7)}}
+
+/* RIGHT — FORM */
+.form-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;position:relative}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--accent),transparent)}
+.form-head{padding:1.3rem 1.5rem;border-bottom:1px solid var(--border)}
+.form-head h3{font-family:var(--font-d);font-size:1rem;font-weight:700}
+.form-head p{font-size:.75rem;color:var(--text2);margin-top:.2rem;font-family:var(--font-m)}
+.form-body{padding:1.5rem}
+.form-row-2{display:grid;grid-template-columns:1fr;gap:.9rem}
+.form-gap{margin-bottom:.9rem}
+.budget-wrap{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
+.b-pill{font-family:var(--font-m);font-size:.65rem;letter-spacing:.06em;padding:.35rem .8rem;border:1px solid var(--border);border-radius:20px;color:var(--text3);cursor:pointer;transition:all .22s;user-select:none}
+.b-pill:hover{border-color:rgba(192,57,43,.3);color:var(--text2)}
+.b-pill.on{background:var(--accent-g);border-color:rgba(192,57,43,.4);color:var(--accent)}
+.form-footer{display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem;padding-top:1.3rem;border-top:1px solid var(--border)}
+.form-note{font-size:.7rem;color:var(--text3);font-family:var(--font-m);line-height:1.5}
+.submit-btn{width:100%;padding:.95rem;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-b);font-size:.87rem;font-weight:500;cursor:pointer;transition:all .3s var(--ease);display:flex;align-items:center;justify-content:center;gap:.5rem}
+.submit-btn:hover{background:var(--accent-h);box-shadow:0 0 20px rgba(192,57,43,.35);transform:translateY(-1px)}
+.btn-arr{transition:transform .3s}
+.submit-btn:hover .btn-arr{transform:translateX(4px)}
+#success-state{display:none;padding:3rem 1.5rem;text-align:center}
+.suc-ic{width:64px;height:64px;border-radius:50%;background:rgba(39,174,96,.1);border:1px solid rgba(39,174,96,.25);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 1.2rem}
+#success-state h3{font-family:var(--font-d);font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+#success-state p{font-size:.85rem;color:var(--text2);line-height:1.75}
+
+/* ── FAQ ── */
+.faq-section{max-width:720px;margin:0 auto;padding:0 5vw clamp(3rem,7vw,6rem)}
+.faq-section h2{font-family:var(--font-d);font-size:clamp(1.5rem,4vw,2rem);font-weight:700;text-align:center;margin-bottom:1.8rem}
+.faq-section h2 em{color:var(--accent);font-style:italic}
+.faq-item{border-bottom:1px solid var(--border);padding:1.1rem 0}
+.faq-q{font-size:.87rem;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;user-select:none;transition:color .3s;line-height:1.4}
+.faq-q:hover{color:var(--accent)}
+.faq-ic{color:var(--accent);font-size:1.1rem;transition:transform .32s var(--ease);flex-shrink:0;line-height:1}
+.faq-item.open .faq-ic{transform:rotate(45deg)}
+.faq-a{font-size:.82rem;color:var(--text2);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .42s var(--ease),margin .3s}
+.faq-item.open .faq-a{max-height:200px;margin-top:.65rem}
+
+/* ── LOCATION STRIP ── */
+.loc-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:clamp(3rem,7vw,5.5rem) 5vw}
+.loc-grid{display:grid;grid-template-columns:1fr;gap:2.5rem;max-width:1200px;margin:0 auto;align-items:center}
+.loc-text h2{font-family:var(--font-d);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;margin-bottom:.8rem}
+.loc-text h2 em{color:var(--accent);font-style:italic}
+.loc-text p{font-size:.87rem;color:var(--text2);line-height:1.85;margin-bottom:1.2rem}
+.loc-bullets{display:flex;flex-direction:column;gap:.6rem}
+.loc-bullet{display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:var(--text2)}
+.loc-bullet::before{content:'—';color:var(--accent);font-family:var(--font-m);font-size:.7rem;flex-shrink:0;margin-top:.1rem}
+.map-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;height:240px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#map-canvas{position:absolute;inset:0}
+.map-pin{position:relative;z-index:2;text-align:center}
+.map-pin .pin{width:14px;height:14px;background:var(--accent);border-radius:50% 50% 50% 0;transform:rotate(-45deg);margin:0 auto .8rem;box-shadow:0 0 14px rgba(192,57,43,.6);animation:pp 2s ease infinite}
+@keyframes pp{0%,100%{box-shadow:0 0 8px rgba(192,57,43,.4)}50%{box-shadow:0 0 20px rgba(192,57,43,.8)}}
+.map-pin p{font-family:var(--font-m);font-size:.68rem;color:var(--text2);letter-spacing:.06em;line-height:1.5}
+
+@media(min-width:640px){.form-row-2{grid-template-columns:1fr 1fr}.info-cards{grid-template-columns:1fr 1fr}.form-footer{flex-direction:row;align-items:center}}
+@media(min-width:1024px){.contact-grid{grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start}.loc-grid{grid-template-columns:1fr 1fr;gap:4rem}}
+</style>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="page-veil"></div>
+<div class="mobile-drawer">
+  <a href="index.html">Home</a><a href="solutions.html">Solutions</a><a href="pricing.html">Pricing</a>
+  <a href="career.html">Careers</a><a href="affiliate.html">Affiliate</a><a href="contact.html">Contact</a>
+  <div class="drawer-actions"><a href="login.html" class="btn btn-outline btn-full">Sign In</a><a href="register.html" class="btn btn-red btn-full">Get Started</a></div>
+</div>
+<nav>
+  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="career.html">Careers</a></li><li><a href="affiliate.html">Affiliate</a></li><li><a href="contact.html" class="active">Contact</a></li></ul>
+  <div class="nav-actions"><a href="login.html" class="btn btn-outline btn-sm">Sign In</a><a href="register.html" class="btn btn-red btn-sm">Get Started</a><button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button></div>
+</nav>
+
+<div class="page-hero">
+  <canvas id="ct-canvas"></canvas>
+  <div class="ph-inner">
+    <div class="hero-eyebrow">Get in Touch</div>
+    <h1>Let's build<br>something <em>great</em><br>together.</h1>
+    <p>Tell us about your project. Our team reviews every message and responds within 24 hours with a clear, honest plan.</p>
+  </div>
+</div>
+
+<div class="contact-section">
+  <div class="contact-grid">
+
+    <!-- INFO -->
+    <div class="reveal">
+      <p class="info-intro">We'd love to <em>hear</em> from you.</p>
+      <p class="info-body">Whether you have a fully scoped brief or a rough idea, we're here to help you shape it into something exceptional. No jargon, no pressure.</p>
+      <div class="info-cards">
+        <div class="info-card"><div class="info-ic">📧</div><div><h4>Email</h4><a href="mailto:hello@blackcodelabs.dev">hello@blackcodelabs.dev</a></div></div>
+        <div class="info-card"><div class="info-ic">📞</div><div><h4>Phone</h4><a href="tel:+18002252633">+1 (800) BCL-CODE</a></div></div>
+        <div class="info-card"><div class="info-ic">💬</div><div><h4>Live Chat</h4><p>Available business hours</p></div></div>
+        <div class="info-card"><div class="info-ic">📍</div><div><h4>Location</h4><p>Remote-first · Global</p></div></div>
+      </div>
+      <div class="hours-card">
+        <h4>Business Hours (WAT / UTC+1)</h4>
+        <div class="h-row"><span>Mon – Fri</span><span class="on">9:00 AM – 6:00 PM</span></div>
+        <div class="h-row"><span>Saturday</span><span>10:00 AM – 2:00 PM</span></div>
+        <div class="h-row"><span>Sunday</span><span>Closed</span></div>
+        <div class="h-row"><span>Emergency (Premium+)</span><span class="on">24 / 7</span></div>
+      </div>
+      <div class="resp-badge"><div class="r-dot"></div><span>Typically respond within <strong style="color:var(--text)">4–8 hours</strong></span></div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card reveal" data-delay="150">
+      <div class="form-head"><h3>Send a message</h3><p>// Required fields marked with *</p></div>
+      <div id="form-state">
+        <div class="form-body">
+          <div class="form-row-2 form-gap">
+            <div class="form-group"><label>First Name *</label><input type="text" id="fName" placeholder="John"/></div>
+            <div class="form-group"><label>Last Name *</label><input type="text" id="lName" placeholder="Doe"/></div>
+          </div>
+          <div class="form-group form-gap"><label>Email Address *</label><input type="email" id="fEmail" placeholder="john@example.com"/></div>
+          <div class="form-group form-gap"><label>Company (Optional)</label><input type="text" placeholder="Your company name"/></div>
+          <div class="form-group form-gap">
+            <label>Service Needed *</label>
+            <select id="fService">
+              <option value="">Select a service...</option>
+              <option>Software Development</option><option>API Engineering</option>
+              <option>SEO Optimisation</option><option>Bug Bounty / Security</option>
+              <option>App Development</option><option>Website Development</option>
+              <option>Web App Development</option><option>Multiple Services</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-group form-gap">
+            <label>Budget Range</label>
+            <div class="budget-wrap">
+              <span class="b-pill" onclick="selBudget(this)">Under $1k</span>
+              <span class="b-pill" onclick="selBudget(this)">$1k – $5k</span>
+              <span class="b-pill" onclick="selBudget(this)">$5k – $15k</span>
+              <span class="b-pill" onclick="selBudget(this)">$15k – $50k</span>
+              <span class="b-pill" onclick="selBudget(this)">$50k+</span>
+            </div>
+          </div>
+          <div class="form-group form-gap"><label>Project Details *</label><textarea id="fMsg" placeholder="Tell us about your project — what you're building, your timeline, and any technical details..."></textarea></div>
+          <div class="form-footer">
+            <p class="form-note">Your info is kept private.<br>We never share or sell data.</p>
+            <button class="submit-btn" onclick="sendForm()">Send Message <span class="btn-arr">→</span></button>
+          </div>
+        </div>
+      </div>
+      <div id="success-state">
+        <div class="suc-ic">✓</div>
+        <h3>Message received!</h3>
+        <p>Thank you for reaching out. One of our team will review your project and respond within 24 hours with a tailored response.</p>
+        <a href="solutions.html" class="btn btn-outline" style="display:inline-flex;margin-top:1.5rem">Explore Solutions →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LOCATION -->
+<div class="loc-section">
+  <div class="loc-grid">
+    <div class="reveal">
+      <span class="s-label">Where We Work</span>
+      <h2>Remote-first,<br><em>globally</em> delivered.</h2>
+      <p>Our team operates fully remote across multiple time zones — meaning we're available when you need us, wherever you are.</p>
+      <div class="loc-bullets">
+        <div class="loc-bullet">Headquarters: Nigeria (WAT, UTC+1)</div>
+        <div class="loc-bullet">Active clients across Africa, Europe &amp; North America</div>
+        <div class="loc-bullet">24/7 emergency support for Premium clients</div>
+        <div class="loc-bullet">On-site visits available by arrangement</div>
+      </div>
+    </div>
+    <div class="reveal" data-delay="150">
+      <div class="map-box">
+        <canvas id="map-canvas"></canvas>
+        <div class="map-pin"><div class="pin"></div><p>BlackCodeLabs HQ<br>Nigeria · Remote-first</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <h2>Quick <em>answers.</em></h2>
+  <div class="faq-item"><div class="faq-q">How quickly will you respond?<span class="faq-ic">+</span></div><div class="faq-a">We respond to all enquiries within 4–8 business hours. For urgent matters, email us directly and mark your subject line URGENT.</div></div>
+  <div class="faq-item"><div class="faq-q">Do you work with clients outside Nigeria?<span class="faq-ic">+</span></div><div class="faq-a">Absolutely. We work with clients across Africa, Europe, North America, and beyond. Our fully remote setup means geography is never a barrier.</div></div>
+  <div class="faq-item"><div class="faq-q">Is the initial consultation free?<span class="faq-ic">+</span></div><div class="faq-a">Yes, completely free and carries no obligation. We'll give you honest advice even if we turn out not to be the right fit.</div></div>
+  <div class="faq-item"><div class="faq-q">What happens after I submit this form?<span class="faq-ic">+</span></div><div class="faq-a">Your message goes to our project intake team. Within 24 hours you'll receive a personalised response — not a template — addressing your specific needs and suggesting next steps.</div></div>
+</div>
+
+<footer><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a><p>Elite software engineering for the digital age.</p></div><div class="footer-col"><h5>Company</h5><ul><li><a href="index.html">Home</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="career.html">Careers</a></li></ul></div><div class="footer-col"><h5>Contact</h5><ul><li><a href="mailto:hello@blackcodelabs.dev">hello@blackcodelabs.dev</a></li><li><a href="login.html">Client Portal</a></li><li><a href="register.html">Register</a></li></ul></div></div><div class="footer-bottom"><p>© 2025 <em>BlackCodeLabs</em>. All rights reserved.</p></div></div></footer>
+
+<script src="shared.js"></script>
+<script>
+/* 3D HERO */
+(function(){
+  const c=document.getElementById('ct-canvas');
+  const R=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);
+  const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(55,c.parentElement.offsetWidth/c.parentElement.offsetHeight,.1,200);C.position.z=36;
+  const N=2000,pos=new Float32Array(N*3),col=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*110;pos[i*3+2]=(Math.random()-.5)*120;const t=Math.random();col[i*3]=t>.6?.75:.1;col[i*3+1]=.07;col[i*3+2]=.07;}
+  const pG=new THREE.BufferGeometry();pG.setAttribute('position',new THREE.BufferAttribute(pos,3));pG.setAttribute('color',new THREE.BufferAttribute(col,3));
+  S.add(new THREE.Points(pG,new THREE.PointsMaterial({size:.2,vertexColors:true,transparent:true,opacity:.55})));
+  const rG=new THREE.TorusGeometry(11,.38,8,65);const rM=new THREE.Mesh(rG,new THREE.MeshBasicMaterial({color:0x8a1010,wireframe:true,transparent:true,opacity:.05}));rM.rotation.x=1.1;S.add(rM);
+  const bG=new THREE.IcosahedronGeometry(5,1);const bM=new THREE.Mesh(bG,new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.07}));bM.position.set(16,2,-4);S.add(bM);
+  let mx=0,my=0;document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
+  (function a(){requestAnimationFrame(a);rM.rotation.z+=.003;bM.rotation.y+=.005;C.position.x+=(mx*3-C.position.x)*.02;C.position.y+=(-my*2-C.position.y)*.02;R.render(S,C);})();
+  addEventListener('resize',()=>{C.aspect=c.parentElement.offsetWidth/c.parentElement.offsetHeight;C.updateProjectionMatrix();R.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);});
+})();
+/* MAP MINI 3D */
+(function(){
+  const c=document.getElementById('map-canvas');if(!c)return;
+  const r=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  r.setSize(c.parentElement.offsetWidth,c.parentElement.offsetHeight);
+  const s=new THREE.Scene(),cam=new THREE.PerspectiveCamera(55,c.parentElement.offsetWidth/c.parentElement.offsetHeight,.1,200);cam.position.z=24;
+  const N=700,pts=[];for(let i=0;i<N;i++)pts.push((Math.random()-.5)*80,(Math.random()-.5)*50,(Math.random()-.5)*60);
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
+  s.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0xc0392b,size:.16,transparent:true,opacity:.22})));
+  const gG=new THREE.SphereGeometry(7,14,10);const gM=new THREE.Mesh(gG,new THREE.MeshBasicMaterial({color:0x8a1010,wireframe:true,transparent:true,opacity:.07}));s.add(gM);
+  (function a(){requestAnimationFrame(a);gM.rotation.y+=.004;r.render(s,cam);})();
+})();
+function selBudget(el){document.querySelectorAll('.b-pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');}
+function sendForm(){
+  const fn=document.getElementById('fName').value.trim();
+  const em=document.getElementById('fEmail').value.trim();
+  const sv=document.getElementById('fService').value;
+  const ms=document.getElementById('fMsg').value.trim();
+  if(!fn||!em||!sv||!ms){
+    const btn=document.querySelector('.submit-btn');
+    btn.style.transform='translateX(-5px)';setTimeout(()=>btn.style.transform='translateX(5px)',80);setTimeout(()=>btn.style.transform='none',160);return;
+  }
+  const btn=document.querySelector('.submit-btn');btn.textContent='Sending…';btn.disabled=true;
+  setTimeout(()=>{document.getElementById('form-state').style.display='none';document.getElementById('success-state').style.display='block';},1100);
+}
+document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
+document.querySelectorAll('input,textarea,select').forEach(el=>{
+  el.addEventListener('focus',()=>{const lb=el.closest('.form-group')?.querySelector('label');if(lb)lb.style.color='rgba(192,57,43,.7)';});
+  el.addEventListener('blur',()=>{const lb=el.closest('.form-group')?.querySelector('label');if(lb)lb.style.color='';});
+});
+</script>
+</body>
+</html>

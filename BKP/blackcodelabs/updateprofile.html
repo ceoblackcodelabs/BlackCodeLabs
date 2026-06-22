@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Edit Profile — BlackCodeLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+#edit-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.edit-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 9rem 5vw 5rem;
+}
+.edit-topbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text2);
+  text-decoration: none;
+  font-family: var(--font-m);
+  letter-spacing: 0.06em;
+  transition: color 0.3s;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.back-btn:hover { color: var(--accent); }
+.edit-topbar h1 {
+  font-family: var(--font-d);
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+/* AVATAR EDITOR */
+.avatar-editor {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 2rem;
+}
+.avatar-large {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7b1010);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-d);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  border: 3px solid rgba(192,57,43,0.3);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.avatar-large:hover .avatar-overlay { opacity: 1; }
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.avatar-info h3 {
+  font-family: var(--font-d);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.avatar-info p {
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin-bottom: 1rem;
+}
+.avatar-actions { display: flex; gap: 0.7rem; }
+
+/* FORM SECTIONS */
+.form-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.form-section-head {
+  padding: 1.3rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.form-section-head h3 {
+  font-family: var(--font-d);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.section-icon {
+  width: 32px; height: 32px;
+  background: var(--accent-g);
+  border: 1px solid rgba(192,57,43,0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.form-section-body { padding: 2rem; }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.form-group.full { grid-column: 1 / -1; }
+.form-group label {
+  font-family: var(--font-m);
+  font-size: 0.67rem;
+  color: var(--text3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 0.85rem 1rem;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 0.88rem;
+  border-radius: var(--r);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: rgba(192,57,43,0.5);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.07);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--text3); }
+.form-group textarea { min-height: 90px; resize: vertical; }
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5550' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+.form-group select option { background: var(--bg2); }
+
+/* PASSWORD STRENGTH */
+.password-hint {
+  font-size: 0.73rem;
+  color: var(--text3);
+  font-family: var(--font-m);
+  margin-top: 0.3rem;
+}
+.strength-bar {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+.strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s var(--ease), background 0.4s;
+}
+
+/* NOTIFICATION TOGGLES */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-info h4 {
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+.toggle-info p { font-size: 0.78rem; color: var(--text2); }
+.toggle-switch {
+  width: 44px; height: 24px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+.toggle-switch.on { background: var(--accent); border-color: transparent; }
+.toggle-knob {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s var(--ease);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+.toggle-switch.on .toggle-knob { transform: translateX(20px); }
+
+/* DANGER ZONE */
+.danger-zone {
+  border-color: rgba(231,76,60,0.2);
+}
+.danger-zone .form-section-head {
+  border-bottom-color: rgba(231,76,60,0.15);
+}
+.danger-zone .section-icon {
+  background: rgba(231,76,60,0.1);
+  border-color: rgba(231,76,60,0.2);
+}
+.danger-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.btn-danger {
+  padding: 0.7rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(231,76,60,0.4);
+  color: #e74c3c;
+  font-family: var(--font-b);
+  font-size: 0.83rem;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-danger:hover { background: rgba(231,76,60,0.08); }
+
+/* SAVE BAR */
+.save-bar {
+  position: sticky;
+  bottom: 2rem;
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.2rem 2rem;
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-top: 2rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.save-bar p {
+  font-size: 0.82rem;
+  color: var(--text2);
+  flex: 1;
+  align-self: center;
+}
+.save-bar em { color: var(--accent); font-style: normal; }
+
+/* TOAST */
+#toast {
+  position: fixed;
+  bottom: 7rem;
+  right: 2rem;
+  z-index: 9000;
+  background: var(--bg2);
+  border: 1px solid rgba(39,174,96,0.3);
+  border-left: 3px solid #27ae60;
+  padding: 1rem 1.5rem;
+  border-radius: var(--r);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.85rem;
+  transform: translateX(150%);
+  transition: transform 0.5s var(--ease);
+  pointer-events: none;
+}
+#toast.show { transform: translateX(0); }
+#toast span { font-size: 1.1rem; }
+
+@media (max-width:640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+  .avatar-editor { flex-direction: column; text-align: center; }
+  .avatar-actions { justify-content: center; }
+  .danger-actions { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="edit-canvas"></canvas>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="page-veil"></div>
+<div id="toast"><span>✓</span> Profile updated successfully!</div>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="profile.html">My Profile</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="career.html">Careers</a></li>
+    <li><a href="affiliate.html">Affiliate</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="profile.html" class="btn btn-outline">← Profile</a>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="edit-wrap">
+
+  <div class="edit-topbar reveal">
+    <a href="profile.html" class="back-btn">← Back to Profile</a>
+    <div style="width:1px;height:20px;background:var(--border)"></div>
+    <h1>Edit Profile</h1>
+  </div>
+
+  <!-- AVATAR -->
+  <div class="avatar-editor reveal" data-delay="100">
+    <div class="avatar-large" onclick="document.getElementById('avatarInput').click()">
+      JD
+      <div class="avatar-overlay">📷</div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(event)"/>
+    </div>
+    <div class="avatar-info">
+      <h3>Profile Photo</h3>
+      <p>Click your avatar to upload a new photo. JPG, PNG or WebP. Max 5MB.</p>
+      <div class="avatar-actions">
+        <button class="btn btn-outline" style="font-size:.78rem;padding:.5rem 1.1rem" onclick="document.getElementById('avatarInput').click()">Upload Photo</button>
+        <button class="btn btn-outline" style="font-size:.78rem;padding:.5rem 1.1rem;color:var(--text3)" onclick="this.textContent='Removed'">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERSONAL INFO -->
+  <div class="form-section reveal" data-delay="150">
+    <div class="form-section-head">
+      <div class="section-icon">👤</div>
+      <h3>Personal Information</h3>
+    </div>
+    <div class="form-section-body">
+      <div class="form-grid">
+        <div class="form-group"><label>First Name</label><input type="text" value="John" placeholder="First name"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" value="Doe" placeholder="Last name"/></div>
+        <div class="form-group"><label>Email Address</label><input type="email" value="john.doe@example.com" placeholder="your@email.com"/></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" value="+1 (555) 000-1234" placeholder="+1 555..."/></div>
+        <div class="form-group"><label>Location / City</label><input type="text" value="Lagos, Nigeria" placeholder="City, Country"/></div>
+        <div class="form-group"><label>Timezone</label>
+          <select>
+            <option selected>Africa/Lagos (WAT, UTC+1)</option>
+            <option>America/New_York (ET)</option>
+            <option>Europe/London (GMT)</option>
+            <option>Asia/Dubai (GST)</option>
+          </select>
+        </div>
+        <div class="form-group full"><label>Short Bio</label><textarea placeholder="Tell us a bit about yourself...">Entrepreneur and tech enthusiast based in Lagos. Building the future one product at a time.</textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL -->
+  <div class="form-section reveal" data-delay="200">
+    <div class="form-section-head">
+      <div class="section-icon">💼</div>
+      <h3>Professional Details</h3>
+    </div>
+    <div class="form-section-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Company / Organisation</label><input type="text" value="Doe Ventures Ltd." placeholder="Your company"/></div>
+        <div class="form-group"><label>Job Title / Role</label><input type="text" value="CEO &amp; Founder" placeholder="Your role"/></div>
+        <div class="form-group"><label>Industry</label>
+          <select>
+            <option selected>Technology</option>
+            <option>Finance &amp; Fintech</option>
+            <option>E-Commerce</option>
+            <option>Healthcare</option>
+            <option>Media &amp; Entertainment</option>
+            <option>Education</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Company Size</label>
+          <select>
+            <option>1 – 10 employees</option>
+            <option selected>11 – 50 employees</option>
+            <option>51 – 200 employees</option>
+            <option>200+ employees</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Website</label><input type="url" value="https://doeventures.co" placeholder="https://..."/></div>
+        <div class="form-group"><label>LinkedIn Profile</label><input type="url" value="" placeholder="https://linkedin.com/in/..."/></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECURITY -->
+  <div class="form-section reveal" data-delay="250">
+    <div class="form-section-head">
+      <div class="section-icon">🔒</div>
+      <h3>Password &amp; Security</h3>
+    </div>
+    <div class="form-section-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Current Password</label><input type="password" placeholder="Enter current password"/></div>
+        <div class="form-group"></div>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" id="newPwd" placeholder="New password" oninput="checkStrength(this.value)"/>
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill" style="width:0%;background:#c0392b"></div></div>
+          <div class="password-hint" id="strengthLabel">Enter a password</div>
+        </div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" placeholder="Confirm new password"/></div>
+      </div>
+      <div style="margin-top:1.5rem">
+        <div class="toggle-row">
+          <div class="toggle-info"><h4>Two-Factor Authentication</h4><p>Add an extra layer of security to your account via authenticator app or SMS.</p></div>
+          <div class="toggle-switch on clickable" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info"><h4>Login Alerts</h4><p>Receive an email whenever a new device logs into your account.</p></div>
+          <div class="toggle-switch on clickable" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="form-section reveal" data-delay="300">
+    <div class="form-section-head">
+      <div class="section-icon">🔔</div>
+      <h3>Notification Preferences</h3>
+    </div>
+    <div class="form-section-body">
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Project Updates</h4><p>Get notified when your project status changes or a milestone is reached.</p></div>
+        <div class="toggle-switch on clickable" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Affiliate Earnings</h4><p>Receive alerts when you earn commission or points from referrals.</p></div>
+        <div class="toggle-switch on clickable" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Marketing Emails</h4><p>Stay updated with our latest services, case studies, and offers.</p></div>
+        <div class="toggle-switch clickable" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><h4>Security Alerts</h4><p>Important notifications about your account security. Cannot be disabled.</p></div>
+        <div class="toggle-switch on" style="opacity:0.5;cursor:not-allowed"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DANGER ZONE -->
+  <div class="form-section danger-zone reveal" data-delay="350">
+    <div class="form-section-head">
+      <div class="section-icon" style="background:rgba(231,76,60,.1);border-color:rgba(231,76,60,.2)">⚠️</div>
+      <h3>Danger Zone</h3>
+    </div>
+    <div class="form-section-body">
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:1.5rem">These actions are permanent and cannot be undone. Please proceed with caution.</p>
+      <div class="danger-actions">
+        <button class="btn-danger">Deactivate Account</button>
+        <button class="btn-danger" onclick="if(confirm('Are you absolutely sure you want to delete your account? This cannot be undone.'))alert('Account deletion request submitted.')">Delete Account Permanently</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVE BAR -->
+  <div class="save-bar">
+    <p>Unsaved changes will be lost. <em>Remember to save.</em></p>
+    <a href="profile.html" class="btn btn-outline" style="font-size:.82rem">Cancel</a>
+    <button class="btn btn-red" style="font-size:.82rem" onclick="saveProfile()">Save Changes</button>
+  </div>
+
+</div>
+
+<script src="shared.js"></script>
+<script>
+// Ambient 3D
+(function(){
+  const c=document.getElementById('edit-canvas');
+  const r=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
+  r.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  r.setSize(innerWidth,innerHeight);
+  const s=new THREE.Scene(), cam=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,0.1,200);
+  cam.position.z=40;
+  const N=1000, pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*130;pos[i*3+1]=(Math.random()-.5)*130;pos[i*3+2]=(Math.random()-.5)*100;}
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  s.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0xc0392b,size:0.15,transparent:true,opacity:0.18})));
+  (function a(){requestAnimationFrame(a);s.rotation.y+=0.0003;r.render(s,cam);})();
+  addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight);});
+})();
+
+// Password strength
+function checkStrength(v) {
+  const fill = document.getElementById('strengthFill');
+  const label = document.getElementById('strengthLabel');
+  if(!v){fill.style.width='0%';label.textContent='Enter a password';return;}
+  let score=0;
+  if(v.length>=8) score++;
+  if(/[A-Z]/.test(v)) score++;
+  if(/[0-9]/.test(v)) score++;
+  if(/[^A-Za-z0-9]/.test(v)) score++;
+  const labels=['Weak','Fair','Good','Strong'];
+  const colors=['#e74c3c','#e67e22','#f1c40f','#27ae60'];
+  const widths=['25%','50%','75%','100%'];
+  fill.style.width=widths[score-1]||'0%';
+  fill.style.background=colors[score-1]||'#c0392b';
+  label.textContent=labels[score-1]||'Too short';
+  label.style.color=colors[score-1]||'var(--text3)';
+}
+
+// Avatar preview
+function previewAvatar(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const av=document.querySelector('.avatar-large');
+    av.innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>'
+      +'<div class="avatar-overlay">📷</div>'
+      +'<input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(event)"/>';
+  };
+  reader.readAsDataURL(file);
+}
+
+// Save profile
+function saveProfile(){
+  const btn = event.target;
+  btn.textContent='Saving...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='Saved ✓';
+    btn.style.background='#27ae60';
+    const toast=document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(()=>{toast.classList.remove('show');},3500);
+    setTimeout(()=>{window.location.href='profile.html';},1200);
+  },1100);
+}
+</script>
+</body>
+</html>

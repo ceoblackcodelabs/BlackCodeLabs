@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.setAttribute("data-theme",localStorage.getItem("kh_theme")||"dark")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile – KitchenHub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👤</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🍳</div><div class="nav-logo-text">Kitchen<span>Hub</span></div></a>
+      <div class="nav-links">
+        <a href="index.html"     class="nav-link">Home</a>
+        <a href="ecommerce.html" class="nav-link">Shop</a>
+        <a href="orders.html"    class="nav-link">Orders</a>
+        <a href="profile.html"   class="nav-link active">Profile</a>
+      </div>
+      <div class="nav-search"><span class="nav-search-icon">🔍</span><input type="text" placeholder="Search products…"><div class="search-drop"></div></div>
+      <div class="nav-actions">
+        <button class="nav-btn theme-btn">☀️</button>
+        <a href="profile.html" class="nav-btn active">👤</a>
+        <a href="cart.html" class="nav-btn" data-cart style="position:relative">🛒<span class="badge-dot cart-count" style="display:none">0</span></a>
+        <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="sb-overlay"></div>
+<aside class="sidebar">
+  <div class="sb-head"><div class="nav-logo"><div class="nav-logo-icon" style="width:28px;height:28px;font-size:.88rem">🍳</div><div class="nav-logo-text" style="font-size:1rem">Kitchen<span>Hub</span></div></div><button class="sb-close">✕</button></div>
+  <div class="sb-user"><div class="sb-avatar">👤</div><div><div class="sb-user-name">Jane Wanjiku</div><div class="sb-user-sub">janewanjiku@gmail.com</div></div></div>
+  <nav class="sb-nav">
+    <a href="index.html"     class="sb-link"><i>🏠</i> Home</a>
+    <a href="ecommerce.html" class="sb-link"><i>🛍️</i> Shop</a>
+    <a href="orders.html"    class="sb-link"><i>📦</i> Orders</a>
+    <a href="cart.html"      class="sb-link"><i>🛒</i> Cart</a>
+    <a href="profile.html"   class="sb-link active"><i>👤</i> Profile</a>
+  </nav>
+</aside>
+
+<div class="page-hdr"><div class="container"><div class="page-hdr-title">👤 My Profile</div><div class="breadcrumb"><a href="index.html">Home</a> <span style="opacity:.4">/ Profile</span></div></div></div>
+
+<section class="section-sm">
+  <div class="container">
+    <div class="prof-layout">
+
+      <!-- Sidebar -->
+      <aside class="prof-sidebar">
+        <div class="prof-av-wrap">
+          <div class="prof-av">👩</div>
+          <div class="prof-name">Jane Wanjiku</div>
+          <div class="prof-email">janewanjiku@gmail.com</div>
+          <div style="margin-top:10px">
+            <span class="badge badge-pri" style="font-size:.68rem">⭐ Gold Member</span>
+          </div>
+        </div>
+        <nav class="prof-nav">
+          <a href="#" class="prof-link active" data-ptab="overview"  onclick="switchPTab('overview',this)"><i>🏠</i> Overview</a>
+          <a href="#" class="prof-link"         data-ptab="personal"  onclick="switchPTab('personal',this)"><i>✏️</i> Edit Profile</a>
+          <a href="#" class="prof-link"         data-ptab="addresses" onclick="switchPTab('addresses',this)"><i>📍</i> Addresses</a>
+          <a href="#" class="prof-link"         data-ptab="wishlist"  onclick="switchPTab('wishlist',this)"><i>❤️</i> Wishlist</a>
+          <a href="#" class="prof-link"         data-ptab="payment"   onclick="switchPTab('payment',this)"><i>💳</i> Payment Methods</a>
+          <a href="#" class="prof-link"         data-ptab="settings"  onclick="switchPTab('settings',this)"><i>⚙️</i> Settings</a>
+          <a href="login.html" class="prof-link" style="color:#F87171;border-color:transparent"><i>🚪</i> Sign Out</a>
+        </nav>
+      </aside>
+
+      <!-- Main content -->
+      <div>
+
+        <!-- OVERVIEW -->
+        <div id="tab-overview">
+          <!-- Stats -->
+          <div class="prof-stats">
+            <div class="prof-stat"><div class="prof-stat-n">5</div><div class="prof-stat-l">Orders</div></div>
+            <div class="prof-stat"><div class="prof-stat-n">3</div><div class="prof-stat-l">Wishlist</div></div>
+            <div class="prof-stat"><div class="prof-stat-n" style="font-size:1.3rem">KSh 40K</div><div class="prof-stat-l">Total Spent</div></div>
+          </div>
+
+          <!-- Recent Orders snippet -->
+          <div style="background:var(--surf);border-radius:var(--r-lg);border:1.5px solid var(--bdr);padding:20px;margin-bottom:18px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <div style="font-family:var(--ff-head);font-weight:700;font-size:.96rem;color:var(--tx-1)">Recent Orders</div>
+              <a href="orders.html" class="btn btn-ghost btn-sm">View All →</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--surf-2);border-radius:var(--r)">
+                <div style="width:44px;height:44px;border-radius:10px;background:var(--surf-3);display:flex;align-items:center;justify-content:center;font-size:1.3rem;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=90&h=90&fit=crop" style="width:100%;height:100%;object-fit:cover" alt=""></div>
+                <div style="flex:1;min-width:0"><div style="font-size:.84rem;font-weight:600;color:var(--tx-1)">ProChef Cookware Set</div><div style="font-size:.74rem;color:var(--tx-2)">#KH-847291 · 15 Jan 2025</div></div>
+                <span class="order-status s-shipped">Shipped</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--surf-2);border-radius:var(--r)">
+                <div style="width:44px;height:44px;border-radius:10px;background:var(--surf-3);display:flex;align-items:center;justify-content:center;font-size:1.3rem;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1593618998160-e34014e67546?w=90&h=90&fit=crop" style="width:100%;height:100%;object-fit:cover" alt=""></div>
+                <div style="flex:1;min-width:0"><div style="font-size:.84rem;font-weight:600;color:var(--tx-1)">BladeElite Chef's Knife</div><div style="font-size:.74rem;color:var(--tx-2)">#KH-836104 · 12 Jan 2025</div></div>
+                <span class="order-status s-done">Delivered</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--surf-2);border-radius:var(--r)">
+                <div style="width:44px;height:44px;border-radius:10px;background:var(--surf-3);display:flex;align-items:center;justify-content:center;font-size:1.3rem;overflow:hidden;flex-shrink:0"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=90&h=90&fit=crop" style="width:100%;height:100%;object-fit:cover" alt=""></div>
+                <div style="flex:1;min-width:0"><div style="font-size:.84rem;font-weight:600;color:var(--tx-1)">MixPro Stand Mixer 800W</div><div style="font-size:.74rem;color:var(--tx-2)">#KH-821038 · 8 Jan 2025</div></div>
+                <span class="order-status s-done">Delivered</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loyalty card -->
+          <div style="background:linear-gradient(130deg,#FF6B35,#FF9A5A);border-radius:var(--r-lg);padding:22px;color:#fff;position:relative;overflow:hidden">
+            <div style="position:absolute;right:-20px;top:-20px;font-size:7rem;opacity:.1">⭐</div>
+            <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;opacity:.85">Loyalty Rewards</div>
+            <div style="font-family:var(--ff-head);font-size:1.8rem;font-weight:800;margin-bottom:4px">2,450 pts</div>
+            <div style="font-size:.82rem;opacity:.85;margin-bottom:14px">You're 550 points away from Platinum status 🏆</div>
+            <div style="background:rgba(255,255,255,.2);border-radius:var(--r-pill);height:8px;margin-bottom:8px">
+              <div style="background:#fff;border-radius:var(--r-pill);height:8px;width:82%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.72rem;opacity:.8"><span>Gold (2,000)</span><span>Platinum (3,000)</span></div>
+          </div>
+        </div>
+
+        <!-- EDIT PROFILE -->
+        <div id="tab-personal" style="display:none">
+          <div style="background:var(--surf);border-radius:var(--r-lg);border:1.5px solid var(--bdr);padding:22px">
+            <div style="font-family:var(--ff-head);font-weight:700;font-size:1rem;color:var(--tx-1);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">✏️ Personal Information</div>
+            <!-- Avatar upload -->
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:22px">
+              <div style="width:72px;height:72px;border-radius:50%;background:var(--surf-2);display:flex;align-items:center;justify-content:center;font-size:2.2rem;border:3px solid var(--bdr)">👩</div>
+              <div>
+                <button class="btn btn-ghost btn-sm" onclick="toast('Photo upload coming soon!','info')">📷 Change Photo</button>
+                <div style="font-size:.74rem;color:var(--tx-3);margin-top:4px">JPG or PNG, max 2MB</div>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-label">First Name</label><input class="form-inp" type="text" value="Jane"></div>
+              <div class="form-group"><label class="form-label">Last Name</label><input class="form-inp" type="text" value="Wanjiku"></div>
+              <div class="form-group"><label class="form-label">Email Address</label><input class="form-inp" type="email" value="janewanjiku@gmail.com"></div>
+              <div class="form-group"><label class="form-label">Phone Number</label><input class="form-inp" type="tel" value="+254 712 345 678"></div>
+              <div class="form-group fg-full"><label class="form-label">Date of Birth</label><input class="form-inp" type="date" value="1992-04-15"></div>
+            </div>
+            <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--bdr)">
+              <div style="font-family:var(--ff-head);font-weight:700;margin-bottom:14px;font-size:.94rem;color:var(--tx-1)">🔐 Change Password</div>
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label">Current Password</label><input class="form-inp" type="password" placeholder="••••••••"></div>
+                <div class="form-group"><label class="form-label">New Password</label><input class="form-inp" type="password" placeholder="••••••••"></div>
+                <div class="form-group fg-full"><label class="form-label">Confirm Password</label><input class="form-inp" type="password" placeholder="••••••••"></div>
+              </div>
+            </div>
+            <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" onclick="toast('Profile updated successfully ✓','success')">Save Changes</button>
+              <button class="btn btn-ghost">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADDRESSES -->
+        <div id="tab-addresses" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div style="font-family:var(--ff-head);font-weight:700;font-size:1rem;color:var(--tx-1)">📍 Saved Addresses</div>
+            <button class="btn btn-primary btn-sm" onclick="toast('Add address form coming soon!','info')">+ Add New</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="background:var(--surf);border:2px solid var(--primary);border-radius:var(--r-lg);padding:18px">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+                <div style="display:flex;align-items:center;gap:8px"><span class="badge badge-pri" style="font-size:.66rem">DEFAULT</span><span style="font-size:.84rem;font-weight:700;color:var(--tx-1)">🏠 Home</span></div>
+                <div style="display:flex;gap:7px"><button class="btn btn-ghost btn-sm" onclick="toast('Edit mode...','info')">Edit</button></div>
+              </div>
+              <div style="font-size:.86rem;color:var(--tx-1);line-height:1.65">Jane Wanjiku<br>123 Ngong Road, Kilimani<br>Nairobi, 00100<br>+254 712 345 678</div>
+            </div>
+            <div style="background:var(--surf);border:1.5px solid var(--bdr);border-radius:var(--r-lg);padding:18px">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:.84rem;font-weight:700;color:var(--tx-1)">🏢 Office</span>
+                <div style="display:flex;gap:7px"><button class="btn btn-ghost btn-sm" onclick="toast('Edit mode...','info')">Edit</button><button class="btn btn-ghost btn-sm" style="color:#F87171;border-color:#F87171" onclick="toast('Address deleted','info')">Delete</button></div>
+              </div>
+              <div style="font-size:.86rem;color:var(--tx-1);line-height:1.65">Jane Wanjiku<br>Upper Hill Road, Upper Hill<br>Nairobi, 00200<br>+254 712 345 678</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WISHLIST -->
+        <div id="tab-wishlist" style="display:none">
+          <div style="font-family:var(--ff-head);font-weight:700;font-size:1rem;color:var(--tx-1);margin-bottom:16px">❤️ My Wishlist</div>
+          <div class="pgrid" id="wishlistGrid"></div>
+          <div id="wishlistEmpty" style="display:none" class="empty-state"><div class="empty-icon">❤️</div><h3>Your wishlist is empty</h3><p>Save products you love for later</p><a href="ecommerce.html" class="btn btn-primary">Start Shopping</a></div>
+        </div>
+
+        <!-- PAYMENT METHODS -->
+        <div id="tab-payment" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div style="font-family:var(--ff-head);font-weight:700;font-size:1rem;color:var(--tx-1)">💳 Payment Methods</div>
+            <button class="btn btn-primary btn-sm" onclick="toast('Add card coming soon!','info')">+ Add Card</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="background:linear-gradient(130deg,#00A651,#00C264);border-radius:var(--r-lg);padding:20px;color:#fff;position:relative;overflow:hidden">
+              <div style="position:absolute;right:-16px;top:-16px;font-size:5rem;opacity:.1">📱</div>
+              <div style="font-size:.70rem;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-bottom:12px">M-Pesa</div>
+              <div style="font-family:var(--ff-head);font-size:1.2rem;font-weight:800;margin-bottom:4px">+254 712 345 678</div>
+              <div style="font-size:.78rem;opacity:.75">Jane Wanjiku · Default</div>
+              <span class="badge" style="background:rgba(255,255,255,.2);color:#fff;margin-top:10px;display:inline-block">Default</span>
+            </div>
+            <div style="background:var(--surf);border:1.5px solid var(--bdr);border-radius:var(--r-lg);padding:18px;display:flex;align-items:center;gap:14px">
+              <div style="width:52px;height:36px;background:linear-gradient(130deg,#1A1F71,#4169E1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:800">VISA</div>
+              <div style="flex:1"><div style="font-weight:600;font-size:.9rem;color:var(--tx-1)">•••• •••• •••• 4242</div><div style="font-size:.76rem;color:var(--tx-2)">Expires 08/27</div></div>
+              <button class="btn btn-ghost btn-sm" onclick="toast('Card removed','info')">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="tab-settings" style="display:none">
+          <div style="background:var(--surf);border-radius:var(--r-lg);border:1.5px solid var(--bdr);padding:22px">
+            <div style="font-family:var(--ff-head);font-weight:700;font-size:1rem;color:var(--tx-1);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">⚙️ Preferences</div>
+
+            <div style="display:flex;flex-direction:column;gap:0">
+              <!-- Theme -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--bdr)">
+                <div><div style="font-weight:600;font-size:.9rem;color:var(--tx-1)">🌙 Dark Mode</div><div style="font-size:.78rem;color:var(--tx-2);margin-top:2px">Switch between light and dark themes</div></div>
+                <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer">
+                  <input type="checkbox" id="darkToggle" style="opacity:0;width:0;height:0" onchange="const t=this.checked?'dark':'light';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('kh_theme',t);document.querySelectorAll('.theme-btn').forEach(b=>b.innerHTML=t==='dark'?'☀️':'🌙')">
+                  <span style="position:absolute;inset:0;background:var(--bdr-s);border-radius:26px;transition:.3s;cursor:pointer" id="darkSlider"></span>
+                </label>
+              </div>
+              <!-- Notifications -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--bdr)">
+                <div><div style="font-weight:600;font-size:.9rem;color:var(--tx-1)">🔔 Order Notifications</div><div style="font-size:.78rem;color:var(--tx-2);margin-top:2px">Get SMS updates on your orders</div></div>
+                <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer"><input type="checkbox" checked style="opacity:0;width:0;height:0"><span style="position:absolute;inset:0;background:var(--primary);border-radius:26px;transition:.3s"></span></label>
+              </div>
+              <!-- Deals -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--bdr)">
+                <div><div style="font-weight:600;font-size:.9rem;color:var(--tx-1)">🎉 Deals & Promotions</div><div style="font-size:.78rem;color:var(--tx-2);margin-top:2px">Receive exclusive deals via email</div></div>
+                <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer"><input type="checkbox" checked style="opacity:0;width:0;height:0"><span style="position:absolute;inset:0;background:var(--primary);border-radius:26px;transition:.3s"></span></label>
+              </div>
+              <!-- Language -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0">
+                <div><div style="font-weight:600;font-size:.9rem;color:var(--tx-1)">🌍 Language</div><div style="font-size:.78rem;color:var(--tx-2);margin-top:2px">Choose your preferred language</div></div>
+                <select class="sort-sel"><option selected>English</option><option>Swahili</option></select>
+              </div>
+            </div>
+
+            <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--bdr)">
+              <div style="font-family:var(--ff-head);font-weight:700;font-size:.94rem;color:var(--tx-1);margin-bottom:12px">⚠️ Danger Zone</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn btn-ghost btn-sm" style="color:#F87171;border-color:#F87171" onclick="toast('Account deletion requires email confirmation','info')">Delete Account</button>
+                <button class="btn btn-ghost btn-sm" onclick="toast('All data exported to your email','success')">Export My Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container">
+  <div class="foot-bottom" style="padding:22px 0"><div class="foot-copy">© 2025 KitchenHub · All rights reserved.</div><div class="pay-icons"><span class="pay-ic">M-PESA</span><span class="pay-ic">VISA</span></div></div>
+</div></footer>
+
+<div class="modal-ov" id="qvModal"><div class="modal"></div></div>
+
+<nav class="bnav"><div class="bnav-inner">
+  <a href="index.html"     class="bnav-btn"><i>🏠</i><span>Home</span></a>
+  <a href="ecommerce.html" class="bnav-btn"><i>🛍️</i><span>Shop</span></a>
+  <a href="cart.html"      class="bnav-btn"><i>🛒</i><span>Cart</span></a>
+  <a href="orders.html"    class="bnav-btn"><i>📦</i><span>Orders</span></a>
+  <a href="profile.html"   class="bnav-btn active"><i>👤</i><span>Profile</span></a>
+</div></nav>
+
+<script src="js/app.js"></script>
+<script>
+function switchPTab(tab, el){
+  event.preventDefault();
+  document.querySelectorAll('.prof-link').forEach(l=>l.classList.remove('active'));
+  el.classList.add('active');
+  ['overview','personal','addresses','wishlist','payment','settings'].forEach(t=>{
+    const el=document.getElementById('tab-'+t); if(el) el.style.display=t===tab?'block':'none';
+  });
+  if(tab==='wishlist') renderWishlist();
+}
+
+function renderWishlist(){
+  const grid=document.getElementById('wishlistGrid');
+  const empty=document.getElementById('wishlistEmpty');
+  if(!grid) return;
+  const items=products.filter(p=>wishlist.includes(p.id));
+  if(!items.length){ grid.style.display='none'; empty.style.display='block'; }
+  else { grid.style.display=''; empty.style.display='none'; grid.innerHTML=items.map(renderCard).join(''); syncWishlistUI(); }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  // Set dark mode toggle state
+  const t=localStorage.getItem('kh_theme')||'dark';
+  const toggle=document.getElementById('darkToggle');
+  const slider=document.getElementById('darkSlider');
+  if(toggle) toggle.checked=(t==='dark');
+  if(slider) slider.style.background=t==='dark'?'var(--primary)':'var(--bdr-s)';
+  toggle?.addEventListener('change',()=>{
+    slider.style.background=toggle.checked?'var(--primary)':'var(--bdr-s)';
+  });
+});
+</script>
+</body>
+</html>

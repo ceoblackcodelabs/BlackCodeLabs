@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Affiliate Program — BlackCodeLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+
+/* ── HERO ── */
+.page-hero {
+  position: relative;
+  min-height: 78vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 10rem 5vw 6rem;
+}
+#aff-canvas { position: absolute; inset: 0; z-index: 0; }
+.ph-inner { position: relative; z-index: 2; max-width: 740px; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  font-family: var(--font-m);
+  font-size: .7rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.8rem;
+  opacity: 0;
+  animation: fadeUp .9s var(--ease) .2s forwards;
+}
+.hero-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent); }
+.ph-inner h1 {
+  font-family: var(--font-d);
+  font-size: clamp(3rem, 7vw, 6.2rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -.025em;
+  opacity: 0;
+  animation: fadeUp 1s var(--ease) .35s forwards;
+}
+.ph-inner h1 em { font-style: italic; color: var(--accent); }
+.ph-inner p {
+  margin-top: 1.6rem;
+  font-size: 1.05rem;
+  color: var(--text2);
+  max-width: 500px;
+  line-height: 1.8;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 1s var(--ease) .5s forwards;
+}
+.hero-actions {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 1s var(--ease) .65s forwards;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
+
+/* ── STATS BAND ── */
+.stats-band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stat-box {
+  padding: 2.5rem 2rem;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: background .3s;
+}
+.stat-box:last-child { border-right: none; }
+.stat-box:hover { background: var(--bg3); }
+.stat-box::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 0; height: 2px;
+  background: var(--accent);
+  transition: width .4s var(--ease);
+}
+.stat-box:hover::after { width: 60%; }
+.stat-box h3 {
+  font-family: var(--font-d);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+.stat-box p {
+  font-family: var(--font-m);
+  font-size: .65rem;
+  color: var(--text3);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-top: .4rem;
+}
+
+/* ── HOW IT WORKS ── */
+.hiw-section { padding: 7rem 5vw; }
+.hiw-inner { max-width: 1200px; margin: 0 auto; }
+.hiw-head { text-align: center; margin-bottom: 4.5rem; }
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  position: relative;
+}
+.steps-grid::before {
+  content: '';
+  position: absolute;
+  top: 2.4rem;
+  left: calc(12.5% + 1rem);
+  right: calc(12.5% + 1rem);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), var(--border), transparent);
+  pointer-events: none;
+}
+.step-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  transition: all .4s var(--ease);
+}
+.step-card:hover {
+  border-color: rgba(192,57,43,.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.3);
+}
+.step-num {
+  width: 48px; height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-m);
+  font-size: .75rem;
+  color: var(--accent);
+  margin: 0 auto 1.4rem;
+  transition: all .4s;
+}
+.step-card:hover .step-num {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 18px rgba(192,57,43,.4);
+}
+.step-card h3 { font-family: var(--font-d); font-size: 1rem; font-weight: 700; margin-bottom: .6rem; }
+.step-card p { font-size: .83rem; color: var(--text2); line-height: 1.7; }
+
+/* ── POINTS SECTION ── */
+.points-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 7rem 5vw;
+}
+.points-inner { max-width: 1200px; margin: 0 auto; }
+.points-head { margin-bottom: 3.5rem; }
+.points-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.points-col-title {
+  font-family: var(--font-d);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+/* EARN TABLE */
+.earn-list { display: flex; flex-direction: column; gap: .8rem; }
+.earn-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  transition: border-color .3s;
+}
+.earn-row:hover { border-color: rgba(192,57,43,.2); }
+.earn-icon {
+  width: 36px; height: 36px;
+  background: var(--accent-g);
+  border: 1px solid rgba(192,57,43,.15);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  flex-shrink: 0;
+}
+.earn-info { flex: 1; }
+.earn-info h4 { font-size: .87rem; font-weight: 500; }
+.earn-info span {
+  font-family: var(--font-m);
+  font-size: .63rem;
+  color: var(--text3);
+  letter-spacing: .06em;
+}
+.earn-pts {
+  font-family: var(--font-d);
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* REDEEM TABLE */
+.redeem-list { display: flex; flex-direction: column; gap: .8rem; }
+.redeem-row {
+  padding: 1.3rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  transition: border-color .3s;
+}
+.redeem-row:hover { border-color: rgba(192,57,43,.2); }
+.redeem-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .4rem;
+  gap: .5rem;
+}
+.redeem-top h4 { font-size: .87rem; font-weight: 500; }
+.redeem-cost {
+  font-family: var(--font-m);
+  font-size: .65rem;
+  letter-spacing: .06em;
+  padding: .2rem .65rem;
+  background: var(--accent-g);
+  border: 1px solid rgba(192,57,43,.2);
+  border-radius: 20px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.redeem-row p { font-size: .8rem; color: var(--text2); line-height: 1.5; }
+
+/* ── TIERS ── */
+.tiers-section { padding: 7rem 5vw; }
+.tiers-inner { max-width: 1200px; margin: 0 auto; }
+.tiers-head { text-align: center; margin-bottom: 3.5rem; }
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.tier-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform .4s var(--ease), box-shadow .4s;
+}
+.tier-card:hover { transform: translateY(-5px); box-shadow: 0 24px 50px rgba(0,0,0,.4); }
+.tier-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.tier-bronze { background: linear-gradient(145deg, rgba(205,127,50,.06), var(--bg2)); }
+.tier-bronze::before { background: linear-gradient(to right, #cd7f32, transparent); }
+.tier-silver { background: linear-gradient(145deg, rgba(192,192,192,.06), var(--bg2)); }
+.tier-silver::before { background: linear-gradient(to right, #b0b0b0, transparent); }
+.tier-gold {
+  background: linear-gradient(145deg, rgba(255,215,0,.07), var(--bg2));
+  border-color: rgba(255,215,0,.15);
+}
+.tier-gold::before { background: linear-gradient(to right, #ffd700, transparent); }
+.tier-medal { font-size: 2.8rem; display: block; margin-bottom: 1rem; }
+.tier-name {
+  font-family: var(--font-d);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+.tier-bronze .tier-name { color: #cd7f32; }
+.tier-silver .tier-name { color: #c0c0c0; }
+.tier-gold   .tier-name { color: #ffd700; }
+.tier-req {
+  font-family: var(--font-m);
+  font-size: .65rem;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 1.8rem;
+  display: block;
+}
+.tier-rate {
+  font-family: var(--font-d);
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: .2rem;
+}
+.tier-bronze .tier-rate { color: #cd7f32; }
+.tier-silver .tier-rate { color: #c0c0c0; }
+.tier-gold   .tier-rate { color: #ffd700; }
+.tier-rate-label {
+  font-family: var(--font-m);
+  font-size: .68rem;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  display: block;
+}
+.tier-perks {
+  list-style: none;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.tier-perks li {
+  font-size: .82rem;
+  color: var(--text2);
+  display: flex;
+  align-items: flex-start;
+  gap: .7rem;
+}
+.tier-perks li::before { content: '✓'; color: var(--accent); flex-shrink: 0; }
+
+/* ── REGISTER SECTION ── */
+.register-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 7rem 5vw;
+}
+.register-inner { max-width: 820px; margin: 0 auto; }
+.reg-header { text-align: center; margin-bottom: 3.5rem; }
+.reg-header h2 {
+  font-family: var(--font-d);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1.12;
+  margin-top: .8rem;
+}
+.reg-header h2 em { font-style: italic; color: var(--accent); }
+.reg-header p { font-size: .9rem; color: var(--text2); margin-top: .8rem; line-height: 1.75; }
+
+.reg-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.reg-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent), rgba(192,57,43,.2));
+}
+.reg-card-head {
+  padding: 1.8rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .8rem;
+}
+.reg-card-head h3 { font-family: var(--font-d); font-size: 1.05rem; font-weight: 700; }
+.free-badge {
+  font-family: var(--font-m);
+  font-size: .65rem;
+  letter-spacing: .1em;
+  padding: .25rem .7rem;
+  background: rgba(39,174,96,.1);
+  color: #27ae60;
+  border: 1px solid rgba(39,174,96,.2);
+  border-radius: 20px;
+}
+
+.reg-body { padding: 2.5rem; }
+.reg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+.form-group.full { grid-column: 1 / -1; }
+.form-group label {
+  font-family: var(--font-m);
+  font-size: .63rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: .85rem 1rem;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: .87rem;
+  border-radius: var(--r);
+  outline: none;
+  transition: border-color .3s, box-shadow .3s;
+  width: 100%;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: rgba(192,57,43,.5);
+  box-shadow: 0 0 0 3px rgba(192,57,43,.06);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--text3); }
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5550' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+.form-group select option { background: var(--bg2); }
+
+/* CHANNEL PILLS */
+.channel-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .3rem;
+}
+.ch-pill {
+  font-family: var(--font-m);
+  font-size: .67rem;
+  letter-spacing: .06em;
+  padding: .4rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all .25s;
+  user-select: none;
+}
+.ch-pill:hover { border-color: rgba(192,57,43,.3); color: var(--text2); }
+.ch-pill.on {
+  background: var(--accent-g);
+  border-color: rgba(192,57,43,.4);
+  color: var(--accent);
+}
+
+/* TERMS ROW */
+.terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.custom-check {
+  width: 18px; height: 18px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: .1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .25s;
+  font-size: .75rem;
+}
+.custom-check.checked {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.terms-row p { font-size: .78rem; color: var(--text2); line-height: 1.6; }
+.terms-row a { color: var(--accent); text-decoration: none; }
+.terms-row a:hover { text-decoration: underline; }
+
+.reg-submit {
+  width: 100%;
+  padding: 1.05rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-family: var(--font-b);
+  font-size: .9rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 1.2rem;
+  transition: all .35s var(--ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+}
+.reg-submit:hover {
+  background: var(--accent-h);
+  box-shadow: 0 0 24px rgba(192,57,43,.4);
+  transform: translateY(-1px);
+}
+.reg-submit .arrow { transition: transform .3s; }
+.reg-submit:hover .arrow { transform: translateX(4px); }
+
+/* SUCCESS */
+#reg-success {
+  display: none;
+  text-align: center;
+  padding: 3.5rem 2.5rem;
+}
+.success-ring {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(39,174,96,.3);
+  background: rgba(39,174,96,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1.5rem;
+}
+#reg-success h3 { font-family: var(--font-d); font-size: 1.6rem; font-weight: 700; margin-bottom: .6rem; }
+#reg-success p { font-size: .88rem; color: var(--text2); line-height: 1.8; max-width: 420px; margin: 0 auto; }
+.ref-preview {
+  margin: 1.8rem auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .8rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: .9rem 1.4rem;
+}
+.ref-preview code {
+  font-family: var(--font-m);
+  font-size: .9rem;
+  color: var(--accent);
+  letter-spacing: .1em;
+}
+.copy-btn {
+  font-family: var(--font-m);
+  font-size: .68rem;
+  padding: .3rem .75rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .25s;
+}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 5rem 5vw 2.5rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .stats-band { grid-template-columns: 1fr 1fr; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  .steps-grid::before { display: none; }
+  .points-grid { grid-template-columns: 1fr; }
+  .tiers-grid { grid-template-columns: 1fr; }
+  .reg-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+}
+@media (max-width: 640px) {
+  .stats-band { grid-template-columns: 1fr 1fr; }
+  .stat-box { border-bottom: 1px solid var(--border); }
+  .steps-grid { grid-template-columns: 1fr; }
+  .page-hero { min-height: auto; padding: 10rem 5vw 5rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="page-veil"></div>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="career.html">Careers</a>
+  <a href="affiliate.html">Affiliate</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="career.html">Careers</a></li>
+    <li><a href="affiliate.html" class="active">Affiliate</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-outline">Sign In</a>
+    <a href="register.html" class="btn btn-red">Get Started</a>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <canvas id="aff-canvas"></canvas>
+  <div class="ph-inner">
+    <div class="hero-eyebrow">Affiliate Program</div>
+    <h1>Earn while<br>you <em>promote.</em></h1>
+    <p>Join the BlackCodeLabs Affiliate Network. Share our services, earn commissions on every conversion, collect points, and unlock exclusive rewards as your tier grows.</p>
+    <div class="hero-actions">
+      <a href="#register" class="btn btn-red" style="padding:.9rem 2.2rem;font-size:.9rem">Join for Free →</a>
+      <a href="#how-it-works" class="btn btn-outline" style="padding:.9rem 2.2rem;font-size:.9rem">How It Works</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stat-box reveal" data-delay="0">
+    <h3>25%</h3><p>Commission Rate</p>
+  </div>
+  <div class="stat-box reveal" data-delay="100">
+    <h3>$50K+</h3><p>Paid to Affiliates</p>
+  </div>
+  <div class="stat-box reveal" data-delay="200">
+    <h3>300+</h3><p>Active Affiliates</p>
+  </div>
+  <div class="stat-box reveal" data-delay="300">
+    <h3>30-day</h3><p>Cookie Window</p>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="hiw-section" id="how-it-works">
+  <div class="hiw-inner">
+    <div class="hiw-head reveal">
+      <span class="s-label">How It Works</span>
+      <h2 class="s-title">Four steps to <em>earning.</em></h2>
+    </div>
+    <div class="steps-grid" data-stagger>
+      <div class="step-card reveal" data-stagger-item>
+        <div class="step-num">01</div>
+        <h3>Register Free</h3>
+        <p>Sign up as an affiliate below. Instant approval. No fees, no minimums, no experience required.</p>
+      </div>
+      <div class="step-card reveal" data-stagger-item>
+        <div class="step-num">02</div>
+        <h3>Get Your Link</h3>
+        <p>Receive a unique referral link and a full kit of marketing materials through your dashboard.</p>
+      </div>
+      <div class="step-card reveal" data-stagger-item>
+        <div class="step-num">03</div>
+        <h3>Promote</h3>
+        <p>Share via social media, blog, YouTube, email — any channel. Earn points every time someone engages.</p>
+      </div>
+      <div class="step-card reveal" data-stagger-item>
+        <div class="step-num">04</div>
+        <h3>Get Paid</h3>
+        <p>Earn commissions on every converted referral. Withdraw via PayPal, bank transfer, or crypto.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POINTS SYSTEM -->
+<div class="points-section">
+  <div class="points-inner">
+    <div class="points-head reveal">
+      <span class="s-label">Points System</span>
+      <h2 class="s-title">Earn <em>points,</em><br>unlock rewards.</h2>
+    </div>
+    <div class="points-grid">
+
+      <!-- EARN -->
+      <div class="reveal reveal-left" data-delay="100">
+        <p class="points-col-title">🎯 How to earn points</p>
+        <div class="earn-list">
+          <div class="earn-row">
+            <div class="earn-icon">📝</div>
+            <div class="earn-info"><h4>Complete your profile</h4><span>Once on registration</span></div>
+            <div class="earn-pts">+50 pts</div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-icon">🔗</div>
+            <div class="earn-info"><h4>Each click on your link</h4><span>Per unique click</span></div>
+            <div class="earn-pts">+1 pt</div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-icon">📋</div>
+            <div class="earn-info"><h4>Lead submits a form</h4><span>Per qualified lead</span></div>
+            <div class="earn-pts">+25 pts</div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-icon">💰</div>
+            <div class="earn-info"><h4>Starter plan conversion</h4><span>Per sale closed</span></div>
+            <div class="earn-pts">+200 pts</div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-icon">🏆</div>
+            <div class="earn-info"><h4>Premium plan conversion</h4><span>Per sale closed</span></div>
+            <div class="earn-pts">+500 pts</div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-icon">⭐</div>
+            <div class="earn-info"><h4>Custom plan conversion</h4><span>Per sale closed</span></div>
+            <div class="earn-pts">+1000 pts</div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-icon">📱</div>
+            <div class="earn-info"><h4>Verified social share</h4><span>Per approved post</span></div>
+            <div class="earn-pts">+10 pts</div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-icon">✍️</div>
+            <div class="earn-info"><h4>Blog post or review</h4><span>Per approved content</span></div>
+            <div class="earn-pts">+100 pts</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REDEEM -->
+      <div class="reveal reveal-right" data-delay="200">
+        <p class="points-col-title">🎁 Redeem your points</p>
+        <div class="redeem-list">
+          <div class="redeem-row">
+            <div class="redeem-top">
+              <h4>💵 Cash Payout</h4>
+              <span class="redeem-cost">500 pts = $10</span>
+            </div>
+            <p>Withdraw directly to PayPal, your bank account, or a crypto wallet of your choice.</p>
+          </div>
+          <div class="redeem-row">
+            <div class="redeem-top">
+              <h4>🎁 Service Credits</h4>
+              <span class="redeem-cost">300 pts = $15</span>
+            </div>
+            <p>Apply credits toward any BlackCodeLabs service — for yourself or your clients.</p>
+          </div>
+          <div class="redeem-row">
+            <div class="redeem-top">
+              <h4>👕 Branded Merch Kit</h4>
+              <span class="redeem-cost">800 pts</span>
+            </div>
+            <p>Exclusive BlackCodeLabs swag box — hoodie, tee, notebook — shipped worldwide.</p>
+          </div>
+          <div class="redeem-row">
+            <div class="redeem-top">
+              <h4>🎓 Training Library Access</h4>
+              <span class="redeem-cost">400 pts</span>
+            </div>
+            <p>Full access to our internal engineering training and business growth video library.</p>
+          </div>
+          <div class="redeem-row">
+            <div class="redeem-top">
+              <h4>📞 1-on-1 Strategy Call</h4>
+              <span class="redeem-cost">1,000 pts</span>
+            </div>
+            <p>A private session with a BlackCodeLabs senior engineer or growth strategist.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TIERS -->
+<div class="tiers-section">
+  <div class="tiers-inner">
+    <div class="tiers-head reveal">
+      <span class="s-label">Affiliate Tiers</span>
+      <h2 class="s-title">Grow your tier,<br><em>earn more.</em></h2>
+    </div>
+    <div class="tiers-grid" data-stagger>
+
+      <div class="tier-card tier-bronze reveal" data-stagger-item>
+        <span class="tier-medal">🥉</span>
+        <div class="tier-name">Bronze</div>
+        <span class="tier-req">0 – 999 Points</span>
+        <div class="tier-rate">15%</div>
+        <span class="tier-rate-label">Commission Rate</span>
+        <ul class="tier-perks">
+          <li>Referral tracking dashboard</li>
+          <li>Full marketing materials kit</li>
+          <li>Monthly payout cycle</li>
+          <li>Affiliate community access</li>
+        </ul>
+      </div>
+
+      <div class="tier-card tier-silver reveal" data-stagger-item>
+        <span class="tier-medal">🥈</span>
+        <div class="tier-name">Silver</div>
+        <span class="tier-req">1,000 – 4,999 Points</span>
+        <div class="tier-rate">20%</div>
+        <span class="tier-rate-label">Commission Rate</span>
+        <ul class="tier-perks">
+          <li>Everything in Bronze</li>
+          <li>Priority affiliate support</li>
+          <li>Co-branded materials</li>
+          <li>Bi-weekly payouts</li>
+          <li>1.5× point multiplier</li>
+        </ul>
+      </div>
+
+      <div class="tier-card tier-gold reveal" data-stagger-item>
+        <span class="tier-medal">🥇</span>
+        <div class="tier-name">Gold</div>
+        <span class="tier-req">5,000+ Points</span>
+        <div class="tier-rate">25%</div>
+        <span class="tier-rate-label">Commission Rate</span>
+        <ul class="tier-perks">
+          <li>Everything in Silver</li>
+          <li>Dedicated affiliate manager</li>
+          <li>Weekly payout cycle</li>
+          <li>2× point multiplier</li>
+          <li>Featured on partner page</li>
+          <li>Early product access</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER FORM -->
+<div class="register-section" id="register">
+  <div class="register-inner">
+    <div class="reg-header reveal">
+      <span class="s-label" style="display:block;margin-bottom:.6rem">Register</span>
+      <h2>Start earning <em>today.</em></h2>
+      <p>Free to join. Instant link generation on approval. No experience required — just a platform and the drive to share.</p>
+    </div>
+    <div class="reg-card reveal" data-delay="150">
+      <div class="reg-card-head">
+        <h3>Affiliate Application</h3>
+        <span class="free-badge">FREE TO JOIN</span>
+      </div>
+
+      <div id="reg-form-state">
+        <div class="reg-body">
+          <div class="reg-grid">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" id="reg-fname" placeholder="John"/>
+            </div>
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" id="reg-lname" placeholder="Doe"/>
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" id="reg-email" placeholder="your@email.com"/>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" placeholder="+1 555..."/>
+            </div>
+            <div class="form-group">
+              <label>Website or Profile URL *</label>
+              <input type="url" id="reg-url" placeholder="https://..."/>
+            </div>
+            <div class="form-group">
+              <label>Monthly Audience Size</label>
+              <select>
+                <option value="">Select range...</option>
+                <option>Under 1,000</option>
+                <option>1,000 – 10,000</option>
+                <option>10,000 – 50,000</option>
+                <option>50,000 – 200,000</option>
+                <option>200,000+</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label>Primary Promotion Channels</label>
+              <div class="channel-pills">
+                <span class="ch-pill" onclick="this.classList.toggle('on')">Blog / Website</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">YouTube</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">Instagram</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">Twitter / X</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">LinkedIn</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">TikTok</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">Email Newsletter</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">Podcast</span>
+                <span class="ch-pill" onclick="this.classList.toggle('on')">Other</span>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label>How will you promote BlackCodeLabs?</label>
+              <textarea placeholder="Briefly describe your promotion strategy — content type, audience, approach..."></textarea>
+            </div>
+          </div>
+
+          <div class="terms-row">
+            <div class="custom-check" id="termsCheck" onclick="this.classList.toggle('checked');this.textContent=this.classList.contains('checked')?'✓':''"></div>
+            <p>I agree to the BlackCodeLabs <a href="#">Affiliate Terms &amp; Conditions</a> and understand commission structures may change with 30 days' written notice.</p>
+          </div>
+
+          <button class="reg-submit" onclick="registerAffiliate()">
+            Register as Affiliate — It's Free
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="reg-success">
+        <div class="success-ring">🎉</div>
+        <h3>Welcome to the Network!</h3>
+        <p>Your application has been submitted successfully. Our affiliate team will review it and send your unique referral link within 24 hours. Keep an eye on your inbox.</p>
+        <div class="ref-preview">
+          <code>BCL-XXXX-XXXX</code>
+          <button class="copy-btn">Your link is on its way</button>
+        </div>
+        <a href="index.html" class="btn btn-outline" style="margin-top:1rem;display:inline-flex">Back to Home</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+      <p>Elite software engineering for the digital age. We build systems that power tomorrow's most ambitious businesses.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="solutions.html">Solutions</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="career.html">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Affiliate</h5>
+      <ul>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#register">Register</a></li>
+        <li><a href="login.html">Affiliate Login</a></li>
+        <li><a href="contact.html">Support</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Affiliate Terms</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 <em>BlackCodeLabs</em>. All rights reserved.</p>
+    <p>Built with precision by <em>BlackCodeLabs</em> engineers.</p>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+/* ── 3D HERO ── */
+(function () {
+  const canvas = document.getElementById('aff-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const W = canvas.parentElement.offsetWidth;
+  const H = canvas.parentElement.offsetHeight;
+  renderer.setSize(W, H);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 200);
+  camera.position.set(0, 0, 40);
+
+  /* Particle field */
+  const N = 2800;
+  const pos = new Float32Array(N * 3);
+  const col = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) {
+    pos[i*3]   = (Math.random() - .5) * 150;
+    pos[i*3+1] = (Math.random() - .5) * 130;
+    pos[i*3+2] = (Math.random() - .5) * 130;
+    const t = Math.random();
+    /* warm red / deep red mix */
+    col[i*3]   = t > .55 ? .75 : .18;
+    col[i*3+1] = t > .55 ? .22 : .04;
+    col[i*3+2] = t > .55 ? .17 : .04;
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  pGeo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
+  scene.add(new THREE.Points(pGeo,
+    new THREE.PointsMaterial({ size: .22, vertexColors: true, transparent: true, opacity: .6 })
+  ));
+
+  /* Rotating wire ring */
+  const rGeo  = new THREE.TorusGeometry(16, .45, 10, 100);
+  const rMesh = new THREE.Mesh(rGeo,
+    new THREE.MeshBasicMaterial({ color: 0x8a1010, wireframe: true, transparent: true, opacity: .045 })
+  );
+  rMesh.rotation.x = 1.15;
+  scene.add(rMesh);
+
+  /* Floating icosahedron */
+  const iGeo  = new THREE.IcosahedronGeometry(7, 1);
+  const iMesh = new THREE.Mesh(iGeo,
+    new THREE.MeshBasicMaterial({ color: 0xc0392b, wireframe: true, transparent: true, opacity: .065 })
+  );
+  iMesh.position.set(-18, 5, -6);
+  scene.add(iMesh);
+
+  /* Second smaller one */
+  const i2Geo  = new THREE.OctahedronGeometry(4, 0);
+  const i2Mesh = new THREE.Mesh(i2Geo,
+    new THREE.MeshBasicMaterial({ color: 0xe74c3c, wireframe: true, transparent: true, opacity: .055 })
+  );
+  i2Mesh.position.set(20, -6, -3);
+  scene.add(i2Mesh);
+
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = (e.clientX / innerWidth  - .5) * 2;
+    my = (e.clientY / innerHeight - .5) * 2;
+  });
+
+  (function animate() {
+    requestAnimationFrame(animate);
+    rMesh.rotation.z  += .003;
+    iMesh.rotation.y  += .005;
+    iMesh.rotation.x  += .003;
+    i2Mesh.rotation.y += .007;
+    i2Mesh.rotation.z += .004;
+    camera.position.x += (mx * 5 - camera.position.x) * .02;
+    camera.position.y += (-my * 3.5 - camera.position.y) * .02;
+    renderer.render(scene, camera);
+  })();
+
+  window.addEventListener('resize', () => {
+    const nW = canvas.parentElement.offsetWidth;
+    const nH = canvas.parentElement.offsetHeight;
+    camera.aspect = nW / nH;
+    camera.updateProjectionMatrix();
+    renderer.setSize(nW, nH);
+  });
+})();
+
+/* ── REGISTER ── */
+function registerAffiliate() {
+  const fname  = document.getElementById('reg-fname').value.trim();
+  const email  = document.getElementById('reg-email').value.trim();
+  const url    = document.getElementById('reg-url').value.trim();
+  const agreed = document.getElementById('termsCheck').classList.contains('checked');
+
+  if (!fname || !email || !url) {
+    const btn = document.querySelector('.reg-submit');
+    btn.style.transform = 'translateX(-6px)';
+    setTimeout(() => btn.style.transform = 'translateX(6px)', 80);
+    setTimeout(() => btn.style.transform = 'translateX(-4px)', 160);
+    setTimeout(() => btn.style.transform = 'none', 240);
+    return;
+  }
+
+  if (!agreed) {
+    const check = document.getElementById('termsCheck');
+    check.style.borderColor = 'var(--accent)';
+    check.style.boxShadow   = '0 0 0 3px rgba(192,57,43,.15)';
+    setTimeout(() => { check.style.borderColor = ''; check.style.boxShadow = ''; }, 2000);
+    return;
+  }
+
+  const btn = document.querySelector('.reg-submit');
+  btn.textContent = 'Submitting application…';
+  btn.disabled    = true;
+
+  setTimeout(() => {
+    document.getElementById('reg-form-state').style.display = 'none';
+    document.getElementById('reg-success').style.display    = 'block';
+    document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 1200);
+}
+
+/* Smooth scroll for hero link */
+document.querySelector('a[href="#how-it-works"]').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' });
+});
+document.querySelector('a[href="#register"]').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
