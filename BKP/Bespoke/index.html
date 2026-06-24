@@ -1,1151 +1,757 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bolo Bespoke — Tailored Distinction</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOLO BESPOKE | Bespoke City — Tailored for Legends</title>
+<meta name="description" content="Bolo Bespoke — Kenya's leading bespoke tailor. Custom men's suits, wedding attire and luxury fits from Bespoke City, View Park Towers, Nairobi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  /* ─── TOKENS ─────────────────────────────────────────────── */
-  :root {
-    --ink:    #0d0d0d;
-    --cream:  #f5f0e8;
-    --gold:   #b8974a;
-    --gold-lt:#d4b46a;
-    --charcoal:#2a2a2a;
-    --mid:    #6b6560;
-    --white:  #ffffff;
-    --radius: 2px;
-    --trans:  0.45s cubic-bezier(0.4,0,0.2,1);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Jost', sans-serif;
-    background: var(--cream);
-    color: var(--ink);
-    overflow-x: hidden;
-  }
-  h1,h2,h3,h4,h5 { font-family: 'Cormorant Garamond', serif; }
-  a { text-decoration:none; color:inherit; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0b;--bg2:#121213;--bg3:#171718;--bg4:#1d1d1e;
+  --gold:#b8924a;--gold2:#d8b878;--gold3:#6e5526;
+  --cream:#ece4d3;--off:#bdb6a8;--grey1:#807a6f;--grey2:#48453e;--grey3:#272623;
+  --f-disp:'Cormorant Garamond',serif;
+  --f-body:'Jost',sans-serif;
+  --f-mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--bg);color:var(--cream);overflow-x:hidden;font-weight:300}
+img{max-width:100%}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold3)}
 
-  /* ─── NAV ────────────────────────────────────────────────── */
-  nav {
-    position: fixed; top:0; left:0; right:0; z-index:900;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 1.2rem 4vw;
-    transition: background var(--trans), backdrop-filter var(--trans);
-  }
-  nav.scrolled {
-    background: rgba(13,13,13,0.88);
-    backdrop-filter: blur(12px);
-  }
-  .nav-logo {
-    font-family:'Cormorant Garamond',serif;
-    font-size:1.6rem; font-weight:500; letter-spacing:.12em;
-    color:var(--white);
-  }
-  .nav-logo span { color:var(--gold); }
-  .nav-links { display:flex; gap:2.2rem; list-style:none; }
-  .nav-links a {
-    font-size:.75rem; font-weight:400; letter-spacing:.2em;
-    text-transform:uppercase; color:rgba(255,255,255,.82);
-    transition: color var(--trans);
-  }
-  .nav-links a:hover { color:var(--gold); }
-  .nav-cart-btn {
-    position:relative; background:none; border:none; cursor:pointer;
-    color:var(--white); font-size:1.2rem;
-  }
-  .cart-badge {
-    position:absolute; top:-6px; right:-8px;
-    width:18px; height:18px; border-radius:50%;
-    background:var(--gold); color:var(--ink);
-    font-size:.6rem; font-weight:600;
-    display:flex; align-items:center; justify-content:center;
-    opacity:0; transition: opacity var(--trans);
-  }
-  .cart-badge.visible { opacity:1; }
-  .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
-  .hamburger span { display:block; width:26px; height:1.5px; background:var(--white); transition:var(--trans); }
+/* TAPE MEASURE SIGNATURE MOTIF */
+.tape{display:flex;align-items:center;gap:0;height:14px;width:100%;overflow:hidden}
+.tape-tick{flex:1;border-left:1px solid var(--gold3);height:6px;align-self:flex-end}
+.tape-tick.major{height:12px;border-left-color:var(--gold)}
 
-  /* ─── HERO CAROUSEL ──────────────────────────────────────── */
-  #hero {
-    position:relative; width:100%; height:100vh; overflow:hidden;
-  }
-  .hero-slides { position:relative; width:100%; height:100%; }
-  .hero-slide {
-    position:absolute; inset:0; opacity:0;
-    transition: opacity 1.2s ease;
-    background-size:cover; background-position:center;
-  }
-  .hero-slide.active { opacity:1; }
-  .hero-slide::after {
-    content:''; position:absolute; inset:0;
-    background: linear-gradient(135deg, rgba(13,13,13,.72) 0%, rgba(13,13,13,.3) 60%, transparent 100%);
-  }
-  /* Placeholder gradient slides */
-  .slide-1 { background: linear-gradient(160deg,#1a1208 0%,#3d2b10 40%,#6b4c22 100%); }
-  .slide-2 { background: linear-gradient(160deg,#0d1a1a 0%,#0d2b2b 40%,#1a4a40 100%); }
-  .slide-3 { background: linear-gradient(160deg,#12120d 0%,#2b2a10 40%,#4a4322 100%); }
-  .slide-4 { background: linear-gradient(160deg,#1a0d12 0%,#2b1020 40%,#4a2235 100%); }
+/* ── NAV ──────────────────────────────── */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:26px 56px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;background:linear-gradient(to bottom,rgba(10,10,11,.7),transparent)}
+nav.scrolled{padding:16px 56px;background:rgba(10,10,11,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(184,146,74,.15)}
+.nav-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.nav-mono{font-family:var(--f-mono);font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase}
+.nav-name{font-family:var(--f-disp);font-size:24px;letter-spacing:3px;color:var(--cream);font-style:italic;line-height:1}
+.nav-links{display:flex;gap:34px;list-style:none}
+.nav-links a{color:var(--off);text-decoration:none;font-family:var(--f-mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
+.nav-links a:hover{color:var(--gold2)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:11px 26px;border:1px solid var(--gold3);background:transparent;color:var(--gold2);font-family:var(--f-mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s;white-space:nowrap}
+.nav-cta:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:1px;background:var(--cream);transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);background:var(--gold)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);background:var(--gold)}
+.mobile-nav{position:fixed;inset:0;background:rgba(10,10,11,.98);z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:30px;opacity:0;pointer-events:none;transition:opacity .4s}
+.mobile-nav.open{opacity:1;pointer-events:all}
+.mobile-nav a{font-family:var(--f-disp);font-style:italic;font-size:clamp(28px,8vw,46px);color:var(--cream);text-decoration:none;transition:color .3s}
+.mobile-nav a:hover{color:var(--gold)}
 
-  /* Decorative fabric texture overlay */
-  .hero-slide::before {
-    content:''; position:absolute; inset:0; z-index:1;
-    opacity:.06;
-    background-image: repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);
-    background-size: 8px 8px;
-  }
-  .hero-content {
-    position:absolute; z-index:2; bottom:12vh; left:8vw; max-width:680px;
-  }
-  .hero-tag {
-    font-size:.68rem; letter-spacing:.35em; text-transform:uppercase;
-    color:var(--gold); margin-bottom:1rem; display:block;
-    opacity:0; transform:translateY(20px);
-    animation: fadeUp .8s .3s forwards;
-  }
-  .hero-title {
-    font-size:clamp(3rem,7vw,6.5rem); font-weight:300; line-height:1.05;
-    color:var(--white); margin-bottom:1.5rem;
-    opacity:0; transform:translateY(24px);
-    animation: fadeUp .9s .5s forwards;
-  }
-  .hero-title em { font-style:italic; color:var(--gold-lt); }
-  .hero-sub {
-    font-size:clamp(.85rem,1.2vw,1rem); font-weight:300; letter-spacing:.08em;
-    color:rgba(255,255,255,.75); max-width:440px; line-height:1.8;
-    opacity:0; transform:translateY(20px);
-    animation: fadeUp .9s .7s forwards;
-  }
-  .hero-btns {
-    display:flex; gap:1.2rem; margin-top:2.4rem;
-    opacity:0; transform:translateY(18px);
-    animation: fadeUp .9s .9s forwards;
-  }
-  .btn-primary {
-    display:inline-block; padding:.85rem 2.4rem;
-    background:var(--gold); color:var(--ink);
-    font-size:.72rem; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
-    border:none; cursor:pointer;
-    transition: background var(--trans), transform .2s;
-  }
-  .btn-primary:hover { background:var(--gold-lt); transform:translateY(-2px); }
-  .btn-outline {
-    display:inline-block; padding:.85rem 2.4rem;
-    border:1px solid rgba(255,255,255,.5); color:var(--white);
-    font-size:.72rem; font-weight:400; letter-spacing:.22em; text-transform:uppercase;
-    cursor:pointer; transition: border-color var(--trans), color var(--trans), transform .2s;
-  }
-  .btn-outline:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-2px); }
+/* ── HERO ──────────────────────────────── */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(35%) brightness(.5) contrast(1.05)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,rgba(10,10,11,.35) 45%,rgba(10,10,11,.55) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 56px;max-width:1300px;width:100%;margin-top:60px}
+.hero-eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:5px;color:var(--gold2);text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:14px}
+.hero-eyebrow::before{content:'';display:block;width:36px;height:1px;background:var(--gold)}
+.hero-title{font-family:var(--f-disp);font-weight:500;font-size:clamp(48px,9vw,118px);line-height:.98;letter-spacing:1px;color:var(--cream)}
+.hero-title em{font-style:italic;color:var(--gold2);display:block}
+.hero-sub{font-size:16px;color:var(--off);max-width:480px;margin:26px 0 36px;line-height:1.8;font-weight:300}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-gold{padding:15px 38px;background:var(--gold);color:var(--bg);font-family:var(--f-mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:inline-block;display:inline-block;transition:all .3s}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px)}
+.btn-ghost{padding:14px 38px;border:1px solid rgba(184,146,74,.45);color:var(--gold2);font-family:var(--f-mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;background:none;cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--cream);background:rgba(184,146,74,.08)}
+.hero-tape{position:absolute;bottom:0;left:0;width:100%;z-index:2;padding:0 56px 34px}
+.hero-scroll-text{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;color:var(--grey1);text-transform:uppercase;margin-top:10px;display:block}
 
-  /* Hero carousel models — illustrated mannequin silhouettes */
-  .hero-mannequin {
-    position:absolute; z-index:2; right:8vw; bottom:0;
-    height:85vh; opacity:.25;
-    font-size:28vw; line-height:1;
-    color:var(--gold);
-    display:flex; align-items:flex-end;
-    pointer-events:none;
-    filter: drop-shadow(0 0 60px rgba(184,151,74,.2));
-  }
+/* ── TICKER ──────────────────────────────── */
+.ticker{overflow:hidden;background:var(--gold);padding:11px 0}
+.ticker-track{display:flex;animation:tickerMove 22s linear infinite;width:max-content}
+.ticker-item{display:flex;align-items:center;gap:18px;padding:0 30px;font-family:var(--f-disp);font-style:italic;font-size:17px;letter-spacing:1px;color:var(--bg);white-space:nowrap}
+.ticker-sep{font-size:9px;opacity:.55;font-family:var(--f-mono)}
+@keyframes tickerMove{to{transform:translateX(-50%)}}
 
-  .hero-indicators {
-    position:absolute; bottom:3rem; left:50%; transform:translateX(-50%);
-    z-index:3; display:flex; gap:.6rem;
-  }
-  .hero-dot {
-    width:28px; height:2px; background:rgba(255,255,255,.35); cursor:pointer;
-    transition: background var(--trans), width var(--trans);
-  }
-  .hero-dot.active { background:var(--gold); width:52px; }
+/* ── SECTION COMMONS ──────────────────────────────── */
+.sec-label{font-family:var(--f-mono);font-size:10px;letter-spacing:4.5px;text-transform:uppercase;color:var(--gold3);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-label::before{content:'';width:22px;height:1px;background:var(--gold3)}
+.sec-title{font-family:var(--f-disp);font-weight:500;font-size:clamp(36px,6vw,84px);line-height:1;letter-spacing:.5px;color:var(--cream)}
+.sec-title em{font-style:italic;color:var(--gold2)}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-26px);transition:opacity .8s,transform .8s}
+.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(26px);transition:opacity .8s,transform .8s}
+.reveal-right.visible{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-  .hero-arrows {
-    position:absolute; z-index:3; top:50%; transform:translateY(-50%);
-    width:100%; display:flex; justify-content:space-between; padding:0 2vw;
-    pointer-events:none;
-  }
-  .arrow-btn {
-    pointer-events:all; background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.2); color:var(--white);
-    width:52px; height:52px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
-    transition: background var(--trans), border-color var(--trans);
-    backdrop-filter:blur(4px);
-  }
-  .arrow-btn:hover { background:rgba(184,151,74,.25); border-color:var(--gold); }
+/* ── ABOUT ──────────────────────────────── */
+.about-section{padding:130px 56px;background:var(--bg);position:relative}
+.about-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:80px;align-items:center}
+.about-photo-block{position:relative}
+.about-img-frame{position:relative;aspect-ratio:3/4;overflow:hidden;border:1px solid var(--grey3)}
+.about-img-frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(15%) contrast(1.08);display:block;transition:filter .5s}
+.about-img-frame:hover img{filter:grayscale(0%) contrast(1)}
+.about-tag{position:absolute;bottom:-22px;right:-22px;background:var(--gold);padding:18px 22px}
+.about-tag-num{font-family:var(--f-disp);font-size:38px;color:var(--bg);line-height:1;font-weight:600}
+.about-tag-lbl{font-family:var(--f-mono);font-size:9px;letter-spacing:2px;color:var(--bg);opacity:.75}
+.about-text{display:flex;flex-direction:column;gap:24px}
+.about-quote{font-family:var(--f-disp);font-style:italic;font-size:clamp(22px,2.8vw,32px);font-weight:400;line-height:1.35;color:var(--cream);border-left:2px solid var(--gold);padding-left:26px}
+.about-body{font-size:15px;color:var(--off);line-height:1.9;font-weight:300}
+.about-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--grey3);border:1px solid var(--grey3);margin-top:6px}
+.about-fact{background:var(--bg);padding:20px 16px;text-align:left}
+.about-fact-val{font-family:var(--f-disp);font-size:30px;color:var(--gold2);line-height:1;font-weight:600}
+.about-fact-lbl{font-family:var(--f-mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--grey1);margin-top:6px}
 
-  /* ─── SECTION COMMONS ────────────────────────────────────── */
-  section { padding:7rem 8vw; }
-  .section-label {
-    font-size:.65rem; letter-spacing:.4em; text-transform:uppercase;
-    color:var(--gold); display:block; margin-bottom:.8rem;
-  }
-  .section-title {
-    font-size:clamp(2rem,4vw,3.4rem); font-weight:300; line-height:1.15;
-    color:var(--ink);
-  }
-  .section-title em { font-style:italic; color:var(--gold); }
-  .divider {
-    width:48px; height:1px; background:var(--gold);
-    margin:1.8rem 0;
-  }
+/* ── COLLECTIONS ──────────────────────────────── */
+.collections-section{padding:130px 0 100px;background:var(--bg2)}
+.collections-header{max-width:1300px;margin:0 auto 50px;padding:0 56px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px}
+.coll-filter{display:flex;gap:10px;flex-wrap:wrap}
+.coll-btn{padding:9px 20px;border:1px solid var(--grey3);background:none;color:var(--grey1);font-family:var(--f-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.coll-btn.active,.coll-btn:hover{border-color:var(--gold);color:var(--gold2);background:rgba(184,146,74,.07)}
+.coll-grid{max-width:1300px;margin:0 auto;padding:0 56px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.coll-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;display:block}
+.coll-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(25%) brightness(.82);transition:all .6s ease}
+.coll-card:hover img{filter:grayscale(0%) brightness(1);transform:scale(1.05)}
+.coll-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,11,.92) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:26px;z-index:2}
+.coll-tag{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;color:var(--gold2);text-transform:uppercase;margin-bottom:6px}
+.coll-name{font-family:var(--f-disp);font-size:26px;color:var(--cream);font-weight:500}
 
-  /* ─── ABOUT ──────────────────────────────────────────────── */
-  #about {
-    background:var(--ink);
-    display:grid; grid-template-columns:1fr 1fr; gap:6vw; align-items:center;
-  }
-  .about-text .section-title { color:var(--white); }
-  .about-text p {
-    font-size:.95rem; font-weight:300; letter-spacing:.04em; line-height:2;
-    color:rgba(255,255,255,.7); margin-bottom:1.2rem;
-  }
-  .about-stats {
-    display:flex; gap:3rem; margin-top:2.8rem;
-  }
-  .stat-num {
-    font-family:'Cormorant Garamond',serif;
-    font-size:3rem; font-weight:300; color:var(--gold); display:block;
-  }
-  .stat-lbl {
-    font-size:.65rem; letter-spacing:.25em; text-transform:uppercase;
-    color:rgba(255,255,255,.55);
-  }
-  .about-image {
-    position:relative; aspect-ratio:3/4; overflow:hidden;
-  }
-  .about-img-placeholder {
-    width:100%; height:100%;
-    background: linear-gradient(160deg,#1a1208 0%,#3d2b10 60%,#5c3f18 100%);
-    display:flex; align-items:center; justify-content:center;
-    font-size:6rem; color:rgba(184,151,74,.3);
-  }
-  .about-image::before {
-    content:''; position:absolute; inset:0; z-index:1;
-    border:1px solid rgba(184,151,74,.35);
-    transform:translate(12px,-12px);
-    pointer-events:none;
-  }
+/* ── PROCESS (TAPE TIMELINE) ──────────────────────────────── */
+.process-section{padding:130px 56px;background:var(--bg)}
+.process-inner{max-width:1300px;margin:0 auto}
+.process-track{margin-top:70px;position:relative}
+.process-tape-line{position:relative;height:2px;background:var(--grey3);margin:0 0 0;display:none}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--grey3)}
+.process-step{padding:40px 30px 0;position:relative;border-left:1px solid var(--grey3)}
+.process-step:first-child{border-left:none}
+.process-mark{font-family:var(--f-mono);font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:18px;display:block}
+.process-tick-row{display:flex;gap:3px;margin-bottom:22px;height:16px;align-items:flex-end}
+.process-tick{flex:1;background:var(--grey3);height:5px}
+.process-step.active .process-tick{background:var(--gold3)}
+.process-step:nth-child(1) .process-tick:nth-child(1){height:14px;background:var(--gold)}
+.process-step:nth-child(2) .process-tick:nth-child(2){height:14px;background:var(--gold)}
+.process-step:nth-child(3) .process-tick:nth-child(3){height:14px;background:var(--gold)}
+.process-step:nth-child(4) .process-tick:nth-child(4){height:14px;background:var(--gold)}
+.process-title{font-family:var(--f-disp);font-size:28px;color:var(--cream);font-weight:500;margin-bottom:14px}
+.process-desc{font-size:13.5px;color:var(--off);line-height:1.8;font-weight:300;padding-bottom:40px}
 
-  /* ─── SERVICES ───────────────────────────────────────────── */
-  #services { background:var(--cream); text-align:center; }
-  .services-header { margin-bottom:4rem; }
-  .services-grid {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:2rem;
-  }
-  .service-card {
-    padding:2.8rem 2rem; border:1px solid rgba(184,151,74,.2);
-    background:var(--white);
-    transition: transform var(--trans), border-color var(--trans), box-shadow var(--trans);
-    cursor:default;
-  }
-  .service-card:hover {
-    transform:translateY(-6px);
-    border-color:var(--gold);
-    box-shadow: 0 20px 60px rgba(184,151,74,.12);
-  }
-  .service-icon { font-size:2.2rem; margin-bottom:1.4rem; color:var(--gold); }
-  .service-card h3 {
-    font-size:1.25rem; font-weight:400; margin-bottom:.8rem; color:var(--ink);
-  }
-  .service-card p {
-    font-size:.82rem; font-weight:300; line-height:1.9; color:var(--mid); letter-spacing:.03em;
-  }
+/* ── GALLERY / CLIENTS ──────────────────────────────── */
+.gallery-section{padding:130px 56px;background:var(--bg2)}
+.gallery-inner{max-width:1400px;margin:0 auto}
+.client-strip{display:flex;flex-wrap:wrap;gap:14px;margin:36px 0 60px}
+.client-chip{padding:10px 20px;border:1px solid var(--grey3);font-family:var(--f-mono);font-size:10px;letter-spacing:2px;color:var(--off);text-transform:uppercase}
+.gallery-masonry{columns:4;gap:10px;column-fill:balance}
+@media(max-width:1100px){.gallery-masonry{columns:3}}
+@media(max-width:768px){.gallery-masonry{columns:2}}
+@media(max-width:480px){.gallery-masonry{columns:1}}
+.gal-item{break-inside:avoid;margin-bottom:10px;position:relative;overflow:hidden;cursor:pointer;display:block}
+.gal-item img{width:100%;height:auto;display:block;filter:grayscale(25%) contrast(1.05);transition:all .5s}
+.gal-item::before{content:'';position:absolute;inset:0;background:rgba(10,10,11,.55);opacity:0;transition:opacity .3s;z-index:2}
+.gal-item:hover::before{opacity:1}
+.gal-item:hover img{filter:grayscale(0%) contrast(1.1) scale(1.04);transform:scale(1.04)}
+.gal-overlay{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.gal-item:hover .gal-overlay{opacity:1}
+.gal-overlay svg{width:28px;height:28px;stroke:var(--gold2);fill:none;stroke-width:1.3}
+.gal-item:nth-child(3n+1) img{aspect-ratio:3/4}
+.gal-item:nth-child(3n+2) img{aspect-ratio:4/5}
+.gal-item:nth-child(3n) img{aspect-ratio:1/1}
+.lightbox{position:fixed;inset:0;background:rgba(10,10,11,.96);z-index:9990;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(8px)}
+.lightbox.open{opacity:1;pointer-events:all}
+.lightbox img{max-width:90vw;max-height:85vh;object-fit:contain}
+.lightbox-close{position:absolute;top:24px;right:24px;width:44px;height:44px;border:1px solid rgba(184,146,74,.3);background:none;color:var(--gold2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.lightbox-close:hover{background:var(--gold);color:var(--bg)}
 
-  /* ─── SHOP ───────────────────────────────────────────────── */
-  #shop { background:var(--white); }
-  .shop-header { margin-bottom:1.5rem; }
-  .shop-filters {
-    display:flex; gap:1rem; margin-bottom:3rem; flex-wrap:wrap;
-  }
-  .filter-btn {
-    font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
-    padding:.5rem 1.4rem; border:1px solid rgba(13,13,13,.2);
-    background:none; cursor:pointer; color:var(--mid);
-    transition: all var(--trans);
-  }
-  .filter-btn.active, .filter-btn:hover {
-    background:var(--ink); color:var(--white); border-color:var(--ink);
-  }
-  .products-grid {
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:2.4rem;
-  }
-  .product-card {
-    cursor:pointer; overflow:hidden;
-    transition: transform var(--trans);
-  }
-  .product-card:hover { transform:translateY(-4px); }
-  .product-img {
-    aspect-ratio:3/4; overflow:hidden; position:relative;
-    background:var(--cream);
-  }
-  .product-img-inner {
-    width:100%; height:100%;
-    display:flex; align-items:center; justify-content:center;
-    font-size:5rem; color:rgba(184,151,74,.4);
-    transition: transform var(--trans);
-  }
-  .product-card:hover .product-img-inner { transform:scale(1.04); }
-  .product-overlay {
-    position:absolute; inset:0; background:rgba(13,13,13,.55);
-    opacity:0; display:flex; align-items:center; justify-content:center;
-    transition: opacity var(--trans);
-  }
-  .product-card:hover .product-overlay { opacity:1; }
-  .overlay-btn {
-    padding:.7rem 1.8rem; background:var(--gold); color:var(--ink);
-    font-size:.68rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
-    border:none; cursor:pointer;
-    transform:translateY(10px); transition: transform var(--trans);
-  }
-  .product-card:hover .overlay-btn { transform:translateY(0); }
-  .product-info { padding:1.1rem 0; }
-  .product-name {
-    font-family:'Cormorant Garamond',serif;
-    font-size:1.1rem; font-weight:400; color:var(--ink); margin-bottom:.3rem;
-  }
-  .product-type {
-    font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--mid);
-  }
-  .product-price {
-    font-size:1rem; font-weight:500; color:var(--gold); margin-top:.4rem;
-  }
+/* ── SHOP / RTW ──────────────────────────────── */
+.shop-section{padding:130px 56px;background:var(--bg)}
+.shop-inner{max-width:1300px;margin:0 auto}
+.shop-grid{margin-top:60px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--grey3);border:1px solid var(--grey3)}
+.shop-card{background:var(--bg);display:flex;flex-direction:column;transition:background .3s}
+.shop-card:hover{background:var(--bg3)}
+.shop-img{aspect-ratio:3/4;overflow:hidden}
+.shop-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:transform .5s}
+.shop-card:hover .shop-img img{transform:scale(1.06)}
+.shop-info{padding:20px}
+.shop-name{font-family:var(--f-disp);font-size:19px;color:var(--cream);margin-bottom:6px}
+.shop-price{font-family:var(--f-mono);font-size:12px;color:var(--gold2);letter-spacing:1px}
 
-  /* ─── PRODUCT MODAL ──────────────────────────────────────── */
-  .modal-overlay {
-    position:fixed; inset:0; z-index:1000;
-    background:rgba(13,13,13,.85); backdrop-filter:blur(8px);
-    display:none; align-items:center; justify-content:center; padding:2rem;
-  }
-  .modal-overlay.open { display:flex; }
-  .modal {
-    background:var(--white); max-width:900px; width:100%;
-    display:grid; grid-template-columns:1fr 1fr; max-height:90vh;
-    overflow:hidden; position:relative;
-    animation: modalIn .4s ease;
-  }
-  @keyframes modalIn { from{opacity:0;transform:scale(.96)} to{opacity:1;transform:scale(1)} }
-  .modal-image {
-    aspect-ratio:3/4; background:var(--cream);
-    display:flex; align-items:center; justify-content:center;
-    font-size:8rem; color:rgba(184,151,74,.35);
-    overflow:hidden;
-  }
-  .modal-body {
-    padding:3rem 2.5rem; overflow-y:auto;
-    display:flex; flex-direction:column;
-  }
-  .modal-tag { font-size:.62rem; letter-spacing:.32em; text-transform:uppercase; color:var(--gold); }
-  .modal-title {
-    font-size:2rem; font-weight:300; margin:.6rem 0; line-height:1.2;
-  }
-  .modal-price { font-size:1.5rem; color:var(--gold); font-weight:400; margin:.5rem 0 1.2rem; }
-  .modal-desc { font-size:.85rem; font-weight:300; line-height:1.9; color:var(--mid); margin-bottom:1.6rem; }
-  .modal-detail-row { display:flex; justify-content:space-between; border-top:1px solid rgba(13,13,13,.08); padding:.6rem 0; }
-  .modal-detail-label { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--mid); }
-  .modal-detail-val { font-size:.8rem; font-weight:400; }
-  .size-select {
-    display:flex; gap:.5rem; flex-wrap:wrap; margin:1.4rem 0;
-  }
-  .size-btn {
-    width:40px; height:40px; border:1px solid rgba(13,13,13,.2);
-    background:none; cursor:pointer; font-size:.75rem; font-weight:500;
-    transition: all var(--trans);
-  }
-  .size-btn.selected { background:var(--ink); color:var(--white); border-color:var(--ink); }
-  .modal-add-btn {
-    margin-top:auto; width:100%; padding:1rem;
-    background:var(--ink); color:var(--white); border:none; cursor:pointer;
-    font-size:.72rem; letter-spacing:.25em; text-transform:uppercase;
-    transition: background var(--trans);
-  }
-  .modal-add-btn:hover { background:var(--gold); color:var(--ink); }
-  .modal-close {
-    position:absolute; top:1rem; right:1rem;
-    background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--mid);
-    width:36px; height:36px; display:flex; align-items:center; justify-content:center;
-    z-index:5;
-  }
-  .modal-close:hover { color:var(--ink); }
+/* ── BOOK APPOINTMENT ──────────────────────────────── */
+.book-section{padding:130px 56px;background:var(--bg2)}
+.book-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.book-left{display:flex;flex-direction:column;gap:26px}
+.book-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:10px}
+.book-list li{font-size:14px;color:var(--off);display:flex;gap:12px;align-items:flex-start;font-weight:300}
+.book-list li::before{content:'—';color:var(--gold);flex-shrink:0}
+.book-form{display:flex;flex-direction:column;gap:24px}
+.bf-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.bf-field{position:relative;border-bottom:1px solid var(--grey3);transition:border-color .3s}
+.bf-field:focus-within{border-color:var(--gold)}
+.bf-field input,.bf-field textarea,.bf-field select{width:100%;padding:14px 0 10px;background:transparent;border:none;color:var(--cream);font-family:var(--f-body);font-size:14px;font-weight:300;outline:none}
+.bf-field textarea{resize:vertical;min-height:90px}
+.bf-field select option{background:var(--bg);color:var(--cream)}
+.bf-field label{position:absolute;top:14px;left:0;font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--grey1);pointer-events:none;transition:all .3s}
+.bf-field input:focus~label,.bf-field input:not(:placeholder-shown)~label,.bf-field textarea:focus~label,.bf-field textarea:not(:placeholder-shown)~label{top:-10px;font-size:9px;color:var(--gold3)}
+.book-submit{padding:16px 42px;background:var(--gold);color:var(--bg);font-family:var(--f-mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;align-self:flex-start;transition:all .3s}
+.book-submit:hover{background:var(--gold2);transform:translateY(-2px)}
 
-  /* ─── CART DRAWER ────────────────────────────────────────── */
-  .cart-drawer {
-    position:fixed; top:0; right:-420px; width:420px; max-width:100vw;
-    height:100vh; background:var(--white);
-    z-index:1100; box-shadow:-20px 0 60px rgba(13,13,13,.15);
-    display:flex; flex-direction:column;
-    transition: right var(--trans);
-    overflow:hidden;
-  }
-  .cart-drawer.open { right:0; }
-  .cart-header {
-    padding:1.8rem 2rem; border-bottom:1px solid rgba(13,13,13,.08);
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .cart-header h2 { font-size:1.5rem; font-weight:400; }
-  .cart-close { background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--mid); }
-  .cart-items { flex:1; overflow-y:auto; padding:1.5rem 2rem; }
-  .cart-empty {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    height:200px; color:var(--mid); font-size:.85rem; letter-spacing:.1em;
-    text-transform:uppercase;
-  }
-  .cart-item {
-    display:flex; gap:1rem; padding:1.2rem 0; border-bottom:1px solid rgba(13,13,13,.06);
-  }
-  .cart-item-img {
-    width:70px; height:88px; background:var(--cream);
-    display:flex; align-items:center; justify-content:center; font-size:1.8rem;
-    flex-shrink:0; color:rgba(184,151,74,.5);
-  }
-  .cart-item-info { flex:1; }
-  .cart-item-name { font-family:'Cormorant Garamond',serif; font-size:1rem; margin-bottom:.2rem; }
-  .cart-item-size { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--mid); }
-  .cart-item-price { font-size:.9rem; color:var(--gold); margin-top:.3rem; font-weight:500; }
-  .cart-item-remove { background:none; border:none; color:var(--mid); cursor:pointer; font-size:.9rem; align-self:flex-start; }
-  .cart-footer { padding:1.8rem 2rem; border-top:1px solid rgba(13,13,13,.08); }
-  .cart-total {
-    display:flex; justify-content:space-between; margin-bottom:1.4rem;
-    font-size:1rem; font-weight:500;
-  }
-  .cart-total span:last-child { color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.3rem; }
-  .checkout-btn {
-    width:100%; padding:1rem; background:var(--ink); color:var(--white); border:none;
-    font-size:.72rem; letter-spacing:.25em; text-transform:uppercase; cursor:pointer;
-    transition: background var(--trans);
-  }
-  .checkout-btn:hover { background:var(--gold); color:var(--ink); }
-  .drawer-backdrop {
-    position:fixed; inset:0; z-index:1099; background:rgba(13,13,13,.4);
-    display:none;
-  }
-  .drawer-backdrop.open { display:block; }
+/* ── JOURNAL ──────────────────────────────── */
+.journal-section{padding:130px 56px;background:var(--bg)}
+.journal-inner{max-width:1300px;margin:0 auto}
+.journal-grid{margin-top:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.journal-card{cursor:pointer}
+.journal-img{aspect-ratio:4/3;overflow:hidden;margin-bottom:20px}
+.journal-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:transform .5s}
+.journal-card:hover .journal-img img{transform:scale(1.05)}
+.journal-cat{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;color:var(--gold2);text-transform:uppercase;margin-bottom:10px}
+.journal-title{font-family:var(--f-disp);font-size:23px;color:var(--cream);font-weight:500;line-height:1.3}
 
-  /* ─── CONTACT ────────────────────────────────────────────── */
-  #contact { background:var(--ink); }
-  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:6vw; }
-  .contact-form .section-title { color:var(--white); }
-  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
-  .form-group { display:flex; flex-direction:column; gap:.4rem; margin-bottom:1rem; }
-  .form-group label {
-    font-size:.62rem; letter-spacing:.25em; text-transform:uppercase;
-    color:rgba(255,255,255,.5);
-  }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-    color:var(--white); padding:.85rem 1rem;
-    font-family:'Jost',sans-serif; font-size:.88rem; font-weight:300;
-    outline:none; transition: border-color var(--trans);
-    border-radius:0;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus { border-color:var(--gold); }
-  .form-group select option { background:var(--ink); }
-  .form-group textarea { resize:vertical; min-height:120px; }
-  .submit-btn {
-    margin-top:.8rem; padding:1rem 3rem;
-    background:var(--gold); color:var(--ink); border:none;
-    font-size:.72rem; letter-spacing:.25em; text-transform:uppercase; cursor:pointer;
-    transition: background var(--trans), transform .2s;
-  }
-  .submit-btn:hover { background:var(--gold-lt); transform:translateY(-2px); }
-  .contact-info { color:rgba(255,255,255,.75); }
-  .contact-info .section-title { color:var(--white); }
-  .contact-detail { display:flex; gap:1rem; margin-bottom:1.6rem; align-items:flex-start; }
-  .contact-detail-icon { color:var(--gold); font-size:1.1rem; margin-top:.1rem; }
-  .contact-detail p { font-size:.88rem; font-weight:300; line-height:1.8; }
-  .map-placeholder {
-    margin-top:2rem; height:260px; background:rgba(255,255,255,.05);
-    border:1px solid rgba(184,151,74,.2);
-    display:flex; align-items:center; justify-content:center;
-    font-size:.8rem; letter-spacing:.15em; text-transform:uppercase;
-    color:rgba(255,255,255,.3); position:relative; overflow:hidden;
-  }
-  .map-grid-lines {
-    position:absolute; inset:0;
-    background-image:
-      linear-gradient(rgba(184,151,74,.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(184,151,74,.05) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
-  .map-pin { position:absolute; font-size:2rem; color:var(--gold); top:50%; left:50%; transform:translate(-50%,-70%); }
+/* ── MOTTO BANNER ──────────────────────────────── */
+.motto-section{padding:110px 56px;text-align:center;background:var(--bg2);border-top:1px solid var(--grey3);border-bottom:1px solid var(--grey3)}
+.motto-big{font-family:var(--f-disp);font-style:italic;font-size:clamp(32px,6vw,72px);line-height:1.2;color:var(--gold2);max-width:900px;margin:0 auto}
+.motto-sub{font-family:var(--f-mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--grey1);margin-top:24px}
 
-  /* ─── TESTIMONIALS ───────────────────────────────────────── */
-  #testimonials { background:var(--cream); }
-  .test-header { text-align:center; margin-bottom:4rem; }
-  .test-carousel { position:relative; overflow:hidden; }
-  .test-track {
-    display:flex; transition: transform .7s cubic-bezier(0.4,0,0.2,1);
-  }
-  .test-card {
-    min-width:100%; padding:1rem 8vw;
-    text-align:center;
-  }
-  .test-quote {
-    font-family:'Cormorant Garamond',serif;
-    font-size:clamp(1.3rem,2.5vw,1.9rem); font-style:italic; font-weight:300;
-    line-height:1.7; color:var(--ink); margin-bottom:2rem;
-  }
-  .test-quote::before { content:'\201C'; color:var(--gold); font-size:3rem; line-height:0; vertical-align:-.5em; margin-right:.2rem; }
-  .test-quote::after { content:'\201D'; color:var(--gold); font-size:3rem; line-height:0; vertical-align:-.5em; margin-left:.2rem; }
-  .test-author { font-size:.75rem; letter-spacing:.25em; text-transform:uppercase; color:var(--mid); }
-  .test-role { font-size:.7rem; letter-spacing:.15em; color:var(--gold); display:block; margin-top:.3rem; }
-  .test-dots { display:flex; justify-content:center; gap:.6rem; margin-top:2.5rem; }
-  .test-dot { width:8px; height:8px; border-radius:50%; background:rgba(184,151,74,.3); cursor:pointer; transition: background var(--trans); }
-  .test-dot.active { background:var(--gold); }
-  .test-arrows { display:flex; justify-content:center; gap:1rem; margin-top:1.5rem; }
-  .test-arrow {
-    width:44px; height:44px; border:1px solid rgba(13,13,13,.2);
-    background:none; cursor:pointer; font-size:1rem;
-    transition: all var(--trans);
-  }
-  .test-arrow:hover { background:var(--ink); color:var(--white); border-color:var(--ink); }
+/* ── CONTACT ──────────────────────────────── */
+.contact-section{padding:130px 56px;background:var(--bg)}
+.contact-inner{max-width:1200px;margin:60px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.contact-block{border-bottom:1px solid var(--grey3);padding-bottom:22px;margin-bottom:22px}
+.contact-block:last-of-type{border-bottom:none;margin-bottom:0}
+.contact-block-lbl{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold3);margin-bottom:8px}
+.contact-block-val{font-size:16px;color:var(--off);font-weight:300}
+.contact-block-val a{color:var(--cream);text-decoration:none;transition:color .3s}
+.contact-block-val a:hover{color:var(--gold2)}
+.contact-social-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.c-soc{padding:10px 18px;border:1px solid var(--grey3);background:none;font-family:var(--f-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--grey1);text-decoration:none;transition:all .3s}
+.c-soc:hover{border-color:var(--gold);color:var(--gold2);background:rgba(184,146,74,.06)}
+.map-frame{width:100%;aspect-ratio:4/3;border:1px solid var(--grey3);overflow:hidden}
+.map-frame iframe{width:100%;height:100%;border:0;filter:grayscale(40%) invert(90%) contrast(.9)}
 
-  /* ─── GALLERY ────────────────────────────────────────────── */
-  #gallery { background:var(--ink); }
-  .gallery-header { color:var(--white); text-align:center; margin-bottom:3.5rem; }
-  .gallery-header .section-title { color:var(--white); }
-  .gal-carousel { position:relative; overflow:hidden; }
-  .gal-track { display:flex; gap:1.2rem; transition: transform .7s cubic-bezier(0.4,0,0.2,1); }
-  .gal-item {
-    min-width:calc(25% - .9rem); aspect-ratio:3/4; overflow:hidden;
-    flex-shrink:0; background:rgba(255,255,255,.04);
-    display:flex; align-items:center; justify-content:center;
-    font-size:4rem; color:rgba(184,151,74,.25);
-    position:relative;
-    transition: transform var(--trans);
-  }
-  .gal-item:hover { transform:scale(1.02); }
-  .gal-item::after {
-    content:''; position:absolute; inset:0;
-    background: linear-gradient(to top, rgba(13,13,13,.6) 0%, transparent 50%);
-    opacity:0; transition:opacity var(--trans);
-  }
-  .gal-item:hover::after { opacity:1; }
-  .gal-colors {
-    position:absolute; inset:0;
-    background-size:cover;
-  }
-  .gal-nav { display:flex; justify-content:center; gap:1rem; margin-top:2rem; }
-  .gal-btn {
-    width:44px; height:44px; border:1px solid rgba(255,255,255,.2);
-    background:none; cursor:pointer; color:var(--white);
-    transition: all var(--trans);
-  }
-  .gal-btn:hover { background:var(--gold); border-color:var(--gold); color:var(--ink); }
+/* ── WHATSAPP FLOAT ──────────────────────────────── */
+.wa-float{position:fixed;bottom:26px;right:26px;width:56px;height:56px;background:#1e7a4d;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:500;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:transform .3s}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
 
-  /* ─── FOOTER ─────────────────────────────────────────────── */
-  footer {
-    background:var(--ink); border-top:1px solid rgba(255,255,255,.07);
-    padding:3rem 8vw;
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;
-  }
-  .footer-logo {
-    font-family:'Cormorant Garamond',serif;
-    font-size:1.4rem; color:var(--white); letter-spacing:.1em;
-  }
-  .footer-logo span { color:var(--gold); }
-  footer p { font-size:.7rem; letter-spacing:.1em; color:rgba(255,255,255,.35); }
+/* ── FOOTER ──────────────────────────────── */
+footer{background:var(--bg);border-top:1px solid var(--grey3)}
+.footer-main{max-width:1300px;margin:0 auto;padding:70px 56px 40px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px}
+.footer-brand{display:flex;flex-direction:column;gap:16px}
+.footer-brand-logo{font-family:var(--f-disp);font-style:italic;font-size:30px;color:var(--cream)}
+.footer-brand-logo span{color:var(--gold2)}
+.footer-motto-text{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold3)}
+.footer-desc{font-size:12px;color:var(--grey1);line-height:1.8;font-weight:300;max-width:260px}
+.footer-soc{display:flex;gap:8px;margin-top:8px}
+.f-soc{width:36px;height:36px;border:1px solid var(--grey3);display:flex;align-items:center;justify-content:center;color:var(--grey1);font-family:var(--f-mono);font-size:9px;font-weight:500;text-decoration:none;transition:all .3s}
+.f-soc:hover{border-color:var(--gold);color:var(--gold2);transform:translateY(-2px)}
+.footer-col-title{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold3);margin-bottom:22px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{color:var(--grey1);text-decoration:none;font-size:13px;font-weight:300;transition:color .3s}
+.footer-col ul li a:hover{color:var(--gold2)}
+.footer-bottom{max-width:1300px;margin:0 auto;padding:20px 56px;border-top:1px solid var(--grey3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-copy,.footer-by{font-family:var(--f-mono);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey2)}
+.footer-by strong{color:var(--gold3)}
 
-  /* ─── ANIMATIONS ─────────────────────────────────────────── */
-  @keyframes fadeUp {
-    to { opacity:1; transform:translateY(0); }
-  }
-  .reveal {
-    opacity:0; transform:translateY(32px);
-    transition: opacity .7s ease, transform .7s ease;
-  }
-  .reveal.visible {
-    opacity:1; transform:translateY(0);
-  }
-
-  /* ─── RESPONSIVE ─────────────────────────────────────────── */
-  @media(max-width:900px) {
-    #about { grid-template-columns:1fr; }
-    .about-image { display:none; }
-    .contact-grid { grid-template-columns:1fr; }
-    .modal { grid-template-columns:1fr; }
-    .modal-image { aspect-ratio:16/9; font-size:4rem; }
-    .gal-item { min-width:calc(50% - .6rem); }
-    .nav-links { display:none; }
-    .hamburger { display:flex; }
-  }
-  @media(max-width:600px) {
-    section { padding:5rem 6vw; }
-    .hero-content { left:6vw; }
-    .hero-btns { flex-direction:column; align-items:flex-start; }
-    .form-row { grid-template-columns:1fr; }
-    .about-stats { gap:2rem; }
-    .gal-item { min-width:calc(100% - 0px); }
-    nav { padding:1rem 5vw; }
-  }
-
-  /* Mobile Nav */
-  .mobile-menu {
-    position:fixed; top:0; left:0; right:0; bottom:0; z-index:800;
-    background:rgba(13,13,13,.97);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:2rem;
-    transform:translateX(-100%); transition: transform var(--trans);
-  }
-  .mobile-menu.open { transform:translateX(0); }
-  .mobile-menu a {
-    font-family:'Cormorant Garamond',serif;
-    font-size:2.5rem; font-weight:300; color:var(--white);
-    letter-spacing:.1em;
-    transition: color var(--trans);
-  }
-  .mobile-menu a:hover { color:var(--gold); }
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(max-width:1200px){
+  .shop-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-main{grid-template-columns:1fr 1fr;gap:40px}
+  .about-inner{gap:50px}
+  .process-grid{grid-template-columns:1fr 1fr}
+  .process-step{border-left:none;border-top:1px solid var(--grey3)}
+  .process-grid{border-top:none}
+}
+@media(max-width:1024px){
+  .coll-grid{grid-template-columns:repeat(2,1fr)}
+  .journal-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .about-inner{grid-template-columns:1fr}
+  .about-photo-block{max-width:440px;margin:0 auto}
+  .contact-inner,.book-inner{grid-template-columns:1fr;gap:50px}
+  .bf-row{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  nav{padding:18px 20px}
+  nav.scrolled{padding:12px 20px}
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .hero-content,.about-section,.collections-section,.process-section,.gallery-section,.shop-section,.book-section,.journal-section,.motto-section,.contact-section{padding-left:20px;padding-right:20px}
+  .hero-tape{padding:0 20px 26px}
+  .collections-header{padding:0 20px}
+  .coll-grid{padding:0 20px;grid-template-columns:1fr 1fr;gap:8px}
+  .shop-grid{grid-template-columns:1fr 1fr}
+  .journal-grid{grid-template-columns:1fr;gap:30px}
+  .process-grid{grid-template-columns:1fr}
+  .process-step{border-top:1px solid var(--grey3);padding-top:30px}
+  .process-step:first-child{border-top:1px solid var(--grey3)}
+  .footer-main{grid-template-columns:1fr;padding:40px 20px}
+  .footer-brand{text-align:center;align-items:center}
+  .footer-desc{text-align:center}
+  .footer-col{text-align:center}
+  .footer-col ul{align-items:center}
+  .footer-bottom{flex-direction:column;text-align:center;padding:16px 20px}
+  .about-facts{grid-template-columns:1fr 1fr 1fr}
+}
+@media(max-width:540px){
+  .hero-btns{flex-direction:column}
+  .btn-gold,.btn-ghost{width:100%;text-align:center}
+  .coll-grid{grid-template-columns:1fr}
+  .shop-grid{grid-template-columns:1fr}
+  .about-facts{grid-template-columns:1fr}
+  .wa-float{width:48px;height:48px;bottom:18px;right:18px}
+  .wa-float svg{width:24px;height:24px}
+}
 </style>
 </head>
 <body>
 
-<!-- ── MOBILE MENU ── -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="closeMobileMenu()">About</a>
-  <a href="#services" onclick="closeMobileMenu()">Services</a>
-  <a href="#shop" onclick="closeMobileMenu()">Shop</a>
-  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
-  <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
 </div>
 
-<!-- ── NAV ── -->
+<!-- WHATSAPP -->
+<a class="wa-float" href="https://wa.me/254715140140" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4c-4.9 0-8.88 3.98-8.88 8.88a8.84 8.84 0 0 0 1.3 4.65L4 21l3.6-1.45a8.92 8.92 0 0 0 4.45 1.18h.01c4.9 0 8.88-3.98 8.88-8.88a8.84 8.84 0 0 0-2.34-6.13zM12.05 19.1h-.01a7.4 7.4 0 0 1-3.78-1.04l-.27-.16-2.8 1.13.95-2.74-.18-.28a7.37 7.37 0 0 1-1.14-3.93c0-4.08 3.32-7.4 7.41-7.4 1.98 0 3.84.77 5.24 2.17a7.36 7.36 0 0 1 2.17 5.24c0 4.09-3.32 7.41-7.4 7.41zm4.06-5.55c-.22-.11-1.3-.64-1.5-.71-.2-.08-.35-.11-.5.11s-.58.71-.71.86c-.13.14-.26.16-.49.05-.66-.33-1.37-.83-1.97-1.43-.6-.6-1.1-1.3-1.43-1.97-.11-.22-.04-.36.05-.49.13-.15.35-.5.49-.71.11-.21.08-.36-.02-.5-.1-.15-.69-.71-.86-.86-.17-.15-.34-.13-.46-.13-.12 0-.32 0-.5.04-.18.04-.46.18-.64.41-.18.22-.7.69-.7 1.67s.72 1.94.82 2.07c.1.13 1.41 2.15 3.42 2.93 2.01.78 2.01.52 2.37.49.36-.03 1.17-.48 1.34-.94.16-.46.16-.86.11-.94-.04-.08-.16-.13-.32-.21z"/></svg>
+</a>
+
+<!-- NAV -->
 <nav id="navbar">
-  <a class="nav-logo" href="#hero">Bolo <span>Bespoke</span></a>
+  <a class="nav-brand" href="#home">
+    <div class="nav-name">Bolo <span style="color:var(--gold2)">Bespoke</span></div>
+  </a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#shop">Shop</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#process">Process</a></li>
     <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#journal">Journal</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:1.2rem;">
-    <button class="nav-cart-btn" onclick="toggleCart()" aria-label="Open cart">
-      🛍
-      <span class="cart-badge" id="cartBadge">0</span>
-    </button>
-    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
+  <a href="#book" class="nav-cta">Book Appointment</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- ── HERO CAROUSEL ── -->
-<section id="hero">
-  <div class="hero-slides" id="heroSlides">
-    <div class="hero-slide slide-1 active">
-      <div class="hero-mannequin">🧥</div>
-    </div>
-    <div class="hero-slide slide-2">
-      <div class="hero-mannequin">👔</div>
-    </div>
-    <div class="hero-slide slide-3">
-      <div class="hero-mannequin">🥻</div>
-    </div>
-    <div class="hero-slide slide-4">
-      <div class="hero-mannequin">🎩</div>
-    </div>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#about">Our Story</a>
+  <a href="#collections">Collections</a>
+  <a href="#process">Process</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#shop">Shop</a>
+  <a href="#book">Book Appointment</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1593032465175-481ac7f401a0?w=1600&q=80" alt="Bespoke tailored suit">
   </div>
   <div class="hero-content">
-    <span class="hero-tag">Nairobi's Premier Tailoring Atelier</span>
-    <h1 class="hero-title">Dressed to<br>your <em>distinction</em></h1>
-    <p class="hero-sub">Every stitch tells your story. Bespoke suits and couture crafted exclusively for you — from the first consultation to the final fitting.</p>
+    <div class="hero-eyebrow">
+      <span>View Park Towers · Nairobi CBD</span>
+    </div>
+    <h1 class="hero-title">Bespoke<br><em>Excellence,</em><br>Kenyan Soul.</h1>
+    <p class="hero-sub">Bolo Bespoke is the house of custom tailoring behind Kenya's elite — politicians, musicians and culture-makers. Every stitch, measured to the man.</p>
     <div class="hero-btns">
-      <a href="#shop" class="btn-primary">Explore Collection</a>
-      <a href="#contact" class="btn-outline">Book a Fitting</a>
+      <a href="#book" class="btn-gold">Book Appointment</a>
+      <a href="#collections" class="btn-ghost">View Collections</a>
     </div>
   </div>
-  <div class="hero-arrows">
-    <button class="arrow-btn" onclick="heroSlide(-1)">&#8592;</button>
-    <button class="arrow-btn" onclick="heroSlide(1)">&#8594;</button>
-  </div>
-  <div class="hero-indicators" id="heroIndicators"></div>
-</section>
-
-<!-- ── ABOUT ── -->
-<section id="about">
-  <div class="about-text reveal">
-    <span class="section-label">Our Story</span>
-    <h2 class="section-title">Where fabric<br>meets <em>artistry</em></h2>
-    <div class="divider"></div>
-    <p>Bolo Bespoke was born from a simple belief: that truly great clothing is never found off a rack. It is made. It is measured. It is felt.</p>
-    <p>Rooted in Nairobi's rich textile tradition and trained in the finest European tailoring techniques, our master craftspeople dedicate themselves to understanding each client's unique silhouette, lifestyle, and ambition.</p>
-    <p>From boardrooms to weddings, corporate wear to ceremonial regalia — every garment that leaves our atelier carries the weight of intention and the lightness of perfect fit.</p>
-    <div class="about-stats">
-      <div>
-        <span class="stat-num">12+</span>
-        <span class="stat-lbl">Years of Craft</span>
-      </div>
-      <div>
-        <span class="stat-num">3K+</span>
-        <span class="stat-lbl">Clients Served</span>
-      </div>
-      <div>
-        <span class="stat-num">100%</span>
-        <span class="stat-lbl">Handcrafted</span>
-      </div>
+  <div class="hero-tape">
+    <div class="tape" aria-hidden="true">
+      <div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick"></div><div class="tape-tick major"></div>
     </div>
-  </div>
-  <div class="about-image reveal">
-    <div class="about-img-placeholder">🧵</div>
+    <span class="hero-scroll-text">Measured · Cut · Tailored · Delivered</span>
   </div>
 </section>
 
-<!-- ── SERVICES ── -->
-<section id="services">
-  <div class="services-header reveal">
-    <span class="section-label">What We Offer</span>
-    <h2 class="section-title">Our <em>Services</em></h2>
-    <div class="divider" style="margin:1.8rem auto;"></div>
-  </div>
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <div class="service-icon">🤵</div>
-      <h3>Bespoke Suits</h3>
-      <p>Fully hand-cut and constructed suits tailored to your exact measurements, lifestyle, and aesthetic preferences. Single or double breasted.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">👗</div>
-      <h3>Couture Dresses</h3>
-      <p>Elegant occasion wear, bridal attire, and evening gowns crafted from premium fabrics sourced locally and internationally.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">👔</div>
-      <h3>Corporate Wear</h3>
-      <p>Professional wardrobes for executives and teams. Smart, precise, and consistently polished — uniforms that project confidence.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🧶</div>
-      <h3>Fabric Consultation</h3>
-      <p>Guidance in selecting the finest wools, linens, silks, and local kitenge that best express your personal or brand identity.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">✂️</div>
-      <h3>Alterations</h3>
-      <p>Precision alterations on any garment — whether it's a beloved vintage piece or a new acquisition that just needs the right touch.</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🎖</div>
-      <h3>Ceremonial & Bridal</h3>
-      <p>Wedding parties, traditional ceremonies, and milestone occasions — we dress you for the moments that matter most.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── SHOP ── -->
-<section id="shop">
-  <div class="shop-header reveal">
-    <span class="section-label">Ready to Order</span>
-    <h2 class="section-title">The <em>Collection</em></h2>
-    <div class="divider"></div>
-  </div>
-  <div class="shop-filters reveal">
-    <button class="filter-btn active" onclick="filterProducts(this,'all')">All Pieces</button>
-    <button class="filter-btn" onclick="filterProducts(this,'suit')">Suits</button>
-    <button class="filter-btn" onclick="filterProducts(this,'dress')">Dresses</button>
-    <button class="filter-btn" onclick="filterProducts(this,'corporate')">Corporate</button>
-    <button class="filter-btn" onclick="filterProducts(this,'casual')">Casual</button>
-  </div>
-  <div class="products-grid" id="productsGrid"></div>
-</section>
-
-<!-- ── PRODUCT MODAL ── -->
-<div class="modal-overlay" id="productModal" onclick="closeModalOnBg(event)">
-  <div class="modal" id="modalInner">
-    <div class="modal-image" id="modalImg"></div>
-    <div class="modal-body">
-      <button class="modal-close" onclick="closeModal()">✕</button>
-      <span class="modal-tag" id="modalTag"></span>
-      <h2 class="modal-title" id="modalTitle"></h2>
-      <div class="modal-price" id="modalPrice"></div>
-      <p class="modal-desc" id="modalDesc"></p>
-      <div id="modalDetails"></div>
-      <div class="size-select" id="sizeSelect"></div>
-      <button class="modal-add-btn" onclick="addToCart()">Add to Cart</button>
-    </div>
+<!-- TICKER -->
+<div class="ticker" aria-label="Highlights">
+  <div class="ticker-track">
+    <div class="ticker-item">Bespoke City <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Tailored For Legends <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Nairobi · East Africa <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Custom Men's Suits <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Wedding Attire <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Award-Winning Designer <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Bolo Bespoke <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Bespoke City <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Tailored For Legends <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Nairobi · East Africa <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Custom Men's Suits <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Wedding Attire <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">Award-Winning Designer <span class="ticker-sep">✦</span></div>
   </div>
 </div>
 
-<!-- ── CART DRAWER ── -->
-<div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="cart-header">
-    <h2>Your Cart</h2>
-    <button class="cart-close" onclick="toggleCart()">✕</button>
-  </div>
-  <div class="cart-items" id="cartItems">
-    <div class="cart-empty">Your cart is empty</div>
-  </div>
-  <div class="cart-footer" id="cartFooter" style="display:none">
-    <div class="cart-total">
-      <span>Total</span>
-      <span id="cartTotal">KES 0</span>
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-photo-block reveal-left">
+      <div class="about-img-frame">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80" alt="Bolo Bespoke at work">
+      </div>
+      <div class="about-tag">
+        <div class="about-tag-num">15+</div>
+        <div class="about-tag-lbl">Yrs of Craft</div>
+      </div>
     </div>
-    <button class="checkout-btn">Proceed to Checkout</button>
-  </div>
-</div>
 
-<!-- ── TESTIMONIALS ── -->
-<section id="testimonials">
-  <div class="test-header reveal">
-    <span class="section-label">Client Words</span>
-    <h2 class="section-title">What They <em>Say</em></h2>
-  </div>
-  <div class="test-carousel">
-    <div class="test-track" id="testTrack">
-      <div class="test-card">
-        <p class="test-quote">I've worn designer labels from Milan to London — nothing has ever fit me the way Bolo Bespoke fits me. My wedding suit was nothing short of a masterpiece.</p>
-        <span class="test-author">James Waweru</span>
-        <span class="test-role">CEO, Waweru & Associates</span>
+    <div class="about-text">
+      <div class="sec-label reveal">Our Story</div>
+      <h2 class="sec-title reveal d1">From The Street<br>To The <em>Runway.</em></h2>
+      <blockquote class="about-quote reveal d2">"I started as a hawker on the streets of Nairobi. Today I dress legends. Every suit carries that journey."</blockquote>
+      <p class="about-body reveal d2">
+        Austin Bolo — known to the world as Bolo Bespoke — built Bespoke City from nothing into one of East and Central Africa's most decorated tailoring houses. His philosophy blends modern luxury with Luo-inspired and African heritage, creating pieces that are unmistakably his.<br><br>
+        From Prince Indah to Nadia Mukami, Bolo has dressed Kenya's politicians, musicians and culture icons — earning multiple fashion awards and a social following that spans millions across Instagram and TikTok.
+      </p>
+      <div class="about-facts reveal d3">
+        <div class="about-fact"><div class="about-fact-val">15+</div><div class="about-fact-lbl">Awards Won</div></div>
+        <div class="about-fact"><div class="about-fact-val">3K+</div><div class="about-fact-lbl">Suits Tailored</div></div>
+        <div class="about-fact"><div class="about-fact-val">4</div><div class="about-fact-lbl">Countries Served</div></div>
       </div>
-      <div class="test-card">
-        <p class="test-quote">The attention to detail is extraordinary. They listened to every small preference and delivered a suit that felt like a second skin. I've been a loyal client for six years.</p>
-        <span class="test-author">Amina Hassan</span>
-        <span class="test-role">Investment Director, Nairobi</span>
-      </div>
-      <div class="test-card">
-        <p class="test-quote">Our entire executive team now gets their wardrobe from Bolo Bespoke. The professionalism, craftsmanship, and turnaround time are unmatched in Nairobi.</p>
-        <span class="test-author">David Muthoni</span>
-        <span class="test-role">Managing Director, Savanna Group</span>
-      </div>
-      <div class="test-card">
-        <p class="test-quote">I was skeptical about bespoke tailoring — the price, the process. But from the first fitting I was converted. My gown was exactly the dream I described.</p>
-        <span class="test-author">Fatuma Odhiambo</span>
-        <span class="test-role">Architect & Bride, 2024</span>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px" class="reveal d4">
+        <a href="#collections" class="btn-gold">View Collections</a>
+        <a href="#process" class="btn-ghost">The Bespoke Process</a>
       </div>
     </div>
-  </div>
-  <div class="test-dots" id="testDots"></div>
-  <div class="test-arrows">
-    <button class="test-arrow" onclick="testSlide(-1)">&#8592;</button>
-    <button class="test-arrow" onclick="testSlide(1)">&#8594;</button>
   </div>
 </section>
 
-<!-- ── GALLERY ── -->
-<section id="gallery">
-  <div class="gallery-header reveal">
-    <span class="section-label">Our Work</span>
-    <h2 class="section-title">The <em>Gallery</em></h2>
-  </div>
-  <div class="gal-carousel">
-    <div class="gal-track" id="galTrack">
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#1a1208,#4a3010)"></div>🤵</div>
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#0d1a1a,#1a4a3a)"></div>👗</div>
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#12120d,#3a3510)"></div>🧥</div>
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#1a0d12,#4a2035)"></div>👔</div>
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#0d130a,#1a3a12)"></div>🥻</div>
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#1a1208,#3d2b10)"></div>🎩</div>
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#0a0d1a,#10203a)"></div>🧣</div>
-      <div class="gal-item"><div class="gal-colors" style="background:linear-gradient(160deg,#1a0a0a,#3a1010)"></div>👘</div>
+<!-- COLLECTIONS -->
+<section class="collections-section" id="collections">
+  <div class="collections-header">
+    <div>
+      <div class="sec-label reveal">The Line-up</div>
+      <h2 class="sec-title reveal">COLLECTIONS</h2>
+    </div>
+    <div class="coll-filter">
+      <button class="coll-btn active" onclick="filterColl(this,'all')">All</button>
+      <button class="coll-btn" onclick="filterColl(this,'suits')">Men's Suits</button>
+      <button class="coll-btn" onclick="filterColl(this,'wedding')">Wedding</button>
+      <button class="coll-btn" onclick="filterColl(this,'women')">Women's</button>
+      <button class="coll-btn" onclick="filterColl(this,'cultural')">Cultural</button>
     </div>
   </div>
-  <div class="gal-nav">
-    <button class="gal-btn" onclick="galSlide(-1)">&#8592;</button>
-    <button class="gal-btn" onclick="galSlide(1)">&#8594;</button>
+
+  <div class="coll-grid">
+    <div class="coll-card reveal" data-cat="suits" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=700&q=80" alt="Men's Suit">
+      <div class="coll-overlay"><div class="coll-tag">Men's Suits</div><div class="coll-name">The Boardroom</div></div>
+    </div>
+    <div class="coll-card reveal d1" data-cat="wedding" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=700&q=80" alt="Wedding Attire">
+      <div class="coll-overlay"><div class="coll-tag">Wedding</div><div class="coll-name">The Vow</div></div>
+    </div>
+    <div class="coll-card reveal d2" data-cat="cultural" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=700&q=80" alt="Cultural Wear">
+      <div class="coll-overlay"><div class="coll-tag">Cultural</div><div class="coll-name">Heritage Cut</div></div>
+    </div>
+    <div class="coll-card reveal" data-cat="women" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=700&q=80" alt="Women's Wear">
+      <div class="coll-overlay"><div class="coll-tag">Women's</div><div class="coll-name">The Muse</div></div>
+    </div>
+    <div class="coll-card reveal d1" data-cat="suits" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1593030103066-0093718efeb9?w=700&q=80" alt="Casual Fit">
+      <div class="coll-overlay"><div class="coll-tag">Casual</div><div class="coll-name">Off-Duty</div></div>
+    </div>
+    <div class="coll-card reveal d2" data-cat="wedding" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=700&q=80" alt="Groom Suit">
+      <div class="coll-overlay"><div class="coll-tag">Wedding</div><div class="coll-name">The Groom</div></div>
+    </div>
   </div>
 </section>
 
-<!-- ── CONTACT ── -->
-<section id="contact">
-  <div class="contact-grid">
-    <div class="contact-form reveal">
-      <span class="section-label">Get in Touch</span>
-      <h2 class="section-title" style="color:var(--white)">Book Your<br><em>Consultation</em></h2>
-      <div class="divider"></div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="John" />
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="process-inner">
+    <div class="sec-label reveal">How It Works</div>
+    <h2 class="sec-title reveal">THE BESPOKE <em>PROCESS</em></h2>
+    <div class="process-track">
+      <div class="process-grid">
+        <div class="process-step reveal d1">
+          <span class="process-mark">PHASE 01</span>
+          <div class="process-tick-row"><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div></div>
+          <div class="process-title">Consultation</div>
+          <p class="process-desc">A one-on-one sit-down to understand the occasion, your style and your story. Fabric and silhouette direction begins here.</p>
         </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Doe" />
+        <div class="process-step reveal d2">
+          <span class="process-mark">PHASE 02</span>
+          <div class="process-tick-row"><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div></div>
+          <div class="process-title">Measurement</div>
+          <p class="process-desc">Precision body measurement across 30+ points. Nothing off-the-rack — every line is drafted to your frame alone.</p>
         </div>
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" placeholder="john@example.com" />
-      </div>
-      <div class="form-group">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="+254 7XX XXX XXX" />
-      </div>
-      <div class="form-group">
-        <label>What would you like made?</label>
-        <select>
-          <option value="">Select a garment type…</option>
-          <option>Bespoke Suit</option>
-          <option>Wedding Dress / Gown</option>
-          <option>Corporate Uniform</option>
-          <option>Casual Wear</option>
-          <option>Ceremonial Attire</option>
-          <option>Alteration</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Fabric & Style Preferences</label>
-        <textarea placeholder="Describe your vision — fabric preferences, colours, occasion, any inspiration…"></textarea>
-      </div>
-      <button class="submit-btn" onclick="handleFormSubmit(event)">Send Enquiry →</button>
-    </div>
-    <div class="contact-info reveal">
-      <span class="section-label">Find Us</span>
-      <h2 class="section-title" style="color:var(--white)">Visit the<br><em>Atelier</em></h2>
-      <div class="divider"></div>
-      <div class="contact-detail">
-        <span class="contact-detail-icon">📍</span>
-        <p>Westlands Square, 3rd Floor<br>Chiromo Road, Nairobi<br>Kenya</p>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail-icon">📞</span>
-        <p>+254 720 123 456</p>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail-icon">✉️</span>
-        <p>hello@bolobespoke.co.ke</p>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail-icon">🕐</span>
-        <p>Mon – Fri: 8:00 AM – 6:00 PM<br>Saturday: 9:00 AM – 4:00 PM</p>
-      </div>
-      <div class="map-placeholder">
-        <div class="map-grid-lines"></div>
-        <div class="map-pin">📍</div>
-        <span style="position:relative;z-index:1">Bolo Bespoke — Westlands, Nairobi</span>
+        <div class="process-step reveal d3">
+          <span class="process-mark">PHASE 03</span>
+          <div class="process-tick-row"><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div></div>
+          <div class="process-title">Fitting</div>
+          <p class="process-desc">First and second fittings to refine drape, structure and movement, with adjustments made by hand in-studio.</p>
+        </div>
+        <div class="process-step reveal d4">
+          <span class="process-mark">PHASE 04</span>
+          <div class="process-tick-row"><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div><div class="process-tick"></div></div>
+          <div class="process-title">Delivery</div>
+          <p class="process-desc">Final press, packaging and a personal hand-off at Bespoke City — or delivered wherever you are in the world.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
+<!-- GALLERY / CLIENTS -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-inner">
+    <div class="sec-label reveal">Dressed By Bolo</div>
+    <h2 class="sec-title reveal">GALLERY &amp; <em>CLIENTS</em></h2>
+    <div class="client-strip reveal d1">
+      <span class="client-chip">Prince Indah</span>
+      <span class="client-chip">Nadia Mukami</span>
+      <span class="client-chip">Politicians</span>
+      <span class="client-chip">Musicians</span>
+      <span class="client-chip">Red Carpet</span>
+      <span class="client-chip">Diaspora Clients</span>
+    </div>
+
+    <div class="gallery-masonry" id="galleryGrid">
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1593032465175-481ac7f401a0?w=500&q=80" alt="Look 1"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" alt="Look 2"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=500&q=80" alt="Look 3"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&q=80" alt="Look 4"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=500&q=80" alt="Look 5"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1593030103066-0093718efeb9?w=500&q=80" alt="Look 6"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=500&q=80" alt="Look 7"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+      <div class="gal-item" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5fe?w=500&q=80" alt="Look 8"><div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP / RTW -->
+<section class="shop-section" id="shop">
+  <div class="shop-inner">
+    <div class="sec-label reveal">Ready-to-Wear</div>
+    <h2 class="sec-title reveal">SHOP <em>THE LINE</em></h2>
+    <div class="shop-grid">
+      <div class="shop-card reveal d1">
+        <div class="shop-img"><img src="https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=400&q=80" alt="Charcoal Two-Piece"></div>
+        <div class="shop-info"><div class="shop-name">Charcoal Two-Piece</div><div class="shop-price">KES 35,000</div></div>
+      </div>
+      <div class="shop-card reveal d2">
+        <div class="shop-img"><img src="https://images.unsplash.com/photo-1593030103066-0093718efeb9?w=400&q=80" alt="Off-Duty Blazer"></div>
+        <div class="shop-info"><div class="shop-name">Off-Duty Blazer</div><div class="shop-price">KES 22,000</div></div>
+      </div>
+      <div class="shop-card reveal d3">
+        <div class="shop-img"><img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&q=80" alt="Heritage Kitenge Shirt"></div>
+        <div class="shop-info"><div class="shop-name">Heritage Shirt</div><div class="shop-price">KES 9,500</div></div>
+      </div>
+      <div class="shop-card reveal d4">
+        <div class="shop-img"><img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5fe?w=400&q=80" alt="Classic Waistcoat"></div>
+        <div class="shop-info"><div class="shop-name">Classic Waistcoat</div><div class="shop-price">KES 12,000</div></div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:30px;font-family:var(--f-mono);font-size:10px;letter-spacing:2px;color:var(--grey1);text-transform:uppercase">Full e-commerce checkout coming soon · DM or WhatsApp to order today</p>
+  </div>
+</section>
+
+<!-- MOTTO -->
+<section class="motto-section">
+  <div class="motto-big reveal">"Every man deserves to be measured, not guessed."</div>
+  <div class="motto-sub reveal d2">— Bolo Bespoke, Bespoke City</div>
+</section>
+
+<!-- BOOK APPOINTMENT -->
+<section class="book-section" id="book">
+  <div class="book-inner">
+    <div class="book-left reveal-left">
+      <div class="sec-label">Reserve Your Slot</div>
+      <h2 class="sec-title">BOOK AN<br><em>Appointment</em></h2>
+      <p class="about-body">Walk-ins are welcome at View Park Towers, but appointments guarantee Bolo's personal attention for consultations, measurements and fittings.</p>
+      <ul class="book-list">
+        <li>Sessions run roughly 45–60 minutes per consultation.</li>
+        <li>Bring fabric or style references if you have them.</li>
+        <li>Rush orders for events can be accommodated — ask us.</li>
+        <li>Diaspora clients: virtual consultations available.</li>
+      </ul>
+    </div>
+    <div class="reveal-right">
+      <div class="book-form">
+        <div class="bf-row">
+          <div class="bf-field"><input type="text" id="bname" placeholder=" " required><label for="bname">Full Name</label></div>
+          <div class="bf-field"><input type="tel" id="bphone" placeholder=" " required><label for="bphone">Phone Number</label></div>
+        </div>
+        <div class="bf-field">
+          <select id="bservice">
+            <option value="" disabled selected></option>
+            <option>Custom Men's Suit</option>
+            <option>Wedding Attire</option>
+            <option>Women's Wear</option>
+            <option>Cultural / Luxury Piece</option>
+            <option>Ready-to-Wear Pickup</option>
+          </select>
+          <label for="bservice">Service Needed</label>
+        </div>
+        <div class="bf-row">
+          <div class="bf-field"><input type="date" id="bdate" placeholder=" "><label for="bdate">Preferred Date</label></div>
+          <div class="bf-field"><input type="time" id="btime" placeholder=" "><label for="btime">Preferred Time</label></div>
+        </div>
+        <div class="bf-field"><textarea id="bmsg" placeholder=" "></textarea><label for="bmsg">Tell Us About The Occasion</label></div>
+        <button class="book-submit" onclick="handleSubmit(event)">Confirm Booking →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNAL -->
+<section class="journal-section" id="journal">
+  <div class="journal-inner">
+    <div class="sec-label reveal">From The Studio</div>
+    <h2 class="sec-title reveal">JOURNAL</h2>
+    <div class="journal-grid">
+      <div class="journal-card reveal d1">
+        <div class="journal-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" alt="Behind the seams"></div>
+        <div class="journal-cat">Behind The Seams</div>
+        <div class="journal-title">Inside Bolo's First Fitting With a Politician's Son</div>
+      </div>
+      <div class="journal-card reveal d2">
+        <div class="journal-img"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=500&q=80" alt="Fabric guide"></div>
+        <div class="journal-cat">Fabric Guide</div>
+        <div class="journal-title">Wool vs. Linen: What To Wear For Nairobi's Climate</div>
+      </div>
+      <div class="journal-card reveal d3">
+        <div class="journal-img"><img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5fe?w=500&q=80" alt="Emotional tailoring"></div>
+        <div class="journal-cat">Stories</div>
+        <div class="journal-title">From Hawking The Streets To Dressing Legends</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="sec-label reveal">Get In Touch</div>
+    <h2 class="sec-title reveal">CONTACT <em>BESPOKE CITY</em></h2>
+  </div>
+  <div class="contact-inner">
+    <div class="reveal-left">
+      <div class="contact-block">
+        <div class="contact-block-lbl">General Enquiries</div>
+        <div class="contact-block-val"><a href="mailto:bespokecity254@gmail.com">bespokecity254@gmail.com</a></div>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block-lbl">Call / WhatsApp</div>
+        <div class="contact-block-val"><a href="tel:+254715140140">+254 715 140 140</a> · <a href="tel:+254729009001">0729 009 001</a></div>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block-lbl">Studio Location</div>
+        <div class="contact-block-val">View Park Towers, Nairobi CBD<br><span style="color:var(--grey1);font-size:13px">17th Floor &amp; Ground Floor</span></div>
+      </div>
+      <div class="contact-social-row">
+        <a href="https://www.instagram.com/bolobespoke/" target="_blank" rel="noopener" class="c-soc">@bolobespoke</a>
+        <a href="https://www.instagram.com/bespoke_city/" target="_blank" rel="noopener" class="c-soc">@bespoke_city</a>
+        <a href="#" class="c-soc">TikTok</a>
+        <a href="#" class="c-soc">Facebook</a>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="map-frame">
+        <iframe src="https://www.google.com/maps?q=View+Park+Towers+Nairobi&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Bespoke City Location"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Bolo <span>Bespoke</span></div>
-  <p>© 2025 Bolo Bespoke. All rights reserved. Nairobi, Kenya.</p>
-  <p style="color:rgba(255,255,255,.35);font-size:.7rem;letter-spacing:.08em;">Handcrafted with ✂️ and passion</p>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="footer-brand-logo">Bolo <span>Bespoke</span></div>
+      <div class="footer-motto-text">Bespoke Excellence, Kenyan Soul</div>
+      <p class="footer-desc">East Africa's house of custom tailoring. Suits, weddings and culture — cut to measure, never guessed.</p>
+      <div class="footer-soc">
+        <a href="https://www.instagram.com/bolobespoke/" target="_blank" rel="noopener" class="f-soc">IG</a>
+        <a href="#" class="f-soc">TK</a>
+        <a href="#" class="f-soc">FB</a>
+      </div>
+    </div>
+    <div class="footer-col"><div class="footer-col-title">Navigate</div><ul><li><a href="#about">Our Story</a></li><li><a href="#collections">Collections</a></li><li><a href="#process">Process</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#shop">Shop</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Services</div><ul><li><a href="#collections">Men's Suits</a></li><li><a href="#collections">Wedding Attire</a></li><li><a href="#collections">Women's Wear</a></li><li><a href="#collections">Cultural Lines</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Legal</div><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Press Kit</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Bolo Bespoke · Bespoke City · All Rights Reserved</span>
+    <span class="footer-by">Nairobi, Kenya</span>
+  </div>
 </footer>
 
 <script>
-/* ── DATA ── */
-const products = [
-  { id:1, name:'The Nairobi Suit', type:'suit', category:'suit', price:85000, emoji:'🤵', tag:'Signature Collection', desc:'A two-piece power suit crafted from Italian wool-mohair blend. Sharp lapels, structured shoulders, and impeccable drape make this the cornerstone of any serious wardrobe.', material:'Italian Wool-Mohair', lining:'Bemberg Silk', construction:'Full Canvas', sizes:['36','38','40','42','44','46'] },
-  { id:2, name:'Rift Valley Linen', type:'suit', category:'suit', price:62000, emoji:'🧥', tag:'Summer Series', desc:'A lightweight three-piece in sand linen for the Nairobi afternoon. Relaxed yet refined, this suit moves with you through long days and warm evenings.', material:'Belgian Linen', lining:'Cotton Voile', construction:'Half Canvas', sizes:['36','38','40','42','44'] },
-  { id:3, name:'Serengeti Evening Gown', type:'dress', category:'dress', price:74000, emoji:'👗', tag:'Couture', desc:'Sweeping floor-length gown in champagne silk organza with hand-stitched embellishment. Designed for the woman who walks into a room and commands it.', material:'Silk Organza', lining:'Pure Silk', construction:'Handcrafted', sizes:['XS','S','M','L','XL'] },
-  { id:4, name:'Boardroom Classic', type:'corporate', category:'corporate', price:55000, emoji:'👔', tag:'Corporate Line', desc:'A sharply cut corporate suit in charcoal herringbone. Precise proportions, functional pockets, and a silhouette that means business.', material:'British Herringbone', lining:'Cupro Silk', construction:'Fused', sizes:['36','38','40','42','44','46','48'] },
-  { id:5, name:'The Kitenge Blazer', type:'casual', category:'casual', price:38000, emoji:'🥻', tag:'Heritage Edit', desc:'A statement single-button blazer in bold Kenyan kitenge fabric. Pairing tradition with modern tailoring, this piece is both celebration and statement.', material:'Kenyan Kitenge', lining:'Cotton', construction:'Half Canvas', sizes:['S','M','L','XL','XXL'] },
-  { id:6, name:'Ivory Bridal Suit', type:'suit', category:'suit', price:110000, emoji:'🎩', tag:'Bridal Collection', desc:'A breathtaking bridal trouser suit in ivory double-faced crepe. Fluid, confident, modern. For the bride who rewrites tradition.', material:'Double-Face Crepe', lining:'Pure Silk', construction:'Full Canvas', sizes:['XS','S','M','L','XL'] },
-  { id:7, name:'Savanna Shirt Dress', type:'dress', category:'dress', price:29000, emoji:'👘', tag:'Ready Collection', desc:'A fluid, easy-to-wear shirt dress in terracotta linen. Effortlessly elegant from morning meetings to evening dinners.', material:'Pure Linen', lining:'Unlined', construction:'Machine-Stitched', sizes:['XS','S','M','L','XL','XXL'] },
-  { id:8, name:'Executive Waistcoat Set', type:'corporate', category:'corporate', price:47000, emoji:'🧣', tag:'Corporate Line', desc:'A three-piece set with matching waistcoat in midnight navy pinstripe. Layered authority for the boardroom and beyond.', material:'Wool Pinstripe', lining:'Bemberg', construction:'Full Canvas', sizes:['36','38','40','42','44','46'] },
-];
+/* NAV */
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>60));
+const ham=document.getElementById('hamburger'),mobileNav=document.getElementById('mobileNav');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mobileNav.classList.toggle('open');});
+mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mobileNav.classList.remove('open');}));
 
-let cart = [];
-let currentProduct = null;
-let selectedSize = null;
+/* REVEAL */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
 
-/* ── RENDER PRODUCTS ── */
-function renderProducts(items) {
-  const grid = document.getElementById('productsGrid');
-  grid.innerHTML = '';
-  items.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.innerHTML = `
-      <div class="product-img">
-        <div class="product-img-inner">${p.emoji}</div>
-        <div class="product-overlay">
-          <button class="overlay-btn" onclick="openModal(${p.id})">Quick View</button>
-        </div>
-      </div>
-      <div class="product-info">
-        <div class="product-type">${p.tag}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-price">KES ${p.price.toLocaleString()}</div>
-      </div>
-    `;
-    card.addEventListener('click', () => openModal(p.id));
-    grid.appendChild(card);
-  });
-}
-renderProducts(products);
-
-/* ── FILTER ── */
-function filterProducts(btn, cat) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+/* COLLECTIONS FILTER */
+function filterColl(btn,cat){
+  document.querySelectorAll('.coll-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  renderProducts(cat === 'all' ? products : products.filter(p => p.category === cat));
-}
-
-/* ── MODAL ── */
-function openModal(id) {
-  const p = products.find(x => x.id === id);
-  if (!p) return;
-  currentProduct = p;
-  selectedSize = null;
-  document.getElementById('modalImg').innerHTML = `<span style="font-size:8rem">${p.emoji}</span>`;
-  document.getElementById('modalTag').textContent = p.tag;
-  document.getElementById('modalTitle').textContent = p.name;
-  document.getElementById('modalPrice').textContent = `KES ${p.price.toLocaleString()}`;
-  document.getElementById('modalDesc').textContent = p.desc;
-  document.getElementById('modalDetails').innerHTML = `
-    <div class="modal-detail-row"><span class="modal-detail-label">Material</span><span class="modal-detail-val">${p.material}</span></div>
-    <div class="modal-detail-row"><span class="modal-detail-label">Lining</span><span class="modal-detail-val">${p.lining}</span></div>
-    <div class="modal-detail-row"><span class="modal-detail-label">Construction</span><span class="modal-detail-val">${p.construction}</span></div>
-  `;
-  const sizeDiv = document.getElementById('sizeSelect');
-  sizeDiv.innerHTML = '<span style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);width:100%;display:block;margin-bottom:.5rem;">Select Size</span>';
-  p.sizes.forEach(s => {
-    const btn = document.createElement('button');
-    btn.className = 'size-btn';
-    btn.textContent = s;
-    btn.onclick = () => { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = s; };
-    sizeDiv.appendChild(btn);
+  document.querySelectorAll('.coll-card').forEach(item=>{
+    item.style.display=(cat==='all'||item.getAttribute('data-cat')===cat)?'':'none';
   });
-  document.getElementById('productModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('productModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closeModalOnBg(e) {
-  if (e.target === document.getElementById('productModal')) closeModal();
 }
 
-/* ── CART ── */
-function addToCart() {
-  if (!currentProduct) return;
-  if (!selectedSize) { alert('Please select a size first.'); return; }
-  cart.push({ ...currentProduct, selectedSize, uid: Date.now() });
-  updateCart();
-  closeModal();
-  toggleCart();
+/* LIGHTBOX */
+function openLightbox(el){
+  const img=el.querySelector('img');
+  document.getElementById('lightboxImg').src=img.src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
 }
-function removeFromCart(uid) {
-  cart = cart.filter(i => i.uid !== uid);
-  updateCart();
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
 }
-function updateCart() {
-  const count = cart.length;
-  const badge = document.getElementById('cartBadge');
-  badge.textContent = count;
-  badge.classList.toggle('visible', count > 0);
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
 
-  const container = document.getElementById('cartItems');
-  if (cart.length === 0) {
-    container.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
-    document.getElementById('cartFooter').style.display = 'none';
-    return;
-  }
-  container.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <div class="cart-item-img">${item.emoji}</div>
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-size">Size: ${item.selectedSize}</div>
-        <div class="cart-item-price">KES ${item.price.toLocaleString()}</div>
-      </div>
-      <button class="cart-item-remove" onclick="removeFromCart(${item.uid})">✕</button>
-    </div>
-  `).join('');
-  const total = cart.reduce((s, i) => s + i.price, 0);
-  document.getElementById('cartTotal').textContent = `KES ${total.toLocaleString()}`;
-  document.getElementById('cartFooter').style.display = 'block';
-}
-function toggleCart() {
-  const d = document.getElementById('cartDrawer');
-  const b = document.getElementById('drawerBackdrop');
-  const open = d.classList.toggle('open');
-  b.classList.toggle('open', open);
-  document.body.style.overflow = open ? 'hidden' : '';
-}
-
-/* ── HERO CAROUSEL ── */
-let heroIdx = 0;
-const heroSlides = document.querySelectorAll('.hero-slide');
-const indicatorsEl = document.getElementById('heroIndicators');
-heroSlides.forEach((_,i) => {
-  const dot = document.createElement('div');
-  dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
-  dot.onclick = () => goHeroSlide(i);
-  indicatorsEl.appendChild(dot);
-});
-function updateHeroDots() {
-  document.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i === heroIdx));
-}
-function goHeroSlide(n) {
-  heroSlides[heroIdx].classList.remove('active');
-  heroIdx = (n + heroSlides.length) % heroSlides.length;
-  heroSlides[heroIdx].classList.add('active');
-  updateHeroDots();
-}
-function heroSlide(dir) { goHeroSlide(heroIdx + dir); }
-setInterval(() => heroSlide(1), 5500);
-
-/* ── TESTIMONIALS CAROUSEL ── */
-let testIdx = 0;
-const testCards = document.querySelectorAll('.test-card');
-const testDotsEl = document.getElementById('testDots');
-testCards.forEach((_,i) => {
-  const d = document.createElement('div');
-  d.className = 'test-dot' + (i===0?' active':'');
-  d.onclick = () => goTest(i);
-  testDotsEl.appendChild(d);
-});
-function goTest(n) {
-  testIdx = (n + testCards.length) % testCards.length;
-  document.getElementById('testTrack').style.transform = `translateX(-${testIdx * 100}%)`;
-  document.querySelectorAll('.test-dot').forEach((d,i) => d.classList.toggle('active', i===testIdx));
-}
-function testSlide(d) { goTest(testIdx + d); }
-setInterval(() => testSlide(1), 6000);
-
-/* ── GALLERY CAROUSEL ── */
-let galIdx = 0;
-const galItems = document.querySelectorAll('.gal-item');
-const galPerView = () => window.innerWidth < 600 ? 1 : window.innerWidth < 900 ? 2 : 4;
-function galSlide(dir) {
-  const pv = galPerView();
-  const maxIdx = Math.max(0, galItems.length - pv);
-  galIdx = Math.min(maxIdx, Math.max(0, galIdx + dir));
-  const itemW = document.querySelector('.gal-item').offsetWidth + 12 * (galIdx === 0 ? 0 : 1);
-  document.getElementById('galTrack').style.transform = `translateX(-${galIdx * (itemW + 4)}px)`;
-}
-setInterval(() => {
-  const pv = galPerView();
-  if (galIdx >= galItems.length - pv) galIdx = -1;
-  galSlide(1);
-}, 3500);
-
-/* ── NAV SCROLL ── */
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
 });
 
-/* ── REVEAL ON SCROLL ── */
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }});
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-/* ── MOBILE MENU ── */
-function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
-
-/* ── CONTACT FORM ── */
-function handleFormSubmit(e) {
+/* FORM SUBMIT */
+function handleSubmit(e){
   e.preventDefault();
-  const btn = e.target;
-  btn.textContent = 'Message Sent ✓';
-  btn.style.background = '#2a5a3a';
-  btn.style.color = '#fff';
-  setTimeout(() => { btn.textContent = 'Send Enquiry →'; btn.style.background = ''; btn.style.color = ''; }, 3500);
+  const btn=e.target;
+  btn.textContent='Booking Sent ✓';
+  btn.style.background='#333';
+  btn.style.color='#888';
+  setTimeout(()=>{btn.textContent='Confirm Booking →';btn.style.background='';btn.style.color='';},3000);
 }
+document.querySelectorAll('.bf-field select').forEach(sel=>{
+  const label=sel.nextElementSibling;
+  sel.addEventListener('change',()=>{
+    if(sel.value)label.style.cssText='top:-10px;font-size:9px;color:var(--gold3)';
+    else label.style.cssText='';
+  });
+});
 </script>
 </body>
 </html>
