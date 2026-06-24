@@ -60,7 +60,7 @@ nav.scrolled{padding:14px 50px;background:rgba(12,4,8,.96);backdrop-filter:blur(
 
 .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding-bottom:80px}
 .hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:saturate(1.15) brightness(0.5);display:block}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.15) brightness(0.5);display:block}
 .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(12,4,8,.88) 0%,rgba(12,4,8,.35) 50%,rgba(12,4,8,.1) 100%),linear-gradient(to top,rgba(12,4,8,1) 0%,transparent 50%)}
 .hero-bars{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-bar{position:absolute;width:3px;background:linear-gradient(to bottom,transparent,var(--pink),transparent);opacity:.3}
@@ -410,7 +410,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=1600&q=80" alt="Sandra Mbuvi">
+    <img src="hero.jpg" alt="Sandra Mbuvi">
   </div>
   <div class="hero-bars" aria-hidden="true">
     <div class="hero-bar"></div>
@@ -482,7 +482,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
   <div class="about-inner">
     <div class="about-photo-block reveal-left">
       <div class="about-img-frame">
-        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=80" alt="Sandra Mbuvi">
+        <img src="about.jpg" alt="Sandra Mbuvi">
         <div class="about-img-border"></div>
         <div class="about-corner tl"></div>
         <div class="about-corner br"></div>
@@ -528,7 +528,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <div class="album-disk" data-pos="0" data-idx="0" onclick="rotateDisk(0)">
         <div class="album-disk-inner">
           <div class="album-disk-face">
-            <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500&q=80" alt="Cosmetics Line">
+            <img src="thicky.jpg" alt="Cosmetics Line">
           </div>
           <div class="disk-shine"></div>
           <div class="disk-hole"></div>
@@ -538,7 +538,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <div class="album-disk" data-pos="1" data-idx="1" onclick="rotateDisk(1)">
         <div class="album-disk-inner">
           <div class="album-disk-face">
-            <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=500&q=80" alt="TikTok Content">
+            <img src="about.jpg" alt="TikTok Content">
           </div>
           <div class="disk-shine"></div>
           <div class="disk-hole"></div>
@@ -548,7 +548,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <div class="album-disk" data-pos="2" data-idx="2" onclick="rotateDisk(2)">
         <div class="album-disk-inner">
           <div class="album-disk-face">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&q=80" alt="Fashion Brand Deals">
+            <img src="hero.jpg" alt="Fashion Brand Deals">
           </div>
           <div class="disk-shine"></div>
           <div class="disk-hole"></div>
@@ -558,7 +558,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <div class="album-disk" data-pos="3" data-idx="3" onclick="rotateDisk(3)">
         <div class="album-disk-inner">
           <div class="album-disk-face">
-            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&q=80" alt="Luxury Travel Diaries">
+            <img src="thicky4.jpg" alt="Luxury Travel Diaries">
           </div>
           <div class="disk-shine"></div>
           <div class="disk-hole"></div>
@@ -568,7 +568,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <div class="album-disk" data-pos="4" data-idx="4" onclick="rotateDisk(4)">
         <div class="album-disk-inner">
           <div class="album-disk-face">
-            <img src="https://images.unsplash.com/photo-1551884170-09fb70a3a2ed?w=500&q=80" alt="Journalism Journey">
+            <img src="thicky5.jpg" alt="Journalism Journey">
           </div>
           <div class="disk-shine"></div>
           <div class="disk-hole"></div>
@@ -703,51 +703,51 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
 
     <div class="gallery-masonry" id="galleryGrid">
       <div class="gal-item" data-cat="fashion" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1496217590455-aa63a8350eea?w=600&q=80" alt="Fashion 1">
+        <img src="thicky.jpg" alt="Fashion 1">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="glam" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&q=80" alt="Glam 1">
+        <img src="thicky4.jpg" alt="Glam 1">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="travel" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&q=80" alt="Travel 1">
+        <img src="thicky5.jpg" alt="Travel 1">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="fashion" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="Fashion 2">
+        <img src="thicky6.jpg" alt="Fashion 2">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="glam" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600&q=80" alt="Glam 2">
+        <img src="thicky7.jpg" alt="Glam 2">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="travel" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1452960962994-acf4fd70b632?w=600&q=80" alt="Travel 2">
+        <img src="thicky8.jpg" alt="Travel 2">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="fashion" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80" alt="Fashion 3">
+        <img src="hero.jpg" alt="Fashion 3">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="glam" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80" alt="Glam 3">
+        <img src="about.jpg" alt="Glam 3">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="travel" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&q=80" alt="Travel 3">
+        <img src="thicky.jpg" alt="Travel 3">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="fashion" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80" alt="Fashion 4">
+        <img src="thicky4.jpg" alt="Fashion 4">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="glam" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80" alt="Glam 4">
+        <img src="thicky7.jpg" alt="Glam 4">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="gal-item" data-cat="travel" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1494791368093-85217fbbf8de?w=600&q=80" alt="Travel 4">
+        <img src="thicky6.jpg" alt="Travel 4">
         <div class="gal-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
     </div>
