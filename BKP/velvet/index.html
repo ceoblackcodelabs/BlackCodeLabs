@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELVETSIN — Online Shopping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Montserrat:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#040303;
+    --panel:#0c0a0a;
+    --panel2:#120e0e;
+    --line:#241414;
+    --red-deep:#5c0a0d;
+    --red:#a4080d;
+    --red-bright:#ff1d24;
+    --red-glow:#ff3b3b;
+    --ash:#8c7d7d;
+    --ash-dim:#5b4f4f;
+    --white:#f3ece9;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:'Montserrat',sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--red);color:#fff;}
+
+  a{color:inherit;text-decoration:none;}
+
+  /* scrollbar */
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-track{background:var(--black);}
+  ::-webkit-scrollbar-thumb{background:var(--red-deep);}
+
+  #ember-canvas{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  .grain{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+
+  .vignette{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 50% 30%, transparent 35%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.92) 100%);
+  }
+
+  /* ============ HEADER ============ */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 4vw;
+    backdrop-filter:blur(10px);
+    background:linear-gradient(to bottom, rgba(4,3,3,.92), rgba(4,3,3,0));
+    border-bottom:1px solid rgba(255,255,255,.04);
+  }
+
+  .logo{
+    font-family:'Cormorant Garamond',serif;
+    font-size:26px;
+    font-weight:600;
+    letter-spacing:.12em;
+    color:var(--white);
+    text-transform:uppercase;
+  }
+  .logo span{color:var(--red-bright);font-style:italic;}
+
+  nav.main-nav{
+    display:flex;
+    gap:34px;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ash);
+  }
+  nav.main-nav a{
+    position:relative;
+    padding-bottom:4px;
+    transition:color .3s;
+  }
+  nav.main-nav a:hover{color:var(--red-bright);}
+  nav.main-nav a::after{
+    content:"";
+    position:absolute;left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--red-bright);
+    transition:width .35s ease;
+  }
+  nav.main-nav a:hover::after{width:100%;}
+
+  .header-icons{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--ash);
+  }
+  .header-icons .cart{
+    display:flex;align-items:center;gap:6px;
+    border:1px solid var(--line);
+    padding:7px 14px;
+    border-radius:1px;
+    transition:.3s;
+  }
+  .header-icons .cart:hover{border-color:var(--red);color:var(--white);}
+  .cart-count{color:var(--red-bright);font-family:'JetBrains Mono',monospace;}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    z-index:5;
+    padding:0 20px;
+  }
+
+  .hero .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--red-bright);
+    margin-bottom:26px;
+    opacity:0;
+    animation:riseIn 1s .2s forwards;
+  }
+
+  .hero h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:clamp(58px,13vw,168px);
+    line-height:.92;
+    letter-spacing:.01em;
+    text-transform:uppercase;
+    color:var(--white);
+    text-shadow:0 0 50px rgba(255,30,30,.25);
+    opacity:0;
+    animation:riseIn 1.2s .4s forwards;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--red-bright);
+  }
+
+  .hero .sub{
+    margin-top:26px;
+    font-size:14px;
+    letter-spacing:.06em;
+    color:var(--ash);
+    max-width:480px;
+    line-height:1.8;
+    opacity:0;
+    animation:riseIn 1s .7s forwards;
+  }
+
+  .hero .cta-row{
+    margin-top:42px;
+    display:flex;
+    gap:18px;
+    opacity:0;
+    animation:riseIn 1s .9s forwards;
+  }
+
+  .btn{
+    font-family:'Montserrat',sans-serif;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    padding:16px 34px;
+    border:1px solid var(--red);
+    color:var(--white);
+    background:transparent;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:color .4s;
+  }
+  .btn::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:var(--red);
+    transform:translateX(-101%);
+    transition:transform .45s cubic-bezier(.7,0,.3,1);
+    z-index:-1;
+  }
+  .btn:hover::before{transform:translateX(0);}
+  .btn.ghost{border-color:var(--line);color:var(--ash);}
+  .btn.ghost:hover{color:var(--white);border-color:var(--ash);}
+
+  @keyframes riseIn{
+    from{opacity:0; transform:translateY(26px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .scroll-hint{
+    position:absolute;
+    bottom:36px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:.3em;
+    color:var(--ash-dim);
+    text-transform:uppercase;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  .scroll-hint::after{
+    content:"";
+    width:1px;height:34px;
+    background:linear-gradient(to bottom, var(--red-bright), transparent);
+    animation:scrollLine 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollLine{
+    0%{opacity:.2; transform:scaleY(.4);}
+    50%{opacity:1; transform:scaleY(1);}
+    100%{opacity:.2; transform:scaleY(.4);}
+  }
+
+  /* ============ SECTION SHELLS ============ */
+  section{
+    position:relative;
+    z-index:5;
+    padding:110px 4vw;
+  }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:50px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .section-head .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.25em;
+    color:var(--red-bright);
+    text-transform:uppercase;
+  }
+  .section-head h2{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(32px,4vw,52px);
+    font-weight:500;
+    letter-spacing:.02em;
+    margin-top:8px;
+  }
+  .section-head .view-all{
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ash);
+    border-bottom:1px solid var(--line);
+    padding-bottom:4px;
+    transition:.3s;
+  }
+  .section-head .view-all:hover{color:var(--red-bright);border-color:var(--red-bright);}
+
+  /* ============ CATEGORY STRIP ============ */
+  .cat-strip{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .cat-card{
+    background:var(--black);
+    padding:34px 14px;
+    text-align:center;
+    cursor:pointer;
+    transition:background .4s;
+    position:relative;
+  }
+  .cat-card:hover{background:var(--panel);}
+  .cat-card .ic{
+    font-size:26px;
+    color:var(--red-bright);
+    margin-bottom:14px;
+    display:block;
+    filter:drop-shadow(0 0 12px rgba(255,30,30,.45));
+  }
+  .cat-card .label{
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ash);
+  }
+  .cat-card:hover .label{color:var(--white);}
+
+  /* ============ COUNTDOWN BANNER ============ */
+  .countdown-banner{
+    margin:0 4vw;
+    border:1px solid var(--red-deep);
+    background:linear-gradient(135deg, rgba(92,10,13,.35), rgba(0,0,0,0));
+    padding:30px 36px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .countdown-banner .left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .countdown-banner .pulse-dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--red-bright);
+    box-shadow:0 0 0 0 rgba(255,30,30,.6);
+    animation:pulseDot 1.6s infinite;
+  }
+  @keyframes pulseDot{
+    0%{box-shadow:0 0 0 0 rgba(255,30,30,.55);}
+    70%{box-shadow:0 0 0 10px rgba(255,30,30,0);}
+    100%{box-shadow:0 0 0 0 rgba(255,30,30,0);}
+  }
+  .countdown-banner h3{
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;
+    font-weight:500;
+    letter-spacing:.04em;
+  }
+  .countdown-banner h3 em{color:var(--red-bright);font-style:italic;}
+  .timer{
+    display:flex;
+    gap:10px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .timer .t-block{
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:10px 14px;
+    text-align:center;
+    min-width:58px;
+  }
+  .timer .t-block .num{font-size:20px;color:var(--white);}
+  .timer .t-block .lab{font-size:8px;letter-spacing:.2em;color:var(--ash-dim);text-transform:uppercase;}
+
+  /* ============ PRODUCT GRID ============ */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+
+  .card{
+    background:var(--black);
+    padding:0;
+    position:relative;
+    overflow:hidden;
+    transition:background .4s;
+  }
+  .card:hover{background:var(--panel);}
+
+  .card .img-box{
+    aspect-ratio:1/1;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255,30,30,.18), transparent 60%),
+      linear-gradient(160deg, #100c0c, #050404 70%);
+  }
+  .card .img-box::before{
+    content:attr(data-glyph);
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:60px;
+    color:rgba(255,255,255,.08);
+    transition:transform .6s ease, color .6s ease;
+  }
+  .card:hover .img-box::before{
+    transform:scale(1.12);
+    color:rgba(255,30,30,.22);
+  }
+
+  .badge{
+    position:absolute;
+    top:14px;left:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    padding:5px 10px;
+    background:var(--red);
+    color:#fff;
+    z-index:2;
+  }
+  .badge.new{background:var(--panel2);border:1px solid var(--ash-dim);color:var(--ash);}
+
+  .wish{
+    position:absolute;
+    top:14px;right:14px;
+    width:30px;height:30px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(0,0,0,.4);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ash);
+    font-size:13px;
+    cursor:pointer;
+    transition:.3s;
+    z-index:2;
+  }
+  .wish:hover{border-color:var(--red-bright);color:var(--red-bright);}
+
+  .card .info{
+    padding:20px;
+    border-top:1px solid var(--line);
+  }
+  .card .brand{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--red-bright);
+    margin-bottom:8px;
+  }
+  .card .name{
+    font-size:13px;
+    color:var(--white);
+    line-height:1.5;
+    margin-bottom:14px;
+    min-height:40px;
+  }
+  .card .price-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .card .price{
+    font-family:'JetBrains Mono',monospace;
+    font-size:16px;
+    color:var(--white);
+  }
+  .card .old-price{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ash-dim);
+    text-decoration:line-through;
+  }
+  .card .discount{
+    font-size:10px;
+    color:var(--red-bright);
+    letter-spacing:.05em;
+  }
+
+  .card .add{
+    margin-top:16px;
+    width:100%;
+    padding:11px;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ash);
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:.3s;
+  }
+  .card .add:hover{
+    border-color:var(--red-bright);
+    color:var(--white);
+    background:rgba(164,8,13,.15);
+  }
+
+  /* ============ EDITORIAL SPLIT ============ */
+  .editorial{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .ed-panel{
+    background:var(--black);
+    padding:70px 60px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height:380px;
+    position:relative;
+    overflow:hidden;
+  }
+  .ed-panel::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse at 70% 30%, rgba(255,30,30,.12), transparent 60%);
+    pointer-events:none;
+  }
+  .ed-panel .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:.25em;
+    color:var(--red-bright);
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .ed-panel h3{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(28px,4vw,46px);
+    font-weight:500;
+    line-height:1.1;
+    margin-bottom:18px;
+  }
+  .ed-panel h3 em{color:var(--red-bright);font-style:italic;}
+  .ed-panel p{
+    font-size:13px;
+    color:var(--ash);
+    line-height:1.8;
+    max-width:380px;
+    margin-bottom:28px;
+  }
+  .ed-panel .btn{align-self:flex-start;}
+
+  /* ============ MARQUEE ============ */
+  .marquee-wrap{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    padding:22px 0;
+    background:var(--panel);
+  }
+  .marquee{
+    display:flex;
+    width:max-content;
+    animation:scrollMarquee 28s linear infinite;
+  }
+  .marquee span{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:24px;
+    color:var(--ash-dim);
+    padding:0 40px;
+    white-space:nowrap;
+  }
+  .marquee span em{color:var(--red-bright);font-style:normal;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.1em;}
+  @keyframes scrollMarquee{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ============ NEWSLETTER ============ */
+  .newsletter{
+    text-align:center;
+    padding:140px 4vw;
+    position:relative;
+  }
+  .newsletter h2{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(34px,5vw,64px);
+    font-weight:500;
+    margin-bottom:20px;
+  }
+  .newsletter h2 em{color:var(--red-bright);font-style:italic;}
+  .newsletter p{
+    color:var(--ash);
+    font-size:13px;
+    letter-spacing:.04em;
+    margin-bottom:36px;
+  }
+  .newsletter form{
+    display:flex;
+    justify-content:center;
+    gap:0;
+    max-width:440px;
+    margin:0 auto;
+    border:1px solid var(--line);
+  }
+  .newsletter input{
+    flex:1;
+    background:transparent;
+    border:none;
+    outline:none;
+    padding:17px 20px;
+    color:var(--white);
+    font-size:13px;
+    font-family:'Montserrat',sans-serif;
+  }
+  .newsletter input::placeholder{color:var(--ash-dim);}
+  .newsletter button{
+    padding:17px 26px;
+    background:var(--red);
+    border:none;
+    color:#fff;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:.3s;
+  }
+  .newsletter button:hover{background:var(--red-bright);}
+
+  /* ============ FOOTER ============ */
+  footer{
+    border-top:1px solid var(--line);
+    padding:70px 4vw 30px;
+    position:relative;
+    z-index:5;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr;
+    gap:50px;
+    padding-bottom:50px;
+  }
+  .footer-grid .logo{display:block;margin-bottom:18px;}
+  .footer-grid .blurb{
+    font-size:12.5px;
+    color:var(--ash);
+    line-height:1.9;
+    max-width:280px;
+  }
+  .footer-grid h4{
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--white);
+    margin-bottom:20px;
+  }
+  .footer-grid ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .footer-grid a{
+    font-size:12.5px;
+    color:var(--ash);
+    transition:.3s;
+  }
+  .footer-grid a:hover{color:var(--red-bright);}
+  .footer-bottom{
+    border-top:1px solid var(--line);
+    padding-top:26px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    font-size:11px;
+    color:var(--ash-dim);
+    letter-spacing:.05em;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media(max-width:980px){
+    nav.main-nav{display:none;}
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .cat-strip{grid-template-columns:repeat(3,1fr);}
+    .editorial{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:560px){
+    .grid{grid-template-columns:1fr 1fr;}
+    .cat-strip{grid-template-columns:repeat(2,1fr);}
+    section{padding:80px 5vw;}
+    .footer-grid{grid-template-columns:1fr;}
+    .countdown-banner{flex-direction:column;align-items:flex-start;}
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:1px solid var(--red-bright);
+    outline-offset:3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="ember-canvas"></canvas>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<header>
+  <div class="logo">VELVET<span>SIN</span></div>
+  <nav class="main-nav">
+    <a href="#new">New In</a>
+    <a href="#sale">Flash Sale</a>
+    <a href="#essentials">Essentials</a>
+    <a href="#editorial">Edit</a>
+    <a href="#join">Insider</a>
+  </nav>
+  <div class="header-icons">
+    <a href="#" aria-label="Search">Search</a>
+    <a href="#" aria-label="Account">Account</a>
+    <a href="#" class="cart" aria-label="Cart, 3 items">Cart <span class="cart-count">(03)</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Members-only access · Restocked at midnight</div>
+  <h1>Indulge<br><em>Without</em> Apology</h1>
+  <p class="sub">Curated obsessions in fashion, tech and beauty — dispatched in plain black boxes,
+    paid for however you like.</p>
+  <div class="cta-row">
+    <button class="btn">Enter The Sale</button>
+    <button class="btn ghost">Browse Collections</button>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<section id="essentials">
+  <div class="section-head">
+    <div>
+      <div class="tag">Shop by Craving</div>
+      <h2>Pick Your Vice</h2>
+    </div>
+    <a href="#" class="view-all">All Categories →</a>
+  </div>
+  <div class="cat-strip">
+    <div class="cat-card"><span class="ic">✦</span><span class="label">Phones &amp; Tech</span></div>
+    <div class="cat-card"><span class="ic">✧</span><span class="label">Fragrance</span></div>
+    <div class="cat-card"><span class="ic">♛</span><span class="label">Watches</span></div>
+    <div class="cat-card"><span class="ic">⌁</span><span class="label">Home Noir</span></div>
+    <div class="cat-card"><span class="ic">❖</span><span class="label">Lingerie</span></div>
+    <div class="cat-card"><span class="ic">⟡</span><span class="label">Leather Goods</span></div>
+  </div>
+</section>
+
+<section id="sale">
+  <div class="countdown-banner">
+    <div class="left">
+      <span class="pulse-dot"></span>
+      <h3><em>Midnight Confession</em> Sale ends in</h3>
+    </div>
+    <div class="timer" id="timer">
+      <div class="t-block"><div class="num" id="t-hh">06</div><div class="lab">Hrs</div></div>
+      <div class="t-block"><div class="num" id="t-mm">42</div><div class="lab">Min</div></div>
+      <div class="t-block"><div class="num" id="t-ss">17</div><div class="lab">Sec</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="new">
+  <div class="section-head">
+    <div>
+      <div class="tag">Drop 014</div>
+      <h2>Fresh Temptations</h2>
+    </div>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="img-box" data-glyph="V">
+        <span class="badge new">New</span>
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">Noir Atelier</div>
+        <div class="name">Liquid Obsidian Eau de Parfum — 50ml</div>
+        <div class="price-row"><span class="price">KSh 6,400</span></div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-box" data-glyph="S">
+        <span class="badge">−38%</span>
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">Crimson Line</div>
+        <div class="name">Folded Leather Crossbody, Blood Red</div>
+        <div class="price-row">
+          <span class="price">KSh 5,250</span>
+          <span class="old-price">KSh 8,500</span>
+        </div>
+        <div class="discount">Save KSh 3,250</div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-box" data-glyph="X">
+        <span class="badge new">New</span>
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">VS Tech</div>
+        <div class="name">Phantom 14 Pro, 12GB / 256GB, Onyx</div>
+        <div class="price-row"><span class="price">KSh 64,999</span></div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-box" data-glyph="I">
+        <span class="badge">−21%</span>
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">Maison Rouge</div>
+        <div class="name">Silk Slip, Hand-Finished Seams</div>
+        <div class="price-row">
+          <span class="price">KSh 4,100</span>
+          <span class="old-price">KSh 5,200</span>
+        </div>
+        <div class="discount">Save KSh 1,100</div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div>
+      <div class="tag">Bestsellers</div>
+      <h2>Cult Favourites</h2>
+    </div>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="img-box" data-glyph="T">
+        <span class="badge">−47%</span>
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">Atelier Noctis</div>
+        <div class="name">Velvet Smoking Jacket, Deep Garnet</div>
+        <div class="price-row">
+          <span class="price">KSh 7,800</span>
+          <span class="old-price">KSh 14,700</span>
+        </div>
+        <div class="discount">Save KSh 6,900</div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-box" data-glyph="C">
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">Forbidden Hour</div>
+        <div class="name">Mechanical Watch, Blackened Steel</div>
+        <div class="price-row"><span class="price">KSh 38,500</span></div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-box" data-glyph="P">
+        <span class="badge">−30%</span>
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">Velvetsin Home</div>
+        <div class="name">Blackout Candle Trio, Smoked Amber</div>
+        <div class="price-row">
+          <span class="price">KSh 2,990</span>
+          <span class="old-price">KSh 4,270</span>
+        </div>
+        <div class="discount">Save KSh 1,280</div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-box" data-glyph="E">
+        <span class="badge new">New</span>
+        <span class="wish">♡</span>
+      </div>
+      <div class="info">
+        <div class="brand">Hush Audio</div>
+        <div class="name">Studio Headphones, Matte Crimson</div>
+        <div class="price-row"><span class="price">KSh 12,300</span></div>
+        <button class="add">Add to Bag</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>Pay on delivery <em>AVAILABLE</em></span>
+    <span>Free returns within <em>14 DAYS</em></span>
+    <span>Plain, unbranded packaging <em>ALWAYS</em></span>
+    <span>Nationwide delivery <em>48HRS</em></span>
+    <span>Pay on delivery <em>AVAILABLE</em></span>
+    <span>Free returns within <em>14 DAYS</em></span>
+    <span>Plain, unbranded packaging <em>ALWAYS</em></span>
+    <span>Nationwide delivery <em>48HRS</em></span>
+  </div>
+</div>
+
+<section id="editorial">
+  <div class="editorial">
+    <div class="ed-panel">
+      <div class="tag">The Edit — 01</div>
+      <h3>Dress for the<br><em>version of you</em><br>no one's met yet.</h3>
+      <p>Twelve pieces, one mood. Our stylists pulled the line's most unrepeatable items into a single
+        capsule built for nights that don't end early.</p>
+      <button class="btn">Shop The Edit</button>
+    </div>
+    <div class="ed-panel">
+      <div class="tag">The Edit — 02</div>
+      <h3>Tech with a<br><em>little</em> bite.</h3>
+      <p>Devices finished in matte black and blood red — because the things you touch every day
+        deserve to feel like a decision, not a default.</p>
+      <button class="btn">Shop Tech</button>
+    </div>
+  </div>
+</section>
+
+<section id="join" class="newsletter">
+  <h2>Get the <em>first</em> look.</h2>
+  <p>Subscribe for early access to drops, private sales, and the occasional confession.</p>
+  <form onsubmit="event.preventDefault(); this.querySelector('input').value='';">
+    <input type="email" placeholder="your@email.com" required>
+    <button type="submit">Join</button>
+  </form>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="logo">VELVET<span>SIN</span></div>
+      <p class="blurb">An online store for people who'd rather regret a purchase than regret not making it.
+        Shipped quietly, billed discreetly, worn loudly.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">New In</a></li>
+        <li><a href="#">Flash Sale</a></li>
+        <li><a href="#">Bestsellers</a></li>
+        <li><a href="#">Gift Cards</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Track Order</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Shipping</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 VelvetSin. All rights reserved.</span>
+    <span>Made for people who like the lights low.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js"></script>
+<script>
+  // ===== Three.js ember field =====
+  const canvas = document.getElementById('ember-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 22;
+
+  const COUNT = 900;
+  const positions = new Float32Array(COUNT * 3);
+  const speeds = new Float32Array(COUNT);
+  const sizes = new Float32Array(COUNT);
+  const seeds = new Float32Array(COUNT);
+
+  for (let i = 0; i < COUNT; i++) {
+    positions[i*3]     = (Math.random() - 0.5) * 60;
+    positions[i*3 + 1] = (Math.random() - 0.5) * 36 - 18;
+    positions[i*3 + 2] = (Math.random() - 0.5) * 40;
+    speeds[i] = 0.4 + Math.random() * 1.4;
+    sizes[i] = 0.4 + Math.random() * 1.6;
+    seeds[i] = Math.random() * Math.PI * 2;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  // soft circular ember sprite, drawn on a canvas texture
+  function makeEmberTexture() {
+    const size = 64;
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const ctx = c.getContext('2d');
+    const grad = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+    grad.addColorStop(0,   'rgba(255,210,180,1)');
+    grad.addColorStop(0.25,'rgba(255,90,60,0.9)');
+    grad.addColorStop(0.6, 'rgba(180,15,15,0.35)');
+    grad.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+    return new THREE.CanvasTexture(c);
+  }
+
+  const emberTex = makeEmberTexture();
+
+  const material = new THREE.PointsMaterial({
+    size: 0.9,
+    map: emberTex,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    sizeAttenuation: true,
+    color: new THREE.Color(0xff5533)
+  });
+
+  const points = new THREE.Points(geo, material);
+  scene.add(points);
+
+  // gentle drifting fog plane for depth (very subtle red haze)
+  const fogGeo = new THREE.PlaneGeometry(140, 90);
+  const fogMat = new THREE.MeshBasicMaterial({
+    color: 0x1a0203,
+    transparent: true,
+    opacity: 0.35
+  });
+  const fogPlane = new THREE.Mesh(fogGeo, fogMat);
+  fogPlane.position.z = -30;
+  scene.add(fogPlane);
+
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  let clock = new THREE.Clock();
+
+  function animate() {
+    const t = clock.getElapsedTime();
+    const pos = geo.attributes.position.array;
+
+    for (let i = 0; i < COUNT; i++) {
+      const idx = i * 3;
+      pos[idx + 1] += speeds[i] * 0.012;
+      pos[idx]     += Math.sin(t * 0.5 + seeds[i]) * 0.004;
+
+      if (pos[idx + 1] > 20) {
+        pos[idx + 1] = -20;
+        pos[idx]     = (Math.random() - 0.5) * 60;
+        pos[idx + 2] = (Math.random() - 0.5) * 40;
+      }
+    }
+    geo.attributes.position.needsUpdate = true;
+
+    camera.position.x += (mouseX * 2.4 - camera.position.x) * 0.02;
+    camera.position.y += (-mouseY * 1.6 - camera.position.y) * 0.02;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // ===== countdown timer =====
+  let totalSeconds = 6 * 3600 + 42 * 60 + 17;
+  const hh = document.getElementById('t-hh');
+  const mm = document.getElementById('t-mm');
+  const ss = document.getElementById('t-ss');
+  function pad(n){ return n.toString().padStart(2,'0'); }
+  setInterval(() => {
+    if (totalSeconds <= 0) { totalSeconds = 6*3600; }
+    totalSeconds--;
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    hh.textContent = pad(h);
+    mm.textContent = pad(m);
+    ss.textContent = pad(s);
+  }, 1000);
+</script>
+</body>
+</html>

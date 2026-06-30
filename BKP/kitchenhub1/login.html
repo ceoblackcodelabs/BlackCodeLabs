@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.setAttribute("data-theme",localStorage.getItem("kh_theme")||"dark")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In – KitchenHub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#050C1A 0%,#0F1C32 55%,#152240 100%);padding:20px 14px;position:relative;overflow:hidden}
+.auth-page::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 75% 40%,rgba(255,107,53,.10) 0%,transparent 65%);pointer-events:none}
+.auth-card{background:var(--surf);border-radius:var(--r-xl);padding:32px 28px;width:100%;max-width:420px;box-shadow:var(--sh-xl);border:1px solid var(--bdr);position:relative;z-index:1;animation:fadeUp .45s var(--ease) both}
+.auth-logo-wrap{text-align:center;margin-bottom:22px}
+.auth-logo-icon{width:48px;height:48px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 9px}
+.auth-logo-name{font-family:var(--ff-head);font-weight:800;font-size:1.2rem;color:var(--tx-1)}
+.auth-logo-name span{color:var(--primary)}
+.auth-tabs{display:flex;background:var(--surf-2);border-radius:var(--r-pill);padding:4px;margin-bottom:22px;gap:4px}
+.auth-tab{flex:1;padding:9px;border-radius:var(--r-pill);font-size:.84rem;font-weight:600;color:var(--tx-2);background:transparent;cursor:pointer;transition:all .2s;text-align:center;border:none;font-family:inherit}
+.auth-tab.active{background:var(--surf);color:var(--tx-1);box-shadow:var(--sh-sm)}
+.auth-form{display:flex;flex-direction:column;gap:12px}
+.auth-field{display:flex;flex-direction:column;gap:4px}
+.auth-label{font-size:.78rem;font-weight:600;color:var(--tx-2)}
+.auth-input{padding:11px 13px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:.86rem;outline:none;background:var(--surf-2);color:var(--tx-1);transition:border-color .2s;width:100%}
+.auth-input:focus{border-color:var(--primary);background:var(--surf)}
+.auth-input::placeholder{color:var(--tx-3)}
+.pass-wrap{position:relative}
+.pass-wrap .auth-input{padding-right:40px}
+.pass-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--tx-3);cursor:pointer;font-size:.88rem;background:none;border:none;padding:0}
+.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.auth-divider{display:flex;align-items:center;gap:11px;color:var(--tx-3);font-size:.78rem;margin:4px 0}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.soc-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.soc-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:.83rem;font-weight:600;color:var(--tx-1);background:var(--surf-2);cursor:pointer;transition:all .2s;font-family:inherit}
+.soc-btn:hover{border-color:var(--primary);color:var(--primary);background:rgba(255,107,53,.07)}
+.forgot-link{font-size:.76rem;color:var(--primary);font-weight:600;text-align:right;display:block;margin-top:-4px}
+.forgot-link:hover{text-decoration:underline}
+.auth-check{display:flex;align-items:flex-start;gap:8px;font-size:.78rem;color:var(--tx-2)}
+.auth-check input{width:14px;height:14px;accent-color:var(--primary);cursor:pointer;flex-shrink:0;margin-top:2px}
+.auth-check a{color:var(--primary)}
+.auth-switch{text-align:center;margin-top:14px;font-size:.80rem;color:var(--tx-2)}
+.auth-switch a{color:var(--primary);font-weight:600}
+.auth-back{text-align:center;margin-top:16px}
+.auth-back a{font-size:.76rem;color:var(--tx-3)}
+.auth-back a:hover{color:var(--tx-1)}
+@media(max-width:480px){
+  .auth-card{padding:24px 18px;border-radius:var(--r-lg)}
+  .auth-grid{grid-template-columns:1fr}
+  .soc-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo-wrap">
+      <a href="index.html"><div class="auth-logo-icon">🍳</div></a>
+      <div class="auth-logo-name">Kitchen<span>Hub</span></div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSI" onclick="switchMode('signin')">Sign In</button>
+      <button class="auth-tab" id="tabReg" onclick="switchMode('register')">Create Account</button>
+    </div>
+
+    <!-- SIGN IN -->
+    <div id="formSI">
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-family:var(--ff-head);font-size:1.2rem;font-weight:800;color:var(--tx-1)">Welcome back</div>
+        <div style="font-size:.82rem;color:var(--tx-2);margin-top:3px">Sign in to your account</div>
+      </div>
+      <div class="soc-grid" style="margin-bottom:14px">
+        <button class="soc-btn" onclick="socialLogin('Google')"><span style="font-size:.96rem;font-weight:800">G</span> Google</button>
+        <button class="soc-btn" onclick="socialLogin('Facebook')"><span style="font-size:.96rem">f</span> Facebook</button>
+      </div>
+      <div class="auth-divider">or continue with email</div>
+      <div class="auth-form" style="margin-top:12px">
+        <div class="auth-field"><label class="auth-label">Email Address</label><input class="auth-input" type="email" placeholder="your@email.com" id="siEmail"></div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <div class="pass-wrap"><input class="auth-input" type="password" placeholder="••••••••" id="siPass"><button class="pass-eye" onclick="togglePass('siPass',this)">👁</button></div>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+        <div class="auth-check"><input type="checkbox" id="rem" checked><label for="rem">Remember me for 30 days</label></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:.9rem" onclick="handleSignIn()">Sign In →</button>
+      </div>
+      <div class="auth-switch">No account? <a href="#" onclick="switchMode('register')">Create one free →</a></div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="formReg" style="display:none">
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-family:var(--ff-head);font-size:1.2rem;font-weight:800;color:var(--tx-1)">Create your account</div>
+        <div style="font-size:.82rem;color:var(--tx-2);margin-top:3px">Join 10,000+ KitchenHub shoppers</div>
+      </div>
+      <div class="soc-grid" style="margin-bottom:14px">
+        <button class="soc-btn" onclick="socialLogin('Google')"><span style="font-size:.96rem;font-weight:800">G</span> Google</button>
+        <button class="soc-btn" onclick="socialLogin('Facebook')"><span style="font-size:.96rem">f</span> Facebook</button>
+      </div>
+      <div class="auth-divider">or sign up with email</div>
+      <div class="auth-form" style="margin-top:12px">
+        <div class="auth-grid">
+          <div class="auth-field"><label class="auth-label">First Name</label><input class="auth-input" type="text" placeholder="Jane" id="regFirst"></div>
+          <div class="auth-field"><label class="auth-label">Last Name</label><input class="auth-input" type="text" placeholder="Wanjiku" id="regLast"></div>
+        </div>
+        <div class="auth-field"><label class="auth-label">Email Address</label><input class="auth-input" type="email" placeholder="your@email.com" id="regEmail"></div>
+        <div class="auth-field"><label class="auth-label">Phone Number</label><input class="auth-input" type="tel" placeholder="+254 700 000 000" id="regPhone"></div>
+        <div class="auth-field"><label class="auth-label">Password</label><div class="pass-wrap"><input class="auth-input" type="password" placeholder="Min 8 characters" id="regPass"><button class="pass-eye" onclick="togglePass('regPass',this)">👁</button></div></div>
+        <div class="auth-field"><label class="auth-label">Confirm Password</label><div class="pass-wrap"><input class="auth-input" type="password" placeholder="Repeat password" id="regPass2"><button class="pass-eye" onclick="togglePass('regPass2',this)">👁</button></div></div>
+        <div class="auth-check"><input type="checkbox" id="terms"><label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:.9rem" onclick="handleRegister()">Create Account →</button>
+      </div>
+      <div class="auth-switch">Have an account? <a href="#" onclick="switchMode('signin')">Sign in →</a></div>
+    </div>
+
+    <div class="auth-back"><a href="index.html">← Back to KitchenHub</a></div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+function switchMode(mode){
+  const si=mode==='signin';
+  document.getElementById('formSI').style.display=si?'block':'none';
+  document.getElementById('formReg').style.display=si?'none':'block';
+  document.getElementById('tabSI').classList.toggle('active',si);
+  document.getElementById('tabReg').classList.toggle('active',!si);
+  document.title=si?'Sign In – KitchenHub':'Register – KitchenHub';
+}
+function togglePass(id,btn){const inp=document.getElementById(id);const show=inp.type==='password';inp.type=show?'text':'password';btn.innerHTML=show?'🙈':'👁';}
+function socialLogin(p){toast(`Redirecting to ${p}…`,'info');setTimeout(()=>window.location.href='index.html',1300);}
+function handleSignIn(){
+  const e=document.getElementById('siEmail').value.trim(),pw=document.getElementById('siPass').value.trim();
+  if(!e||!pw){toast('Please fill in all fields','error');return;}
+  if(!e.includes('@')){toast('Please enter a valid email','error');return;}
+  toast('Signing you in…','info');setTimeout(()=>window.location.href='index.html',1200);
+}
+function handleRegister(){
+  const f=document.getElementById('regFirst').value.trim(),e=document.getElementById('regEmail').value.trim(),p=document.getElementById('regPass').value.trim(),p2=document.getElementById('regPass2').value.trim(),terms=document.getElementById('terms').checked;
+  if(!f||!e||!p){toast('Please fill in all required fields','error');return;}
+  if(p!==p2){toast('Passwords do not match','error');return;}
+  if(p.length<8){toast('Password must be at least 8 characters','error');return;}
+  if(!terms){toast('Please accept the Terms of Service','error');return;}
+  toast('Account created! Welcome 🎉','success');setTimeout(()=>window.location.href='index.html',1300);
+}
+const m=new URLSearchParams(window.location.search).get('mode');
+if(m==='register')switchMode('register');
+</script>
+</body>
+</html>

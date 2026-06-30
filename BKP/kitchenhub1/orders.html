@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.setAttribute("data-theme",localStorage.getItem("kh_theme")||"dark")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders – KitchenHub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.orders-search{position:relative;margin-bottom:20px}
+.orders-search input{width:100%;padding:10px 14px 10px 38px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:.86rem;background:var(--surf);color:var(--tx-1);outline:none;transition:border-color .2s}
+.orders-search input:focus{border-color:var(--primary)}
+.orders-search span{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--tx-3);font-size:.9rem}
+.order-card{background:var(--surf);border-radius:var(--r-lg);border:1.5px solid var(--bdr);padding:16px;margin-bottom:12px;transition:all .2s}
+.order-card:hover{border-color:var(--bdr-s);box-shadow:var(--sh-sm)}
+.order-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.order-id{font-family:var(--ff-head);font-weight:700;font-size:.88rem;color:var(--tx-1)}
+.order-date{font-size:.74rem;color:var(--tx-2);margin-top:2px}
+.order-status{padding:3px 10px;border-radius:var(--r-pill);font-size:.70rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.s-pending{background:rgba(251,191,36,.15);color:#FBBF24}
+.s-proc{background:rgba(59,130,246,.15);color:#60A5FA}
+.s-shipped{background:rgba(167,139,250,.15);color:#A78BFA}
+.s-done{background:rgba(34,197,94,.15);color:#22C55E}
+.s-cancel{background:rgba(248,113,113,.15);color:#F87171}
+/* progress steps */
+.prog-wrap{margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prog-steps{display:flex;align-items:flex-start;min-width:280px}
+.prog-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative;min-width:0}
+.prog-connector{flex:1;height:2px;background:var(--bdr);align-self:flex-start;margin-top:13px;transition:background .3s}
+.prog-connector.filled{background:var(--accent)}
+.ps-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--bdr);background:var(--surf);display:flex;align-items:center;justify-content:center;font-size:.78rem;z-index:1;margin-bottom:4px;color:var(--tx-3);transition:all .2s;flex-shrink:0}
+.prog-step.done .ps-dot{border-color:var(--accent);background:var(--accent);color:#fff}
+.prog-step.active .ps-dot{border-color:var(--primary);background:var(--primary);color:#fff}
+.ps-label{font-size:.60rem;color:var(--tx-3);text-align:center;line-height:1.3;padding:0 2px}
+.prog-step.done .ps-label,.prog-step.active .ps-label{color:var(--tx-1);font-weight:600}
+/* items row */
+.order-items-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.oi-thumb{width:48px;height:48px;background:var(--surf-2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;flex-shrink:0}
+.oi-thumb img{width:100%;height:100%;object-fit:cover}
+.oi-info{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.oi-name{font-size:.78rem;font-weight:600;color:var(--tx-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px}
+.oi-meta{font-size:.70rem;color:var(--tx-2);margin-top:1px}
+/* footer */
+.order-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-top:11px;border-top:1px solid var(--bdr)}
+.order-total{font-weight:700;font-size:.92rem;color:var(--tx-1)}
+.order-addr{font-size:.72rem;color:var(--tx-2);margin-top:2px}
+.order-acts{display:flex;gap:6px;flex-wrap:wrap}
+.order-acts .btn{font-size:.76rem;padding:7px 12px}
+/* track modal */
+.track-modal-item{display:flex;align-items:center;gap:9px;padding:8px;background:var(--surf-2);border-radius:var(--r);margin-bottom:7px}
+.track-modal-thumb{width:40px;height:40px;background:var(--surf-3);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;font-size:1.2rem}
+.track-modal-thumb img{width:100%;height:100%;object-fit:cover}
+/* mobile */
+@media(max-width:600px){
+  .order-card{padding:13px}
+  .order-id{font-size:.82rem}
+  .oi-name{max-width:120px}
+  .order-acts .btn{font-size:.72rem;padding:6px 9px}
+  .ps-label{font-size:.56rem}
+}
+@media(max-width:380px){
+  .oi-name{max-width:90px}
+  .ps-label{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="ann-bar"><span>📦 Same-day delivery in Nairobi · Order before 2PM</span></div>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🍳</div><div class="nav-logo-text">Kitchen<span>Hub</span></div></a>
+      <div class="nav-links">
+        <a href="index.html"     class="nav-link">Home</a>
+        <a href="ecommerce.html" class="nav-link">Shop</a>
+        <a href="orders.html"    class="nav-link active">Orders</a>
+        <a href="profile.html"   class="nav-link">Profile</a>
+      </div>
+      <div class="nav-search"><span class="nav-search-icon">🔍</span><input type="text" placeholder="Search products…"><div class="search-drop"></div></div>
+      <div class="nav-actions">
+        <button class="nav-btn theme-btn">☀️</button>
+        <a href="profile.html" class="nav-btn">👤</a>
+        <a href="cart.html" class="nav-btn" data-cart style="position:relative">🛒<span class="badge-dot cart-count" style="display:none">0</span></a>
+        <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="sb-overlay"></div>
+<aside class="sidebar">
+  <div class="sb-head"><div class="nav-logo"><div class="nav-logo-icon" style="width:28px;height:28px;font-size:.88rem">🍳</div><div class="nav-logo-text" style="font-size:1rem">Kitchen<span>Hub</span></div></div><button class="sb-close">✕</button></div>
+  <div class="sb-user"><div class="sb-avatar">👤</div><div><div class="sb-user-name">My Account</div><a href="login.html" class="sb-user-sub">Sign in</a></div></div>
+  <nav class="sb-nav">
+    <a href="index.html"     class="sb-link"><i>🏠</i> Home</a>
+    <a href="ecommerce.html" class="sb-link"><i>🛍️</i> Shop</a>
+    <a href="orders.html"    class="sb-link active"><i>📦</i> Orders</a>
+    <a href="cart.html"      class="sb-link"><i>🛒</i> Cart</a>
+    <a href="profile.html"   class="sb-link"><i>👤</i> Profile</a>
+  </nav>
+</aside>
+
+<div class="page-hdr"><div class="container"><div class="page-hdr-title">📦 My Orders</div><div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Orders</span></div></div></div>
+
+<section class="section-sm">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
+      <div>
+        <h2 style="font-family:var(--ff-head);font-weight:700;font-size:1.05rem;color:var(--tx-1)">Order History</h2>
+        <p style="font-size:.82rem;color:var(--tx-2);margin-top:3px">Track and manage all your purchases</p>
+      </div>
+      <a href="ecommerce.html" class="btn btn-primary btn-sm">+ New Order</a>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="orders-tabs" style="display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:18px;padding-bottom:2px">
+      <button class="pill active" data-otab="all">All Orders</button>
+      <button class="pill" data-otab="processing">Processing</button>
+      <button class="pill" data-otab="shipped">Shipped</button>
+      <button class="pill" data-otab="delivered">Delivered</button>
+      <button class="pill" data-otab="cancelled">Cancelled</button>
+    </div>
+
+    <!-- Search -->
+    <div class="orders-search">
+      <span>🔍</span>
+      <input type="text" placeholder="Search by order ID or product name…" oninput="filterOrders(this.value)">
+    </div>
+
+    <div id="ordersList"></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container">
+  <div class="foot-bottom"><div class="foot-copy">© 2025 KitchenHub · All rights reserved.</div><div class="pay-icons"><span class="pay-ic">M-PESA</span><span class="pay-ic">VISA</span></div></div>
+</div></footer>
+
+<div class="modal-ov" id="qvModal"><div class="modal"></div></div>
+
+<!-- Track Modal -->
+<div class="modal-ov" id="trackModal">
+  <div class="modal" style="max-width:480px" id="trackContent"></div>
+</div>
+
+<nav class="bnav"><div class="bnav-inner">
+  <a href="index.html"     class="bnav-btn"><i>🏠</i><span>Home</span></a>
+  <a href="ecommerce.html" class="bnav-btn"><i>🛍️</i><span>Shop</span></a>
+  <a href="cart.html"      class="bnav-btn"><i>🛒</i><span>Cart</span></a>
+  <a href="orders.html"    class="bnav-btn active"><i>📦</i><span>Orders</span></a>
+  <a href="profile.html"   class="bnav-btn"><i>👤</i><span>Profile</span></a>
+</div></nav>
+
+<script src="js/app.js"></script>
+<script>
+const ORDERS=[
+  {id:'KH-847291',date:'15 Jan 2025',status:'shipped',   items:[{name:'ProChef 5-Piece Cookware Set',qty:1,price:8499,emoji:'🍳',img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=100&h=100&fit=crop'},{name:'Silicone Utensil Set 10-Piece',qty:2,price:1799,emoji:'🥄',img:'https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=100&h=100&fit=crop'}],total:12097,addr:'Westlands, Nairobi',prog:2},
+  {id:'KH-836104',date:'12 Jan 2025',status:'delivered', items:[{name:"8\" Chef's Knife German Steel",qty:1,price:2999,emoji:'🔪',img:'https://images.unsplash.com/photo-1593618998160-e34014e67546?w=100&h=100&fit=crop'}],total:3477,addr:'Karen, Nairobi',prog:4},
+  {id:'KH-821038',date:'8 Jan 2025', status:'delivered', items:[{name:'Stand Mixer 5Qt 800W',qty:1,price:12999,emoji:'🥧',img:'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=100&h=100&fit=crop'},{name:'12-Piece Baking Set',qty:1,price:3499,emoji:'🧁',img:'https://images.unsplash.com/photo-1486887396153-fa416526c108?w=100&h=100&fit=crop'}],total:19171,addr:'Lavington, Nairobi',prog:4},
+  {id:'KH-809475',date:'2 Jan 2025', status:'processing',items:[{name:'Pour Over Coffee Maker',qty:1,price:2499,emoji:'☕',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=100&h=100&fit=crop'},{name:'French Press 1L',qty:2,price:1699,emoji:'☕',img:'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&h=100&fit=crop'}],total:7346,addr:'Kilimani, Nairobi',prog:1},
+  {id:'KH-795302',date:'28 Dec 2024',status:'cancelled', items:[{name:'16-Piece Porcelain Dinner Set',qty:1,price:5999,emoji:'🍽️',img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=100&h=100&fit=crop'}],total:6958,addr:'Parklands, Nairobi',prog:0},
+];
+const SLABELS={processing:'Processing',shipped:'Shipped',delivered:'Delivered',cancelled:'Cancelled',pending:'Pending'};
+const SCLASS={processing:'s-proc',shipped:'s-shipped',delivered:'s-done',cancelled:'s-cancel',pending:'s-pending'};
+const PSTEPS=[{icon:'📋',lbl:'Placed'},{icon:'✅',lbl:'Confirmed'},{icon:'📦',lbl:'Packed'},{icon:'🚚',lbl:'On Way'},{icon:'🏠',lbl:'Delivered'}];
+
+let currentTab='all';
+function renderOrders(filter='all',search=''){
+  const el=document.getElementById('ordersList');if(!el)return;
+  let list=filter==='all'?ORDERS:ORDERS.filter(o=>o.status===filter);
+  if(search)list=list.filter(o=>o.id.toLowerCase().includes(search.toLowerCase())||o.items.some(i=>i.name.toLowerCase().includes(search.toLowerCase())));
+  if(!list.length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📦</div><h3>No orders found</h3><p>No ${filter==='all'?'':filter} orders yet.</p><a href="ecommerce.html" class="btn btn-primary">Start Shopping</a></div>`;return;}
+  el.innerHTML=list.map(o=>`
+    <div class="order-card">
+      <div class="order-hdr">
+        <div><div class="order-id">#${o.id}</div><div class="order-date">Placed ${o.date}</div></div>
+        <span class="order-status ${SCLASS[o.status]}">${SLABELS[o.status]}</span>
+      </div>
+      ${o.status!=='cancelled'?`
+      <div class="prog-wrap">
+        <div class="prog-steps">
+          ${PSTEPS.map((s,i)=>`
+            <div class="prog-step ${i<o.prog?'done':''} ${i===o.prog?'active':''}">
+              <div class="ps-dot">${i<o.prog?'✓':s.icon}</div>
+              <div class="ps-label">${s.lbl}</div>
+            </div>
+            ${i<PSTEPS.length-1?`<div class="prog-connector ${i<o.prog-1?'filled':''}"></div>`:''}`
+          ).join('')}
+        </div>
+      </div>`:''}
+      <div class="order-items-row">
+        ${o.items.map(item=>`
+          <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+            <div class="oi-thumb"><img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'"><span style="position:relative;z-index:1;font-size:1.3rem">${item.emoji}</span></div>
+            <div class="oi-info"><div class="oi-name">${item.name}</div><div class="oi-meta">Qty: ${item.qty} · KSh ${item.price.toLocaleString()}</div></div>
+          </div>`).join('')}
+      </div>
+      <div class="order-foot">
+        <div><div class="order-total">KSh ${o.total.toLocaleString()}</div><div class="order-addr">📍 ${o.addr}</div></div>
+        <div class="order-acts">
+          ${o.status!=='cancelled'?`<button class="btn btn-primary btn-sm" onclick="trackOrder('${o.id}')">Track</button>`:''}
+          ${o.status==='delivered'?`<button class="btn btn-ghost btn-sm" onclick="toast('Added to cart! 🛒','success')">Reorder</button>`:''}
+          ${o.status==='processing'?`<button class="btn btn-ghost btn-sm" style="color:#F87171;border-color:#F87171" onclick="toast('Cancellation requested','info')">Cancel</button>`:''}
+          <button class="btn btn-ghost btn-sm" onclick="toast('Invoice downloaded','success')">Invoice</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function filterOrders(q){renderOrders(currentTab,q);}
+function trackOrder(id){
+  const o=ORDERS.find(x=>x.id===id);if(!o)return;
+  const mc=document.getElementById('trackContent');
+  mc.innerHTML=`
+    <button class="modal-x" onclick="closeTrack()">✕</button>
+    <div style="font-family:var(--ff-head);font-weight:800;font-size:1.05rem;color:var(--tx-1);margin-bottom:4px">Track Order</div>
+    <div style="font-size:.80rem;color:var(--tx-2);margin-bottom:18px">#${o.id} · ${o.date}</div>
+    <div class="prog-wrap" style="margin-bottom:20px">
+      <div class="prog-steps">
+        ${PSTEPS.map((s,i)=>`
+          <div class="prog-step ${i<o.prog?'done':''} ${i===o.prog?'active':''}">
+            <div class="ps-dot">${i<o.prog?'✓':s.icon}</div>
+            <div class="ps-label">${s.lbl}</div>
+          </div>
+          ${i<PSTEPS.length-1?`<div class="prog-connector ${i<o.prog-1?'filled':''}"></div>`:''}`
+        ).join('')}
+      </div>
+    </div>
+    <div style="background:var(--surf-2);border-radius:var(--r);padding:12px;margin-bottom:14px;font-size:.82rem">
+      <div style="color:var(--tx-2);margin-bottom:3px">Delivery Address</div>
+      <div style="font-weight:600;color:var(--tx-1)">📍 ${o.addr}</div>
+    </div>
+    ${o.items.map(item=>`
+      <div class="track-modal-item">
+        <div class="track-modal-thumb"><img src="${item.img}" alt="" onerror="this.style.display='none'">${item.emoji}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:.80rem;font-weight:600;color:var(--tx-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.name}</div><div style="font-size:.72rem;color:var(--tx-2)">Qty: ${item.qty}</div></div>
+        <div style="font-size:.82rem;font-weight:700;color:var(--tx-1);flex-shrink:0">KSh ${(item.price*item.qty).toLocaleString()}</div>
+      </div>`).join('')}
+    <div style="display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--bdr)">
+      <span style="font-weight:800;font-size:.94rem;color:var(--tx-1)">Total Paid</span>
+      <span style="font-family:var(--ff-head);font-weight:800;font-size:1.05rem;color:var(--primary)">KSh ${o.total.toLocaleString()}</span>
+    </div>`;
+  document.getElementById('trackModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeTrack(){document.getElementById('trackModal').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('DOMContentLoaded',()=>{
+  renderOrders();
+  document.querySelectorAll('[data-otab]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-otab]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');currentTab=btn.dataset.otab;
+      renderOrders(currentTab,document.querySelector('.orders-search input')?.value||'');
+    });
+  });
+  document.getElementById('trackModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeTrack();});
+});
+</script>
+</body>
+</html>
