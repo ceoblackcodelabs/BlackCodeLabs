@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAI & KAIRO — Premium Car Sales Kenya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Outfit:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+/* ===================== ROOT ===================== */
+:root {
+  --gold:#BFA05A;--gold2:#D4B86A;--gold3:#8C7340;
+  --ink:#08080C;--ink2:#111118;--ink3:#18181F;--ink4:#222230;
+  --cream:#F2EDE4;--cream2:#E8DFD0;
+  --red:#B03A2E;--white:#fff;
+  --gray:#777;--gray2:#444;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --ease-bounce:cubic-bezier(.34,1.56,.64,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--ink);color:var(--cream);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* ---- CURSOR ---- */
+.cur{width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference;}
+.cur-r{width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:left .12s,top .12s,width .3s,height .3s,opacity .3s;opacity:.5;}
+.cur.big{width:5px;height:5px;}
+.cur-r.big{width:56px;height:56px;opacity:.2;}
+
+/* ---- NAV ---- */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 64px;display:flex;align-items:center;justify-content:space-between;transition:all .4s var(--ease);}
+nav.scrolled{background:rgba(8,8,12,.96);backdrop-filter:blur(24px);padding:14px 64px;border-bottom:1px solid rgba(191,160,90,.18);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:2.5px;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.logo-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;margin-bottom:2px;flex-shrink:0;}
+.logo em{color:var(--cream);font-style:normal;opacity:.55;font-size:.95em;margin:0 1px;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{color:rgba(242,237,228,.65);text-decoration:none;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color .3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s var(--ease);}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{width:100%;}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-cart{background:none;border:1px solid rgba(191,160,90,.4);color:var(--cream);padding:9px 22px;font-family:'Outfit',sans-serif;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;cursor:none;display:flex;align-items:center;gap:8px;transition:all .3s;}
+.nav-cart:hover{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.cart-badge{background:var(--red);color:#fff;width:18px;height:18px;border-radius:50%;font-size:.65rem;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.nav-search{background:none;border:none;color:var(--gold);font-size:1.1rem;cursor:none;transition:transform .2s;}
+.nav-search:hover{transform:scale(1.2);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;background:none;border:none;padding:4px;}
+.hamburger span{width:26px;height:1.5px;background:var(--gold);transition:.3s;display:block;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:70px;left:0;right:0;background:rgba(8,8,12,.98);backdrop-filter:blur(20px);padding:40px;z-index:999;border-bottom:1px solid rgba(191,160,90,.2);flex-direction:column;gap:24px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{color:var(--cream);text-decoration:none;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(191,160,90,.1);padding-bottom:16px;}
+
+/* ---- SCROLL REVEAL ---- */
+.sr{opacity:0;transform:translateY(50px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.sr.vis{opacity:1;transform:none;}
+.sr-l{opacity:0;transform:translateX(-60px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.sr-l.vis{opacity:1;transform:none;}
+.sr-r{opacity:0;transform:translateX(60px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.sr-r.vis{opacity:1;transform:none;}
+.sr-s{opacity:0;transform:scale(.9);transition:opacity .6s var(--ease),transform .6s var(--ease-bounce);}
+.sr-s.vis{opacity:1;transform:none;}
+
+/* ---- SECTION COMMONS ---- */
+.tag{font-size:.72rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.tag::before{content:'';width:28px;height:1px;background:var(--gold);}
+.tag.center{justify-content:center;}
+.tag.center::before{display:none;}
+h2.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4.5vw,4rem);font-weight:700;line-height:1.05;}
+h2.sec-title em{color:var(--gold);font-style:italic;}
+.gold-bar{width:50px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin:18px 0;}
+
+/* ======================== HERO ======================== */
+#hero{height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+
+/* Fullscreen hero carousel */
+.hero-slides{position:absolute;inset:0;}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s var(--ease);}
+.hero-slide.active{opacity:1;}
+.hero-slide-bg{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 8s linear;}
+.hero-slide.active .hero-slide-bg{transform:scale(1);}
+.hero-slide-overlay{position:absolute;inset:0;background:linear-gradient(110deg,rgba(8,8,12,.88) 45%,rgba(8,8,12,.3) 100%);}
+
+/* Hero content */
+.hero-inner{position:relative;z-index:3;flex:1;display:flex;align-items:center;padding:0 64px;}
+.hero-content{max-width:680px;}
+.hero-eyebrow{font-size:.72rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .8s .3s forwards;}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--gold);}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,7.5vw,7.5rem);font-weight:700;line-height:.92;margin:16px 0 24px;opacity:0;animation:fadeUp .8s .5s forwards;}
+.hero-h1 em{color:var(--gold);font-style:italic;}
+.hero-h1 span{display:block;}
+.hero-sub{font-size:1rem;line-height:1.75;color:rgba(242,237,228,.65);max-width:480px;margin-bottom:36px;opacity:0;animation:fadeUp .8s .7s forwards;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .9s forwards;}
+
+/* Seller card */
+.hero-seller{position:absolute;right:64px;top:50%;transform:translateY(-50%);z-index:4;opacity:0;animation:fadeInRight .9s 1.1s forwards;}
+.seller-card{background:rgba(8,8,12,.8);backdrop-filter:blur(20px);border:1px solid rgba(191,160,90,.25);padding:28px 24px;text-align:center;width:200px;}
+.seller-img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);margin:0 auto 14px;}
+.seller-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--gold);}
+.seller-role{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.45);margin:4px 0 10px;}
+.seller-divider{width:30px;height:1px;background:var(--gold);margin:0 auto 10px;}
+.seller-desc{font-size:.76rem;line-height:1.6;color:rgba(242,237,228,.55);}
+.seller-rating{display:flex;justify-content:center;gap:2px;margin-top:12px;color:var(--gold);font-size:.8rem;}
+
+/* Hero slide nav */
+.hero-nav{position:relative;z-index:4;display:flex;align-items:center;justify-content:space-between;padding:0 64px 36px;}
+.hero-dots{display:flex;gap:10px;}
+.hero-dot{width:24px;height:2px;background:rgba(242,237,228,.3);cursor:none;transition:all .3s;border:none;}
+.hero-dot.active{width:48px;background:var(--gold);}
+.hero-arrows{display:flex;gap:10px;}
+.h-arrow{width:44px;height:44px;background:rgba(255,255,255,.06);border:1px solid rgba(191,160,90,.3);color:var(--gold);font-size:1rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.h-arrow:hover{background:var(--gold);color:var(--ink);}
+.hero-slide-counter{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:3px;color:rgba(242,237,228,.4);}
+.hero-slide-counter span{color:var(--gold);}
+
+/* Stats bar */
+.hero-stats{position:relative;z-index:4;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(191,160,90,.15);background:rgba(8,8,12,.7);backdrop-filter:blur(12px);}
+.hstat{padding:20px;text-align:center;border-right:1px solid rgba(191,160,90,.1);}
+.hstat:last-child{border-right:none;}
+.hstat-num{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;}
+.hstat-lbl{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.4);margin-top:3px;}
+
+/* ======================== MARQUEE ======================== */
+.marquee-bar{background:var(--gold);padding:12px 0;overflow:hidden;}
+.marquee-track{display:flex;gap:0;animation:marquee 25s linear infinite;width:max-content;}
+.marquee-item{white-space:nowrap;padding:0 32px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:4px;color:var(--ink);display:flex;align-items:center;gap:16px;}
+.marquee-item::after{content:'◆';font-size:.6rem;opacity:.5;}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ======================== ABOUT ======================== */
+#about{padding:130px 0;background:var(--ink2);position:relative;overflow:hidden;}
+#about::before{content:'ABOUT';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:22vw;color:rgba(191,160,90,.025);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;}
+.about-layout{max-width:1360px;margin:0 auto;padding:0 64px;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:2px;min-height:580px;}
+.about-side{padding:50px 36px;display:flex;flex-direction:column;justify-content:center;gap:4px;}
+.about-side.left{border-right:1px solid rgba(191,160,90,.12);}
+.about-side.right{border-left:1px solid rgba(191,160,90,.12);}
+.feat{padding:22px;transition:background .3s;}
+.feat:hover{background:rgba(191,160,90,.05);}
+.feat-n{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(191,160,90,.18);line-height:1;}
+.feat-t{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--gold);margin:4px 0 8px;}
+.feat-d{font-size:.82rem;line-height:1.75;color:rgba(242,237,228,.55);}
+/* oval stagger */
+.about-side.left .feat:nth-child(2){margin-left:28px;}
+.about-side.right .feat:nth-child(2){margin-right:28px;}
+.about-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 24px;text-align:center;}
+.about-img-frame{position:relative;width:100%;margin-bottom:28px;}
+.about-img{width:100%;height:380px;object-fit:cover;display:block;clip-path:polygon(8% 0,92% 0,100% 8%,100% 92%,92% 100%,8% 100%,0 92%,0 8%);}
+.about-img-border{position:absolute;inset:-5px;clip-path:polygon(8% 0,92% 0,100% 8%,100% 92%,92% 100%,8% 100%,0 92%,0 8%);background:linear-gradient(135deg,var(--gold),transparent,var(--gold3));z-index:-1;opacity:.6;}
+.about-mid-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--gold);}
+.about-mid-sub{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:rgba(242,237,228,.4);margin:6px 0 14px;}
+.about-mid-text{font-size:.84rem;line-height:1.8;color:rgba(242,237,228,.55);}
+
+/* ======================== FLEET ======================== */
+#fleet{padding:130px 0;background:var(--ink);position:relative;}
+.fleet-header{max-width:800px;margin:0 auto 70px;padding:0 64px;text-align:center;}
+.fleet-tabs{display:flex;gap:0;overflow-x:auto;padding:0 64px;margin-bottom:0;border-bottom:1px solid rgba(191,160,90,.15);scrollbar-width:none;}
+.fleet-tabs::-webkit-scrollbar{display:none;}
+.ftab{background:none;border:none;border-bottom:2px solid transparent;padding:14px 28px;cursor:none;font-family:'Outfit',sans-serif;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.4);white-space:nowrap;transition:all .3s;margin-bottom:-1px;}
+.ftab.on{color:var(--gold);border-bottom-color:var(--gold);}
+.ftab:hover:not(.on){color:rgba(242,237,228,.7);}
+.fcat{display:none;}
+.fcat.on{display:block;}
+.carousel-outer{position:relative;padding:50px 64px;}
+.c-track-wrap{overflow:hidden;}
+.c-track{display:flex;gap:22px;transition:transform .55s var(--ease);}
+/* Car card */
+.ccard{flex:0 0 calc(33.333% - 15px);background:var(--ink3);position:relative;overflow:hidden;cursor:none;transition:transform .4s var(--ease),box-shadow .4s;}
+.ccard:hover{transform:translateY(-10px);box-shadow:0 32px 64px rgba(0,0,0,.55);}
+.ccard-img-wrap{overflow:hidden;height:210px;position:relative;}
+.ccard-img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.ccard:hover .ccard-img{transform:scale(1.1);}
+.ccard-ribbon{position:absolute;top:16px;right:0;background:var(--gold);color:var(--ink);padding:5px 14px 5px 10px;font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.ccard-fav{position:absolute;top:12px;left:12px;background:rgba(8,8,12,.7);border:1px solid rgba(191,160,90,.3);color:var(--cream);width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:none;font-size:.9rem;transition:all .3s;}
+.ccard-fav.liked{background:var(--red);border-color:var(--red);color:#fff;}
+.ccard-body{padding:22px;}
+.ccard-cat{font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.ccard-name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;margin-bottom:12px;line-height:1.2;}
+.ccard-specs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+.cspec{font-size:.72rem;color:rgba(242,237,228,.45);display:flex;align-items:center;gap:5px;}
+.cspec-i{color:var(--gold);}
+.ccard-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(191,160,90,.12);padding-top:16px;}
+.cprice{line-height:1;}
+.cprice strong{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);display:block;}
+.cprice span{font-size:.7rem;color:rgba(242,237,228,.4);}
+.ccard-btns{display:flex;gap:8px;}
+.btn-d{background:none;border:1px solid rgba(191,160,90,.3);color:var(--cream);padding:8px 14px;font-size:.7rem;cursor:none;transition:all .3s;letter-spacing:1px;}
+.btn-d:hover{border-color:var(--gold);color:var(--gold);}
+.btn-h{background:var(--gold);color:var(--ink);border:none;padding:8px 16px;font-size:.7rem;font-weight:700;cursor:none;letter-spacing:1px;transition:all .3s;}
+.btn-h:hover{background:var(--gold2);transform:scale(1.05);}
+/* carousel nav */
+.c-prev,.c-next{position:absolute;top:50%;transform:translateY(-50%);background:var(--ink4);border:1px solid rgba(191,160,90,.3);color:var(--gold);width:46px;height:46px;font-size:1rem;cursor:none;z-index:9;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.c-prev:hover,.c-next:hover{background:var(--gold);color:var(--ink);}
+.c-prev{left:10px;}
+.c-next{right:10px;}
+.c-dots{display:flex;justify-content:center;gap:8px;padding-bottom:20px;}
+.c-dot{width:6px;height:6px;border-radius:50%;background:rgba(191,160,90,.25);cursor:none;border:none;transition:all .3s;}
+.c-dot.on{background:var(--gold);width:22px;border-radius:3px;}
+
+/* ======================== TEST DRIVE BOOKING ======================== */
+#availability{padding:80px 0;background:var(--ink2);}
+.avail-inner{max-width:1200px;margin:0 auto;padding:0 64px;}
+.avail-box{background:var(--ink3);border:1px solid rgba(191,160,90,.2);padding:50px;}
+.avail-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;margin-bottom:8px;}
+.avail-sub{font-size:.85rem;color:rgba(242,237,228,.5);margin-bottom:36px;}
+.avail-form{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:16px;align-items:end;}
+.afield label{display:block;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.45);margin-bottom:8px;}
+.afield input,.afield select{width:100%;background:var(--ink4);border:1px solid rgba(191,160,90,.2);color:var(--cream);padding:13px 16px;font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;transition:border-color .3s;}
+.afield input:focus,.afield select:focus{border-color:var(--gold);}
+.afield select option{background:var(--ink3);}
+
+/* ======================== FEATURES / WHY US ======================== */
+#why{padding:130px 0;background:var(--ink);}
+.why-inner{max-width:1360px;margin:0 auto;padding:0 64px;}
+.why-top{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;}
+.why-text p{font-size:.95rem;line-height:1.85;color:rgba(242,237,228,.6);margin-top:20px;}
+.why-img{position:relative;}
+.why-img img{width:100%;height:400px;object-fit:cover;}
+.why-img-badge{position:absolute;bottom:-20px;left:-20px;background:var(--gold);color:var(--ink);padding:24px 28px;}
+.why-img-badge strong{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1;display:block;}
+.why-img-badge span{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(191,160,90,.12);}
+.why-card{background:var(--ink);padding:36px 28px;transition:background .3s;}
+.why-card:hover{background:var(--ink3);}
+.why-icon{font-size:2rem;margin-bottom:16px;}
+.why-card h4{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--gold);margin-bottom:10px;}
+.why-card p{font-size:.82rem;line-height:1.7;color:rgba(242,237,228,.5);}
+
+/* ======================== PROCESS ======================== */
+#process{padding:130px 0;background:var(--ink2);position:relative;overflow:hidden;}
+.process-inner{max-width:1200px;margin:0 auto;padding:0 64px;}
+.process-head{text-align:center;max-width:600px;margin:0 auto 80px;}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.process-steps::before{content:'';position:absolute;top:44px;left:calc(12.5%);right:calc(12.5%);height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4;}
+.pstep{text-align:center;padding:0 20px;}
+.pstep-num{width:88px;height:88px;border:1px solid rgba(191,160,90,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);position:relative;background:var(--ink2);transition:all .4s;}
+.pstep:hover .pstep-num{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.pstep-icon{font-size:1.6rem;display:block;margin-bottom:4px;}
+.pstep h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--gold);}
+.pstep p{font-size:.8rem;line-height:1.7;color:rgba(242,237,228,.5);}
+
+/* ======================== GALLERY ======================== */
+#gallery{padding:130px 0;background:var(--ink);overflow:hidden;}
+.gallery-header{text-align:center;max-width:600px;margin:0 auto 60px;padding:0 64px;}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr) 1.6fr;grid-template-rows:280px 280px;gap:4px;padding:0 64px;}
+.g-item{overflow:hidden;position:relative;cursor:none;}
+.g-item:nth-child(4){grid-row:1/3;}
+.g-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.g-item:hover img{transform:scale(1.08);}
+.g-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,12,.85),transparent);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:20px;}
+.g-item:hover .g-item-overlay{opacity:1;}
+.g-item-label{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+
+/* ======================== PROMOTIONS ======================== */
+#promos{padding:100px 0;background:var(--ink3);}
+.promos-inner{max-width:1360px;margin:0 auto;padding:0 64px;}
+.promos-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:50px;}
+.promo-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.promo{position:relative;overflow:hidden;background:var(--ink2);border:1px solid rgba(191,160,90,.15);}
+.promo-bg{width:100%;height:180px;object-fit:cover;display:block;transition:transform .5s var(--ease);}
+.promo:hover .promo-bg{transform:scale(1.05);}
+.promo-overlay{position:absolute;top:0;left:0;right:0;height:180px;background:linear-gradient(to bottom,transparent,rgba(8,8,12,.9));}
+.promo-badge{position:absolute;top:16px;right:0;background:var(--red);color:#fff;padding:6px 14px;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.promo-body{padding:24px;}
+.promo-label{font-size:.68rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.promo-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;margin-bottom:8px;}
+.promo-desc{font-size:.82rem;line-height:1.65;color:rgba(242,237,228,.5);margin-bottom:20px;}
+.promo-validity{font-size:.7rem;color:rgba(242,237,228,.3);display:flex;align-items:center;gap:6px;}
+
+/* ======================== SHORTLIST / GARAGE ======================== */
+.cart-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1999;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px);}
+.cart-bg.on{opacity:1;pointer-events:all;}
+#cart-panel{position:fixed;top:0;right:-520px;bottom:0;width:500px;background:var(--ink2);z-index:2000;border-left:1px solid rgba(191,160,90,.2);transition:right .5s var(--ease);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.5);}
+#cart-panel.on{right:0;}
+.cp-head{padding:30px;border-bottom:1px solid rgba(191,160,90,.12);display:flex;align-items:center;justify-content:space-between;}
+.cp-head h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;}
+.cp-sub{font-size:.75rem;color:rgba(242,237,228,.4);margin-top:4px;}
+.cp-close{background:none;border:1px solid rgba(191,160,90,.3);color:var(--cream);width:38px;height:38px;font-size:1rem;cursor:none;transition:all .3s;display:flex;align-items:center;justify-content:center;}
+.cp-close:hover{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.cp-items{flex:1;overflow-y:auto;padding:20px;scrollbar-width:thin;scrollbar-color:var(--gold) var(--ink3);}
+.ci{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(191,160,90,.08);animation:slideIn .3s;}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.ci-img{width:76px;height:56px;object-fit:cover;flex-shrink:0;}
+.ci-info{flex:1;}
+.ci-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;margin-bottom:3px;}
+.ci-cat{font-size:.72rem;color:rgba(242,237,228,.4);margin-bottom:6px;}
+.ci-price{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:var(--gold);}
+.ci-rm{background:none;border:none;color:rgba(242,237,228,.3);font-size:.9rem;cursor:none;transition:color .3s;align-self:flex-start;}
+.ci-rm:hover{color:var(--red);}
+.cp-empty{text-align:center;padding:60px 20px;color:rgba(242,237,228,.3);}
+.cp-empty-icon{font-size:2.8rem;margin-bottom:12px;}
+.cp-foot{padding:22px 30px;border-top:1px solid rgba(191,160,90,.12);}
+.cp-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.cp-total-lbl{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.5);}
+.cp-total-val{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);}
+.cp-checkout{width:100%;}
+
+/* ======================== DETAIL ======================== */
+#detail-ov{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s;padding:20px;}
+#detail-ov.on{opacity:1;pointer-events:all;}
+.dm{background:var(--ink2);max-width:880px;width:100%;max-height:92vh;overflow-y:auto;position:relative;border:1px solid rgba(191,160,90,.2);transform:scale(.92);transition:transform .4s var(--ease-bounce);scrollbar-width:thin;scrollbar-color:var(--gold) var(--ink3);}
+#detail-ov.on .dm{transform:scale(1);}
+.dm-img{width:100%;height:340px;object-fit:cover;display:block;}
+.dm-close{position:absolute;top:16px;right:16px;background:rgba(8,8,12,.8);border:1px solid rgba(191,160,90,.3);color:var(--cream);width:42px;height:42px;font-size:1.1rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.dm-close:hover{background:var(--gold);color:var(--ink);}
+.dm-body{padding:36px;}
+.dm-cat{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.dm-name{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;margin-bottom:16px;}
+.dm-desc{font-size:.9rem;line-height:1.8;color:rgba(242,237,228,.65);margin-bottom:28px;}
+.dm-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+.dm-spec{background:var(--ink3);padding:16px;text-align:center;}
+.dm-spec strong{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);display:block;}
+.dm-spec span{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.4);}
+.dm-features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.dm-feat-tag{background:rgba(191,160,90,.1);border:1px solid rgba(191,160,90,.25);color:var(--gold);font-size:.72rem;letter-spacing:1px;padding:6px 14px;}
+.dm-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(191,160,90,.12);padding-top:24px;}
+.dm-finance{font-size:.72rem;color:rgba(242,237,228,.4);}
+.dm-finance strong{color:var(--gold);font-family:'Outfit',sans-serif;font-weight:600;}
+.dm-price-wrap{line-height:1.1;}
+.dm-price-wrap span{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.4);display:block;margin-bottom:4px;}
+.dm-price{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--gold);}
+.dm-actions-btns{display:flex;gap:10px;}
+
+/* ======================== SEARCH OVERLAY ======================== */
+#search-ov{position:fixed;inset:0;z-index:4000;background:rgba(8,8,12,.97);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+#search-ov.on{opacity:1;pointer-events:all;}
+.search-inner{width:700px;max-width:90%;text-align:center;}
+.search-label{font-size:.72rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
+.search-input-wrap{display:flex;border-bottom:2px solid var(--gold);align-items:center;gap:12px;margin-bottom:40px;}
+.search-input-wrap input{flex:1;background:none;border:none;color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:2.5rem;padding:12px 0;outline:none;}
+.search-input-wrap button{background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:none;}
+.search-close{position:absolute;top:30px;right:40px;background:none;border:1px solid rgba(191,160,90,.3);color:var(--cream);width:44px;height:44px;font-size:1.2rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.search-close:hover{background:var(--gold);color:var(--ink);}
+.search-results{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+.search-tag{background:rgba(191,160,90,.1);border:1px solid rgba(191,160,90,.2);color:rgba(242,237,228,.6);padding:8px 16px;font-size:.78rem;cursor:none;transition:all .3s;}
+.search-tag:hover{background:var(--gold);color:var(--ink);}
+
+/* ======================== CONTACT ======================== */
+#contact{padding:130px 0;background:var(--ink2);}
+.contact-inner{max-width:1360px;margin:0 auto;padding:0 64px;}
+.contact-head{margin-bottom:60px;}
+.contact-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:40px;}
+.cf-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:24px;}
+.fg{margin-bottom:18px;}
+.fg label{display:block;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.4);margin-bottom:7px;}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--ink3);border:1px solid rgba(191,160,90,.18);color:var(--cream);padding:13px 16px;font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;transition:border-color .3s;resize:none;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold);}
+.fg select option{background:var(--ink3);}
+.ci-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid rgba(191,160,90,.08);}
+.ci-item:last-child{border-bottom:none;}
+.ci-icon{width:42px;height:42px;background:rgba(191,160,90,.1);border:1px solid rgba(191,160,90,.2);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.95rem;flex-shrink:0;}
+.ci-lbl{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.35);margin-bottom:3px;}
+.ci-val{font-size:.9rem;font-weight:500;}
+.map-box{height:100%;min-height:300px;background:var(--ink3);border:1px solid rgba(191,160,90,.15);position:relative;overflow:hidden;}
+.map-box iframe{width:100%;height:100%;min-height:300px;border:none;filter:grayscale(.8) contrast(1.1);opacity:.65;}
+.map-pin{position:absolute;top:14px;left:14px;background:rgba(8,8,12,.9);padding:10px 14px;border-left:3px solid var(--gold);}
+.map-pin strong{color:var(--gold);font-size:.85rem;display:block;}
+.map-pin span{font-size:.72rem;color:rgba(242,237,228,.5);}
+
+/* ======================== TESTIMONIALS ======================== */
+#testi{padding:130px 0;background:var(--ink);overflow:hidden;}
+.testi-header{text-align:center;max-width:600px;margin:0 auto 70px;padding:0 64px;}
+.testi-wrap{overflow:hidden;}
+.testi-track{display:flex;gap:26px;animation:scrollT 42s linear infinite;width:max-content;}
+.testi-track:hover{animation-play-state:paused;}
+@keyframes scrollT{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tcard{width:360px;flex-shrink:0;background:var(--ink3);padding:30px;border:1px solid rgba(191,160,90,.08);transition:all .4s;position:relative;}
+.tcard:hover{border-color:rgba(191,160,90,.35);transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.35);}
+.tcard::before{content:'\201C';position:absolute;top:10px;right:20px;font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(191,160,90,.08);line-height:1;}
+.t-stars{color:var(--gold);font-size:.8rem;letter-spacing:2px;margin-bottom:14px;}
+.t-text{font-size:.85rem;line-height:1.8;color:rgba(242,237,228,.65);font-style:italic;margin-bottom:22px;}
+.t-author{display:flex;align-items:center;gap:12px;}
+.t-av{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);}
+.t-name{font-weight:600;font-size:.88rem;}
+.t-car{font-size:.72rem;color:var(--gold);margin-top:2px;}
+
+/* ======================== NEWSLETTER ======================== */
+#newsletter{padding:100px 0;background:var(--ink3);position:relative;overflow:hidden;}
+#newsletter::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=60') center/cover no-repeat;opacity:.06;}
+.nl-inner{max-width:700px;margin:0 auto;text-align:center;padding:0 64px;position:relative;z-index:1;}
+.nl-inner h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:700;margin:14px 0 16px;}
+.nl-inner p{font-size:.9rem;line-height:1.7;color:rgba(242,237,228,.55);margin-bottom:36px;}
+.nl-form{display:flex;gap:0;max-width:500px;margin:0 auto;}
+.nl-form input{flex:1;background:var(--ink4);border:1px solid rgba(191,160,90,.25);border-right:none;color:var(--cream);padding:15px 20px;font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;transition:border-color .3s;}
+.nl-form input:focus{border-color:var(--gold);}
+.nl-form button{background:var(--gold);color:var(--ink);border:none;padding:15px 28px;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;cursor:none;transition:background .3s;white-space:nowrap;}
+.nl-form button:hover{background:var(--gold2);}
+
+/* ======================== FOOTER ======================== */
+footer{background:var(--ink2);border-top:1px solid rgba(191,160,90,.12);padding:80px 64px 36px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px;}
+.f-brand .logo{display:inline-flex;margin-bottom:14px;}
+.f-brand p{font-size:.82rem;line-height:1.8;color:rgba(242,237,228,.45);margin-bottom:22px;}
+.f-social{display:flex;gap:10px;}
+.f-soc{width:38px;height:38px;background:var(--ink3);border:1px solid rgba(191,160,90,.18);color:rgba(242,237,228,.5);text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .3s;cursor:none;}
+.f-soc:hover{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.f-col h4{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--gold);margin-bottom:18px;}
+.f-col ul{list-style:none;}
+.f-col ul li{margin-bottom:10px;}
+.f-col ul a{font-size:.82rem;color:rgba(242,237,228,.45);text-decoration:none;transition:all .3s;display:flex;align-items:center;gap:8px;}
+.f-col ul a::before{content:'›';color:var(--gold3);}
+.f-col ul a:hover{color:var(--gold);padding-left:5px;}
+.f-bottom{border-top:1px solid rgba(191,160,90,.08);padding-top:28px;display:flex;align-items:center;justify-content:space-between;}
+.f-bottom p{font-size:.76rem;color:rgba(242,237,228,.3);}
+.f-bottom-links{display:flex;gap:24px;}
+.f-bottom-links a{font-size:.74rem;color:rgba(242,237,228,.3);text-decoration:none;transition:color .3s;}
+.f-bottom-links a:hover{color:var(--gold);}
+
+/* ======================== BUTTONS ======================== */
+.btn-p{background:var(--gold);color:var(--ink);padding:15px 38px;font-weight:700;font-size:.8rem;letter-spacing:2.5px;text-transform:uppercase;border:none;cursor:none;text-decoration:none;display:inline-block;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.btn-p:hover{background:var(--gold2);transform:translateY(-3px);box-shadow:0 16px 36px rgba(191,160,90,.3);}
+.btn-o{background:transparent;color:var(--cream);padding:15px 38px;font-weight:500;font-size:.8rem;letter-spacing:2.5px;text-transform:uppercase;border:1px solid rgba(242,237,228,.35);cursor:none;text-decoration:none;display:inline-block;transition:all .3s;}
+.btn-o:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px);}
+.btn-sm{padding:11px 28px;font-size:.74rem;}
+
+/* ======================== TOAST ======================== */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:var(--ink);padding:14px 28px;font-weight:700;font-size:.82rem;letter-spacing:1.5px;z-index:9999;transition:transform .4s var(--ease);white-space:nowrap;}
+.toast.on{transform:translateX(-50%) translateY(0);}
+
+/* ======================== RESPONSIVE ======================== */
+@media(max-width:1100px){
+  .about-layout{grid-template-columns:1fr;padding:0 40px;}
+  .about-side.left,.about-side.right{border:none;border-bottom:1px solid rgba(191,160,90,.1);}
+  .about-mid{order:-1;}
+  .why-top{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:repeat(2,1fr);}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
+  .gallery-grid .g-item:nth-child(4){grid-row:auto;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px;}
+}
+@media(max-width:900px){
+  nav{padding:18px 28px;}
+  nav.scrolled{padding:12px 28px;}
+  .nav-links,.nav-right{display:none;}
+  .hamburger{display:flex;}
+  .hero-inner{padding:0 28px;}
+  .hero-nav{padding:0 28px 28px;}
+  .hero-seller{display:none;}
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .fleet-tabs{padding:0 28px;}
+  .carousel-outer{padding:40px 28px;}
+  .ccard{flex:0 0 calc(100% - 22px);}
+  .contact-grid{grid-template-columns:1fr;padding:0 28px;}
+  .avail-form{grid-template-columns:1fr 1fr;padding:0;}
+  .process-steps{grid-template-columns:1fr 1fr;gap:40px;}
+  .process-steps::before{display:none;}
+  .promo-cards{grid-template-columns:1fr;}
+  .why-inner{padding:0 28px;}
+  footer{padding:60px 28px 28px;}
+  .gallery-grid{padding:0 28px;}
+  .promos-inner,.nl-inner,.process-inner,.testi-header{padding:0 28px;}
+  .fleet-header,.gallery-header{padding:0 28px;}
+  .contact-inner{padding:0 28px;}
+  .about-layout{padding:0 28px;}
+  .avail-inner{padding:0 28px;}
+}
+@media(max-width:600px){
+  .avail-form{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .dm-specs{grid-template-columns:1fr 1fr;}
+  .nl-form{flex-direction:column;}
+  .nl-form input{border-right:1px solid rgba(191,160,90,.25);}
+  .footer-grid{grid-template-columns:1fr;}
+  .ccard{flex:0 0 90%;}
+  #cart-panel{width:100%;}
+  .hero-stats{grid-template-columns:1fr 1fr;}
+  .promos-head{flex-direction:column;gap:20px;align-items:flex-start;}
+  .logo{font-size:1.25rem;letter-spacing:1.5px;}
+}
+
+/* ======================== KEYFRAMES ======================== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes fadeInRight{from{opacity:0;transform:translate(40px,-50%)}to{opacity:1;transform:translate(0,-50%)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo"><div class="logo-dot"></div>KAI<em>&</em>KAIRO</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#fleet">Inventory</a></li>
+    <li><a href="#availability">Test Drive</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-search" onclick="openSearch()" title="Search">⌕</button>
+    <button class="nav-cart" onclick="toggleCart()">
+      &#128663; Garage <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+  <button class="hamburger" id="ham" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#fleet" onclick="closeMenu()">Inventory</a>
+  <a href="#availability" onclick="closeMenu()">Test Drive</a>
+  <a href="#why" onclick="closeMenu()">Why Us</a>
+  <a href="#gallery" onclick="closeMenu()">Gallery</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- ======================== HERO ======================== -->
+<section id="hero">
+  <div class="hero-slides" id="heroSlides"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Premium Car Sales — East Africa</div>
+      <h1 class="hero-h1">
+        <span>Own</span>
+        <em>Extraordinary</em>
+        <span>Machines</span>
+      </h1>
+      <p class="hero-sub">From executive saloons to legendary safari 4x4s — every vehicle inspected, certified, and ready to be yours.</p>
+      <div class="hero-btns">
+        <a href="#fleet" class="btn-p">Explore Inventory</a>
+        <a href="#availability" class="btn-o">Book a Test Drive</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-seller">
+    <div class="seller-card">
+      <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80" alt="James Omondi" class="seller-img">
+      <div class="seller-name">James Omondi</div>
+      <div class="seller-role">CEO & Founder</div>
+      <div class="seller-divider"></div>
+      <p class="seller-desc">15+ years sourcing exceptional vehicles for East African owners</p>
+      <div class="seller-rating">★★★★★</div>
+    </div>
+  </div>
+
+  <div class="hero-nav">
+    <div class="hero-dots" id="heroDots"></div>
+    <div class="hero-slide-counter"><span id="slideNum">01</span> / <span id="slideTotal">05</span></div>
+    <div class="hero-arrows">
+      <button class="h-arrow" onclick="heroSlide(-1)">&#8592;</button>
+      <button class="h-arrow" onclick="heroSlide(1)">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num" data-n="500">0+</div><div class="hstat-lbl">Cars Sold</div></div>
+    <div class="hstat"><div class="hstat-num" data-n="8500">0+</div><div class="hstat-lbl">Happy Owners</div></div>
+    <div class="hstat"><div class="hstat-num" data-n="15">0+</div><div class="hstat-lbl">Years Active</div></div>
+    <div class="hstat"><div class="hstat-num" data-n="24">0</div><div class="hstat-lbl">/7 Support</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- ======================== ABOUT ======================== -->
+<section id="about">
+  <div class="about-layout">
+    <div class="about-side left">
+      <div class="feat sr-l" style="transition-delay:.1s">
+        <div class="feat-n">01</div>
+        <div class="feat-t">Curated Inventory</div>
+        <p class="feat-d">Every vehicle is hand-selected, rigorously inspected, and detailed before it ever reaches our yard. We accept nothing less than perfection.</p>
+      </div>
+      <div class="feat sr-l" style="transition-delay:.2s">
+        <div class="feat-n">02</div>
+        <div class="feat-t">Transparent Pricing</div>
+        <p class="feat-d">Fair, upfront pricing with full vehicle history and inspection reports. No surprises, no hidden charges — ever.</p>
+      </div>
+      <div class="feat sr-l" style="transition-delay:.3s">
+        <div class="feat-n">03</div>
+        <div class="feat-t">Trade-In Accepted</div>
+        <p class="feat-d">Bring in your current car for an instant valuation and put it toward your next vehicle — no hassle, fair market price.</p>
+      </div>
+    </div>
+
+    <div class="about-mid sr">
+      <div class="tag center">Our Identity</div>
+      <div class="about-img-frame">
+        <div class="about-img-border"></div>
+        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=80" alt="Kai and Kairo Car" class="about-img">
+      </div>
+      <div class="about-mid-name">KAI & KAIRO Motors</div>
+      <div class="about-mid-sub">Nairobi · Mombasa · Kisumu · Nakuru</div>
+      <div class="gold-bar" style="margin:12px auto;"></div>
+      <p class="about-mid-text">Founded in 2010, KAI & KAIRO has redefined car buying in East Africa. We believe every car tells a story — and we're here to help you find yours.</p>
+    </div>
+
+    <div class="about-side right">
+      <div class="feat sr-r" style="transition-delay:.1s">
+        <div class="feat-n">04</div>
+        <div class="feat-t">Full Inspection Report</div>
+        <p class="feat-d">Every vehicle undergoes a 150-point inspection with a certified condition report shared before you buy — complete transparency.</p>
+      </div>
+      <div class="feat sr-r" style="transition-delay:.2s">
+        <div class="feat-n">05</div>
+        <div class="feat-t">Import & Sourcing</div>
+        <p class="feat-d">Can't find it in our yard? We source direct imports from Japan, the UK, and Dubai on request — cleared and ready to drive.</p>
+      </div>
+      <div class="feat sr-r" style="transition-delay:.3s">
+        <div class="feat-n">06</div>
+        <div class="feat-t">Flexible Financing</div>
+        <p class="feat-d">Partnered banks and Saccos for asset financing and log book loans — dedicated support from enquiry to ownership.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FLEET ======================== -->
+<section id="fleet">
+  <div class="fleet-header">
+    <div class="tag center sr">Our Inventory</div>
+    <h2 class="sec-title sr">Find Your <em>Next Car</em></h2>
+    <p class="sr" style="margin-top:16px;font-size:.9rem;line-height:1.8;color:rgba(242,237,228,.55);">Six curated categories. Every taste, every terrain, every budget.</p>
+  </div>
+  <div class="fleet-tabs" id="fleetTabs"></div>
+  <div id="fleetCats"></div>
+</section>
+
+<!-- ======================== TEST DRIVE BOOKING ======================== -->
+<section id="availability">
+  <div class="avail-inner">
+    <div class="avail-box sr">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:36px;">
+        <div>
+          <div class="tag">Quick Booking</div>
+          <h2 class="sec-title" style="font-size:clamp(1.6rem,3vw,2.5rem);">Book a <em>Test Drive</em></h2>
+        </div>
+        <p style="font-size:.85rem;color:rgba(242,237,228,.5);max-width:340px;line-height:1.7;margin-top:10px;">Pick a date, time, and branch — we'll have your chosen vehicle ready and waiting.</p>
+      </div>
+      <div class="avail-form" id="availForm">
+        <div class="afield">
+          <label>Preferred Date</label>
+          <input type="date" id="pDate">
+        </div>
+        <div class="afield">
+          <label>Preferred Time</label>
+          <input type="time" id="rDate" value="10:00">
+        </div>
+        <div class="afield">
+          <label>Branch</label>
+          <select>
+            <option>Nairobi — Ngong Road</option>
+            <option>Nairobi — Industrial Area</option>
+            <option>Mombasa</option>
+            <option>Kisumu</option>
+            <option>Nakuru</option>
+          </select>
+        </div>
+        <div class="afield">
+          <label>Vehicle Category</label>
+          <select>
+            <option>Any Category</option>
+            <option>Saloon</option>
+            <option>Luxury</option>
+            <option>Vans & PSV</option>
+            <option>Off-Road 4x4</option>
+            <option>SUV</option>
+            <option>Sports</option>
+          </select>
+        </div>
+        <button class="btn-p btn-sm" onclick="checkAvail()">Book Now →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== WHY US ======================== -->
+<section id="why">
+  <div class="why-inner">
+    <div class="why-top">
+      <div class="why-text sr-l">
+        <div class="tag">Why Choose Us</div>
+        <h2 class="sec-title">East Africa's Most <em>Trusted</em> Dealer</h2>
+        <p>For 15 years, we've been setting the benchmark for car sales excellence across Kenya. Our reputation is built on three pillars: immaculate vehicles, honest service, and total transparency.</p>
+        <div style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap;">
+          <a href="#fleet" class="btn-p btn-sm">Browse Inventory</a>
+          <a href="#contact" class="btn-o btn-sm">Talk to Us</a>
+        </div>
+      </div>
+      <div class="why-img sr-r">
+        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="Premium Car">
+        <div class="why-img-badge">
+          <strong>15</strong>
+          <span>Years of Excellence</span>
+        </div>
+      </div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card sr"><div class="why-icon">🛡️</div><h4>Certified Inspection</h4><p>Every vehicle undergoes a 150-point inspection and comes with a detailed condition report — no surprises.</p></div>
+      <div class="why-card sr" style="transition-delay:.1s"><div class="why-icon">🚚</div><h4>Free Delivery</h4><p>We deliver your new car to your doorstep anywhere in Kenya, fully valeted, fuelled, and ready to go.</p></div>
+      <div class="why-card sr" style="transition-delay:.2s"><div class="why-icon">📄</div><h4>Verified Logbooks</h4><p>Every vehicle comes with a clean, verified logbook and full ownership history — checked and confirmed.</p></div>
+      <div class="why-card sr" style="transition-delay:.3s"><div class="why-icon">💳</div><h4>Flexible Financing</h4><p>Cash, bank loan, Sacco financing, or trade-in. Our finance desk gets you approved fast.</p></div>
+      <div class="why-card sr" style="transition-delay:.4s"><div class="why-icon">🔧</div><h4>12-Month Warranty</h4><p>Every car leaves our yard with a comprehensive 12-month warranty covering major components.</p></div>
+      <div class="why-card sr" style="transition-delay:.5s"><div class="why-icon">🌙</div><h4>24/7 Support</h4><p>Our team is always on call. Questions before, during, or long after your purchase — we're there for you.</p></div>
+      <div class="why-card sr" style="transition-delay:.6s"><div class="why-icon">🤝</div><h4>Fleet Sales</h4><p>Bulk vehicle purchases for businesses, NGOs, and government fleets with dedicated account management.</p></div>
+      <div class="why-card sr" style="transition-delay:.7s"><div class="why-icon">🌍</div><h4>Nationwide Delivery</h4><p>We deliver anywhere in Kenya — Nairobi, Mombasa, Kisumu, Nakuru, and beyond.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== PROCESS ======================== -->
+<section id="process">
+  <div class="process-inner">
+    <div class="process-head sr">
+      <div class="tag center">How Buying Works</div>
+      <h2 class="sec-title">Own It In <em>4 Simple Steps</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="pstep sr" style="transition-delay:.1s">
+        <div class="pstep-num"><span class="pstep-icon">🔍</span></div>
+        <h4>Browse & Select</h4>
+        <p>Explore our curated inventory. Filter by category, budget, or features to find your perfect match.</p>
+      </div>
+      <div class="pstep sr" style="transition-delay:.2s">
+        <div class="pstep-num"><span class="pstep-icon">📅</span></div>
+        <h4>Book a Viewing</h4>
+        <p>Schedule a test drive or in-person viewing at a branch near you. Get instant confirmation.</p>
+      </div>
+      <div class="pstep sr" style="transition-delay:.3s">
+        <div class="pstep-num"><span class="pstep-icon">💳</span></div>
+        <h4>Pay a Deposit</h4>
+        <p>Secure your car with a refundable deposit via M-Pesa, card, or bank transfer while financing is arranged.</p>
+      </div>
+      <div class="pstep sr" style="transition-delay:.4s">
+        <div class="pstep-num"><span class="pstep-icon">🚗</span></div>
+        <h4>Drive It Home</h4>
+        <p>Collect your immaculate vehicle, fully registered and ready. We handle the paperwork.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== GALLERY ======================== -->
+<section id="gallery">
+  <div class="gallery-header">
+    <div class="tag center sr">Gallery</div>
+    <h2 class="sec-title sr">Cars <em>Delivered</em></h2>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<!-- ======================== PROMOS ======================== -->
+<section id="promos">
+  <div class="promos-inner">
+    <div class="promos-head">
+      <div>
+        <div class="tag sr">Special Offers</div>
+        <h2 class="sec-title sr">Current <em>Deals</em></h2>
+      </div>
+      <a href="#fleet" class="btn-o btn-sm sr">View All</a>
+    </div>
+    <div class="promo-cards" id="promoCards"></div>
+  </div>
+</section>
+
+<!-- ======================== SHORTLIST / GARAGE ======================== -->
+<div class="cart-bg" id="cartBg" onclick="toggleCart()"></div>
+<div id="cart-panel">
+  <div class="cp-head">
+    <div>
+      <h3>Your <em style="color:var(--gold);font-style:italic;">Garage</em></h3>
+      <div class="cp-sub">Vehicles you've shortlisted</div>
+    </div>
+    <button class="cp-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cp-items" id="cpItems">
+    <div class="cp-empty"><div class="cp-empty-icon">🚗</div><p>No vehicles shortlisted yet.<br>Browse our inventory!</p></div>
+  </div>
+  <div id="cpFoot" style="display:none">
+    <div class="cp-foot">
+      <div class="cp-total">
+        <span class="cp-total-lbl">Total Value</span>
+        <span class="cp-total-val" id="cpTotal">KES 0</span>
+      </div>
+      <button class="btn-p cp-checkout" onclick="checkout()">Request Callback →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== DETAIL ======================== -->
+<div id="detail-ov" onclick="closeDet(event)">
+  <div class="dm" id="dm">
+    <button class="dm-close" onclick="closeDetDirect()">✕</button>
+    <img src="" alt="" class="dm-img" id="dmImg">
+    <div class="dm-body">
+      <div class="dm-cat" id="dmCat"></div>
+      <h2 class="dm-name" id="dmName"></h2>
+      <p class="dm-desc" id="dmDesc"></p>
+      <div class="dm-specs" id="dmSpecs"></div>
+      <div class="dm-features" id="dmFeats"></div>
+      <div class="dm-actions">
+        <div class="dm-price-wrap">
+          <span>Drive Away Price</span>
+          <div class="dm-price" id="dmPrice"></div>
+          <div class="dm-finance" id="dmFinance"></div>
+        </div>
+        <div class="dm-actions-btns">
+          <button class="btn-o btn-sm" onclick="bookDetTestDrive()">Book Test Drive</button>
+          <button class="btn-p btn-sm" onclick="hireFromDet()">+ Add to Garage</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== SEARCH ======================== -->
+<div id="search-ov">
+  <button class="search-close" onclick="closeSearch()">✕</button>
+  <div class="search-inner">
+    <div class="search-label">What are you looking for?</div>
+    <div class="search-input-wrap">
+      <input type="text" id="searchIn" placeholder="Search cars, categories..." oninput="handleSearch()">
+      <button>⌕</button>
+    </div>
+    <div class="search-results" id="searchRes"></div>
+  </div>
+</div>
+
+<!-- ======================== CONTACT ======================== -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-head sr">
+      <div class="tag">Get In Touch</div>
+      <h2 class="sec-title">Find Your <em>Next Car</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="sr-l">
+        <div class="cf-title">Send Enquiry</div>
+        <div class="fg"><label>Full Name</label><input type="text" placeholder="John Kamau"></div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="john@example.com"></div>
+        <div class="fg"><label>Phone</label><input type="tel" placeholder="+254 700 000 000"></div>
+        <div class="fg"><label>Preferred Test Drive Date</label><input type="date"></div>
+        <div class="fg">
+          <label>Vehicle Category</label>
+          <select>
+            <option>Choose Category</option>
+            <option>Saloon</option><option>Luxury</option><option>Vans & PSV</option>
+            <option>Off-Road 4x4</option><option>SUV</option><option>Sports</option>
+          </select>
+        </div>
+        <div class="fg"><label>Message</label><textarea rows="3" placeholder="Any special requirements? Trade-in details?"></textarea></div>
+        <button class="btn-p" onclick="submitForm()">Send Enquiry →</button>
+      </div>
+      <div class="sr">
+        <div class="cf-title">Contact Info</div>
+        <div class="ci-item">
+          <div class="ci-icon">📍</div>
+          <div><div class="ci-lbl">Head Office</div><div class="ci-val">Ngong Road Motor Yard, Nairobi</div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">📞</div>
+          <div><div class="ci-lbl">Phone</div><div class="ci-val">+254 700 123 456</div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">✉️</div>
+          <div><div class="ci-lbl">Email</div><div class="ci-val">hello@kaikairo.co.ke</div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">🕐</div>
+          <div><div class="ci-lbl">Hours</div><div class="ci-val">Mon–Sat: 8:00 AM – 7:00 PM · Sun: 10:00 AM – 4:00 PM</div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">🏢</div>
+          <div><div class="ci-lbl">Branches</div><div class="ci-val">Nairobi · Mombasa · Kisumu · Nakuru</div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">📱</div>
+          <div><div class="ci-lbl">WhatsApp</div><div class="ci-val">+254 722 999 888</div></div>
+        </div>
+      </div>
+      <div class="sr-r">
+        <div class="map-box">
+          <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=36.78,-1.30,36.84,-1.26&layer=mapnik" title="Map"></iframe>
+          <div class="map-pin"><strong>KAI & KAIRO HQ</strong><span>Ngong Road, Nairobi</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== TESTIMONIALS ======================== -->
+<section id="testi">
+  <div class="testi-header">
+    <div class="tag center sr">Client Stories</div>
+    <h2 class="sec-title sr">What Our <em>Owners Say</em></h2>
+  </div>
+  <div class="testi-wrap">
+    <div class="testi-track" id="testiTrack"></div>
+  </div>
+</section>
+
+<!-- ======================== NEWSLETTER ======================== -->
+<section id="newsletter">
+  <div class="nl-inner">
+    <div class="tag center sr">Stay Updated</div>
+    <h2 class="sr">Get Exclusive <em style="color:var(--gold);font-style:italic;">Deals</em> First</h2>
+    <p class="sr">Join 4,000+ subscribers who receive early access to new arrivals, price drops, and financing offers.</p>
+    <div class="nl-form sr">
+      <input type="email" placeholder="Your email address">
+      <button onclick="subNewsletter()">Subscribe →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer>
+  <div class="footer-grid">
+    <div class="f-brand">
+      <a href="#" class="logo"><div class="logo-dot"></div>KAI<em>&</em>KAIRO</a>
+      <p>East Africa's premier car dealership. Trusted by thousands of owners, families, and businesses since 2010.</p>
+      <div class="f-social">
+        <a href="#" class="f-soc">f</a>
+        <a href="#" class="f-soc">𝕏</a>
+        <a href="#" class="f-soc">in</a>
+        <a href="#" class="f-soc">▶</a>
+        <a href="#" class="f-soc">📷</a>
+      </div>
+    </div>
+    <div class="f-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#fleet">Inventory</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Inventory</h4>
+      <ul>
+        <li><a href="#">Saloon Cars</a></li>
+        <li><a href="#">Luxury Collection</a></li>
+        <li><a href="#">Vans & PSV</a></li>
+        <li><a href="#">Off-Road 4x4</a></li>
+        <li><a href="#">SUV Range</a></li>
+        <li><a href="#">Sports Cars</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Vehicle Sourcing</a></li>
+        <li><a href="#">Trade-In Valuation</a></li>
+        <li><a href="#">Fleet Sales</a></li>
+        <li><a href="#">Financing & Loans</a></li>
+        <li><a href="#">Vehicle Inspection</a></li>
+        <li><a href="#">Extended Warranty</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="f-bottom">
+    <p>© 2024 KAI & KAIRO Motors Ltd. All rights reserved.</p>
+    <div class="f-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- ======================== JS ======================== -->
+<script>
+/* ---- DATA ---- */
+const HERO_SLIDES = [
+  {img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80',cat:'Sports',title:'Porsche 911 Carrera',sub:'A legend, ready to be signed over'},
+  {img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1920&q=80',cat:'Luxury',title:'Mercedes E-Class',sub:'German precision, East African roads'},
+  {img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=1920&q=80',cat:'Off-Road',title:'Land Cruiser 200',sub:'Built to conquer every terrain'},
+  {img:'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1920&q=80',cat:'SUV',title:'Toyota RAV4 Hybrid',sub:'Family adventures, zero compromise'},
+  {img:'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1920&q=80',cat:'Muscle',title:'Chevrolet Camaro SS',sub:'Pure American power awaits'},
+];
+
+const FLEET = {
+  saloon:{label:'Saloon',icon:'🚗',cars:[
+    {id:1,name:'Toyota Camry',img:'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600&q=80',price:4500000,badge:'Best Seller',seats:5,fuel:'Petrol',trans:'Auto',desc:'The iconic Camry — supremely comfortable, refined, and economical. Ideal for business travel and city cruising.',specs:[{v:'2.5L',k:'Engine'},{v:'203hp',k:'Power'},{v:'5',k:'Seats'},{v:'Auto',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2019',k:'Year'}],feats:['Cruise Control','Bluetooth','Rear Camera','Lane Alert','Keyless Entry']},
+    {id:2,name:'Honda Accord',img:'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&q=80',price:3800000,badge:'Smooth Ride',seats:5,fuel:'Petrol',trans:'CVT',desc:'Where comfort meets style. The Accord combines intuitive tech with a silky smooth ride for executive travel.',specs:[{v:'1.5T',k:'Engine'},{v:'192hp',k:'Power'},{v:'5',k:'Seats'},{v:'CVT',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2018',k:'Year'}],feats:['Apple CarPlay','Honda Sensing','Heated Seats','LED Headlights']},
+    {id:3,name:'Mazda 6',img:'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80',price:3200000,badge:'Sporty',seats:5,fuel:'Petrol',trans:'6-Spd',desc:'Japanese precision meets European design. The Mazda 6 offers dynamic handling with a premium cabin.',specs:[{v:'2.0L',k:'Engine'},{v:'165hp',k:'Power'},{v:'5',k:'Seats'},{v:'6-Spd',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2017',k:'Year'}],feats:['BOSE Sound','HUD','Sunroof','360 Camera']},
+    {id:4,name:'Toyota Corolla',img:'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80',price:2650000,badge:'Best Value',seats:5,fuel:'Hybrid',trans:'Auto',desc:'The world\'s best-selling car. Reliable, efficient, and comfortable — the Corolla hybrid never disappoints.',specs:[{v:'1.8L',k:'Engine'},{v:'140hp',k:'Power'},{v:'5',k:'Seats'},{v:'Auto',k:'Gearbox'},{v:'Hybrid',k:'Fuel'},{v:'2020',k:'Year'}],feats:['Hybrid Engine','Safety Sense','Wireless Charging']},
+  ]},
+  luxury:{label:'Luxury',icon:'💎',cars:[
+    {id:5,name:'Mercedes E-Class',img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80',price:9800000,badge:'Premium',seats:5,fuel:'Petrol',trans:'9G-Tronic',desc:'The epitome of German luxury. Unmatched refinement, cutting-edge tech, and a commanding road presence.',specs:[{v:'2.0T',k:'Engine'},{v:'255hp',k:'Power'},{v:'5',k:'Seats'},{v:'9G-Tronic',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2020',k:'Year'}],feats:['Burmester Sound','Air Suspension','MBUX Display','Heated+Cooled Seats','Night Vision']},
+    {id:6,name:'BMW 7 Series',img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80',price:14500000,badge:'Elite',seats:5,fuel:'Petrol',trans:'8-Spd',desc:'The Ultimate Driving Machine at its finest. Pure performance wrapped in uncompromising luxury.',specs:[{v:'3.0T',k:'Engine'},{v:'335hp',k:'Power'},{v:'5',k:'Seats'},{v:'8-Spd',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2021',k:'Year'}],feats:['Bowers & Wilkins Sound','Executive Lounge','Massage Seats','Theater Screen','Gesture Control']},
+    {id:7,name:'Range Rover Vogue',img:'https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=600&q=80',price:18900000,badge:'Icon',seats:5,fuel:'Diesel',trans:'8-Spd',desc:'Commanding presence, supreme comfort, legendary off-road capability. The Vogue defines SUV luxury.',specs:[{v:'3.0D',k:'Engine'},{v:'300hp',k:'Power'},{v:'5',k:'Seats'},{v:'8-Spd',k:'Gearbox'},{v:'Diesel',k:'Fuel'},{v:'2021',k:'Year'}],feats:['Meridian Sound','Air Suspension','Terrain Response','Panoramic Roof','Soft-Close Doors']},
+    {id:8,name:'Porsche Cayenne',img:'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=600&q=80',price:16200000,badge:'Performance',seats:5,fuel:'Petrol',trans:'8-PDK',desc:'Where sports car performance meets SUV luxury. The Cayenne redefines what a premium SUV can achieve.',specs:[{v:'2.9TT',k:'Engine'},{v:'440hp',k:'Power'},{v:'5',k:'Seats'},{v:'8-PDK',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2020',k:'Year'}],feats:['Sport Chrono','Active Suspension','PDCC','Night Vision','Head-Up Display']},
+  ]},
+  vans:{label:'Vans & PSV',icon:'🚌',cars:[
+    {id:9,name:'Toyota HiAce 14-Seater',img:'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&q=80',price:3900000,badge:'Best Seller',seats:14,fuel:'Diesel',trans:'Manual',desc:'The iconic Kenyan shuttle. Spacious, durable, and economical — ideal for group transport and PSV business.',specs:[{v:'2.5D',k:'Engine'},{v:'102hp',k:'Power'},{v:'14',k:'Seats'},{v:'5-Spd',k:'Gearbox'},{v:'Diesel',k:'Fuel'},{v:'2019',k:'Year'}],feats:['Air Conditioning','DVD Player','Luggage Racks','USB Charging']},
+    {id:10,name:'Rosa Bus 25-Seater',img:'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=600&q=80',price:6800000,badge:'Large Capacity',seats:25,fuel:'Diesel',trans:'Auto',desc:'Perfect for larger operations. Comfortable, climate-controlled transport for school, church, and tour fleets.',specs:[{v:'4.0D',k:'Engine'},{v:'150hp',k:'Power'},{v:'25',k:'Seats'},{v:'Auto',k:'Gearbox'},{v:'Diesel',k:'Fuel'},{v:'2018',k:'Year'}],feats:['Full AC','Reclining Seats','PA System','Overhead Racks','Curtains']},
+    {id:11,name:'Nissan Urvan NV350',img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80',price:3400000,badge:'Modern',seats:12,fuel:'Diesel',trans:'Manual',desc:'Modern styling, efficient engine. The NV350 is a smart pick for smaller shuttle and delivery operations.',specs:[{v:'2.5D',k:'Engine'},{v:'130hp',k:'Power'},{v:'12',k:'Seats'},{v:'6-Spd',k:'Gearbox'},{v:'Diesel',k:'Fuel'},{v:'2020',k:'Year'}],feats:['AC','Bluetooth','Leather Seats','Safety Assist']},
+  ]},
+  offroad:{label:'Off-Road 4x4',icon:'🏜️',cars:[
+    {id:12,name:'Land Cruiser 200',img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80',price:12500000,badge:'Safari King',seats:8,fuel:'Diesel',trans:'Auto',desc:'The undisputed king of the African bush. The LC200 conquers any terrain with legendary reliability.',specs:[{v:'4.5TD',k:'Engine'},{v:'286hp',k:'Power'},{v:'8',k:'Seats'},{v:'6-Spd',k:'Gearbox'},{v:'Diesel',k:'Fuel'},{v:'2019',k:'Year'}],feats:['Pop-Up Roof','Snorkel','Winch','Fridge Unit','Roof Rack','Recovery Kit']},
+    {id:13,name:'Nissan Patrol Y62',img:'https://images.unsplash.com/photo-1612825173281-9a193378527e?w=600&q=80',price:11200000,badge:'Brute Force',seats:7,fuel:'Petrol',trans:'7-Spd',desc:'Raw power meets refined luxury. The Y62 Patrol is engineered for extreme terrain and long expeditions.',specs:[{v:'5.6V8',k:'Engine'},{v:'400hp',k:'Power'},{v:'7',k:'Seats'},{v:'7-Spd',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2020',k:'Year'}],feats:['V8 Engine','Air Suspension','Rear DVD','Premium Interior','Safari Prep']},
+    {id:14,name:'Toyota Prado 150',img:'https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=600&q=80',price:7900000,badge:'All-Terrain',seats:7,fuel:'Diesel',trans:'Auto',desc:'Versatile and capable. The Prado 150 handles city streets and savannah tracks with equal confidence.',specs:[{v:'2.8D',k:'Engine'},{v:'204hp',k:'Power'},{v:'7',k:'Seats'},{v:'6-Spd',k:'Gearbox'},{v:'Diesel',k:'Fuel'},{v:'2018',k:'Year'}],feats:['Terrain Select','Rear Diff Lock','Cooler Box','Roof Rack']},
+  ]},
+  suv:{label:'SUV',icon:'🚙',cars:[
+    {id:15,name:'Toyota RAV4 Hybrid',img:'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80',price:5600000,badge:'Family Fave',seats:5,fuel:'Hybrid',trans:'CVT',desc:'The perfect family SUV. Hybrid efficiency with all-weather AWD capability and a spacious interior.',specs:[{v:'2.5H',k:'Engine'},{v:'219hp',k:'Power'},{v:'5',k:'Seats'},{v:'CVT',k:'Gearbox'},{v:'Hybrid',k:'Fuel'},{v:'2021',k:'Year'}],feats:['Hybrid AWD','Toyota Safety Sense','Apple CarPlay','Panoramic Roof']},
+    {id:16,name:'Subaru Forester',img:'https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?w=600&q=80',price:4300000,badge:'Adventure',seats:5,fuel:'Petrol',trans:'CVT',desc:'Symmetrical AWD, panoramic sunroof, and EyeSight safety. Built for those who live for the next adventure.',specs:[{v:'2.5L',k:'Engine'},{v:'182hp',k:'Power'},{v:'5',k:'Seats'},{v:'CVT',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2019',k:'Year'}],feats:['EyeSight Driver Assist','Panoramic Sunroof','X-Mode','Wireless Charging']},
+    {id:17,name:'Mitsubishi Outlander',img:'https://images.unsplash.com/photo-1610647752706-3bb12232b3ab?w=600&q=80',price:4600000,badge:'Best Value',seats:7,fuel:'Petrol',trans:'CVT',desc:'Three rows of spacious comfort at an unbeatable price. A smart choice for budget-conscious families.',specs:[{v:'2.4L',k:'Engine'},{v:'166hp',k:'Power'},{v:'7',k:'Seats'},{v:'CVT',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2018',k:'Year'}],feats:['4WD Mode','7 Seats','Rear AC','Smart Key','Rearview Camera']},
+  ]},
+  sports:{label:'Sports',icon:'🏎️',cars:[
+    {id:18,name:'Porsche 911 Carrera',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80',price:22000000,badge:'Iconic',seats:4,fuel:'Petrol',trans:'7-PDK',desc:'The legend. 60 years of driving perfection. Nothing prepares you for the first corner in a 911.',specs:[{v:'3.0TT',k:'Engine'},{v:'385hp',k:'Power'},{v:'4',k:'Seats'},{v:'7-PDK',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2021',k:'Year'}],feats:['Sport Chrono','PASM','Sport Exhaust','Alcantara Interior','Bose Sound']},
+    {id:19,name:'Chevrolet Camaro SS',img:'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80',price:8500000,badge:'Muscle',seats:4,fuel:'Petrol',trans:'Manual',desc:'Pure American muscle. The SS roars to 100km/h in under 4 seconds. An unforgettable weekend head-turner.',specs:[{v:'6.2V8',k:'Engine'},{v:'455hp',k:'Power'},{v:'4',k:'Seats'},{v:'6-Spd',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2019',k:'Year'}],feats:['Brembo Brakes','Magnetic Ride','Head-Up Display','Performance Data Recorder']},
+    {id:20,name:'Ford Mustang GT',img:'https://images.unsplash.com/photo-1547744152-14d985cb937f?w=600&q=80',price:7600000,badge:'Legend',seats:4,fuel:'Petrol',trans:'10-Spd',desc:'An American icon. The Mustang GT turns heads everywhere and the 5.0 V8 lets everyone know it\'s coming.',specs:[{v:'5.0V8',k:'Engine'},{v:'450hp',k:'Power'},{v:'4',k:'Seats'},{v:'10-Spd',k:'Gearbox'},{v:'Petrol',k:'Fuel'},{v:'2020',k:'Year'}],feats:['Active Exhaust','Brembo Brakes','SYNC4','Track Mode','Launch Control']},
+  ]},
+};
+
+const TESTI = [
+  {name:'Sarah Kamau',car:'Range Rover Vogue',stars:5,text:'Absolutely incredible service! The Range Rover was immaculate and the paperwork was sorted within days. KAI & KAIRO made buying our dream car effortless.',avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80'},
+  {name:'David Mwangi',car:'Land Cruiser 200',stars:5,text:'Bought the LC200 for our Maasai Mara trips. The inspection report gave me total confidence, and it has handled every track effortlessly since.',avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80'},
+  {name:'Amina Hassan',car:'BMW 7 Series',stars:5,text:'Our company\'s fleet purchase with KAI & KAIRO was seamless. Transparent pricing, pristine cars, and a dedicated account manager throughout.',avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80'},
+  {name:'James Otieno',car:'Porsche 911',stars:5,text:'Bought the 911 for my fortieth birthday. Words cannot describe the pure joy of driving it home. Best decision I\'ve made in years!',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80'},
+  {name:'Grace Njeri',car:'Toyota HiAce',stars:4,text:'Bought the HiAce for our church shuttle fleet. Great value, verified logbook, and the financing desk got us approved fast.',avatar:'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&q=80'},
+  {name:'Mohammed Ali',car:'Mercedes E-Class',stars:5,text:'Every interaction with KAI & KAIRO feels first class. The E-Class was spotless and the team went above and beyond after the sale too.',avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80'},
+];
+
+const GALLERY_IMGS = [
+  {img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=700&q=80',lbl:'Luxury Collection'},
+  {img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=700&q=80',lbl:'Off-Road & Safari'},
+  {img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&q=80',lbl:'Sports Cars'},
+  {img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=700&q=80',lbl:'Executive Sedans'},
+  {img:'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=700&q=80',lbl:'Family SUVs'},
+  {img:'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=700&q=80',lbl:'Weekend Machines'},
+  {img:'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=700&q=80',lbl:'City Runabouts'},
+];
+
+const PROMOS = [
+  {img:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80',badge:'Limited Time',label:'Trade-In Bonus',title:'Trade In, Save More',desc:'Trade in your current vehicle for an instant valuation and get a bonus KES 50,000 off any SUV in our inventory.',valid:'Valid until Dec 31, 2024'},
+  {img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80',badge:'0% Deposit',label:'Finance Offer',title:'Weekend Finance Special',desc:'Zero deposit financing on selected saloons and SUVs, approved in 24 hours. Book a viewing to qualify.',valid:'Valid weekends only'},
+  {img:'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80',badge:'New',label:'Corporate Deal',title:'Fleet Purchase Programme',desc:'Businesses buying 3+ vehicles save up to 12% with a dedicated account manager and priority servicing.',valid:'Ongoing offer'},
+];
+
+/* ---- CURSOR ---- */
+const cur = document.getElementById('cur'), curR = document.getElementById('curR');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px';
+  curR.style.left = e.clientX+'px'; curR.style.top = e.clientY+'px';
+});
+document.addEventListener('mouseover', e => {
+  if(e.target.matches('a,button,input,select,textarea,[onclick],.ccard,.tcard,.promo,.g-item')){cur.classList.add('big');curR.classList.add('big');}
+});
+document.addEventListener('mouseout', e => {
+  if(e.target.matches('a,button,input,select,textarea,[onclick],.ccard,.tcard,.promo,.g-item')){cur.classList.remove('big');curR.classList.remove('big');}
+});
+
+/* ---- NAV SCROLL ---- */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
+  checkReveal();
+  parallaxHero();
+});
+
+/* ---- HAMBURGER ---- */
+function toggleMenu(){
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+/* ---- SCROLL REVEAL ---- */
+function checkReveal(){
+  document.querySelectorAll('.sr,.sr-l,.sr-r,.sr-s').forEach(el=>{
+    if(el.getBoundingClientRect().top < innerHeight*.88) el.classList.add('vis');
+  });
+}
+checkReveal();
+
+/* ---- PARALLAX ---- */
+function parallaxHero(){
+  const bg = document.querySelector('.hero-slide.active .hero-slide-bg');
+  if(bg) bg.style.transform = `scale(1) translateY(${scrollY*0.15}px)`;
+}
+
+/* ---- COUNTERS ---- */
+function animCnt(el,n){
+  let c=0;const s=n/70;
+  const t=setInterval(()=>{c+=s;if(c>=n){el.textContent=n+(el.dataset.n=='24'?'/7':'+');clearInterval(t);}else el.textContent=Math.floor(c)+(el.dataset.n=='24'?'/7':'+');},18);
+}
+const cntObs = new IntersectionObserver(ee=>{ee.forEach(e=>{if(e.isIntersecting){animCnt(e.target,+e.target.dataset.n);cntObs.unobserve(e.target);}});},{threshold:.5});
+document.querySelectorAll('[data-n]').forEach(el=>cntObs.observe(el));
+
+/* ---- HERO CAROUSEL ---- */
+let hIdx=0,hAuto;
+function buildHero(){
+  const wrap=document.getElementById('heroSlides'),dots=document.getElementById('heroDots');
+  document.getElementById('slideTotal').textContent=String(HERO_SLIDES.length).padStart(2,'0');
+  HERO_SLIDES.forEach((s,i)=>{
+    const div=document.createElement('div'); div.className='hero-slide'+(i===0?' active':'');
+    div.innerHTML=`<img class="hero-slide-bg" src="${s.img}" alt="${s.title}" loading="${i?'lazy':'eager'}"><div class="hero-slide-overlay"></div>`;
+    wrap.appendChild(div);
+    const dot=document.createElement('button'); dot.className='hero-dot'+(i===0?' active':'');
+    dot.onclick=()=>goHero(i); dots.appendChild(dot);
+  });
+  hAuto=setInterval(()=>heroSlide(1),5500);
+}
+function heroSlide(d){clearInterval(hAuto);goHero((hIdx+d+HERO_SLIDES.length)%HERO_SLIDES.length);hAuto=setInterval(()=>heroSlide(1),5500);}
+function goHero(n){
+  document.querySelectorAll('.hero-slide').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.hero-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+  document.getElementById('slideNum').textContent=String(n+1).padStart(2,'0');
+  hIdx=n;
+}
+buildHero();
+
+/* ---- MARQUEE ---- */
+const marqueeItems=['Premium Car Sales','Nairobi','Certified Pre-Owned','Import Specialists','Trade-In Welcome','Flexible Financing','24/7 Support','East Africa\'s Best'];
+const mEl=document.getElementById('marquee');
+const mContent=marqueeItems.map(t=>`<div class="marquee-item">${t}</div>`).join('');
+mEl.innerHTML=mContent+mContent;
+
+/* ---- FLEET ---- */
+let cState={};
+function buildFleet(){
+  const tabs=document.getElementById('fleetTabs'),cats=document.getElementById('fleetCats');
+  Object.entries(FLEET).forEach(([k,cat],i)=>{
+    const btn=document.createElement('button');btn.className='ftab'+(i===0?' on':'');
+    btn.textContent=cat.icon+' '+cat.label;btn.dataset.k=k;
+    btn.onclick=()=>switchCat(k);tabs.appendChild(btn);
+    const div=document.createElement('div');div.className='fcat'+(i===0?' on':'');div.id='cat-'+k;
+    div.innerHTML=`<div class="carousel-outer"><div class="c-track-wrap"><div class="c-track" id="tr-${k}">${cat.cars.map(c=>carCard(c,cat.label)).join('')}</div></div>
+    <button class="c-prev" onclick="slide('${k}',-1)">&#8592;</button>
+    <button class="c-next" onclick="slide('${k}',1)">&#8594;</button>
+    <div class="c-dots" id="dots-${k}"></div></div>`;
+    cats.appendChild(div);
+    cState[k]=0;
+  });
+  Object.keys(FLEET).forEach(k=>buildDots(k));
+}
+function carCard(c,catLabel){
+  return `<div class="ccard">
+    <div class="ccard-img-wrap"><img class="ccard-img" src="${c.img}" alt="${c.name}" loading="lazy"><span class="ccard-ribbon">${c.badge}</span>
+    <button class="ccard-fav" onclick="toggleFav(this,${c.id})">♡</button></div>
+    <div class="ccard-body">
+      <div class="ccard-cat">${catLabel}</div>
+      <div class="ccard-name">${c.name}</div>
+      <div class="ccard-specs">
+        <span class="cspec"><span class="cspec-i">👥</span>${c.seats} Seats</span>
+        <span class="cspec"><span class="cspec-i">⛽</span>${c.fuel}</span>
+        <span class="cspec"><span class="cspec-i">⚙️</span>${c.trans}</span>
+      </div>
+      <div class="ccard-foot">
+        <div class="cprice"><strong>KES ${c.price.toLocaleString()}</strong><span>Drive Away Price</span></div>
+        <div class="ccard-btns">
+          <button class="btn-d" onclick="openDet(${c.id})">Details</button>
+          <button class="btn-h" onclick="addCart(${c.id})">+ Shortlist</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function switchCat(k){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.toggle('on',t.dataset.k===k));
+  document.querySelectorAll('.fcat').forEach(c=>c.classList.toggle('on',c.id==='cat-'+k));
+  cState[k]=0; applySlide(k);
+}
+function slide(k,d){
+  const tr=document.getElementById('tr-'+k),cards=tr.querySelectorAll('.ccard'),wrap=tr.parentElement;
+  const cw=cards[0].offsetWidth+22,vis=Math.max(1,Math.floor(wrap.offsetWidth/cw));
+  const max=Math.max(0,cards.length-vis);
+  cState[k]=Math.max(0,Math.min(max,cState[k]+d));
+  applySlide(k);
+}
+function applySlide(k){
+  const tr=document.getElementById('tr-'+k),cards=tr.querySelectorAll('.ccard'),wrap=tr.parentElement;
+  const cw=cards[0].offsetWidth+22;
+  tr.style.transform=`translateX(-${cState[k]*cw}px)`;
+  document.querySelectorAll(`#dots-${k} .c-dot`).forEach((d,i)=>d.classList.toggle('on',i===cState[k]));
+}
+function buildDots(k){
+  const tr=document.getElementById('tr-'+k),cards=tr.querySelectorAll('.ccard'),wrap=tr.parentElement,dc=document.getElementById('dots-'+k);
+  const cw=cards[0]?.offsetWidth+22||300,vis=Math.max(1,Math.floor(wrap.offsetWidth/cw));
+  const pages=Math.max(1,cards.length-vis+1);
+  dc.innerHTML='';
+  for(let i=0;i<pages;i++){const b=document.createElement('button');b.className='c-dot'+(i===0?' on':'');b.onclick=()=>{cState[k]=i;applySlide(k);};dc.appendChild(b);}
+}
+
+let favs={};
+function toggleFav(btn,id){
+  favs[id]=!favs[id];
+  btn.classList.toggle('liked',favs[id]);
+  btn.textContent=favs[id]?'♥':'♡';
+  toast(favs[id]?'Added to wishlist ♥':'Removed from wishlist');
+}
+buildFleet();
+
+/* ---- GALLERY ---- */
+function buildGallery(){
+  document.getElementById('galleryGrid').innerHTML=GALLERY_IMGS.map(g=>`
+    <div class="g-item"><img src="${g.img}" alt="${g.lbl}" loading="lazy"><div class="g-item-overlay"><span class="g-item-label">${g.lbl}</span></div></div>`).join('');
+}
+buildGallery();
+
+/* ---- PROMOS ---- */
+function buildPromos(){
+  document.getElementById('promoCards').innerHTML=PROMOS.map(p=>`
+    <div class="promo sr-s">
+      <img src="${p.img}" class="promo-bg" alt="${p.title}" loading="lazy">
+      <div class="promo-overlay"></div>
+      <span class="promo-badge">${p.badge}</span>
+      <div class="promo-body">
+        <div class="promo-label">${p.label}</div>
+        <div class="promo-title">${p.title}</div>
+        <p class="promo-desc">${p.desc}</p>
+        <div class="promo-validity">🕐 ${p.valid}</div>
+        <div style="margin-top:16px"><a href="#contact" class="btn-o btn-sm">Claim Offer</a></div>
+      </div>
+    </div>`).join('');
+}
+buildPromos();
+
+/* ---- TESTIMONIALS ---- */
+function buildTesti(){
+  const doubled=[...TESTI,...TESTI];
+  document.getElementById('testiTrack').innerHTML=doubled.map(t=>`
+    <div class="tcard">
+      <div class="t-stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</div>
+      <p class="t-text">${t.text}</p>
+      <div class="t-author">
+        <img src="${t.avatar}" class="t-av" alt="${t.name}" loading="lazy">
+        <div><div class="t-name">${t.name}</div><div class="t-car">Bought: ${t.car}</div></div>
+      </div>
+    </div>`).join('');
+}
+buildTesti();
+
+/* ---- GARAGE (SHORTLIST) ---- */
+let cart=[];
+function getAllCars(){return Object.values(FLEET).flatMap(c=>c.cars.map(x=>({...x,catLabel:c.label})));}
+function addCart(id){
+  const car=getAllCars().find(c=>c.id===id);if(!car)return;
+  if(cart.find(i=>i.id===id)){toast(`${car.name} is already in your garage`);return;}
+  cart.push({...car});
+  renderCart();toast(`${car.name} added to your garage 🚗`);
+}
+function rmCart(id){cart=cart.filter(i=>i.id!==id);renderCart();}
+function renderCart(){
+  document.getElementById('cartBadge').textContent=cart.length;
+  const el=document.getElementById('cpItems'),foot=document.getElementById('cpFoot');
+  if(!cart.length){el.innerHTML='<div class="cp-empty"><div class="cp-empty-icon">🚗</div><p>No vehicles shortlisted yet.<br>Browse our inventory!</p></div>';foot.style.display='none';return;}
+  el.innerHTML=cart.map(i=>`<div class="ci">
+    <img src="${i.img}" class="ci-img" alt="${i.name}">
+    <div class="ci-info">
+      <div class="ci-name">${i.name}</div>
+      <div class="ci-cat">${i.catLabel}</div>
+      <div class="ci-price">KES ${i.price.toLocaleString()}</div>
+    </div>
+    <button class="ci-rm" onclick="rmCart(${i.id})">✕</button>
+  </div>`).join('');
+  document.getElementById('cpTotal').textContent='KES '+(cart.reduce((a,b)=>a+b.price,0)).toLocaleString();
+  foot.style.display='block';
+}
+function toggleCart(){document.getElementById('cart-panel').classList.toggle('on');document.getElementById('cartBg').classList.toggle('on');}
+function checkout(){toast('Enquiry sent! Our sales team will call you shortly. 🎉');cart=[];renderCart();toggleCart();}
+
+/* ---- DETAIL ---- */
+let curDet=null;
+function openDet(id){
+  curDet=getAllCars().find(c=>c.id===id);if(!curDet)return;
+  document.getElementById('dmImg').src=curDet.img;
+  document.getElementById('dmCat').textContent=curDet.catLabel;
+  document.getElementById('dmName').textContent=curDet.name;
+  document.getElementById('dmDesc').textContent=curDet.desc;
+  document.getElementById('dmSpecs').innerHTML=curDet.specs.map(s=>`<div class="dm-spec"><strong>${s.v}</strong><span>${s.k}</span></div>`).join('');
+  document.getElementById('dmFeats').innerHTML=curDet.feats.map(f=>`<span class="dm-feat-tag">${f}</span>`).join('');
+  document.getElementById('dmPrice').textContent=`KES ${curDet.price.toLocaleString()}`;
+  const monthly=Math.round(curDet.price*1.12/48);
+  document.getElementById('dmFinance').innerHTML=`From <strong>KES ${monthly.toLocaleString()}</strong>/mo on 48-month financing`;
+  document.getElementById('detail-ov').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeDet(e){if(e.target===document.getElementById('detail-ov'))closeDetDirect();}
+function closeDetDirect(){document.getElementById('detail-ov').classList.remove('on');document.body.style.overflow='';}
+function hireFromDet(){
+  if(!curDet)return;
+  if(cart.find(i=>i.id===curDet.id)){toast(`${curDet.name} is already in your garage`);return;}
+  cart.push({...curDet});renderCart();closeDetDirect();toast(`${curDet.name} added to your garage!`);toggleCart();
+}
+function bookDetTestDrive(){
+  if(!curDet)return;
+  closeDetDirect();
+  toast(`Let's book a test drive for the ${curDet.name} →`);
+  document.getElementById('availability').scrollIntoView({behavior:'smooth'});
+}
+
+/* ---- SEARCH ---- */
+function openSearch(){document.getElementById('search-ov').classList.add('on');document.getElementById('searchIn').focus();}
+function closeSearch(){document.getElementById('search-ov').classList.remove('on');}
+function handleSearch(){
+  const q=document.getElementById('searchIn').value.toLowerCase().trim();
+  const res=document.getElementById('searchRes');
+  if(!q){res.innerHTML=getAllCars().slice(0,8).map(c=>`<button class="search-tag" onclick="searchPick(${c.id})">${c.name}</button>`).join('');return;}
+  const matches=getAllCars().filter(c=>c.name.toLowerCase().includes(q)||c.catLabel.toLowerCase().includes(q));
+  res.innerHTML=matches.length?matches.map(c=>`<button class="search-tag" onclick="searchPick(${c.id})">${c.name} <span style="opacity:.5;font-size:.8em">${c.catLabel}</span></button>`).join(''):'<span style="color:rgba(242,237,228,.4);font-size:.9rem">No results found</span>';
+}
+function searchPick(id){closeSearch();openDet(id);}
+document.getElementById('search-ov').addEventListener('keydown',e=>{if(e.key==='Escape')closeSearch();});
+// init search tags
+handleSearch();
+
+/* ---- TEST DRIVE BOOKING ---- */
+function checkAvail(){
+  const p=document.getElementById('pDate').value,t=document.getElementById('rDate').value;
+  if(!p||!t){toast('Please select a date and time');return;}
+  toast(`✓ Test drive requested for ${p} at ${t} — we'll confirm shortly!`);
+  document.getElementById('fleet').scrollIntoView({behavior:'smooth'});
+}
+
+/* ---- FORM ---- */
+function submitForm(){toast('Enquiry sent! We\'ll reply within 2 hours. ✅');}
+function subNewsletter(){toast('Subscribed! Welcome to KAI & KAIRO exclusives. ✨');}
+
+/* ---- TOAST ---- */
+let tTimer;
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');
+  clearTimeout(tTimer);tTimer=setTimeout(()=>t.classList.remove('on'),3500);
+}
+
+/* ---- RESIZE ---- */
+window.addEventListener('resize',()=>Object.keys(FLEET).forEach(k=>{buildDots(k);applySlide(k);}));
+</script>
+</body>
+</html>
