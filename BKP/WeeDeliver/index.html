@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeeDeliver — Premium CannaDelivery</title>
+<meta name="description" content="WeeDeliver — premium, lab-tested cannabis delivered island-wide. Flowers, edibles, oils, vapes, pre-rolls & accessories.">
+
+<!-- Fonts: Bricolage Grotesque (display), Instrument Serif (accent italic), Inter (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ AGE / INFO STRIP (demo notice) ============ -->
+<!-- <div class="demo-strip">Over 18</div> -->
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader">
+  <div class="preloader-leaf">
+    <svg viewBox="0 0 100 100" width="56" height="56"><use href="#leaf-icon"></use></svg>
+  </div>
+  <span class="preloader-text">WeeDeliver</span>
+</div>
+
+<!-- ============ SVG SPRITE (icons used everywhere) ============ -->
+<svg style="display:none">
+  <symbol id="leaf-icon" viewBox="0 0 100 100">
+    <path d="M50 5 C20 20 10 55 30 85 C35 60 45 45 50 5 Z M50 5 C80 20 90 55 70 85 C65 60 55 45 50 5 Z" />
+  </symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24"><path d="M10 4a6 6 0 104.47 10.03l4.75 4.75 1.41-1.41-4.75-4.75A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z"/></symbol>
+  <symbol id="icon-cart" viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12L6 6zm0 0L5 3H2m5 3l1.2 7.2a2 2 0 002 1.8h8.6a2 2 0 002-1.7L21 8H6zM9 21a1.2 1.2 0 110-2.4 1.2 1.2 0 010 2.4zm8 0a1.2 1.2 0 110-2.4 1.2 1.2 0 010 2.4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-9.5-8.8C.7 7.6 2.6 4 6.2 4c2 0 3.5 1.1 4.3 2.4C11.3 5.1 12.8 4 14.8 4c3.6 0 5.5 3.6 3.7 7.2C19 15.65 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-minus" viewBox="0 0 24 24"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-truck" viewBox="0 0 24 24"><path d="M2 6h11v9H2zM13 10h4l4 3v2h-8zM6 19a2 2 0 110-4 2 2 0 010 4zm12 0a2 2 0 110-4 2 2 0 010 4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-flask" viewBox="0 0 24 24"><path d="M9 2h6M10 2v6l-6 12a2 2 0 002 3h12a2 2 0 002-3l-6-12V2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 1112 0v3m-14 0h16v9H4v-9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-sparkle" viewBox="0 0 24 24"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></symbol>
+</svg>
+
+<!-- ============ STICKY NAVIGATION ============ -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner container">
+    <a href="#home" class="logo">
+      <svg viewBox="0 0 100 100" class="logo-leaf"><use href="#leaf-icon"></use></svg>
+      <span>Wee<em>Deliver</em></span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#shop" class="nav-link">Shop</a>
+      <a href="#categories" class="nav-link">Categories</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search">
+        <svg><use href="#icon-search"></use></svg>
+      </button>
+      <button class="icon-btn" id="wishlistToggle" aria-label="Wishlist">
+        <svg><use href="#icon-heart"></use></svg>
+        <span class="badge-count" id="wishlistCount">0</span>
+      </button>
+      <button class="icon-btn" id="cartToggle" aria-label="Cart">
+        <svg><use href="#icon-cart"></use></svg>
+        <span class="badge-count" id="cartCount">0</span>
+      </button>
+      <button class="icon-btn" id="profileToggle" aria-label="Profile">
+        <svg><use href="#icon-user"></use></svg>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search bar drop-down -->
+  <div class="search-bar" id="searchBar">
+    <div class="container search-bar-inner">
+      <svg><use href="#icon-search"></use></svg>
+      <input type="text" id="searchInput" placeholder="Search strains, edibles, oils…" autocomplete="off">
+      <button class="icon-btn" id="searchClose"><svg><use href="#icon-close"></use></svg></button>
+    </div>
+    <div class="search-results container" id="searchResults"></div>
+  </div>
+</header>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#home" class="nav-link">Home</a>
+  <a href="#shop" class="nav-link">Shop</a>
+  <a href="#categories" class="nav-link">Categories</a>
+  <a href="#about" class="nav-link">About</a>
+  <a href="#faq" class="nav-link">FAQ</a>
+  <a href="#contact" class="nav-link">Contact</a>
+</div>
+<div class="overlay-backdrop" id="mobileNavBackdrop"></div>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-smoke smoke-1"></div>
+  <div class="hero-smoke smoke-2"></div>
+  <div class="hero-smoke smoke-3"></div>
+  <div class="hero-leaves">
+    <svg class="floating-leaf leaf-a" viewBox="0 0 100 100"><use href="#leaf-icon"></use></svg>
+    <svg class="floating-leaf leaf-b" viewBox="0 0 100 100"><use href="#leaf-icon"></use></svg>
+    <svg class="floating-leaf leaf-c" viewBox="0 0 100 100"><use href="#leaf-icon"></use></svg>
+    <svg class="floating-leaf leaf-d" viewBox="0 0 100 100"><use href="#leaf-icon"></use></svg>
+  </div>
+  <div class="gold-rays"></div>
+
+  <div class="container hero-inner">
+    <p class="eyebrow reveal">🇯🇲 Island-Wide Delivery · Licensed &amp; Lab Tested</p>
+    <h1 class="hero-title reveal">Jamaica's <em>Premium</em><br> Cannabis Delivery</h1>
+    <p class="hero-subtitle reveal">Sun-grown flower, small-batch extracts and the island's finest genetics —
+      brought to your door in a box that feels as good as what's inside it.</p>
+    <div class="hero-cta reveal">
+      <a href="#shop" class="btn btn-gold ripple">Shop Now</a>
+      <a href="#categories" class="btn btn-outline ripple">View Strains</a>
+    </div>
+
+    <div class="hero-stats reveal">
+      <div class="stat"><span class="stat-num" data-count="15000">0</span><span class="stat-label">Deliveries Made</span></div>
+      <div class="stat"><span class="stat-num" data-count="120">0</span><span class="stat-label">Strains &amp; Products</span></div>
+      <div class="stat"><span class="stat-num" data-count="98">0</span><span class="stat-label">% Satisfaction</span></div>
+      <div class="stat"><span class="stat-num" data-count="24">0</span><span class="stat-label">Hr Fast Dispatch</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll-cue"><span></span> Scroll</div>
+</section>
+
+<!-- ============ FEATURED CATEGORIES ============ -->
+<section class="section categories-section" id="categories">
+  <div class="container">
+    <p class="section-eyebrow reveal">Explore</p>
+    <h2 class="section-title reveal">Featured <em>Categories</em></h2>
+    <div class="category-grid" id="categoryGrid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED PRODUCTS / SHOP ============ -->
+<section class="section shop-section" id="shop">
+  <div class="container">
+    <p class="section-eyebrow reveal">The Menu</p>
+    <h2 class="section-title reveal">Featured <em>Products</em></h2>
+
+    <!-- Filters + Sorting toolbar -->
+    <div class="shop-toolbar reveal">
+      <div class="filter-group">
+        <label for="filterCategory">Category</label>
+        <select id="filterCategory">
+          <option value="all">All</option>
+          <option value="flowers">Flowers</option>
+          <option value="edibles">Edibles</option>
+          <option value="oils">Oils</option>
+          <option value="vapes">Vapes</option>
+          <option value="prerolls">Pre Rolls</option>
+          <option value="accessories">Accessories</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filterPrice">Max Price <span id="priceVal">KSh 10,000</span></label>
+        <input type="range" id="filterPrice" min="500" max="10000" step="100" value="10000">
+      </div>
+      <div class="filter-group">
+        <label for="filterThc">Min THC% <span id="thcVal">0%</span></label>
+        <input type="range" id="filterThc" min="0" max="35" step="1" value="0">
+      </div>
+      <div class="filter-group">
+        <label for="filterCbd">Min CBD% <span id="cbdVal">0%</span></label>
+        <input type="range" id="filterCbd" min="0" max="20" step="1" value="0">
+      </div>
+      <div class="filter-group">
+        <label for="sortBy">Sort By</label>
+        <select id="sortBy">
+          <option value="popularity">Popularity</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Highest Rated</option>
+          <option value="bestselling">Best Selling</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+      <button class="btn btn-ghost-small" id="resetFilters">Reset</button>
+    </div>
+
+    <p class="results-count" id="resultsCount"></p>
+
+    <div class="product-grid" id="productGrid">
+      <!-- injected by JS -->
+    </div>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <svg viewBox="0 0 100 100" width="48"><use href="#leaf-icon"></use></svg>
+      <p>Nothing matches those filters. Try widening your search.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY CHOOSE US ============ -->
+<section class="section why-section">
+  <div class="container">
+    <p class="section-eyebrow reveal">The Standard</p>
+    <h2 class="section-title reveal">Why Choose <em>WeeDeliver</em></h2>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon"><svg><use href="#icon-flask"></use></svg></div>
+        <h3>Lab Tested</h3>
+        <p>Every batch is third-party tested for potency and purity before it ships.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg><use href="#icon-truck"></use></svg></div>
+        <h3>Fast Delivery</h3>
+        <p>Discreet, same-day dispatch across Kingston, Montego Bay &amp; beyond.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg><use href="#icon-sparkle"></use></svg></div>
+        <h3>Premium Quality</h3>
+        <p>Hand-selected genetics grown by small island cultivators, not mass farms.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg><use href="#icon-lock"></use></svg></div>
+        <h3>Secure Payment</h3>
+        <p>Encrypted checkout with M-Pesa &amp; card options — your data stays yours.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg class="leaf-fill"><use href="#leaf-icon"></use></svg></div>
+        <h3>Fresh Products</h3>
+        <p>Small-batch fulfilment means what you order was cured, not sitting on a shelf.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg><use href="#icon-shield"></use></svg></div>
+        <h3>Licensed Supplier</h3>
+        <p>Fully licensed under island cannabis regulation, audited every quarter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section about-section" id="about">
+  <div class="container about-grid">
+    <div class="about-media reveal">
+      <div class="about-frame">
+        <svg viewBox="0 0 100 100" class="about-leaf-bg"><use href="#leaf-icon"></use></svg>
+        <div class="about-badge">
+          <strong>10+</strong>
+          <span>Years Cultivating</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-copy reveal">
+      <p class="section-eyebrow">Our Story</p>
+      <h2 class="section-title">Grown on the Island.<br>Delivered with <em>Pride</em>.</h2>
+      <p>WeeDeliver started in a small Kingston backyard grow and became the island's most trusted
+        name in cannabis delivery. We work directly with independent Jamaican cultivators, paying fair
+        prices for exceptional flower, then get it to your door before it loses its shine.</p>
+      <p>No middlemen warehouses, no mystery genetics — just lab-verified potency, honest descriptions,
+        and the kind of service that remembers your order.</p>
+      <div class="about-points">
+        <div class="about-point"><svg><use href="#icon-shield"></use></svg> Licensed cannabis retailer</div>
+        <div class="about-point"><svg><use href="#icon-flask"></use></svg> Independent lab verification</div>
+        <div class="about-point"><svg><use href="#icon-truck"></use></svg> Discreet island-wide courier network</div>
+      </div>
+      <a href="#contact" class="btn btn-outline ripple">Get In Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section testimonial-section">
+  <div class="container">
+    <p class="section-eyebrow reveal">Word on the Street</p>
+    <h2 class="section-title reveal">What Our <em>Customers</em> Say</h2>
+
+    <div class="testimonial-carousel reveal">
+      <button class="carousel-btn prev" id="testimonialPrev" aria-label="Previous"><svg style="transform:rotate(180deg)"><use href="#icon-chevron"></use></svg></button>
+
+      <div class="testimonial-track-wrap">
+        <div class="testimonial-track" id="testimonialTrack">
+          <!-- injected by JS -->
+        </div>
+      </div>
+
+      <button class="carousel-btn next" id="testimonialNext" aria-label="Next"><svg><use href="#icon-chevron"></use></svg></button>
+    </div>
+    <div class="carousel-dots" id="testimonialDots"></div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section faq-section" id="faq">
+  <div class="container">
+    <p class="section-eyebrow reveal">Questions</p>
+    <h2 class="section-title reveal">Frequently Asked <em>Questions</em></h2>
+    <div class="faq-list" id="faqList">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWSLETTER ============ -->
+<section class="section newsletter-section">
+  <div class="container newsletter-inner reveal">
+    <svg class="newsletter-leaf" viewBox="0 0 100 100"><use href="#leaf-icon"></use></svg>
+    <h2 class="section-title">Join the <em>Inner Circle</em></h2>
+    <p>Get first access to drops, island specials and rewards-only pricing.</p>
+    <form class="newsletter-form" id="newsletterForm">
+      <input type="email" id="newsletterEmail" placeholder="you@email.com" required>
+      <button type="submit" class="btn btn-gold ripple">Subscribe</button>
+    </form>
+    <p class="newsletter-note">By subscribing you must confirm you are of legal cannabis age in your jurisdiction.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ CONTACT / FOOTER ============ -->
+<footer class="footer" id="contact">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="#home" class="logo">
+        <svg viewBox="0 0 100 100" class="logo-leaf"><use href="#leaf-icon"></use></svg>
+        <span>Wee<em>Deliver</em></span>
+      </a>
+      <p>Premium, lab-tested cannabis delivered across Jamaica — quietly, quickly, and with pride.</p>
+      <div class="social-icons">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="X">X</a>
+        <a href="#" aria-label="WhatsApp">WA</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="#about">Our Story</a>
+      <a href="#">Sustainability</a>
+      <a href="#">Careers</a>
+      <a href="#">Lab Results</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#shop">All Products</a>
+      <a href="#categories">Categories</a>
+      <a href="#">Deals</a>
+      <a href="#">Gift Cards</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Help</h4>
+      <a href="#faq">FAQ</a>
+      <a href="#">Shipping Info</a>
+      <a href="#">Track Order</a>
+      <a href="#">Contact Us</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Age Verification</a>
+      <a href="#">Compliance</a>
+    </div>
+
+    <div class="footer-col footer-contact">
+      <h4>Contact</h4>
+      <p>12 Hope Road, Kingston, Jamaica</p>
+      <p>hello@weedeliver.jm</p>
+      <p>+1 (876) 555-0142</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom container">
+    <p>&copy; <span id="year"></span> WeeDeliver. All rights reserved. This is a front-end demo — no real products are sold.</p>
+    <p class="footer-legal-note">You must be of legal cannabis age to browse this demo site.</p>
+  </div>
+</footer>
+
+<!-- ============ CART OVERLAY ============ -->
+<aside class="cart-overlay" id="cartOverlay" aria-hidden="true">
+  <div class="cart-header">
+    <h3>Your Cart <span id="cartItemsLabel">(0 items)</span></h3>
+    <button class="icon-btn" id="cartClose"><svg><use href="#icon-close"></use></svg></button>
+  </div>
+
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty" id="cartEmpty">
+      <svg viewBox="0 0 100 100" width="48"><use href="#leaf-icon"></use></svg>
+      <p>Your cart is empty.</p>
+      <button class="btn btn-outline ripple" id="cartEmptyShop">Start Shopping</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+  </div>
+
+  <div class="cart-footer" id="cartFooter" hidden>
+    <div class="coupon-row">
+      <input type="text" id="couponInput" placeholder="Coupon code (try ISLAND10)">
+      <button class="btn btn-ghost-small" id="applyCoupon">Apply</button>
+    </div>
+    <p class="coupon-msg" id="couponMsg"></p>
+
+    <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">KSh 0</span></div>
+    <div class="summary-row" id="sumDiscountRow" hidden><span>Discount</span><span id="sumDiscount">-KSh 0</span></div>
+    <div class="summary-row"><span>Delivery</span><span id="sumShipping">KSh 0</span></div>
+    <div class="summary-row"><span>Tax (16% VAT)</span><span id="sumTax">KSh 0</span></div>
+    <div class="summary-row total-row"><span>Total</span><span id="sumTotal">KSh 0</span></div>
+
+    <div class="cart-actions">
+      <button class="btn btn-outline ripple" id="continueShopping">Continue Shopping</button>
+      <button class="btn btn-gold ripple" id="checkoutBtn">Checkout</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ PROFILE OVERLAY ============ -->
+<aside class="profile-overlay" id="profileOverlay" aria-hidden="true">
+  <div class="cart-header">
+    <h3>My Account</h3>
+    <button class="icon-btn" id="profileClose"><svg><use href="#icon-close"></use></svg></button>
+  </div>
+
+  <div class="profile-body">
+    <!-- Guest state -->
+    <div class="profile-guest" id="profileGuest">
+      <div class="profile-avatar-guest"><svg><use href="#icon-user"></use></svg></div>
+      <h4>You're browsing as a guest</h4>
+      <p>Sign in to track orders, save your wishlist and earn rewards points.</p>
+      <button class="btn btn-gold ripple" id="loginBtn" data-mode="login">Login</button>
+      <button class="btn btn-outline ripple" id="registerBtn" data-mode="register">Register</button>
+    </div>
+
+    <!-- Logged-in mock state -->
+    <div class="profile-account" id="profileAccount" hidden>
+      <div class="profile-card profile-summary">
+        <div class="profile-avatar">AB</div>
+        <div>
+          <h4 id="profileName">Amara Blake</h4>
+          <p>Gold Tier Member</p>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <h5><svg><use href="#icon-truck"></use></svg> Delivery Address</h5>
+        <p>14 Hibiscus Lane, Kingston 6, Jamaica</p>
+      </div>
+
+      <div class="profile-card">
+        <h5><svg><use href="#icon-heart"></use></svg> Wishlist</h5>
+        <p id="profileWishlistCount">0 items saved</p>
+      </div>
+
+      <div class="profile-card">
+        <h5><svg><use href="#icon-cart"></use></svg> Previous Orders</h5>
+        <ul class="mini-orders">
+          <li><span>#WD-1042</span><span>3 items · KSh 6,400</span></li>
+          <li><span>#WD-0987</span><span>1 item · KSh 2,200</span></li>
+        </ul>
+      </div>
+
+      <div class="profile-card">
+        <h5><svg><use href="#icon-sparkle"></use></svg> Rewards Points</h5>
+        <p class="rewards-points">1,280 pts</p>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn btn-outline ripple" id="settingsBtn">Settings</button>
+        <button class="btn btn-ghost-small" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="overlay-backdrop" id="overlayBackdrop"></div>
+
+<!-- ============ PRODUCT MODAL ============ -->
+<div class="modal" id="productModal" aria-hidden="true">
+  <div class="modal-dialog product-modal-dialog">
+    <button class="icon-btn modal-close" id="productModalClose"><svg><use href="#icon-close"></use></svg></button>
+    <div class="product-modal-content" id="productModalContent">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ============ AUTH MODAL (Login / Register) ============ -->
+<div class="modal" id="authModal" aria-hidden="true">
+  <div class="modal-dialog auth-modal-dialog">
+    <button class="icon-btn modal-close" id="authModalClose"><svg><use href="#icon-close"></use></svg></button>
+    <div class="auth-content">
+      <svg class="auth-leaf" viewBox="0 0 100 100"><use href="#leaf-icon"></use></svg>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Login</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+
+      <!-- Login panel -->
+      <form class="auth-panel active" id="loginForm" data-panel="login">
+        <h3>Welcome Back</h3>
+        <p class="auth-sub">Sign in to your WeeDeliver account.</p>
+        <div class="form-field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+        <div class="form-field"><label>Password</label><input type="password" required placeholder="••••••••"></div>
+        <div class="auth-row">
+          <label class="auth-remember"><input type="checkbox"> Remember me</label>
+          <a href="#" class="auth-link">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-gold ripple auth-submit">Login</button>
+        <p class="auth-switch">Don't have an account? <a href="#" data-switch="register">Register</a></p>
+      </form>
+
+      <!-- Register panel -->
+      <form class="auth-panel" id="registerForm" data-panel="register">
+        <h3>Create Your Account</h3>
+        <p class="auth-sub">Join the inner circle for rewards &amp; faster checkout.</p>
+        <div class="form-field"><label>Full Name</label><input type="text" required placeholder="Amara Blake"></div>
+        <div class="form-field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+        <div class="form-field"><label>Password</label><input type="password" required placeholder="Create a password"></div>
+        <div class="auth-row">
+          <label class="auth-remember"><input type="checkbox" required> I confirm I am of legal cannabis age</label>
+        </div>
+        <button type="submit" class="btn btn-gold ripple auth-submit">Create Account</button>
+        <p class="auth-switch">Already have an account? <a href="#" data-switch="login">Login</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHECKOUT MODAL ============ -->
+<div class="modal" id="checkoutModal" aria-hidden="true">
+  <div class="modal-dialog checkout-modal-dialog">
+    <button class="icon-btn modal-close" id="checkoutModalClose"><svg><use href="#icon-close"></use></svg></button>
+    <div class="checkout-content">
+      <h3>Checkout</h3>
+      <div class="checkout-steps" id="checkoutSteps">
+        <span class="step active" data-step="1">1. Details</span>
+        <span class="step" data-step="2">2. Payment</span>
+        <span class="step" data-step="3">3. Review</span>
+      </div>
+
+      <form id="checkoutForm">
+        <div class="checkout-panel" data-panel="1">
+          <h4>Customer Details</h4>
+          <div class="form-row">
+            <div class="form-field"><label>Full Name</label><input type="text" required placeholder="Amara Blake"></div>
+            <div class="form-field"><label>Phone Number</label><input type="tel" required placeholder="+254 7XX XXX XXX"></div>
+          </div>
+          <div class="form-field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+          <h4>Delivery Address</h4>
+          <div class="form-field"><label>Street Address</label><input type="text" required placeholder="14 Hibiscus Lane"></div>
+          <div class="form-row">
+            <div class="form-field"><label>City</label><input type="text" required placeholder="Kingston"></div>
+            <div class="form-field"><label>Delivery Notes</label><input type="text" placeholder="Gate code, landmark…"></div>
+          </div>
+          <button type="button" class="btn btn-gold ripple checkout-next">Continue to Payment</button>
+        </div>
+
+        <div class="checkout-panel" data-panel="2" hidden>
+          <h4>Payment Method</h4>
+          <div class="payment-methods">
+            <label class="payment-option">
+              <input type="radio" name="payment" value="mpesa" checked>
+              <span class="payment-card"><strong>M-Pesa</strong><small>Pay via mobile money</small></span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="card">
+              <span class="payment-card"><strong>Card</strong><small>Visa / Mastercard</small></span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="cod">
+              <span class="payment-card"><strong>Cash</strong><small>Pay on delivery</small></span>
+            </label>
+          </div>
+          <div class="form-field mpesa-field"><label>M-Pesa Number</label><input type="tel" placeholder="07XX XXX XXX"></div>
+          <div class="checkout-nav">
+            <button type="button" class="btn btn-outline ripple checkout-back">Back</button>
+            <button type="button" class="btn btn-gold ripple checkout-next">Review Order</button>
+          </div>
+        </div>
+
+        <div class="checkout-panel" data-panel="3" hidden>
+          <h4>Order Summary</h4>
+          <div class="checkout-summary" id="checkoutSummary"></div>
+          <div class="checkout-nav">
+            <button type="button" class="btn btn-outline ripple checkout-back">Back</button>
+            <button type="submit" class="btn btn-gold ripple">Place Order</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="checkout-success" id="checkoutSuccess" hidden>
+        <div class="success-seal"><svg viewBox="0 0 100 100"><use href="#leaf-icon"></use></svg></div>
+        <h4>Order Placed!</h4>
+        <p>Thanks — this is a demo, so no real order was sent, but your cart has been cleared.</p>
+        <button class="btn btn-gold ripple" id="checkoutDone">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST CONTAINER ============ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ============ BACK TO TOP ============ -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg style="transform:rotate(-90deg)"><use href="#icon-chevron"></use></svg>
+</button>
+
+<script src="script.js"></script>
+</body>
+</html>
