@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Product Details | Datalink Group</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="Datalink Group logo" class="logo-img">
+      Datalink Group
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ecommerce.html" class="active">Products</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline btn-sm">Get a Quote</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="ecommerce.html">Products</a>
+  <a href="contact.html">Contact Us</a>
+</div>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="ecommerce.html">Products</a> / <span id="breadcrumbProduct">Product</span></div>
+    <h1 id="pageHeading">Product Details</h1>
+  </div>
+</section>
+
+<!-- ============ PRODUCT DETAILS ============ -->
+<section class="container">
+  <div class="pd-layout">
+
+    <!-- LEFT: GALLERY -->
+    <div class="pd-gallery">
+      <div class="pd-main-image" id="pdMainImage">
+        <span id="pdMainImageLabel">product-main.jpg</span>
+        <div class="viewfinder-corners"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="pd-thumbs" id="pdThumbs">
+        <div class="pd-thumb active" data-thumb="1">thumb-1.jpg</div>
+        <div class="pd-thumb" data-thumb="2">thumb-2.jpg</div>
+        <div class="pd-thumb" data-thumb="3">thumb-3.jpg</div>
+        <div class="pd-thumb" data-thumb="4">thumb-4.jpg</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: DETAILS -->
+    <div class="pd-info">
+      <div class="pd-category" id="pdCategory">CCTV Cameras</div>
+      <h2 class="pd-name" id="pdName">DL-4MP Dome Camera Pro</h2>
+
+      <div class="pd-price-row">
+        <span class="pd-price" id="pdPrice">KSh 8,500</span>
+        <span class="pd-availability" id="pdAvailability"><i class="fa-solid fa-circle"></i> In Stock</span>
+      </div>
+
+      <div class="pd-specs">
+        <div class="spec-row"><span>Resolution</span><span>4MP / 2560×1440</span></div>
+        <div class="spec-row"><span>Lens</span><span>2.8mm Fixed</span></div>
+        <div class="spec-row"><span>Night Vision</span><span>Up to 30m IR</span></div>
+        <div class="spec-row"><span>Weatherproof Rating</span><span>IP67</span></div>
+        <div class="spec-row"><span>Connectivity</span><span>PoE / Ethernet</span></div>
+      </div>
+
+      <p class="pd-desc">
+        A high-resolution dome camera built for continuous outdoor and indoor monitoring. Wide dynamic
+        range and infrared night vision keep footage clear around the clock, while the vandal-resistant
+        housing holds up to Kenyan weather conditions year-round.
+      </p>
+
+      <div class="pd-list-title">Key Features</div>
+      <ul class="pd-feature-list">
+        <li><i class="fa-solid fa-check"></i> 4MP ultra-clear image sensor</li>
+        <li><i class="fa-solid fa-check"></i> Smart motion detection with alerts</li>
+        <li><i class="fa-solid fa-check"></i> Vandal-resistant, weatherproof housing</li>
+        <li><i class="fa-solid fa-check"></i> Remote viewing via mobile app</li>
+      </ul>
+
+      <div class="pd-list-title">Benefits</div>
+      <ul class="pd-feature-list">
+        <li><i class="fa-solid fa-star"></i> Deters intrusion with visible, reliable coverage</li>
+        <li><i class="fa-solid fa-star"></i> Clear evidence quality footage, day or night</li>
+        <li><i class="fa-solid fa-star"></i> Simple PoE install — one cable for power and data</li>
+      </ul>
+
+      <div class="pd-actions">
+        <a href="contact.html" class="btn btn-solid"><i class="fa-solid fa-headset"></i> Contact Us</a>
+        <a href="#" id="whatsappBtn" target="_blank" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Purchase on WhatsApp</a>
+      </div>
+
+      <!-- DOWNLOADS / RESOURCES
+           - "downloadResource" is a real file download. Upload the file (e.g. a PDF datasheet)
+             into this folder and set its filename in script.js (see DOWNLOAD_FILE_PATH).
+           - "externalResource" is a link button to another site (e.g. a manufacturer page).
+             Set its destination in script.js (see EXTERNAL_RESOURCE_URL). -->
+      <div class="pd-resources">
+        <a href="#" id="downloadResource" class="resource-link" download>
+          <i class="fa-solid fa-file-arrow-down"></i>
+          <span>
+            <strong>Download Datasheet</strong>
+            <small id="downloadFileName">datasheet.pdf</small>
+          </span>
+        </a>
+        <a href="#" id="externalResource" class="resource-link" target="_blank" rel="noopener">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span>
+            <strong>View Manufacturer Page</strong>
+            <small>Opens on partner site</small>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELATED PRODUCTS -->
+  <h3 class="related-title">Related Products</h3>
+  <div class="product-grid related-grid" id="relatedGrid">
+    <!-- populated by script.js -->
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <div class="footer-logo"><i class="fa-solid fa-shield-halved"></i> Datalink Group</div>
+        <p>Complete security, surveillance and networking solutions — designed, installed and supported by one team.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="ecommerce.html">Products</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <ul class="footer-links">
+          <li><a href="ecommerce.html">CCTV Cameras</a></li>
+          <li><a href="ecommerce.html">Solar Equipment</a></li>
+          <li><a href="ecommerce.html">Networking</a></li>
+          <li><a href="ecommerce.html">Smart Security</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Information</h4>
+        <ul class="footer-contact">
+          <li><i class="fa-solid fa-envelope"></i> info@datalinkgroup.co.ke</li>
+          <li><i class="fa-solid fa-phone"></i> +254 700 000 000</li>
+          <li><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Datalink Group. All rights reserved.</span>
+      <span><a href="#">Privacy Policy</a> &middot; <a href="#">Terms of Service</a></span>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script src="script.js"></script>
+</body>
+</html>

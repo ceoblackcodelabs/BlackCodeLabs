@@ -1,0 +1,26 @@
+SAFARI ITINERARY
+========================================
+
+Title: Final Test
+Client: final
+Days: 3
+
+----------------------------------------
+
+Day 1
+--------------------
+  • Day 1 - Stone Town
+    Explore Stone Town on day 1 of your safari adventure.
+
+Day 2
+--------------------
+  • Day 2 - Stone Town
+    Explore Stone Town on day 2 of your safari adventure.
+
+Day 3
+--------------------
+  • Day 3 - Stone Town
+    Explore Stone Town on day 3 of your safari adventure.
+
+========================================
+Book at: http://127.0.0.1:8000

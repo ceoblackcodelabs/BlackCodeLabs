@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Datalink Group</title>
+<meta name="description" content="Get in touch with Datalink Group for a free site assessment and quote.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="Datalink Group logo" class="logo-img">
+      Datalink Group
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ecommerce.html">Products</a>
+      <a href="contact.html" class="active">Contact Us</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline btn-sm">Get a Quote</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="ecommerce.html">Products</a>
+  <a href="contact.html">Contact Us</a>
+</div>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Contact Us</div>
+    <h1>Get In Touch</h1>
+  </div>
+</section>
+
+<!-- ============ CONTACT LAYOUT ============ -->
+<section class="container">
+  <div class="contact-layout">
+
+    <!-- LEFT: MAP + INFO -->
+    <div>
+      <div class="contact-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d997.2032529871832!2d36.82129405238672!3d-1.286233581412688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f11001f069cc3%3A0xe3ed840065d2826c!2sDataLink%20Group%20Headquarters!5e0!3m2!1sen!2ske!4v1784709957828!5m2!1sen!2ske"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          title="Datalink Group Headquarters location on Google Maps">
+        </iframe>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-row">
+          <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <h4>Address</h4>
+            <p>Datalink Plaza, Mombasa Road, Nairobi, Kenya</p>
+          </div>
+        </div>
+        <div class="contact-info-row">
+          <div class="icon-box"><i class="fa-solid fa-phone"></i></div>
+          <div>
+            <h4>Phone</h4>
+            <p>+254 700 000 000</p>
+          </div>
+        </div>
+        <div class="contact-info-row">
+          <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+          <div>
+            <h4>Email</h4>
+            <p>info@datalinkgroup.co.ke</p>
+          </div>
+        </div>
+        <div class="contact-info-row">
+          <div class="icon-box"><i class="fa-solid fa-clock"></i></div>
+          <div>
+            <h4>Business Hours</h4>
+            <p>Mon–Fri: 8:00 AM – 6:00 PM &nbsp;|&nbsp; Sat: 9:00 AM – 2:00 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: FORM -->
+    <div class="contact-form-wrap">
+      <span class="eyebrow">Send a Message</span>
+      <h2 class="section-heading" style="margin-bottom:1.5rem;">We'd love to hear from you</h2>
+
+      <form id="contactForm" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Jane Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="jane@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="+254 7XX XXX XXX">
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="CCTV Installation Quote" required>
+          </div>
+          <div class="form-group full">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your project..." required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-paper-plane"></i> Submit
+        </button>
+        <div class="form-status" id="formStatus">
+          <i class="fa-solid fa-circle-check"></i> <span>Thanks! Your message has been received — we'll respond shortly.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <div class="footer-logo"><i class="fa-solid fa-shield-halved"></i> Datalink Group</div>
+        <p>Complete security, surveillance and networking solutions — designed, installed and supported by one team.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="ecommerce.html">Products</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <ul class="footer-links">
+          <li><a href="ecommerce.html">CCTV Cameras</a></li>
+          <li><a href="ecommerce.html">Solar Equipment</a></li>
+          <li><a href="ecommerce.html">Networking</a></li>
+          <li><a href="ecommerce.html">Smart Security</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Information</h4>
+        <ul class="footer-contact">
+          <li><i class="fa-solid fa-envelope"></i> info@datalinkgroup.co.ke</li>
+          <li><i class="fa-solid fa-phone"></i> +254 700 000 000</li>
+          <li><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Datalink Group. All rights reserved.</span>
+      <span><a href="#">Privacy Policy</a> &middot; <a href="#">Terms of Service</a></span>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script src="script.js"></script>
+</body>
+</html>

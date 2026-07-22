@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products | Datalink Group</title>
+<meta name="description" content="Browse CCTV cameras, DVR/NVR, solar equipment, networking gear and smart security accessories from Datalink Group.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="Datalink Group logo" class="logo-img">
+      Datalink Group
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ecommerce.html" class="active">Products</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline btn-sm">Get a Quote</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="ecommerce.html">Products</a>
+  <a href="contact.html">Contact Us</a>
+</div>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Products</div>
+    <h1>Security &amp; Networking Products</h1>
+  </div>
+</section>
+
+<!-- ============ SHOP LAYOUT ============ -->
+<section class="container">
+  <div class="shop-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="shop-sidebar">
+      <div class="sidebar-block">
+        <h4>Search</h4>
+        <div class="search-box">
+          <input type="text" id="productSearch" placeholder="Search products...">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <h4>Category</h4>
+        <label class="filter-check">
+          <input type="checkbox" value="cctv" class="cat-filter">
+          CCTV Cameras <span class="filter-count">(4)</span>
+        </label>
+        <label class="filter-check">
+          <input type="checkbox" value="dvr" class="cat-filter">
+          DVR/NVR <span class="filter-count">(2)</span>
+        </label>
+        <label class="filter-check">
+          <input type="checkbox" value="solar" class="cat-filter">
+          Solar Equipment <span class="filter-count">(2)</span>
+        </label>
+        <label class="filter-check">
+          <input type="checkbox" value="networking" class="cat-filter">
+          Networking <span class="filter-count">(2)</span>
+        </label>
+        <label class="filter-check">
+          <input type="checkbox" value="accessories" class="cat-filter">
+          Accessories <span class="filter-count">(1)</span>
+        </label>
+        <label class="filter-check">
+          <input type="checkbox" value="smart" class="cat-filter">
+          Smart Security <span class="filter-count">(1)</span>
+        </label>
+      </div>
+
+      <div class="sidebar-block">
+        <h4>Price Range</h4>
+        <div class="price-range">
+          <input type="range" id="priceRange" min="1000" max="60000" step="500" value="60000">
+          <div class="price-values">
+            <span>KSh 1,000</span>
+            <span id="priceRangeValue">KSh 60,000</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <h4>Availability</h4>
+        <label class="availability-option">
+          <input type="radio" name="availability" value="all" checked> All
+        </label>
+        <label class="availability-option">
+          <input type="radio" name="availability" value="in-stock"> In Stock
+        </label>
+        <label class="availability-option">
+          <input type="radio" name="availability" value="pre-order"> Pre-Order
+        </label>
+      </div>
+
+      <div class="sidebar-block">
+        <button class="btn btn-outline reset-filters-btn" id="resetFilters" style="color:var(--color-primary); border-color:var(--color-gray-300);">
+          <i class="fa-solid fa-rotate-left"></i> Reset Filters
+        </button>
+      </div>
+    </aside>
+
+    <!-- PRODUCT GRID -->
+    <div class="shop-main">
+      <div class="shop-toolbar">
+        <p class="results-count"><strong id="resultsCount">12</strong> products found</p>
+        <select class="sort-select" id="sortSelect">
+          <option value="default">Sort: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A–Z</option>
+        </select>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Product cards are also rendered/filtered via script.js -->
+      </div>
+
+      <nav class="pagination" id="pagination" aria-label="Product pages">
+        <!-- populated by script.js -->
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <div class="footer-logo"><i class="fa-solid fa-shield-halved"></i> Datalink Group</div>
+        <p>Complete security, surveillance and networking solutions — designed, installed and supported by one team.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="ecommerce.html">Products</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <ul class="footer-links">
+          <li><a href="ecommerce.html">CCTV Cameras</a></li>
+          <li><a href="ecommerce.html">Solar Equipment</a></li>
+          <li><a href="ecommerce.html">Networking</a></li>
+          <li><a href="ecommerce.html">Smart Security</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Information</h4>
+        <ul class="footer-contact">
+          <li><i class="fa-solid fa-envelope"></i> info@datalinkgroup.co.ke</li>
+          <li><i class="fa-solid fa-phone"></i> +254 700 000 000</li>
+          <li><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Datalink Group. All rights reserved.</span>
+      <span><a href="#">Privacy Policy</a> &middot; <a href="#">Terms of Service</a></span>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script src="script.js"></script>
+</body>
+</html>
