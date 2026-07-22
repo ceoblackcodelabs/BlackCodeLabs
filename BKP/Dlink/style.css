@@ -357,11 +357,11 @@ h1, h2, h3, h4 {
 }
 
 /* Placeholder gradient "photos" standing in for hero1-5.jpg */
-.hero-slide[data-bg="1"] { background-image: linear-gradient(120deg,#0A2540,#123457), url('hero1.jpg'); }
-.hero-slide[data-bg="2"] { background-image: linear-gradient(120deg,#0057B8,#0A2540), url('hero2.jpg'); }
-.hero-slide[data-bg="3"] { background-image: linear-gradient(120deg,#0A2540,#00458F), url('hero3.jpg'); }
-.hero-slide[data-bg="4"] { background-image: linear-gradient(120deg,#123457,#0057B8), url('hero4.jpg'); }
-.hero-slide[data-bg="5"] { background-image: linear-gradient(120deg,#0A2540,#2E7CE0), url('hero5.jpg'); }
+.hero-slide[data-bg="1"] { background-image: url('./hero1.jpg'); }
+.hero-slide[data-bg="2"] { background-image: url('./hero2.jpg'); }
+.hero-slide[data-bg="3"] { background-image: url('./hero3.jpg'); }
+.hero-slide[data-bg="4"] { background-image: url('./hero4.jpg'); }
+.hero-slide[data-bg="5"] { background-image: url('./hero5.jpg'); }
 
 /* Signature: scanning sweep-line, evokes a security-camera scan */
 .hero-scan {
