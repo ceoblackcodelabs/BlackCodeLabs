@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Team and Fix Limited</title>
+    <!-- Bootstrap 5 & Font Awesome (CSS only) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts & Animate.css (optional but good) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <style>
+        /* minimal reset + base style to match the PHP template */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .bg-primary { background-color: #0d6efd !important; }
+        .text-primary { color: #0d6efd !important; }
+        .btn-primary { background-color: #0d6efd; border-color: #0d6efd; }
+        .btn-primary:hover { background-color: #0b5ed7; border-color: #0a58ca; }
+        .btn-square {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        .border-end { border-right: 1px solid #dee2e6 !important; }
+        .border-start { border-left: 1px solid #dee2e6 !important; }
+        .border-top { border-top: 1px solid #dee2e6 !important; }
+        .bg-light { background-color: #f8f9fa !important; }
+        .bg-white { background-color: #ffffff !important; }
+        .bg-dark { background-color: #212529 !important; }
+        .text-white { color: #fff !important; }
+        .text-body { color: #212529 !important; }
+        .sticky-top { position: sticky; top: 0; z-index: 1020; }
+        .navbar-brand img { height: 60px; width: 60px; border-radius: 50%; object-fit: cover; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('assets/img/carousel-1.jpg') center/cover no-repeat;
+            padding: 100px 0;
+        }
+        .breadcrumb-item a { text-decoration: none; }
+        .breadcrumb-item a:hover { color: #fff; text-decoration: underline; }
+
+        /* Contact Form */
+        .form-floating > .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+        .form-control.bg-light {
+            background-color: #f1f4f8 !important;
+        }
+        .form-control.bg-light:focus {
+            background-color: #e9edf2 !important;
+        }
+
+        /* Footer */
+        .footer a.btn-link { color: #adb5bd; text-decoration: none; display: block; padding: 0.2rem 0; }
+        .footer a.btn-link:hover { color: #fff; }
+        .copyright { background: #1a1e22; padding: 1.5rem 0; color: #adb5bd; }
+        .copyright a { color: #adb5bd; text-decoration: none; }
+        .copyright a:hover { color: #fff; }
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 999;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #0d6efd;
+            color: #fff;
+            text-decoration: none;
+        }
+        .back-to-top:hover { background: #0b5ed7; color: #fff; }
+        #spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .spinner-grow { width: 3rem; height: 3rem; }
+        .wow { visibility: visible !important; } /* fallback if wow.js not loaded */
+        @media (max-width: 992px) {
+            .page-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Spinner -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+
+    <!-- Topbar -->
+    <div class="container-fluid bg-light p-0">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <div class="h-100 d-inline-flex align-items-center border-start border-end px-3">
+                    <small class="fa fa-phone-alt me-2"></small>
+                    <small>(+254)123456789</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center border-end px-3">
+                    <small class="far fa-envelope-open me-2"></small>
+                    <small>info@cleanerservice.com</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center border-end px-3">
+                    <small class="far fa-clock me-2"></small>
+                    <small>Mon - Fri : 09 AM - 09 PM</small>
+                </div>
+            </div>
+            <div class="col-lg-5 px-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center">
+                    <a class="btn btn-square border-end border-start" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-square border-end" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-square border-end" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-square border-end" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+            <h1 class="m-0 d-flex align-items-center">
+                <img src="assets/img/logo.jpeg" alt="Logo" style="height:60px; width:60px; border-radius:50%; object-fit:cover;" />
+                <span class="ms-2">Cleaners Limited</span>
+            </h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-3 py-lg-0">
+                <a href="home.html" class="nav-item nav-link active">Home</a>
+                <a href="about.html" class="nav-item nav-link">About</a>
+                <a href="service.html" class="nav-item nav-link">Services</a>
+                <!-- <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="#" class="dropdown-item">Features</a>
+                        <a href="#" class="dropdown-item">Careers</a>
+                        <a href="#" class="dropdown-item">Gallery</a>
+                        <a href="#" class="dropdown-item">Appointment</a>
+                    </div> -->
+                </div>
+                <!-- <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Account</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="#" class="dropdown-item">Login</a>
+                        <a href="#" class="dropdown-item">Register</a>
+                    </div>
+                </div> -->
+                <a href="./appointment.html" class="nav-item nav-link">Book Service</a>
+                <a href="./contact.html" class="nav-item nav-link">Reach Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT (Contact Us Page) -->
+    <main>
+
+        <!-- Page Header Start -->
+        <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container text-center py-5">
+                <h1 class="display-4 text-white animated slideInDown mb-4">Contact Us</h1>
+                <nav aria-label="breadcrumb animated slideInDown">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a class="text-white" href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                        <li class="breadcrumb-item text-primary active" aria-current="page">Contact Us</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+        <!-- Contact Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <!-- Success/Error Alert (static demo) -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
+                    <i class="fas fa-check-circle me-2"></i> Thank you! Your message has been sent successfully.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+                    <i class="fas fa-exclamation-circle me-2"></i> There was an error sending your message. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="row g-5">
+                    <!-- Map Column -->
+                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 450px;">
+                        <div class="position-relative h-100">
+                            <iframe class="position-relative w-100 h-100"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.212144976696!2d36.80891397896288!3d-1.2920659560891388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1074e6be7aab%3A0x417fdf04615111ff!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2ske!4v1706630000000!5m2!1sen!2ske"
+                                frameborder="0" style="min-height: 450px; border:0;" allowfullscreen="" aria-hidden="false"
+                                tabindex="0"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form Column -->
+                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="border-start border-5 border-primary ps-4 mb-5">
+                            <h6 class="text-body text-uppercase mb-2">Contact Us</h6>
+                            <h1 class="display-6 mb-0">If You Have Any Query, Please Contact Us</h1>
+                        </div>
+
+                        <form>
+                            <!-- Honeypot field (hidden from users) -->
+                            <div style="position: absolute; left: -9999px;">
+                                <input type="text" name="honeypot" tabindex="-1" autocomplete="off" />
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control border-0 bg-light" id="name"
+                                               name="name" placeholder="Your Name" required />
+                                        <label for="name">Your Name *</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control border-0 bg-light" id="email"
+                                               name="email" placeholder="Your Email" required />
+                                        <label for="email">Your Email *</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control border-0 bg-light" id="subject"
+                                               name="subject" placeholder="Subject" required />
+                                        <label for="subject">Subject *</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control border-0 bg-light" placeholder="Your message"
+                                                  id="message" name="message" style="height: 150px" required></textarea>
+                                        <label for="message">Message *</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary py-3 px-5" type="submit">
+                                        Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contact End -->
+
+    </main>
+
+    <!-- Footer -->
+    <div class="container-fluid bg-dark footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h1 class="text-white mb-4"><i class="fa fa-building text-primary me-3"></i>Cleaners Limited</h1>
+                    <p>We are trusted by homeowners, businesses, and industries for delivering reliable and high-quality cleaning services.</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-primary me-1" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-primary me-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-primary me-1" href="#"><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-primary me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">Address</h4>
+                    <p><i class="fa fa-map-marker-alt me-3"></i>ST. SQUARE along Eastern Bypass</p>
+                    <p><i class="fa fa-phone-alt me-3"></i>(+254)1234567890</p>
+                    <p><i class="fa fa-phone-alt me-3"></i>(+254)733424009</p>
+                    <p><i class="fa fa-envelope me-3"></i>info@cleanerservice.com</p>
+                    <p><i class="fa fa-envelope me-3"></i>cleanerservice@gmail.com</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">Quick Links</h4>
+                    <a class="btn btn-link" href="#">About Us</a>
+                    <a class="btn btn-link" href="#">Contact Us</a>
+                    <a class="btn btn-link" href="#">Our Services</a>
+                    <a class="btn btn-link" href="#">Terms & Condition</a>
+                    <a class="btn btn-link" href="#">Support</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">Newsletter</h4>
+                    <p>Trusted by homeowners, businesses, and industries</p>
+                    <div class="position-relative mx-auto" style="max-width:400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">Team and Fix</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        Designed By <a href="#">BlackCodeLabs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript (Bootstrap, jQuery, etc.) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script>
+        // Remove spinner on load
+        window.addEventListener('load', function() {
+            document.getElementById('spinner').classList.remove('show');
+        });
+    </script>
+</body>
+</html>
