@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DJ KUCH | SAUTI YA MTAA</title>
+<title>DeeJay KUCH | SAUTI YA MTAA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&family=Oswald:wght@200;300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&family=Anton&display=swap" rel="stylesheet">
@@ -44,8 +44,8 @@ body.hovering .cursor-ring{width:48px;height:48px;border-color:var(--gold)}
 nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:24px 50px;display:flex;justify-content:space-between;align-items:center;transition:all .4s}
 nav.scrolled{padding:14px 50px;background:rgba(3,3,3,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,.15)}
 .nav-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
-.nav-kq-logo{width:42px;height:42px;position:relative;flex-shrink:0}
-.nav-kq-logo svg{width:100%;height:100%}
+.nav-kq-logo{width:100px;height:100px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.nav-kq-logo img{width:100%;height:100%;object-fit:contain;display:block}
 .nav-brand-text{display:flex;flex-direction:column;line-height:1}
 .nav-brand-name{font-family:var(--f-hero);font-size:18px;letter-spacing:4px;color:var(--white)}
 .nav-brand-sub{font-family:var(--f-mono);font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
@@ -69,10 +69,18 @@ nav.scrolled{padding:14px 50px;background:rgba(3,3,3,.96);backdrop-filter:blur(2
 /* ── HERO ──────────────────────────────── */
 .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding-bottom:80px}
 
-/* Background image */
+/* Background carousel */
 .hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(30%) brightness(0.45);display:block}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(3,3,3,.85) 0%,rgba(3,3,3,.4) 50%,rgba(3,3,3,.1) 100%),linear-gradient(to top,rgba(3,3,3,1) 0%,transparent 50%)}
+.hero-bg-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease-in-out;z-index:0}
+.hero-bg-slide.active{opacity:1;z-index:1}
+.hero-bg-slide img{width:100%;height:100%;object-fit:cover;object-position:top center ;filter:grayscale(20%) brightness(0.65);display:block}
+.hero-bg::after{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(to right,rgba(3,3,3,.85) 0%,rgba(3,3,3,.4) 50%,rgba(3,3,3,.1) 100%),linear-gradient(to top,rgba(3,3,3,1) 0%,transparent 50%)}
+
+/* hero carousel dots */
+.hero-dots{position:absolute;left:50px;bottom:36px;z-index:4;display:flex;gap:10px;align-items:center}
+.hero-dot{width:28px;height:2px;background:rgba(201,168,76,.3);border:none;cursor:pointer;transition:all .3s;padding:0}
+.hero-dot.active{background:var(--gold)}
+.hero-dot:hover{background:var(--gold2)}
 
 /* diagonal accent bars */
 .hero-bars{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
@@ -394,6 +402,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
   .rates-grid{grid-template-columns:1fr}
   .gallery-filter{gap:6px}
   .hero-scroll{display:none}
+  .hero-dots{left:20px}
 }
 @media(max-width:540px){
   .hero-btns{flex-direction:column}
@@ -424,14 +433,10 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
 <nav id="navbar">
   <a class="nav-brand" href="#home">
     <div class="nav-kq-logo">
-      <svg viewBox="0 0 100 100" fill="none">
-        <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="#c9a84c" stroke-width="2" fill="none"/>
-        <polygon points="50,18 82,35 82,65 50,82 18,65 18,35" fill="#c9a84c" opacity=".15"/>
-        <text x="50" y="63" font-family="Anton" font-size="30" fill="#c9a84c" text-anchor="middle">DK</text>
-      </svg>
+      <img src="logo.png" alt="DJ Kuch Logo">
     </div>
     <div class="nav-brand-text">
-      <span class="nav-brand-name">DJ KUCH</span>
+      <span class="nav-brand-name">DeeJay KUCH</span>
       <span class="nav-brand-sub">Sauti Ya Mtaa</span>
     </div>
   </a>
@@ -460,8 +465,11 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-bg">
-    <img src="main.jpg" alt="DJ at the turntables">
+  <div class="hero-bg" id="heroBg">
+    <div class="hero-bg-slide active"><img src="main.jpg" alt="DJ Kuch behind the decks - slide 1"></div>
+    <div class="hero-bg-slide"><img src="hero1.jpg" alt="DJ Kuch behind the decks - slide 2"></div>
+    <div class="hero-bg-slide"><img src="hero2.jpg" alt="DJ Kuch behind the decks - slide 3"></div>
+    <div class="hero-bg-slide"><img src="hero3.jpg" alt="DJ Kuch behind the decks - slide 4"></div>
   </div>
   <div class="hero-bars" aria-hidden="true">
     <div class="hero-bar"></div>
@@ -475,7 +483,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <span class="hero-eyebrow-tag">Resident DJ</span>
     </div>
     <h1 class="hero-name">
-      DJ<span class="hero-name-line2">KUCH</span>
+      DeeJay<span class="hero-name-line2">KUCH</span>
       <div class="hero-name-ghost" aria-hidden="true">DJ KUCH</div>
     </h1>
     <p class="hero-motto">
@@ -503,6 +511,8 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <span class="hero-stat-lbl">Shows Played</span>
     </div>
   </div>
+
+  <div class="hero-dots" id="heroDots"></div>
 
   <div class="hero-scroll" aria-hidden="true">
     <div class="hero-scroll-line"></div>
@@ -551,8 +561,11 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <h2 class="sec-title reveal d1">THE <span class="outline">MIX</span><br>MASTER</h2>
       <blockquote class="about-quote reveal d2">"Every set tells a story — from the first record to the last request."</blockquote>
       <p class="about-body reveal d2">
-        Based in Nairobi, DJ Kuch has built a name in Kenya's club and events scene by blending Amapiano, Afrobeats, Bongo, Hip-Hop and old-school favorites into sets that keep dancefloors moving from the first track to the last. Known for reading a crowd and switching genres seamlessly, DJ Kuch has become a regular fixture on the local circuit — from intimate lounges to big festival stages.<br><br>
-        Whether it's a private party, a corporate event, or a packed club night, DJ Kuch brings a curated sound built for the room. <strong style="color:var(--gold)">Sauti ya mtaa, kila mahali.</strong>
+        With <strong style="color:var(--gold)">over 12 years of experience</strong> in the entertainment industry, DJ Kuch has established himself as one of Kenya's most versatile and dynamic DJs, renowned for delivering unforgettable performances at high-end clubs, corporate events, and private celebrations.<br><br>
+        Over the years, DJ Kuch has performed at some of Nairobi's premier entertainment venues, including Galileo Lounge, Brew Bistro Westlands, Brew Bistro Ngong Road, Black Diamond, and Kengeles. His ability to read the crowd and seamlessly blend different music genres has made him a favorite among clients and audiences alike. <br><br>
+        Beyond the club scene, DJ Kuch has valuable experience in both television and radio, having worked with <strong style="color:var(--gold)">S Y254 TV and QFM Radio.</strong> This broadcasting experience has enhanced his creativity, professionalism, and ability to connect with diverse audiences. <br><br>
+        DJ Kuch is also the founder of <strong style="color:var(--gold)">Back 2 Back Events</strong>, a professional event production company dedicated to creating memorable experiences. The company provides premium sound systems, professional DJs, experienced MCs, LED screens, staging, lighting, and complete event solutions for weddings, birthdays, baby showers, gala dinners, corporate functions, concerts, and other special occasions. <br><br>
+        Known for his passion, reliability, and commitment to excellence, DJ Kuch continues to raise the standard of entertainment by combining exceptional music with world-class event production.
       </p>
       <div class="about-facts reveal d3">
         <div class="about-fact"><div class="about-fact-val">20+</div><div class="about-fact-lbl">Mixtapes Released</div></div>
@@ -591,7 +604,7 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       <div class="album-disk" data-pos="1" data-idx="1" onclick="rotateDisk(1)">
         <div class="album-disk-inner">
           <div class="album-disk-face">
-            <img src="./hero2.jpg alt="Amapiano Sessions Vol. 1">
+            <img src="./hero2.jpg" alt="Amapiano Sessions Vol. 1">
           </div>
           <div class="disk-shine"></div>
           <div class="disk-hole"></div>
@@ -902,17 +915,17 @@ footer{background:var(--bg);border-top:1px solid var(--grey3)}
       </div>
       <div class="contact-block">
         <div class="contact-block-lbl">Management</div>
-        <div class="contact-block-val"><a href="tel:+254700000000">+254 700 000 000</a></div>
+        <div class="contact-block-val"><a href="tel:+254700000000">+254724 059 332</a></div>
       </div>
       <div class="contact-block">
         <div class="contact-block-lbl">Based In</div>
         <div class="contact-block-val">Nairobi, Kenya<br><span style="color:var(--grey1);font-size:13px">Available for bookings across East Africa</span></div>
       </div>
       <div class="contact-social-row">
-        <a href="#" class="c-soc">Instagram</a>
-        <a href="#" class="c-soc">YouTube</a>
-        <a href="#" class="c-soc">Twitter</a>
-        <a href="#" class="c-soc">TikTok</a>
+        <a href="https://www.instagram.com/deejaykuch/" class="c-soc">Instagram</a>
+        <a href="https://youtube.com/@deejaykuch3800?si=2zk0vTrCnfQIOGdZ" class="c-soc">YouTube</a>
+        <!-- <a href="https://www.instagram.com/deejaykuch/" class="c-soc">Twitter</a> -->
+        <a href="https://www.tiktok.com/@djkuch?_r=1&_t=ZS-98IgOXhMuHt" class="c-soc">TikTok</a>
       </div>
     </div>
 
@@ -987,6 +1000,35 @@ mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.c
 /* ── REVEAL ── */
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+/* ── HERO BACKGROUND CAROUSEL ── */
+const heroSlides=Array.from(document.querySelectorAll('.hero-bg-slide'));
+const heroDotsEl=document.getElementById('heroDots');
+let heroIdx=0;
+
+function buildHeroDots(){
+  heroDotsEl.innerHTML='';
+  heroSlides.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='hero-dot'+(i===0?' active':'');
+    d.setAttribute('aria-label','Hero image '+(i+1));
+    d.onclick=()=>goHero(i);
+    heroDotsEl.appendChild(d);
+  });
+}
+
+function goHero(i){
+  heroSlides[heroIdx].classList.remove('active');
+  heroIdx=i;
+  heroSlides[heroIdx].classList.add('active');
+  heroDotsEl.querySelectorAll('.hero-dot').forEach((d,idx)=>d.classList.toggle('active',idx===heroIdx));
+}
+
+function heroNext(){goHero(heroIdx<heroSlides.length-1?heroIdx+1:0);}
+
+buildHeroDots();
+let heroTimer=setInterval(heroNext,5000);
+heroDotsEl.addEventListener('click',()=>{clearInterval(heroTimer);heroTimer=setInterval(heroNext,5000);});
 
 /* ── DISK CAROUSEL ── */
 const albums=[
