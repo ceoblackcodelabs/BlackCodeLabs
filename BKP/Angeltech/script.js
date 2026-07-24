@@ -1,5 +1,5 @@
 /* ============================================
-   AngelTech Computers - Main JavaScript
+   WIZZCOM Computers - Main JavaScript
    Includes: Carousel, Chatbot, Cart System (localStorage), Product Filters, Modals
    ============================================ */
 
@@ -137,7 +137,7 @@ if (backTop) {
 const waBtn = document.getElementById('waBtn');
 if (waBtn) {
   waBtn.addEventListener('click', () => {
-    const message = encodeURIComponent('Hello AngelTech Computers, I would like to inquire about your products.');
+    const message = encodeURIComponent('Hello WIZZCOM Computers, I would like to inquire about your products.');
     window.open(`https://wa.me/254799897027?text=${message}`, '_blank');
   });
 }
