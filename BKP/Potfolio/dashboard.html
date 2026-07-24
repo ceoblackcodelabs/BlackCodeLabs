@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard — MyPortfolio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="nav">
+  <div class="brand">My<span>Portfolio</span></div>
+  <div>
+    <span class="navlink mono">myportfolio.com/amina</span>
+    <a class="btn btn-ghost" href="profile.html">View public page</a>
+  </div>
+</div>
+
+<div class="dash">
+
+  <div class="side">
+    <div class="avatar-block">
+      <div class="avatar">AW</div>
+      <h3 style="font-size:16px;">Amina Wanjiru</h3>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">Job seeker</p>
+    </div>
+    <nav>
+      <a class="active" href="#">Profile builder</a>
+      <a href="#">My CV</a>
+      <a href="#">Link &amp; QR code</a>
+      <a href="#">Analytics <span class="tag mono" style="margin-left:6px;">PRO</span></a>
+      <a href="#">Billing</a>
+    </nav>
+  </div>
+
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h2 style="font-size:24px;">Profile builder</h2>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="ring-wrap" style="width:64px;height:64px;">
+          <svg width="64" height="64" viewBox="0 0 180 180">
+            <circle class="ring-bg" cx="90" cy="90" r="78"/>
+            <circle class="ring-fg" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="190"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk';font-weight:700;font-size:18px;">60%</div>
+          <div style="font-size:11.5px;color:var(--muted);">complete</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="upload-row done">
+      <div><strong>National ID</strong><div style="font-size:12.5px;color:var(--muted);">Verified</div></div>
+      <span class="tag mono">Done</span>
+    </div>
+    <div class="upload-row done">
+      <div><strong>Certificates</strong><div style="font-size:12.5px;color:var(--muted);">2 uploaded</div></div>
+      <span class="tag mono">Done</span>
+    </div>
+    <div class="upload-row done">
+      <div><strong>Work experience</strong><div style="font-size:12.5px;color:var(--muted);">1 entry added</div></div>
+      <span class="tag mono">Done</span>
+    </div>
+    <div class="upload-row">
+      <div><strong>Skills &amp; references</strong><div style="font-size:12.5px;color:var(--muted);">Not added yet</div></div>
+      <button class="btn btn-ghost mono" style="padding:6px 14px;font-size:12.5px;">Add</button>
+    </div>
+    <div class="upload-row">
+      <div><strong>Profile photo</strong><div style="font-size:12.5px;color:var(--muted);">Not added yet</div></div>
+      <button class="btn btn-ghost mono" style="padding:6px 14px;font-size:12.5px;">Add</button>
+    </div>
+
+    <h2 style="font-size:20px;margin-top:36px;">Who's viewing your profile</h2>
+    <table class="visits">
+      <tr><th>Date</th><th>City</th><th>Source</th><th>Time on page</th></tr>
+      <tr><td class="blur">22 Jul</td><td class="blur">Nairobi</td><td class="blur">WhatsApp</td><td class="blur">1m 40s</td></tr>
+      <tr><td class="blur">21 Jul</td><td class="blur">Mombasa</td><td class="blur">Direct link</td><td class="blur">0m 50s</td></tr>
+      <tr><td class="blur">19 Jul</td><td class="blur">Kisumu</td><td class="blur">Instagram</td><td class="blur">2m 05s</td></tr>
+    </table>
+
+    <div class="locked-banner">
+      <div>
+        <h3>Unlock visitor analytics</h3>
+        <p>See who's viewing your profile, from where, and how long they stayed — KSh 200/month.</p>
+      </div>
+      <a class="btn btn-accent" href="#">Upgrade</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

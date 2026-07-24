@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Log in or sign up — MyPortfolio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="nav">
+  <div class="brand">My<span>Portfolio</span></div>
+  <a class="navlink" href="index.html">← back</a>
+</div>
+
+<div class="wrap" style="max-width:520px;padding:50px 40px 80px;">
+
+  <div class="auth-toggle">
+    <button class="toggle-btn active" id="tabLogin" onclick="showAuth('login')">Log in</button>
+    <button class="toggle-btn" id="tabSignup" onclick="showAuth('signup')">Sign up</button>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="loginPane">
+    <h2 style="font-size:24px;margin-top:26px;">Welcome back</h2>
+    <p style="color:var(--muted);margin-top:6px;font-size:14px;">Log in to update your profile or check your stats.</p>
+    <div class="panel" style="padding:32px;margin-top:20px;">
+      <div class="field">
+        <label>Phone number or email</label>
+        <input type="text" placeholder="07XX XXX XXX">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center;padding:14px;" onclick="window.location.href='dashboard.html'">Log in</button>
+      <div style="text-align:center;margin-top:16px;"><a class="navlink" href="#" style="margin:0;font-size:13px;">Forgot password?</a></div>
+    </div>
+  </div>
+
+  <!-- SIGNUP -->
+  <div id="signupPane" style="display:none;">
+
+    <div class="step-track" style="margin-top:26px;">
+      <div class="dot done"></div>
+      <div class="dot" id="dot2"></div>
+    </div>
+
+    <div id="step1">
+      <h2 style="font-size:24px;">What are you here to do?</h2>
+      <p style="color:var(--muted);margin-top:6px;font-size:14px;">This decides what your profile page looks like. You can't change it later.</p>
+
+      <div class="roles" style="margin-top:22px;">
+        <div class="role-card" data-role="seeker" onclick="pick(this,'seeker')">
+          <span class="step-no">Option A</span>
+          <div class="check"></div>
+          <h3>Job seeker</h3>
+          <p>Build a CV, upload certificates, get a link employers can open.</p>
+        </div>
+        <div class="role-card" data-role="employer" onclick="pick(this,'employer')">
+          <span class="step-no">Option B</span>
+          <div class="check"></div>
+          <h3>Employer</h3>
+          <p>Post openings and search job seeker profiles.</p>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:24px;width:100%;justify-content:center;padding:14px;" onclick="goStep2()">Continue</button>
+    </div>
+
+    <div id="step2" style="display:none;">
+      <h2 style="font-size:24px;">Create your account</h2>
+      <div class="panel" style="margin-top:20px;padding:32px;">
+        <div class="field">
+          <label>Full name</label>
+          <input type="text" placeholder="e.g. Amina Wanjiru">
+        </div>
+        <div class="field">
+          <label>Phone number (M-Pesa)</label>
+          <input type="tel" placeholder="07XX XXX XXX">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="pw1" placeholder="••••••••" oninput="checkMatch()">
+        </div>
+        <div class="field">
+          <label>Confirm password</label>
+          <input type="password" id="pw2" placeholder="••••••••" oninput="checkMatch()">
+          <div id="matchMsg" style="font-size:12.5px;margin-top:6px;height:14px;"></div>
+        </div>
+        <button class="btn btn-accent" style="width:100%;justify-content:center;padding:14px;" onclick="submitSignup()">Create my profile</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="foot">Free to join · upgrade any time for KSh 200/month</footer>
+
+<style>
+.auth-toggle{display:flex;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;}
+.toggle-btn{flex:1;padding:10px;border:none;background:transparent;border-radius:8px;font-family:'Inter';font-weight:600;font-size:14px;cursor:pointer;color:var(--muted);}
+.toggle-btn.active{background:var(--ink);color:#fff;}
+</style>
+
+<script>
+function showAuth(which){
+  document.getElementById('loginPane').style.display = which==='login' ? 'block':'none';
+  document.getElementById('signupPane').style.display = which==='signup' ? 'block':'none';
+  document.getElementById('tabLogin').classList.toggle('active', which==='login');
+  document.getElementById('tabSignup').classList.toggle('active', which==='signup');
+}
+let selected = null;
+function pick(el, role){
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selected = role;
+}
+function goStep2(){
+  if(!selected){ alert('Choose a role to continue'); return; }
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
+  document.getElementById('dot2').classList.add('done');
+}
+function checkMatch(){
+  const p1=document.getElementById('pw1').value, p2=document.getElementById('pw2').value;
+  const msg=document.getElementById('matchMsg');
+  if(!p2){ msg.textContent=''; return; }
+  if(p1===p2){ msg.textContent='Passwords match'; msg.style.color='var(--green)'; }
+  else { msg.textContent='Passwords do not match'; msg.style.color='var(--red)'; }
+}
+function submitSignup(){
+  const p1=document.getElementById('pw1').value, p2=document.getElementById('pw2').value;
+  if(p1!==p2 || !p1){ alert('Passwords must match and cannot be empty'); return; }
+  window.location.href='dashboard.html';
+}
+</script>
+
+</body>
+</html>
