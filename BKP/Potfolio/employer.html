@@ -36,7 +36,9 @@
   </a>
   <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-links" id="navLinks">
+    <span class="navlink mono credit-pill">3 credits left</span>
     <a class="btn btn-ghost" href="dashboard.html">My profile</a>
+    <button class="btn btn-primary" onclick="openCreditsModal()">Buy credits</button>
     <a class="btn btn-primary" href="#">Post a job</a>
   </div>
 </div>
@@ -112,9 +114,49 @@
 <footer class="foot">Contacting a candidate uses 1 unlock credit · KSh 50 per profile or KSh 1,000/month unlimited</footer>
 
 <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Saved</span></div>
+
+<div class="modal-overlay" id="creditsModal">
+  <div class="modal-box" style="max-width:480px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <h3 style="font-size:18px;">Buy contact credits</h3>
+      <button class="modal-close" onclick="closeCreditsModal()">&times;</button>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">1 credit unlocks a candidate's full CV, email and phone number.</p>
+    <div class="credit-packs">
+      <button class="credit-pack" onclick="buyCredits(this,10,500)">
+        <div class="pack-count">10</div>
+        <div class="pack-lbl">credits</div>
+        <div class="pack-price">KSh 500</div>
+      </button>
+      <button class="credit-pack featured" onclick="buyCredits(this,30,1200)">
+        <span class="price-badge">Best value</span>
+        <div class="pack-count">30</div>
+        <div class="pack-lbl">credits</div>
+        <div class="pack-price">KSh 1,200</div>
+      </button>
+      <button class="credit-pack" onclick="buyCredits(this,100,3500)">
+        <div class="pack-count">100</div>
+        <div class="pack-lbl">credits</div>
+        <div class="pack-price">KSh 3,500</div>
+      </button>
+    </div>
+  </div>
+</div>
 <style>
 .browse-wrap{padding-top:44px;padding-bottom:80px;}
 @media(max-width:600px){.browse-wrap{padding-top:26px;padding-bottom:50px;}}
+.credit-pill{background:var(--paper-2);padding:8px 14px;border-radius:99px;font-weight:600;opacity:1;}
+.credit-packs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.credit-pack{
+  border:1px solid var(--line);border-radius:14px;padding:20px 12px;background:#fff;cursor:pointer;
+  text-align:center;position:relative;box-shadow:var(--shadow-sm);transition:transform .15s ease,box-shadow .15s ease;
+}
+.credit-pack:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.credit-pack.featured{border-color:var(--ink);}
+.credit-pack .pack-count{font-family:'Space Grotesk';font-size:24px;font-weight:700;}
+.credit-pack .pack-lbl{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.credit-pack .pack-price{font-size:13px;font-weight:600;}
+@media(max-width:520px){.credit-packs{grid-template-columns:1fr;}}
 </style>
 <script>
 function toggleMenu(){
@@ -129,7 +171,14 @@ function showToast(msg){
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
 }
+function openCreditsModal(){ document.getElementById('creditsModal').classList.add('show'); }
+function closeCreditsModal(){ document.getElementById('creditsModal').classList.remove('show'); }
+function buyCredits(el, count, priceKES){
+  closeCreditsModal();
+  showToast(count + ' credits purchased for KSh ' + priceKES.toLocaleString());
+}
 </script>
+
 
 </body>
 </html>
