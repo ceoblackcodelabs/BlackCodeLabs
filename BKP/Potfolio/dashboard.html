@@ -224,6 +224,17 @@
         <button class="btn btn-accent" onclick="showTabByName('billing')">Upgrade</button>
       </div>
 
+      <div class="boost-card">
+        <div class="boost-info">
+          <h3>Boost my profile</h3>
+          <p>Jump to the top of employer search results for 7 days — a one-time payment, no subscription.</p>
+        </div>
+        <div class="boost-buy">
+          <div class="boost-price"><span class="cur-sym" id="boostCur">KSh</span><span class="amount" id="boostPrice">150</span></div>
+          <button class="btn btn-primary" onclick="openPayModal('mpesa','boost')">Boost now</button>
+        </div>
+      </div>
+
       <h3 style="font-size:14px;margin:26px 0 12px;">My Card</h3>
       <div class="card-row">
         <div class="biz-card">
@@ -380,6 +391,21 @@
         </div>
         <button class="btn btn-primary" onclick="showToast('Settings saved')">Save changes</button>
       </div>
+      <div class="panel refer-panel">
+        <div class="refer-head">
+          <div>
+            <h3 style="font-size:15px;margin-bottom:4px;">Refer &amp; earn</h3>
+            <p style="font-size:13px;color:var(--muted);">Share your link — get 1 month of Pro free for every 3 friends who join and upgrade.</p>
+          </div>
+          <div class="refer-count"><div class="num">1<span>/3</span></div><div class="lbl">referrals</div></div>
+        </div>
+        <div class="refer-link-row">
+          <input type="text" value="tenawork.com/r/amina24" readonly>
+          <button class="btn btn-primary" onclick="copyReferral()">Copy link</button>
+        </div>
+        <div class="refer-progress"><div class="refer-progress-fill" style="width:33%;"></div></div>
+      </div>
+
       <div class="panel" style="padding:28px;border-color:rgba(226,71,43,0.3);">
         <div class="flex-between">
           <div>
@@ -562,6 +588,30 @@
 .bplan .bprice .cur-sym{font-size:13px;font-weight:600;color:var(--muted);}
 .bplan .bprice .amount{font-size:30px;font-weight:700;color:var(--ink);}
 .bplan .bprice .per{font-size:11px;color:var(--muted);font-weight:500;}
+
+.boost-card{
+  display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;
+  border:1px solid var(--line);border-radius:16px;padding:20px 24px;background:#fff;
+  box-shadow:var(--shadow-sm);margin-top:16px;
+}
+.boost-info h3{font-size:14.5px;margin-bottom:4px;}
+.boost-info p{font-size:12.5px;color:var(--muted);max-width:340px;line-height:1.5;}
+.boost-buy{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.boost-price{font-family:'Space Grotesk';display:flex;align-items:baseline;gap:3px;}
+.boost-price .cur-sym{font-size:12px;font-weight:600;color:var(--muted);}
+.boost-price .amount{font-size:24px;font-weight:700;color:var(--ink);}
+
+.refer-panel{padding:26px;}
+.refer-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px;}
+.refer-count{text-align:center;flex:0 0 auto;}
+.refer-count .num{font-family:'Space Grotesk';font-size:22px;font-weight:700;}
+.refer-count .num span{font-size:13px;color:var(--muted);font-weight:500;}
+.refer-count .lbl{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+.refer-link-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.refer-link-row input{flex:1;min-width:180px;padding:11px 14px;border-radius:9px;border:1px solid var(--line);font-family:'JetBrains Mono';font-size:12.5px;background:var(--paper-2);}
+.refer-progress{height:6px;background:var(--paper-2);border-radius:99px;overflow:hidden;}
+.refer-progress-fill{height:100%;background:var(--green);border-radius:99px;}
+@media(max-width:520px){.boost-card{flex-direction:column;align-items:flex-start;}.boost-buy{width:100%;justify-content:space-between;}}
 .bplan ul{list-style:none;padding:0;margin:0 0 16px;flex:1;}
 .bplan li{font-size:12px;color:var(--muted);padding:5px 0;}
 .bplan li::before{content:"✓ ";color:var(--green);font-weight:700;}
@@ -635,7 +685,8 @@ const payLabels = {mpesa:'M-Pesa', card:'Card', crypto:'Crypto Transfer', crypto
 const planPrices = {
   free:{monthly:0, annual:0},
   pro:{monthly:200, annual:160},
-  premium:{monthly:500, annual:400}
+  premium:{monthly:500, annual:400},
+  boost:{monthly:150, annual:150}
 };
 // Approx conversion rate FROM Kenyan Shillings, plus display symbol
 const currencyInfo = {
@@ -664,6 +715,7 @@ function setCurrency(currency, isAuto){
   document.getElementById('freeCur').textContent = sym;
   document.getElementById('proCur').textContent = sym;
   document.getElementById('premiumCur').textContent = sym;
+  document.getElementById('boostCur').textContent = sym;
   refreshPrices();
 }
 
@@ -679,6 +731,7 @@ function setBillingPeriod(period, el){
 function refreshPrices(){
   document.getElementById('proPrice').textContent = convert(planPrices.pro[billingPeriod], currentCurrency);
   document.getElementById('premiumPrice').textContent = convert(planPrices.premium[billingPeriod], currentCurrency);
+  document.getElementById('boostPrice').textContent = convert(planPrices.boost.monthly, currentCurrency);
   updatePayTotal();
 }
 
@@ -690,6 +743,11 @@ function selectPkg(el, pkg){
 }
 
 function updatePayTotal(){
+  if(selectedPkg === 'boost'){
+    const amount = convert(planPrices.boost.monthly, currentCurrency);
+    document.getElementById('payTotal').textContent = currencyInfo[currentCurrency].symbol + ' ' + amount + ' one-time · 7-day boost';
+    return;
+  }
   const priceKES = planPrices[selectedPkg][billingPeriod];
   const suffix = billingPeriod === 'annual' ? '/mo, billed yearly' : '/mo';
   if(priceKES === 0){
@@ -707,14 +765,28 @@ function openPayModal(method, pkg){
   document.getElementById('payModalTitle').textContent = payLabels[method];
 
   const chosen = pkg || selectedPkg;
-  document.querySelectorAll('.pkg-pill').forEach(p=>p.classList.toggle('active', p.dataset.pkg===chosen));
+  const pkgSelectEl = document.querySelector('.pkg-select');
+  if(chosen === 'boost'){
+    pkgSelectEl.style.display = 'none';
+  } else {
+    pkgSelectEl.style.display = 'flex';
+    document.querySelectorAll('.pkg-pill').forEach(p=>p.classList.toggle('active', p.dataset.pkg===chosen));
+  }
   selectedPkg = chosen;
   updatePayTotal();
 
   document.getElementById('payModal').classList.add('show');
 }
 function closePayModal(){ document.getElementById('payModal').classList.remove('show'); }
-function submitPay(){ closePayModal(); showToast(payLabels[currentPayMethod] + ' payment submitted for the ' + selectedPkg.charAt(0).toUpperCase()+selectedPkg.slice(1) + ' plan'); }
+function submitPay(){
+  closePayModal();
+  const label = selectedPkg === 'boost' ? '7-day profile boost' : ('the ' + selectedPkg.charAt(0).toUpperCase()+selectedPkg.slice(1) + ' plan');
+  showToast(payLabels[currentPayMethod] + ' payment submitted for ' + label);
+}
+function copyReferral(){
+  navigator.clipboard?.writeText('tenawork.com/r/amina24').catch(()=>{});
+  showToast('Referral link copied');
+}
 
 // Detect currency from the visitor's location; falls back to KES if it fails
 (function detectCurrencyFromIP(){
