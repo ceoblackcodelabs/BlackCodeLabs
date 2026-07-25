@@ -3,16 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Profile — MyPortfolio</title>
+<title>My Profile — TenaWork</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="nav">
-  <div class="brand">My<span>Portfolio</span></div>
+  <a href="index.html" class="brand-link" aria-label="TenaWork — home">
+    <svg class="brand-logo" viewBox="0 0 176 30" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="22" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="23">
+        <tspan fill="#14171f">tena</tspan><tspan fill="#e2472b">work</tspan>
+      </text>
+    </svg>
+  </a>
   <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-links" id="navLinks">
-    <span class="navlink mono">myportfolio.com/amina</span>
+    <span class="navlink mono">tenawork.com/amina</span>
     <a class="navlink" href="employer.html">Explore profiles</a>
     <a class="btn btn-ghost" href="profile.html">View public page</a>
   </div>
@@ -176,7 +182,7 @@
         <div>
           <div class="field" style="margin:0;max-width:280px;">
             <label>Your link</label>
-            <input type="text" value="myportfolio.com/amina" readonly>
+            <input type="text" value="tenawork.com/amina" readonly>
           </div>
           <button class="btn btn-ghost" style="margin-top:14px;" onclick="copyLink()">Copy link</button>
         </div>
@@ -195,7 +201,7 @@
       <div class="locked-banner" style="margin-top:16px;">
         <div>
           <h3>Get a custom short link</h3>
-          <p>Premium unlocks myportfolio.com/amina without numbers — cleaner for a business card. KSh 500/month.</p>
+          <p>Premium unlocks tenawork.com/amina without numbers — cleaner for a business card. KSh 500/month.</p>
         </div>
         <button class="btn btn-accent" onclick="showTabByName('billing')">Upgrade</button>
       </div>
@@ -216,7 +222,7 @@
                   <rect x="24" y="44" width="4" height="4"/><rect x="32" y="52" width="4" height="4"/>
                 </g>
               </svg>
-              <div class="biz-link">myportfolio.com/amina</div>
+              <div class="biz-link">tenawork.com/amina</div>
             </div>
             <div class="biz-info">
               <div class="biz-name">Amina Wanjiru</div>
@@ -230,7 +236,7 @@
 
         <div class="biz-card biz-card-back">
           <div class="biz-card-inner biz-back-inner">
-            <div class="biz-logo">MP</div>
+            <div class="biz-logo"><img src="logo.png" alt="Company logo"></div>
           </div>
           <div class="biz-card-tag">Back</div>
         </div>
@@ -433,7 +439,9 @@
 .biz-logo{
   width:64px;height:64px;border-radius:50%;border:1.5px solid #fff;
   display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;font-size:18px;
+  overflow:hidden;
 }
+.biz-logo img{width:100%;height:100%;object-fit:contain;border-radius:50%;}
 .biz-card-tag{text-align:center;font-size:11px;color:var(--muted);margin-top:8px;text-transform:uppercase;letter-spacing:.06em;}
 @media(max-width:640px){.card-row{justify-content:center;}}
 </style>
@@ -469,7 +477,7 @@ function pickTemplate(el){
   showToast('Template set to '+el.querySelector('.template-name').textContent);
 }
 function copyLink(){
-  navigator.clipboard?.writeText('myportfolio.com/amina').catch(()=>{});
+  navigator.clipboard?.writeText('tenawork.com/amina').catch(()=>{});
   showToast('Link copied to clipboard');
 }
 function addDocs(input){
