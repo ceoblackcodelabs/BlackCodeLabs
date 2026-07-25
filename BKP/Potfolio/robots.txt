@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /auth.html
+
+Sitemap: https://tenawork.com/sitemap.xml
