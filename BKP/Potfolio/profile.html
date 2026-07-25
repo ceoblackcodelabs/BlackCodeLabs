@@ -2,72 +2,232 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Amina Wanjiru — MyPortfolio</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pub-page">
 
-<div class="pub-header">
-  <div class="qr-box">
-    <svg width="64" height="64" viewBox="0 0 64 64">
-      <rect width="64" height="64" fill="#fff"/>
-      <g fill="#14171f">
-        <rect x="4" y="4" width="16" height="16"/><rect x="8" y="8" width="8" height="8" fill="#fff"/>
-        <rect x="44" y="4" width="16" height="16"/><rect x="48" y="8" width="8" height="8" fill="#fff"/>
-        <rect x="4" y="44" width="16" height="16"/><rect x="8" y="48" width="8" height="8" fill="#fff"/>
-        <rect x="24" y="4" width="4" height="4"/><rect x="32" y="4" width="4" height="4"/>
-        <rect x="24" y="24" width="16" height="16"/>
-        <rect x="24" y="44" width="4" height="4"/><rect x="32" y="52" width="4" height="4"/>
-        <rect x="44" y="24" width="4" height="4"/><rect x="52" y="32" width="4" height="4"/>
-        <rect x="44" y="44" width="4" height="4"/><rect x="52" y="52" width="4" height="4"/>
-        <rect x="4" y="24" width="4" height="4"/><rect x="4" y="32" width="4" height="4"/>
-      </g>
-    </svg>
-  </div>
+<div class="pub-cover">
+  <a href="dashboard.html" class="edit-pill">Edit profile</a>
+  <span class="featured-ribbon">★ Featured profile</span>
+</div>
+
+<div class="pub-identity">
   <div class="pub-avatar">AW</div>
-  <h1>Amina Wanjiru</h1>
-  <div class="role-pill">myportfolio.com/amina</div>
+  <div class="pub-id-text">
+    <h1>Amina Wanjiru <span class="verified">&#10003;</span></h1>
+    <div class="pub-tagline">Front-end Developer · Nairobi, Kenya</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+      <div class="role-pill">myportfolio.com/amina</div>
+      <div class="status-pill"><span class="status-dot"></span>Open to work</div>
+    </div>
+  </div>
 </div>
 
 <div class="pub-body">
 
-  <div class="pub-card">
-    <h3>About</h3>
-    <p style="font-size:14.5px;line-height:1.6;">Front-end developer based in Nairobi, 3 years building for small businesses. Comfortable with HTML/CSS/JS and React. Looking for remote or Nairobi-based roles.</p>
+  <div class="pub-stats-strip reveal in">
+    <div class="pstat"><div class="pnum">3</div><div class="plbl">Years experience</div></div>
+    <div class="pstat"><div class="pnum">128</div><div class="plbl">Profile views</div></div>
+    <div class="pstat"><div class="pnum">6</div><div class="plbl">Skills listed</div></div>
+    <div class="pstat"><div class="pnum">2</div><div class="plbl">Certificates</div></div>
   </div>
 
-  <div class="pub-card">
-    <h3>Experience</h3>
-    <div class="exp-item">
-      <div class="role">Web Developer</div>
-      <div class="org">Freelance · 2023 — present</div>
-    </div>
-    <div class="exp-item">
-      <div class="role">IT Support Intern</div>
-      <div class="org">Safaricom PLC · 2022 — 2023</div>
-    </div>
-  </div>
+  <div class="pub-grid">
 
-  <div class="pub-card">
-    <h3>Certificates</h3>
-    <div class="exp-item">
-      <div class="role">Diploma in Information Technology</div>
-      <div class="org">Kenyatta University</div>
-    </div>
-    <div class="exp-item">
-      <div class="role">Google UX Design Certificate</div>
-      <div class="org">Coursera</div>
-    </div>
-  </div>
+    <div>
+      <div class="pub-card reveal in">
+        <h3>About</h3>
+        <p class="pub-about-text">Front-end developer with three years building for small businesses — comfortable across HTML, CSS, JavaScript and React. Currently open to remote or Nairobi-based roles.</p>
+      </div>
 
-  <div class="share-row">
-    <a class="btn btn-primary" href="#">Download CV (PDF)</a>
-    <a class="btn btn-ghost" href="#">Copy link</a>
-  </div>
+      <div class="pub-card reveal in">
+        <h3>Experience</h3>
+        <div class="exp-item">
+          <div class="role">Web Developer</div>
+          <div class="org">Freelance</div>
+          <div class="when">2023 — present</div>
+        </div>
+        <div class="exp-item">
+          <div class="role">IT Support Intern</div>
+          <div class="org">Safaricom PLC</div>
+          <div class="when">2022 — 2023</div>
+        </div>
+      </div>
 
+      <div class="pub-card reveal in">
+        <h3>Portfolio</h3>
+        <div class="gallery-row">
+          <a class="gallery-item" href="#">
+            <div class="gallery-thumb" style="background:linear-gradient(155deg,var(--red),var(--red-deep));"></div>
+            <div class="gallery-name">SME booking site</div>
+          </a>
+          <a class="gallery-item" href="#">
+            <div class="gallery-thumb" style="background:linear-gradient(155deg,var(--green),#134f31);"></div>
+            <div class="gallery-name">NGO landing page</div>
+          </a>
+          <a class="gallery-item" href="#">
+            <div class="gallery-thumb" style="background:linear-gradient(155deg,var(--gold),#a9791b);"></div>
+            <div class="gallery-name">Retailer dashboard</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="pub-card reveal in">
+        <h3>Certificates &amp; documents</h3>
+        <div class="exp-item">
+          <div class="role">Diploma in Information Technology</div>
+          <div class="org">Kenyatta University</div>
+        </div>
+        <div class="exp-item">
+          <div class="role">Google UX Design Certificate</div>
+          <div class="org">Coursera</div>
+        </div>
+      </div>
+
+      <div class="pub-card reveal in">
+        <h3>Skills</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">HTML &amp; CSS</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">UX Design</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Figma</span>
+        </div>
+      </div>
+
+      <div class="pub-card reveal in">
+        <h3>Languages</h3>
+        <div class="lang-row">
+          <div class="lang-item"><span>English</span><div class="lang-bar"><div style="width:95%;"></div></div></div>
+          <div class="lang-item"><span>Swahili</span><div class="lang-bar"><div style="width:100%;"></div></div></div>
+          <div class="lang-item"><span>French</span><div class="lang-bar"><div style="width:35%;"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="pub-card qr-card reveal in">
+        <h3 style="justify-content:center;">Scan to save</h3>
+        <div class="qr-frame">
+          <svg width="120" height="120" viewBox="0 0 64 64">
+            <rect width="64" height="64" fill="var(--paper-2)"/>
+            <g fill="#14171f">
+              <rect x="4" y="4" width="16" height="16"/><rect x="8" y="8" width="8" height="8" fill="var(--paper-2)"/>
+              <rect x="44" y="4" width="16" height="16"/><rect x="48" y="8" width="8" height="8" fill="var(--paper-2)"/>
+              <rect x="4" y="44" width="16" height="16"/><rect x="8" y="48" width="8" height="8" fill="var(--paper-2)"/>
+              <rect x="24" y="24" width="16" height="16"/>
+              <rect x="24" y="4" width="4" height="4"/><rect x="32" y="4" width="4" height="4"/>
+              <rect x="24" y="44" width="4" height="4"/><rect x="32" y="52" width="4" height="4"/>
+              <rect x="44" y="24" width="4" height="4"/><rect x="52" y="32" width="4" height="4"/>
+              <rect x="44" y="44" width="4" height="4"/><rect x="52" y="52" width="4" height="4"/>
+              <rect x="4" y="24" width="4" height="4"/><rect x="4" y="32" width="4" height="4"/>
+            </g>
+          </svg>
+        </div>
+        <p>Scan with any camera to open this profile on another phone.</p>
+        <div class="share-row">
+          <a class="btn btn-primary" href="#" onclick="showToast('CV download started');return false;">Download CV</a>
+          <a class="btn btn-ghost" href="#" onclick="copyLink();return false;">Copy link</a>
+        </div>
+        <button class="btn btn-accent" style="width:100%;justify-content:center;margin-top:10px;" onclick="openContact()">Contact Amina</button>
+
+        <div class="social-row">
+          <a href="#" class="social-ic" title="WhatsApp">W</a>
+          <a href="#" class="social-ic" title="LinkedIn">in</a>
+          <a href="#" class="social-ic" title="GitHub">GH</a>
+          <a href="#" class="social-ic" title="Instagram">IG</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h3 style="font-size:18px;">Contact Amina Wanjiru</h3>
+      <button class="modal-close" onclick="closeContact()">&times;</button>
+    </div>
+    <div class="field">
+      <label>Your name</label>
+      <input type="text" placeholder="e.g. Grace Kamau">
+    </div>
+    <div class="field">
+      <label>Your email or phone</label>
+      <input type="text" placeholder="How Amina can reach you">
+    </div>
+    <div class="field">
+      <label>Message</label>
+      <textarea placeholder="Say a bit about the opportunity or reason for reaching out..."></textarea>
+    </div>
+    <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="closeContact();showToast('Message sent to Amina')">Send message</button>
+  </div>
 </div>
 
 <footer class="foot">Built on MyPortfolio · <a href="index.html">Create your own</a></footer>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Saved</span></div>
+<script>
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function copyLink(){
+  navigator.clipboard?.writeText('myportfolio.com/amina').catch(()=>{});
+  showToast('Link copied to clipboard');
+}
+function openContact(){ document.getElementById('contactModal').classList.add('show'); }
+function closeContact(){ document.getElementById('contactModal').classList.remove('show'); }
+</script>
+
+<style>
+.featured-ribbon{
+  position:absolute;top:22px;right:24px;background:var(--gold);color:var(--ink);
+  padding:7px 15px;border-radius:99px;font-size:11.5px;font-weight:700;z-index:2;
+}
+.status-pill{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;
+  background:rgba(31,122,77,0.1);color:var(--green);font-size:11.5px;font-weight:600;
+}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+
+.pub-stats-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;
+}
+.pstat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow-sm);}
+.pnum{font-family:'Space Grotesk';font-size:22px;font-weight:700;}
+.plbl{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.gallery-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.gallery-item{text-decoration:none;color:var(--ink);}
+.gallery-thumb{height:80px;border-radius:12px;margin-bottom:8px;}
+.gallery-name{font-size:12px;font-weight:600;}
+
+.lang-row{display:flex;flex-direction:column;gap:12px;}
+.lang-item span{font-size:13px;font-weight:600;display:block;margin-bottom:5px;}
+.lang-bar{height:6px;background:var(--paper-2);border-radius:99px;overflow:hidden;}
+.lang-bar div{height:100%;background:var(--red);border-radius:99px;}
+
+.social-row{display:flex;gap:10px;justify-content:center;margin-top:16px;}
+.social-ic{
+  width:34px;height:34px;border-radius:10px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--ink);text-decoration:none;font-family:'JetBrains Mono';
+}
+.social-ic:hover{background:var(--ink);color:#fff;}
+
+@media(max-width:600px){
+  .pub-stats-strip{grid-template-columns:repeat(2,1fr);}
+  .gallery-row{grid-template-columns:1fr 1fr;}
+}
+</style>
 
 </body>
 </html>

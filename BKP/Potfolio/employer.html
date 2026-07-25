@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Browse profiles — MyPortfolio</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -9,44 +10,102 @@
 
 <div class="nav">
   <div class="brand">My<span>Portfolio</span></div>
-  <div>
-    <span class="navlink">Signed in as <strong>Safaricom PLC</strong></span>
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-links" id="navLinks">
+    <a class="btn btn-ghost" href="dashboard.html">My profile</a>
     <a class="btn btn-primary" href="#">Post a job</a>
   </div>
 </div>
 
-<div class="wrap" style="padding:44px 40px 80px;">
+<div class="wrap browse-wrap">
   <h2 style="font-size:26px;">Find your next hire</h2>
-  <p style="color:var(--muted);margin-top:6px;">Search verified job seeker profiles — open a full CV in one click, no email attachments.</p>
+  <p style="color:var(--muted);margin-top:6px;">Search verified profiles — open a full CV in one click, no email attachments.</p>
 
   <div class="search-bar" style="margin-top:26px;">
     <input type="text" placeholder="Search by skill, e.g. 'React developer, Nairobi'">
+    <select class="filter-select">
+      <option>All roles</option>
+      <option>Development</option>
+      <option>Design</option>
+      <option>Finance &amp; Accounts</option>
+    </select>
     <button class="btn btn-primary">Search</button>
   </div>
 
   <div class="grid-cards">
     <div class="candidate">
-      <div class="name">Amina Wanjiru</div>
-      <div class="role">FRONT-END DEVELOPER</div>
-      <div class="desc">3 yrs experience, HTML/CSS/JS, React. Nairobi. Diploma in IT — Kenyatta University.</div>
-      <a class="btn btn-ghost" href="profile.html" style="width:100%;justify-content:center;">View profile</a>
+      <div class="candidate-top">
+        <div class="candidate-avatar">AW</div>
+        <div>
+          <div class="name">Amina Wanjiru</div>
+          <div class="role">FRONT-END DEVELOPER</div>
+        </div>
+      </div>
+      <div class="desc">3 yrs experience, Nairobi. Diploma in IT — Kenyatta University.</div>
+      <div class="tags"><span>React</span><span>JavaScript</span><span>UX</span></div>
+      <div class="row-actions">
+        <a class="btn btn-ghost" href="profile.html">View profile</a>
+        <button class="btn btn-primary" onclick="showToast('Saved to shortlist')">Save</button>
+      </div>
     </div>
     <div class="candidate">
-      <div class="name">Brian Otieno</div>
-      <div class="role">ACCOUNTS ASSISTANT</div>
+      <div class="candidate-top">
+        <div class="candidate-avatar" style="background:linear-gradient(155deg,var(--green),#134f31);">BO</div>
+        <div>
+          <div class="name">Brian Otieno</div>
+          <div class="role">ACCOUNTS ASSISTANT</div>
+        </div>
+      </div>
       <div class="desc">CPA Part II, 2 yrs at a Mombasa SACCO. Available immediately.</div>
-      <a class="btn btn-ghost" href="#" style="width:100%;justify-content:center;">View profile</a>
+      <div class="tags"><span>Excel</span><span>QuickBooks</span><span>Reconciliation</span></div>
+      <div class="row-actions">
+        <a class="btn btn-ghost" href="#">View profile</a>
+        <button class="btn btn-primary" onclick="showToast('Saved to shortlist')">Save</button>
+      </div>
     </div>
     <div class="candidate">
-      <div class="name">Faith Chebet</div>
-      <div class="role">GRAPHIC DESIGNER</div>
+      <div class="candidate-top">
+        <div class="candidate-avatar" style="background:linear-gradient(155deg,var(--gold),#a9791b);">FC</div>
+        <div>
+          <div class="name">Faith Chebet</div>
+          <div class="role">GRAPHIC DESIGNER</div>
+        </div>
+      </div>
       <div class="desc">Adobe Suite, Canva Pro, 40+ branding projects for local SMEs.</div>
-      <a class="btn btn-ghost" href="#" style="width:100%;justify-content:center;">View profile</a>
+      <div class="tags"><span>Illustrator</span><span>Branding</span><span>Canva</span></div>
+      <div class="row-actions">
+        <a class="btn btn-ghost" href="#">View profile</a>
+        <button class="btn btn-primary" onclick="showToast('Saved to shortlist')">Save</button>
+      </div>
     </div>
+  </div>
+
+  <div style="text-align:center;margin-top:32px;">
+    <button class="btn btn-ghost" onclick="showToast('Loaded 3 more profiles')">Load more profiles</button>
   </div>
 </div>
 
 <footer class="foot">Contacting a candidate uses 1 unlock credit · KSh 50 per profile or KSh 1,000/month unlimited</footer>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Saved</span></div>
+<style>
+.browse-wrap{padding-top:44px;padding-bottom:80px;}
+@media(max-width:600px){.browse-wrap{padding-top:26px;padding-bottom:50px;}}
+</style>
+<script>
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+  document.querySelector('.menu-toggle').classList.toggle('open');
+}
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+</script>
 
 </body>
 </html>

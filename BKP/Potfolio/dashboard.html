@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard — MyPortfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile — MyPortfolio</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="nav">
   <div class="brand">My<span>Portfolio</span></div>
-  <div>
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-links" id="navLinks">
     <span class="navlink mono">myportfolio.com/amina</span>
+    <a class="navlink" href="employer.html">Explore profiles</a>
     <a class="btn btn-ghost" href="profile.html">View public page</a>
   </div>
 </div>
@@ -19,75 +22,359 @@
 
   <div class="side">
     <div class="avatar-block">
-      <div class="avatar">AW</div>
+      <div class="avatar-editable">
+        <div class="avatar" style="width:88px;height:88px;">AW</div>
+        <label class="cam" title="Change photo">
+          &#128247;
+          <input type="file" accept="image/*" style="display:none;">
+        </label>
+      </div>
       <h3 style="font-size:16px;">Amina Wanjiru</h3>
       <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">Job seeker</p>
     </div>
     <nav>
-      <a class="active" href="#">Profile builder</a>
-      <a href="#">My CV</a>
-      <a href="#">Link &amp; QR code</a>
-      <a href="#">Analytics <span class="tag mono" style="margin-left:6px;">PRO</span></a>
-      <a href="#">Billing</a>
+      <a class="tabnav active" data-tab="builder" onclick="showTab('builder',this)">Profile builder</a>
+      <a class="tabnav" data-tab="documents" onclick="showTab('documents',this)">My Documents</a>
+      <a class="tabnav" data-tab="cv" onclick="showTab('cv',this)">My CV</a>
+      <a class="tabnav" data-tab="link" onclick="showTab('link',this)">Link &amp; QR code</a>
+      <a class="tabnav" data-tab="analytics" onclick="showTab('analytics',this)">Analytics <span class="tag mono" style="margin-left:6px;">PRO</span></a>
+      <a class="tabnav" data-tab="billing" onclick="showTab('billing',this)">Billing</a>
+      <a class="tabnav" data-tab="settings" onclick="showTab('settings',this)">Settings</a>
     </nav>
   </div>
 
   <div>
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <h2 style="font-size:24px;">Profile builder</h2>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="ring-wrap" style="width:64px;height:64px;">
-          <svg width="64" height="64" viewBox="0 0 180 180">
-            <circle class="ring-bg" cx="90" cy="90" r="78"/>
-            <circle class="ring-fg" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="190"/>
-          </svg>
+
+    <div class="quick-stats">
+      <div class="qstat">
+        <div class="ring-wrap sm"><svg viewBox="0 0 180 180"><circle class="ring-bg" cx="90" cy="90" r="78"/><circle class="ring-fg" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="190"/></svg>
+          <div class="ring-label"><div class="num">60%</div></div></div>
+        <div class="qlbl">Profile complete</div>
+      </div>
+      <div class="qstat">
+        <div class="ring-wrap sm ring-green"><svg viewBox="0 0 180 180"><circle class="ring-bg" cx="90" cy="90" r="78"/><circle class="ring-fg" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="330"/></svg>
+          <div class="ring-label"><div class="num">128</div></div></div>
+        <div class="qlbl">Profile views</div>
+      </div>
+      <div class="qstat">
+        <div class="ring-wrap sm ring-gold"><svg viewBox="0 0 180 180"><circle class="ring-bg" cx="90" cy="90" r="78"/><circle class="ring-fg" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="380"/></svg>
+          <div class="ring-label"><div class="num">64</div></div></div>
+        <div class="qlbl">Link clicks</div>
+      </div>
+      <div class="qstat">
+        <div class="ring-wrap sm"><svg viewBox="0 0 180 180"><circle class="ring-bg" cx="90" cy="90" r="78"/><circle class="ring-fg" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="440"/></svg>
+          <div class="ring-label"><div class="num">19</div></div></div>
+        <div class="qlbl">CV downloads</div>
+      </div>
+    </div>
+
+    <div class="tabpane" id="tab-builder">
+      <h2 style="font-size:20px;margin-bottom:16px;">Profile builder</h2>
+      <div class="upload-row done">
+        <div><strong>National ID</strong><div style="font-size:12.5px;color:var(--muted);">Verified</div></div>
+        <span class="tag mono">Done</span>
+      </div>
+      <div class="upload-row done">
+        <div><strong>Certificates</strong><div style="font-size:12.5px;color:var(--muted);">2 uploaded</div></div>
+        <span class="tag mono">Done</span>
+      </div>
+      <div class="upload-row done">
+        <div><strong>Work experience</strong><div style="font-size:12.5px;color:var(--muted);">1 entry added</div></div>
+        <span class="tag mono">Done</span>
+      </div>
+      <div class="upload-row">
+        <div><strong>Skills &amp; references</strong><div style="font-size:12.5px;color:var(--muted);">Not added yet</div></div>
+        <button class="btn btn-ghost mono" style="padding:6px 14px;font-size:12.5px;">Add</button>
+      </div>
+      <div class="upload-row">
+        <div><strong>Profile photo</strong><div style="font-size:12.5px;color:var(--muted);">Not added yet</div></div>
+        <button class="btn btn-ghost mono" style="padding:6px 14px;font-size:12.5px;">Add</button>
+      </div>
+
+      <h3 style="font-size:14px;margin:26px 0 12px;">Skills</h3>
+      <div class="skill-tags" id="skillTags" style="margin-bottom:12px;">
+        <span class="skill-tag">HTML &amp; CSS <button class="tag-x" onclick="this.parentElement.remove()">&times;</button></span>
+        <span class="skill-tag">JavaScript <button class="tag-x" onclick="this.parentElement.remove()">&times;</button></span>
+        <span class="skill-tag">React <button class="tag-x" onclick="this.parentElement.remove()">&times;</button></span>
+      </div>
+      <div style="display:flex;gap:10px;max-width:340px;flex-wrap:wrap;">
+        <input type="text" id="newSkill" placeholder="Add a skill, e.g. Figma" style="flex:1;padding:10px 14px;border-radius:9px;border:1px solid var(--line);font-size:13.5px;">
+        <button class="btn btn-primary" onclick="addSkill()">Add</button>
+      </div>
+    </div>
+
+    <div class="tabpane" id="tab-documents" style="display:none;">
+      <h2 style="font-size:20px;margin-bottom:16px;">My Documents</h2>
+      <label class="dropzone" style="display:block;">
+        <div class="ic">&#8593;</div>
+        <strong>Click to upload, or drag files here</strong>
+        <p>You can upload as many documents as you like — ID, certificates, testimonials, portfolio samples (PDF, JPG, PNG)</p>
+        <input type="file" multiple style="display:none;" onchange="addDocs(this)">
+      </label>
+      <div class="doc-list" id="docList">
+        <div class="doc-row">
+          <div class="file-ic pdf">ID</div>
+          <div class="meta"><div class="name">National_ID.pdf</div><div class="sub">Uploaded · Verified</div></div>
+          <button class="remove" onclick="this.closest('.doc-row').remove()">Remove</button>
         </div>
+        <div class="doc-row">
+          <div class="file-ic pdf">CERT</div>
+          <div class="meta"><div class="name">Diploma_KU.pdf</div><div class="sub">Uploaded 4 days ago</div></div>
+          <button class="remove" onclick="this.closest('.doc-row').remove()">Remove</button>
+        </div>
+        <div class="doc-row">
+          <div class="file-ic pdf">CERT</div>
+          <div class="meta"><div class="name">Google_UX_Certificate.pdf</div><div class="sub">Uploaded 4 days ago</div></div>
+          <button class="remove" onclick="this.closest('.doc-row').remove()">Remove</button>
+        </div>
+        <div class="doc-row">
+          <div class="file-ic img">IMG</div>
+          <div class="meta"><div class="name">Portfolio_sample_1.jpg</div><div class="sub">Uploaded 2 days ago</div></div>
+          <button class="remove" onclick="this.closest('.doc-row').remove()">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabpane" id="tab-cv" style="display:none;">
+      <h2 style="font-size:20px;margin-bottom:16px;">My CV</h2>
+      <div class="panel" style="padding:28px;margin:0 0 18px;">
+        <p style="font-size:14px;color:var(--muted);margin-bottom:18px;">Auto-built from your uploaded profile. Regenerates every time you update a section.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a class="btn btn-primary" href="#" onclick="showToast('CV download started');return false;">Download as PDF</a>
+          <a class="btn btn-ghost" href="#" onclick="showToast('CV download started');return false;">Download as Word</a>
+        </div>
+      </div>
+
+      <h3 style="font-size:14px;margin-bottom:12px;">Choose a template</h3>
+      <div class="template-row">
+        <div class="template-card selected" onclick="pickTemplate(this)">
+          <div class="template-thumb classic"></div>
+          <div class="template-name">Classic</div>
+        </div>
+        <div class="template-card" onclick="pickTemplate(this)">
+          <div class="template-thumb modern"></div>
+          <div class="template-name">Modern</div>
+        </div>
+        <div class="template-card" onclick="pickTemplate(this)">
+          <div class="template-thumb minimal"></div>
+          <div class="template-name">Minimal</div>
+        </div>
+      </div>
+
+      <div class="upload-row" style="margin-top:22px;"><div><strong>Last updated</strong><div style="font-size:12.5px;color:var(--muted);">2 days ago</div></div></div>
+    </div>
+
+    <div class="tabpane" id="tab-link" style="display:none;">
+      <h2 style="font-size:20px;margin-bottom:16px;">Link &amp; QR code</h2>
+      <div class="panel flex-between" style="padding:28px;">
         <div>
-          <div style="font-family:'Space Grotesk';font-weight:700;font-size:18px;">60%</div>
-          <div style="font-size:11.5px;color:var(--muted);">complete</div>
+          <div class="field" style="margin:0;max-width:280px;">
+            <label>Your link</label>
+            <input type="text" value="myportfolio.com/amina" readonly>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:14px;" onclick="copyLink()">Copy link</button>
+        </div>
+        <svg width="96" height="96" viewBox="0 0 64 64">
+          <rect width="64" height="64" fill="#fff" stroke="var(--line)"/>
+          <g fill="#14171f">
+            <rect x="4" y="4" width="16" height="16"/><rect x="8" y="8" width="8" height="8" fill="#fff"/>
+            <rect x="44" y="4" width="16" height="16"/><rect x="48" y="8" width="8" height="8" fill="#fff"/>
+            <rect x="4" y="44" width="16" height="16"/><rect x="8" y="48" width="8" height="8" fill="#fff"/>
+            <rect x="24" y="24" width="16" height="16"/>
+            <rect x="44" y="24" width="4" height="4"/><rect x="52" y="32" width="4" height="4"/>
+            <rect x="24" y="44" width="4" height="4"/><rect x="32" y="52" width="4" height="4"/>
+          </g>
+        </svg>
+      </div>
+      <div class="locked-banner" style="margin-top:16px;">
+        <div>
+          <h3>Get a custom short link</h3>
+          <p>Premium unlocks myportfolio.com/amina without numbers — cleaner for a business card. KSh 500/month.</p>
+        </div>
+        <button class="btn btn-accent" onclick="showTabByName('billing')">Upgrade</button>
+      </div>
+    </div>
+
+    <div class="tabpane" id="tab-analytics" style="display:none;">
+      <h2 style="font-size:20px;margin-bottom:16px;">Who's viewing your profile</h2>
+      <table class="visits">
+        <tr><th>Date</th><th>City</th><th>Source</th><th>Time on page</th></tr>
+        <tr><td class="blur">22 Jul</td><td class="blur">Nairobi</td><td class="blur">WhatsApp</td><td class="blur">1m 40s</td></tr>
+        <tr><td class="blur">21 Jul</td><td class="blur">Mombasa</td><td class="blur">Direct link</td><td class="blur">0m 50s</td></tr>
+        <tr><td class="blur">19 Jul</td><td class="blur">Kisumu</td><td class="blur">Instagram</td><td class="blur">2m 05s</td></tr>
+      </table>
+      <div class="locked-banner">
+        <div>
+          <h3>Unlock visitor analytics</h3>
+          <p>See who's viewing your profile, from where, and how long they stayed — KSh 200/month.</p>
+        </div>
+        <a class="btn btn-accent" href="#">Upgrade</a>
+      </div>
+    </div>
+
+    <div class="tabpane" id="tab-billing" style="display:none;">
+      <h2 style="font-size:20px;margin-bottom:16px;">Billing</h2>
+      <div class="billing-plans">
+        <div class="bplan active">
+          <h3>Free</h3>
+          <div class="bprice">KSh 0<span>/mo</span></div>
+          <ul><li>Profile + link + QR</li><li>Auto CV</li><li>1 document upload</li></ul>
+          <button class="btn btn-ghost" disabled style="width:100%;justify-content:center;opacity:.6;">Current plan</button>
+        </div>
+        <div class="bplan featured">
+          <span class="price-badge">Most popular</span>
+          <h3>Pro</h3>
+          <div class="bprice">KSh 200<span>/mo</span></div>
+          <ul><li>Unlimited uploads</li><li>Visitor analytics</li><li>Skill tags &amp; CV templates</li></ul>
+          <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="showToast('Redirecting to M-Pesa checkout')">Upgrade</button>
+        </div>
+        <div class="bplan">
+          <h3>Premium</h3>
+          <div class="bprice">KSh 500<span>/mo</span></div>
+          <ul><li>Verified badge</li><li>Custom short link</li><li>Featured in search</li></ul>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;" onclick="showToast('Redirecting to M-Pesa checkout')">Upgrade</button>
         </div>
       </div>
     </div>
 
-    <div class="upload-row done">
-      <div><strong>National ID</strong><div style="font-size:12.5px;color:var(--muted);">Verified</div></div>
-      <span class="tag mono">Done</span>
-    </div>
-    <div class="upload-row done">
-      <div><strong>Certificates</strong><div style="font-size:12.5px;color:var(--muted);">2 uploaded</div></div>
-      <span class="tag mono">Done</span>
-    </div>
-    <div class="upload-row done">
-      <div><strong>Work experience</strong><div style="font-size:12.5px;color:var(--muted);">1 entry added</div></div>
-      <span class="tag mono">Done</span>
-    </div>
-    <div class="upload-row">
-      <div><strong>Skills &amp; references</strong><div style="font-size:12.5px;color:var(--muted);">Not added yet</div></div>
-      <button class="btn btn-ghost mono" style="padding:6px 14px;font-size:12.5px;">Add</button>
-    </div>
-    <div class="upload-row">
-      <div><strong>Profile photo</strong><div style="font-size:12.5px;color:var(--muted);">Not added yet</div></div>
-      <button class="btn btn-ghost mono" style="padding:6px 14px;font-size:12.5px;">Add</button>
-    </div>
-
-    <h2 style="font-size:20px;margin-top:36px;">Who's viewing your profile</h2>
-    <table class="visits">
-      <tr><th>Date</th><th>City</th><th>Source</th><th>Time on page</th></tr>
-      <tr><td class="blur">22 Jul</td><td class="blur">Nairobi</td><td class="blur">WhatsApp</td><td class="blur">1m 40s</td></tr>
-      <tr><td class="blur">21 Jul</td><td class="blur">Mombasa</td><td class="blur">Direct link</td><td class="blur">0m 50s</td></tr>
-      <tr><td class="blur">19 Jul</td><td class="blur">Kisumu</td><td class="blur">Instagram</td><td class="blur">2m 05s</td></tr>
-    </table>
-
-    <div class="locked-banner">
-      <div>
-        <h3>Unlock visitor analytics</h3>
-        <p>See who's viewing your profile, from where, and how long they stayed — KSh 200/month.</p>
+    <div class="tabpane" id="tab-settings" style="display:none;">
+      <h2 style="font-size:20px;margin-bottom:16px;">Settings</h2>
+      <div class="panel" style="padding:28px;">
+        <div class="field">
+          <label>Full name</label>
+          <input type="text" value="Amina Wanjiru">
+        </div>
+        <div class="field">
+          <label>Phone number</label>
+          <input type="tel" value="0712 345 678">
+        </div>
+        <div class="field">
+          <label>Public profile visibility</label>
+          <div class="toggle-row">
+            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <span style="font-size:13.5px;color:var(--muted);">Visible to anyone with your link</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="showToast('Settings saved')">Save changes</button>
       </div>
-      <a class="btn btn-accent" href="#">Upgrade</a>
+      <div class="panel" style="padding:28px;border-color:rgba(226,71,43,0.3);">
+        <div class="flex-between">
+          <div>
+            <strong>Delete account</strong>
+            <p style="font-size:13px;color:var(--muted);margin-top:4px;">Permanently removes your profile, CV and documents.</p>
+          </div>
+          <button class="btn btn-ghost" style="color:var(--red);border-color:var(--red);">Delete</button>
+        </div>
+      </div>
     </div>
-  </div>
 
+  </div>
 </div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Saved</span></div>
+
+<style>
+.quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.qstat{border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:#fff;text-align:center;}
+.ring-wrap.sm{width:64px;height:64px;margin:0 auto 8px;}
+.ring-wrap.sm .ring-label .num{font-size:16px;}
+.ring-wrap.sm.ring-green .ring-fg{stroke:var(--green);}
+.ring-wrap.sm.ring-gold .ring-fg{stroke:var(--gold);}
+.qlbl{font-size:12px;color:var(--muted);}
+.tabnav.active{background:var(--ink);color:#fff;}
+.tag-x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;margin-left:4px;line-height:1;padding:0;}
+.tag-x:hover{color:var(--red);}
+
+.template-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.template-card{border:2px solid var(--line);border-radius:14px;padding:10px;cursor:pointer;background:#fff;text-align:center;transition:border-color .15s ease;}
+.template-card.selected{border-color:var(--ink);}
+.template-thumb{height:110px;border-radius:8px;margin-bottom:8px;background:var(--paper-2);position:relative;overflow:hidden;}
+.template-thumb::before{content:"";position:absolute;top:10px;left:10px;right:10px;height:14px;border-radius:3px;background:var(--ink);}
+.template-thumb::after{content:"";position:absolute;top:32px;left:10px;right:30%;height:6px;border-radius:3px;background:var(--line);box-shadow:0 12px 0 var(--line), 0 24px 0 var(--line), 0 36px 0 var(--line);}
+.template-thumb.modern::before{background:var(--red);left:10px;width:40%;right:auto;border-radius:3px 3px 3px 3px;}
+.template-thumb.minimal::before{background:var(--muted);height:10px;}
+.template-name{font-size:12.5px;font-weight:600;}
+
+.toggle-row{display:flex;align-items:center;gap:12px;}
+.switch{position:relative;display:inline-block;width:42px;height:24px;}
+.switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;cursor:pointer;inset:0;background:var(--line);border-radius:99px;transition:.2s;}
+.slider::before{content:"";position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s;}
+.switch input:checked + .slider{background:var(--green);}
+.switch input:checked + .slider::before{transform:translateX(18px);}
+
+.billing-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.bplan{border:1px solid var(--line);border-radius:16px;padding:22px;background:#fff;box-shadow:var(--shadow-sm);position:relative;display:flex;flex-direction:column;}
+.bplan.featured{border-color:var(--ink);box-shadow:var(--shadow-md);}
+.bplan.active{background:var(--paper-2);}
+.bplan h3{font-size:15px;margin-bottom:6px;text-align:center;}
+.bplan .bprice{font-family:'Space Grotesk';font-size:22px;font-weight:700;text-align:center;margin-bottom:14px;}
+.bplan .bprice span{font-size:11px;color:var(--muted);font-weight:500;}
+.bplan ul{list-style:none;padding:0;margin:0 0 16px;flex:1;}
+.bplan li{font-size:12px;color:var(--muted);padding:5px 0;}
+.bplan li::before{content:"✓ ";color:var(--green);font-weight:700;}
+@media(max-width:700px){.billing-plans{grid-template-columns:1fr;}}
+@media(max-width:860px){.quick-stats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.template-row{grid-template-columns:1fr 1fr 1fr;gap:8px;}.template-thumb{height:80px;}}
+@media(max-width:400px){.template-row{grid-template-columns:1fr;}}
+</style>
+
+<script>
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+  document.querySelector('.menu-toggle').classList.toggle('open');
+}
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function addSkill(){
+  const input = document.getElementById('newSkill');
+  const val = input.value.trim();
+  if(!val) return;
+  const tag = document.createElement('span');
+  tag.className='skill-tag';
+  tag.innerHTML = val + ' <button class="tag-x" onclick="this.parentElement.remove()">&times;</button>';
+  document.getElementById('skillTags').appendChild(tag);
+  input.value='';
+}
+function pickTemplate(el){
+  document.querySelectorAll('.template-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  showToast('Template set to '+el.querySelector('.template-name').textContent);
+}
+function copyLink(){
+  navigator.clipboard?.writeText('myportfolio.com/amina').catch(()=>{});
+  showToast('Link copied to clipboard');
+}
+function addDocs(input){
+  const list = document.getElementById('docList');
+  Array.from(input.files).forEach(f=>{
+    const isImg = /\.(jpg|jpeg|png)$/i.test(f.name);
+    const row = document.createElement('div');
+    row.className='doc-row';
+    row.innerHTML = `<div class="file-ic ${isImg?'img':'pdf'}">${isImg?'IMG':'DOC'}</div>
+      <div class="meta"><div class="name">${f.name}</div><div class="sub">Just uploaded</div></div>
+      <button class="remove" onclick="this.closest('.doc-row').remove()">Remove</button>`;
+    list.appendChild(row);
+  });
+  input.value='';
+}
+function showTabByName(tab){
+  const link = document.querySelector(`.tabnav[data-tab="${tab}"]`);
+  showTab(tab, link);
+}
+function showTab(tab, el){
+  document.querySelectorAll('.tabpane').forEach(p=>p.style.display='none');
+  document.getElementById('tab-'+tab).style.display='block';
+  document.querySelectorAll('.tabnav').forEach(a=>a.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
 
 </body>
 </html>
