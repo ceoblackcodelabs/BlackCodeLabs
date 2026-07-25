@@ -4,11 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TenaWork — one link, everything about you</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="favicon.ico">
+<link rel="canonical" href="https://tenawork.com/">
+<meta name="description" content="Build a free online profile with an auto-generated CV, shareable link and QR code. Register free on TenaWork — no coding or designer needed.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TenaWork — one link, everything about you">
+<meta property="og:description" content="Build a free online profile with an auto-generated CV, shareable link and QR code. Register free on TenaWork — no coding or designer needed.">
+<meta property="og:url" content="https://tenawork.com/">
+<meta property="og:site_name" content="TenaWork">
+<meta property="og:image" content="https://tenawork.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TenaWork — one link, everything about you">
+<meta name="twitter:description" content="Build a free online profile with an auto-generated CV, shareable link and QR code. Register free on TenaWork — no coding or designer needed.">
+<meta name="twitter:image" content="https://tenawork.com/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "TenaWork",
+  "url": "https://tenawork.com/",
+  "logo": "https://tenawork.com/logo.png",
+  "description": "TenaWork lets anyone build a free online profile with an auto-generated CV, shareable link and QR code."
+}
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="nav">
+<div class="nav nav-3col">
   <a href="index.html" class="brand-link" aria-label="TenaWork — home">
     <svg class="brand-logo" viewBox="0 0 176 30" xmlns="http://www.w3.org/2000/svg">
       <text x="0" y="22" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="23">
@@ -16,23 +44,25 @@
       </text>
     </svg>
   </a>
-  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-links" id="navLinks">
     <a class="navlink" href="#how">How it works</a>
     <a class="navlink" href="#pricing">Pricing</a>
     <a class="navlink" href="#faq">FAQ</a>
     <a class="navlink" href="#contact">Contact</a>
-    <a class="btn btn-primary" href="auth.html">Get started</a>
   </div>
+  <a class="btn btn-primary nav-cta" href="auth.html">Get started</a>
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
 </div>
 
 <section class="hero wrap reveal in">
-  <span class="eyebrow">01 / build once — share everywhere</span>
-  <h1>Your CV, your shop,<br>your <em>one link</em>.</h1>
-  <p class="sub">Register, upload what you know, and get a page that works for you — a CV that updates itself, a shop that never closes, all reachable from one link or a scan of a QR code.</p>
-  <div class="cta-row">
-    <a class="btn btn-accent" href="auth.html">Get your link — free</a>
-    <a class="btn btn-ghost" href="profile.html">See a sample profile</a>
+  <div class="hero-top">
+    <span class="eyebrow">01 / build once — share everywhere</span>
+    <h1>Your CV, your shop,<br>your <em>one link</em>.</h1>
+    <p class="sub">Register, upload what you know, and get a page that works for you — a CV that updates itself, a shop that never closes, all reachable from one link or a scan of a QR code.</p>
+    <div class="cta-row">
+      <a class="btn btn-accent" href="auth.html">Get your link — free</a>
+      <a class="btn btn-ghost" href="profile.html">See a sample profile</a>
+    </div>
   </div>
 
   <div class="hero-stats-row">
@@ -77,11 +107,18 @@
       <div class="stat-caption">CV downloads</div>
     </div>
   </div>
+
+  <a href="#how" class="scroll-cue">
+    Scroll
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+  </a>
 </section>
 
 <section class="wrap reveal" id="how" style="padding-bottom:100px;">
-  <span class="eyebrow">How it works</span>
-  <h2 style="font-size:30px;max-width:480px;margin-bottom:36px;">Three steps. No code, no designer.</h2>
+  <span class="eyebrow" style="display:block;text-align:center;">How it works</span>
+  <div style="text-align:center;max-width:560px;margin:8px auto 40px;">
+    <h1 class="section-title">Three steps. No code, no designer.</h1>
+  </div>
   <div class="steps-row">
     <div class="step-card reveal reveal-1">
       <div class="step-num">01</div>
