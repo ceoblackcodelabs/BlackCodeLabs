@@ -4,6 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Profile — TenaWork</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="favicon.ico">
+<link rel="canonical" href="https://tenawork.com/dashboard.html">
+<meta name="description" content="Manage your TenaWork profile, documents, CV and analytics from your dashboard.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#14171f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="My Profile — TenaWork">
+<meta property="og:description" content="Manage your TenaWork profile, documents, CV and analytics from your dashboard.">
+<meta property="og:url" content="https://tenawork.com/dashboard.html">
+<meta property="og:site_name" content="TenaWork">
+<meta property="og:image" content="https://tenawork.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Profile — TenaWork">
+<meta name="twitter:description" content="Manage your TenaWork profile, documents, CV and analytics from your dashboard.">
+<meta name="twitter:image" content="https://tenawork.com/og-image.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -263,25 +281,81 @@
 
     <div class="tabpane" id="tab-billing" style="display:none;">
       <h2 style="font-size:20px;margin-bottom:16px;">Billing</h2>
+
+      <div class="panel" style="padding:28px;margin:0 0 24px;">
+        <h3 style="font-size:14px;margin-bottom:16px;">Billing details</h3>
+        <div class="field">
+          <label>Name on account</label>
+          <input type="text" value="Amina Wanjiru">
+        </div>
+        <div class="field">
+          <label>Billing email</label>
+          <input type="email" value="amina.w@email.com">
+        </div>
+        <div class="field">
+          <label>Current payment method</label>
+          <input type="text" value="M-Pesa · 0712 345 678" readonly>
+        </div>
+        <button class="btn btn-primary" onclick="showToast('Billing details updated')">Save changes</button>
+      </div>
+
+      <h3 style="font-size:14px;margin-bottom:12px;">Payment method</h3>
+      <div class="pay-method-row">
+        <button class="pay-method" onclick="openPayModal('mpesa','pro')">
+          <div class="pay-ic pm-mpesa">M</div>
+          <div class="pay-name">M-Pesa</div>
+        </button>
+        <button class="pay-method" onclick="openPayModal('card','pro')">
+          <div class="pay-ic pm-card">💳</div>
+          <div class="pay-name">Card</div>
+        </button>
+        <button class="pay-method" onclick="openPayModal('crypto','pro')">
+          <div class="pay-ic pm-crypto">₿</div>
+          <div class="pay-name">Crypto Transfer</div>
+        </button>
+        <button class="pay-method" onclick="openPayModal('cryptomus','pro')">
+          <div class="pay-ic pm-cryptomus">C</div>
+          <div class="pay-name">Cryptomus</div>
+        </button>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:28px 0 12px;flex-wrap:wrap;gap:14px;">
+        <h3 style="font-size:14px;margin:0;">Plans</h3>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div class="currency-select">
+            <label for="currencyPicker">Currency</label>
+            <select id="currencyPicker" onchange="setCurrency(this.value)">
+              <option value="KES">KSh — Kenyan Shilling</option>
+              <option value="USD">$ — US Dollar</option>
+              <option value="EUR">€ — Euro</option>
+            </select>
+            <span class="currency-note" id="currencyNote">detecting your location…</span>
+          </div>
+          <div class="period-toggle">
+            <button data-period="monthly" class="active" onclick="setBillingPeriod('monthly',this)">Monthly</button>
+            <button data-period="annual" onclick="setBillingPeriod('annual',this)">Annually <span class="save-badge">Save 20%</span></button>
+          </div>
+        </div>
+      </div>
       <div class="billing-plans">
         <div class="bplan active">
           <h3>Free</h3>
-          <div class="bprice">KSh 0<span>/mo</span></div>
+          <div class="bprice"><span class="cur-sym" id="freeCur">KSh</span><span class="amount">0</span></div>
           <ul><li>Profile + link + QR</li><li>Auto CV</li><li>1 document upload</li></ul>
           <button class="btn btn-ghost" disabled style="width:100%;justify-content:center;opacity:.6;">Current plan</button>
         </div>
         <div class="bplan featured">
           <span class="price-badge">Most popular</span>
           <h3>Pro</h3>
-          <div class="bprice">KSh 200<span>/mo</span></div>
+          <div class="bprice"><span class="cur-sym" id="proCur">KSh</span><span class="amount" id="proPrice">200</span><span class="per" id="proSub">/mo</span></div>
           <ul><li>Unlimited uploads</li><li>Visitor analytics</li><li>Skill tags &amp; CV templates</li></ul>
-          <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="showToast('Redirecting to M-Pesa checkout')">Upgrade</button>
+          <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="openPayModal('mpesa','pro')">Upgrade</button>
         </div>
         <div class="bplan">
           <h3>Premium</h3>
-          <div class="bprice">KSh 500<span>/mo</span></div>
+          <div class="bprice"><span class="cur-sym" id="premiumCur">KSh</span><span class="amount" id="premiumPrice">500</span><span class="per" id="premiumSub">/mo</span></div>
           <ul><li>Verified badge</li><li>Custom short link</li><li>Featured in search</li></ul>
-          <button class="btn btn-ghost" style="width:100%;justify-content:center;" onclick="showToast('Redirecting to M-Pesa checkout')">Upgrade</button>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;" onclick="openPayModal('mpesa','premium')">Upgrade</button>
         </div>
       </div>
     </div>
@@ -356,6 +430,51 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="payModal">
+  <div class="modal-box" style="max-width:440px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h3 style="font-size:18px;" id="payModalTitle">M-Pesa</h3>
+      <button class="modal-close" onclick="closePayModal()">&times;</button>
+    </div>
+
+    <div class="pkg-select">
+      <button class="pkg-pill" data-pkg="free" onclick="selectPkg(this,'free')">Free</button>
+      <button class="pkg-pill active" data-pkg="pro" onclick="selectPkg(this,'pro')">Pro</button>
+      <button class="pkg-pill" data-pkg="premium" onclick="selectPkg(this,'premium')">Premium</button>
+    </div>
+    <div class="pay-total">Total: <strong id="payTotal">KSh 200/mo</strong></div>
+
+    <div class="pay-form" id="payForm-mpesa">
+      <div class="field"><label>M-Pesa phone number</label><input type="tel" placeholder="07XX XXX XXX"></div>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;">You'll get an STK push prompt on your phone to confirm payment.</p>
+      <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="submitPay()">Send STK push</button>
+    </div>
+
+    <div class="pay-form" id="payForm-card" style="display:none;">
+      <div class="field"><label>Card number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+      <div style="display:flex;gap:12px;">
+        <div class="field" style="flex:1;"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
+        <div class="field" style="flex:1;"><label>CVV</label><input type="text" placeholder="123"></div>
+      </div>
+      <div class="field"><label>Name on card</label><input type="text" placeholder="Amina Wanjiru"></div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="submitPay()">Pay now</button>
+    </div>
+
+    <div class="pay-form" id="payForm-crypto" style="display:none;">
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Send the exact amount to the wallet address below, then paste your transaction hash to confirm.</p>
+      <div class="field"><label>Wallet address (USDT · TRC20)</label><input type="text" value="TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE" readonly></div>
+      <div class="field"><label>Transaction hash</label><input type="text" placeholder="Paste your tx hash"></div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="submitPay()">Confirm payment</button>
+    </div>
+
+    <div class="pay-form" id="payForm-cryptomus" style="display:none;">
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">You'll be redirected to Cryptomus to complete this payment securely.</p>
+      <div class="field"><label>Email for receipt</label><input type="email" placeholder="you@email.com"></div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center;" onclick="submitPay()">Continue to Cryptomus</button>
+    </div>
+  </div>
+</div>
+
 <style>
 .quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
 .qstat{border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:#fff;text-align:center;}
@@ -386,13 +505,63 @@
 .switch input:checked + .slider{background:var(--green);}
 .switch input:checked + .slider::before{transform:translateX(18px);}
 
-.billing-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.bplan{border:1px solid var(--line);border-radius:16px;padding:22px;background:#fff;box-shadow:var(--shadow-sm);position:relative;display:flex;flex-direction:column;}
+.pay-method-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.pay-method{
+  display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 10px;
+  border:1px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;
+  box-shadow:var(--shadow-sm);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+  font-family:'Inter';
+}
+.pay-method:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--ink);}
+.pay-ic{
+  width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:15px;color:#fff;
+}
+.pm-mpesa{background:var(--green);}
+.pm-card{background:var(--ink);font-size:17px;}
+.pm-crypto{background:var(--gold);}
+.pm-cryptomus{background:var(--teal);}
+.pay-name{font-size:12px;font-weight:600;text-align:center;color:var(--ink);}
+.pay-form .field:last-of-type{margin-bottom:16px;}
+@media(max-width:520px){.pay-method-row{grid-template-columns:repeat(2,1fr);}}
+
+.currency-select{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.currency-select label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;}
+.currency-select select{
+  padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:#fff;
+  font-family:'Inter';font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;
+}
+.currency-note{font-size:11px;color:var(--muted);font-style:italic;}
+
+.period-toggle{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:4px;gap:4px;background:#fff;}
+.period-toggle button{
+  border:none;background:transparent;padding:8px 16px;border-radius:99px;font-size:12.5px;font-weight:600;
+  cursor:pointer;color:var(--muted);font-family:'Inter';display:flex;align-items:center;gap:6px;
+}
+.period-toggle button.active{background:var(--ink);color:#fff;}
+.save-badge{background:var(--green);color:#fff;font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700;}
+.period-toggle button:not(.active) .save-badge{background:rgba(31,122,77,0.15);color:var(--green);}
+
+.pkg-select{display:flex;gap:8px;margin-bottom:14px;}
+.pkg-pill{
+  flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  font-size:13px;font-weight:600;font-family:'Inter';color:var(--ink);transition:border-color .15s ease,background .15s ease;
+}
+.pkg-pill.active{border-color:var(--ink);background:var(--ink);color:#fff;}
+.pay-total{
+  display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);
+  padding:12px 14px;background:var(--paper-2);border-radius:10px;margin-bottom:18px;
+}
+.pay-total strong{color:var(--ink);font-size:14px;}
+
+.billing-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}.bplan{border:1px solid var(--line);border-radius:16px;padding:22px;background:#fff;box-shadow:var(--shadow-sm);position:relative;display:flex;flex-direction:column;}
 .bplan.featured{border-color:var(--ink);box-shadow:var(--shadow-md);}
 .bplan.active{background:var(--paper-2);}
 .bplan h3{font-size:15px;margin-bottom:6px;text-align:center;}
-.bplan .bprice{font-family:'Space Grotesk';font-size:22px;font-weight:700;text-align:center;margin-bottom:14px;}
-.bplan .bprice span{font-size:11px;color:var(--muted);font-weight:500;}
+.bplan .bprice{font-family:'Space Grotesk';display:flex;align-items:baseline;justify-content:center;gap:3px;margin-bottom:14px;}
+.bplan .bprice .cur-sym{font-size:13px;font-weight:600;color:var(--muted);}
+.bplan .bprice .amount{font-size:30px;font-weight:700;color:var(--ink);}
+.bplan .bprice .per{font-size:11px;color:var(--muted);font-weight:500;}
 .bplan ul{list-style:none;padding:0;margin:0 0 16px;flex:1;}
 .bplan li{font-size:12px;color:var(--muted);padding:5px 0;}
 .bplan li::before{content:"✓ ";color:var(--green);font-weight:700;}
@@ -461,6 +630,105 @@ function showToast(msg){
 }
 function openCvPreview(){ document.getElementById('cvModal').classList.add('show'); }
 function closeCvPreview(){ document.getElementById('cvModal').classList.remove('show'); }
+
+const payLabels = {mpesa:'M-Pesa', card:'Card', crypto:'Crypto Transfer', cryptomus:'Cryptomus'};
+const planPrices = {
+  free:{monthly:0, annual:0},
+  pro:{monthly:200, annual:160},
+  premium:{monthly:500, annual:400}
+};
+// Approx conversion rate FROM Kenyan Shillings, plus display symbol
+const currencyInfo = {
+  KES:{rate:1, symbol:'KSh', decimals:0},
+  USD:{rate:0.0078, symbol:'$', decimals:2},
+  EUR:{rate:0.0072, symbol:'€', decimals:2}
+};
+let billingPeriod = 'monthly';
+let selectedPkg = 'pro';
+let currentPayMethod = 'mpesa';
+let currentCurrency = 'KES';
+
+function convert(amountKES, currency){
+  const info = currencyInfo[currency];
+  const val = amountKES * info.rate;
+  return info.decimals === 0 ? Math.round(val) : val.toFixed(info.decimals);
+}
+
+function setCurrency(currency, isAuto){
+  currentCurrency = currency;
+  document.getElementById('currencyPicker').value = currency;
+  document.getElementById('currencyNote').textContent = isAuto
+    ? 'auto-detected from your location'
+    : 'set manually';
+  const sym = currencyInfo[currency].symbol;
+  document.getElementById('freeCur').textContent = sym;
+  document.getElementById('proCur').textContent = sym;
+  document.getElementById('premiumCur').textContent = sym;
+  refreshPrices();
+}
+
+function setBillingPeriod(period, el){
+  billingPeriod = period;
+  document.querySelectorAll('.period-toggle button').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('proSub').textContent = period==='annual' ? '/mo, billed yearly' : '/mo';
+  document.getElementById('premiumSub').textContent = period==='annual' ? '/mo, billed yearly' : '/mo';
+  refreshPrices();
+}
+
+function refreshPrices(){
+  document.getElementById('proPrice').textContent = convert(planPrices.pro[billingPeriod], currentCurrency);
+  document.getElementById('premiumPrice').textContent = convert(planPrices.premium[billingPeriod], currentCurrency);
+  updatePayTotal();
+}
+
+function selectPkg(el, pkg){
+  document.querySelectorAll('.pkg-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  selectedPkg = pkg;
+  updatePayTotal();
+}
+
+function updatePayTotal(){
+  const priceKES = planPrices[selectedPkg][billingPeriod];
+  const suffix = billingPeriod === 'annual' ? '/mo, billed yearly' : '/mo';
+  if(priceKES === 0){
+    document.getElementById('payTotal').textContent = 'Free plan — nothing to pay';
+  } else {
+    const amount = convert(priceKES, currentCurrency);
+    document.getElementById('payTotal').textContent = currencyInfo[currentCurrency].symbol + ' ' + amount + suffix;
+  }
+}
+
+function openPayModal(method, pkg){
+  currentPayMethod = method;
+  document.querySelectorAll('.pay-form').forEach(f=>f.style.display='none');
+  document.getElementById('payForm-'+method).style.display='block';
+  document.getElementById('payModalTitle').textContent = payLabels[method];
+
+  const chosen = pkg || selectedPkg;
+  document.querySelectorAll('.pkg-pill').forEach(p=>p.classList.toggle('active', p.dataset.pkg===chosen));
+  selectedPkg = chosen;
+  updatePayTotal();
+
+  document.getElementById('payModal').classList.add('show');
+}
+function closePayModal(){ document.getElementById('payModal').classList.remove('show'); }
+function submitPay(){ closePayModal(); showToast(payLabels[currentPayMethod] + ' payment submitted for the ' + selectedPkg.charAt(0).toUpperCase()+selectedPkg.slice(1) + ' plan'); }
+
+// Detect currency from the visitor's location; falls back to KES if it fails
+(function detectCurrencyFromIP(){
+  const countryToCurrency = {KE:'KES', US:'USD', GB:'EUR', DE:'EUR', FR:'EUR', ES:'EUR', IT:'EUR', NL:'EUR', IE:'EUR', PT:'EUR'};
+  fetch('https://ipapi.co/json/')
+    .then(r => r.json())
+    .then(data => {
+      const code = countryToCurrency[data.country_code] || 'USD';
+      setCurrency(code, true);
+    })
+    .catch(() => {
+      setCurrency('KES', true);
+    });
+})();
 function addSkill(){
   const input = document.getElementById('newSkill');
   const val = input.value.trim();
