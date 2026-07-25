@@ -3,13 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MyPortfolio — one link, everything about you</title>
+<title>TenaWork — one link, everything about you</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="nav">
-  <div class="brand">My<span>Portfolio</span></div>
+  <a href="index.html" class="brand-link" aria-label="TenaWork — home">
+    <svg class="brand-logo" viewBox="0 0 176 30" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="22" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="23">
+        <tspan fill="#14171f">tena</tspan><tspan fill="#e2472b">work</tspan>
+      </text>
+    </svg>
+  </a>
   <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="nav-links" id="navLinks">
     <a class="navlink" href="#how">How it works</a>
@@ -150,7 +156,7 @@
           <li>Unlimited document uploads</li>
           <li>Visitor analytics (city, source, time on page)</li>
           <li>Skill tags &amp; CV templates</li>
-          <li>No MyPortfolio branding</li>
+          <li>No TenaWork branding</li>
         </ul>
         <a class="btn btn-accent" href="auth.html" style="width:100%;justify-content:center;">Upgrade to Pro</a>
       </div>
@@ -160,7 +166,7 @@
         <ul>
           <li>Everything in Pro</li>
           <li>Verified profile badge</li>
-          <li>Custom short link (myportfolio.com/you)</li>
+          <li>Custom short link (tenawork.com/you)</li>
           <li>Featured placement in search</li>
           <li>Priority support</li>
         </ul>
@@ -204,9 +210,9 @@
 
   <div class="contact-card">
     <div class="contact-chips">
-      <a href="mailto:hello@myportfolio.com" class="contact-chip">
+      <a href="mailto:hello@tenawork.com" class="contact-chip">
         <div class="chip-ic">@</div>
-        <div><div class="chip-lbl">Email</div><div class="chip-val">hello@myportfolio.com</div></div>
+        <div><div class="chip-lbl">Email</div><div class="chip-val">hello@tenawork.com</div></div>
       </a>
       <a href="tel:+254700000000" class="contact-chip">
         <div class="chip-ic">☎</div>
@@ -223,7 +229,7 @@
   </div>
 </section>
 
-<footer class="foot">MyPortfolio · KSh 200/month unlocks visitor analytics — everything else stays free</footer>
+<footer class="foot">TenaWork · KSh 200/month unlocks visitor analytics — everything else stays free</footer>
 
 <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Saved</span></div>
 

@@ -48,6 +48,8 @@ a{color:inherit;}
 }
 .nav .brand{font-family:'Space Grotesk';font-weight:700;font-size:19px;}
 .nav .brand span{color:var(--red);}
+.brand-link{display:inline-flex;align-items:center;text-decoration:none;line-height:0;cursor:pointer;}
+.brand-logo{height:22px;width:auto;display:block;}
 .nav a.navlink{font-size:14px;font-weight:500;margin-left:24px;text-decoration:none;opacity:0.75;transition:opacity .15s ease;}
 .nav a.navlink:hover{opacity:1;}
 .menu-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:#fff;cursor:pointer;padding:0;}
