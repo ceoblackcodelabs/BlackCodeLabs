@@ -331,10 +331,10 @@
   pG.setAttribute('color',new THREE.BufferAttribute(col,3));
   S.add(new THREE.Points(pG,new THREE.PointsMaterial({size:.22,vertexColors:true,transparent:true,opacity:.6})));
   const sG=new THREE.IcosahedronGeometry(8,1);
-  const sMesh=new THREE.Mesh(sG,new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.06}));
-  sMesh.position.set(14,0,0);S.add(sMesh);
+  const sMesh=new THREE.Mesh(sG,new THREE.MeshBasicMaterial({color:0xe74c3c,wireframe:true,transparent:true,opacity:.42}));
+  S.add(sMesh);
   const rG=new THREE.TorusGeometry(13,.4,8,70);
-  const rMesh=new THREE.Mesh(rG,new THREE.MeshBasicMaterial({color:0x8a1010,wireframe:true,transparent:true,opacity:.05}));
+  const rMesh=new THREE.Mesh(rG,new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.38}));
   rMesh.rotation.x=Math.PI/2.5;S.add(rMesh);
   let mx=0,my=0;
   document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
@@ -351,7 +351,7 @@
   r.setSize(w,h);
   const s=new THREE.Scene(),cam=new THREE.PerspectiveCamera(60,w/h,.1,200);cam.position.z=20;
   const g=new THREE.OctahedronGeometry(5.5,0);
-  const m=new THREE.MeshBasicMaterial({color:0xc0392b,wireframe:true,transparent:true,opacity:.12});
+  const m=new THREE.MeshBasicMaterial({color:0xe74c3c,wireframe:true,transparent:true,opacity:.5});
   const mesh=new THREE.Mesh(g,m);s.add(mesh);
   (function a(){requestAnimationFrame(a);mesh.rotation.y+=.006;mesh.rotation.x+=.003;r.render(s,cam);})();
 })();

@@ -17,7 +17,7 @@ class ContactForm(forms.ModelForm):
         max_length=20,
         widget=forms.TextInput(attrs={
             'placeholder': '+1 (555) 123-4567',
-            'pattern': '^\+?1?\d{9,15}$'
+            'pattern': r'^\+?1?\d{9,15}$'
         }),
         validators=[RegexValidator(r'^\+?1?\d{9,15}$', 'Enter a valid phone number.')]
     )

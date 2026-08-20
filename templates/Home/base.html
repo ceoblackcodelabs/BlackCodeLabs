@@ -1,15 +1,60 @@
-{% load static %}
-
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>{% block title %}{% endblock title %} — We Build Digital Empires</title>
+<title>{% block title %}BlackCodeLabs{% endblock title %}{% block title_suffix %} — We Build Digital Empires{% endblock title_suffix %}</title>
+
+<meta name="description" content="{% block meta_description %}BlackCodeLabs engineers elite web apps, mobile apps, APIs and automation for ambitious businesses. Custom software development, from MVP to enterprise scale.{% endblock meta_description %}"/>
+<meta name="keywords" content="{% block meta_keywords %}software development Kenya, web development, mobile app development, Django developers, custom software agency, BlackCodeLabs{% endblock meta_keywords %}"/>
+<meta name="robots" content="{% block meta_robots %}index, follow{% endblock meta_robots %}"/>
+<meta name="author" content="BlackCodeLabs"/>
+<link rel="canonical" href="{% block canonical_url %}{{ SITE_URL }}{{ request.path }}{% endblock canonical_url %}"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="{% block og_type %}website{% endblock og_type %}"/>
+<meta property="og:site_name" content="{{ SITE_NAME }}"/>
+<meta property="og:title" content="{% block og_title %}BlackCodeLabs — We Build Digital Empires{% endblock og_title %}"/>
+<meta property="og:description" content="{% block og_description %}{% block og_description_inner %}Elite software engineering: web apps, mobile apps, APIs and automation built to scale.{% endblock og_description_inner %}{% endblock og_description %}"/>
+<meta property="og:url" content="{{ SITE_URL }}{{ request.path }}"/>
+<meta property="og:image" content="{% block og_image %}{{ SITE_URL }}{% static 'assets/images/logo.png' %}{% endblock og_image %}"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="{% block twitter_title %}BlackCodeLabs — We Build Digital Empires{% endblock twitter_title %}"/>
+<meta name="twitter:description" content="{% block twitter_description %}Elite software engineering: web apps, mobile apps, APIs and automation built to scale.{% endblock twitter_description %}"/>
+<meta name="twitter:image" content="{% block twitter_image %}{{ SITE_URL }}{% static 'assets/images/logo.png' %}{% endblock twitter_image %}"/>
+
+{% if GOOGLE_SITE_VERIFICATION %}<meta name="google-site-verification" content="{{ GOOGLE_SITE_VERIFICATION }}"/>{% endif %}
+{% if BING_SITE_VERIFICATION %}<meta name="msvalidate.01" content="{{ BING_SITE_VERIFICATION }}"/>{% endif %}
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="{% static 'assets/images/favicon.ico' %}"/>
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/images/favicon/favicon-32x32.png' %}"/>
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon/favicon-16x16.png' %}"/>
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/favicon/apple-touch-icon.png' %}"/>
+<link rel="manifest" href="{% static 'assets/images/favicon/site.webmanifest' %}"/>
+<meta name="theme-color" content="#050505"/>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <link rel="stylesheet" href="{% static "assets/css/shared.css" %}"/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "BlackCodeLabs",
+  "url": "{{ SITE_URL }}",
+  "logo": "{{ SITE_URL }}{% static 'assets/images/logo.png' %}",
+  "email": "ceoblackcodelabs@gmail.com",
+  "description": "Elite software engineering agency building web apps, mobile apps, APIs and automation.",
+  "sameAs": []
+}
+</script>
+{% block structured_data %}{% endblock structured_data %}
+
 {% block injectcss %}{% endblock injectcss %}
 </head>
 <body>
@@ -19,39 +64,51 @@
 <div class="mobile-drawer">
   <a href="{% url "home" %}">Home</a>
   <a href="{% url "solutions" %}">Solutions</a>
+  <a href="{% url "portfolio" %}">Portfolio</a>
   <a href="{% url "pricing" %}">Pricing</a>
+  <a href="{% url "blog:list" %}">Blog</a>
   <a href="{% url "affiliate" %}">Affiliate</a>
   <a href="{% url "contact" %}">Contact</a>
-  {% comment %} <div class="drawer-actions">
-    <a href="{% url "login" %}" class="btn btn-outline btn-full">Sign In</a>
-    <a href="{% url "register" %}" class="btn btn-red btn-full">Get Started</a>
-  </div> {% endcomment %}
+  <div class="drawer-actions">
+    <a href="{% url "accounts:login" %}" class="btn btn-outline btn-full">Sign In</a>
+    <a href="{% url "accounts:register" %}" class="btn btn-red btn-full">Get Started</a>
+  </div>
 </div>
 
 <nav>
-  <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+  <a href="{% url "home" %}" class="nav-logo">Black<em>Code</em>Labs</a>
   <ul class="nav-links">
-    <li><a href="{% url "home" %}" class="active">Home</a></li>
-    <li><a href="{% url "solutions" %}">Solutions</a></li>
-    <li><a href="{% url "pricing" %}">Pricing</a></li>
-    <li><a href="{% url "affiliate" %}">Affiliate</a></li>
-    <li><a href="{% url "contact" %}">Contact</a></li>
+    <li><a href="{% url "home" %}" class="{% block nav_home_active %}{% endblock %}">Home</a></li>
+    <li><a href="{% url "solutions" %}" class="{% block nav_solutions_active %}{% endblock %}">Solutions</a></li>
+    <li><a href="{% url "portfolio" %}" class="{% block nav_portfolio_active %}{% endblock %}">Portfolio</a></li>
+    <li><a href="{% url "pricing" %}" class="{% block nav_pricing_active %}{% endblock %}">Pricing</a></li>
+    <li><a href="{% url "blog:list" %}" class="{% block nav_blog_active %}{% endblock %}">Blog</a></li>
+    <li><a href="{% url "affiliate" %}" class="{% block nav_affiliate_active %}{% endblock %}">Affiliate</a></li>
+    <li><a href="{% url "contact" %}" class="{% block nav_contact_active %}{% endblock %}">Contact</a></li>
   </ul>
   <div class="nav-actions">
-    {% comment %} <a href="{% url "" %}" class="btn btn-outline btn-sm">Sign In</a> {% endcomment %}
-    {% comment %} <a href="register.html" class="btn btn-red btn-sm">Get Started</a> {% endcomment %}
+    <a href="{% url "accounts:login" %}" class="btn btn-outline btn-sm">Sign In</a>
+    <a href="{% url "accounts:register" %}" class="btn btn-red btn-sm">Get Started</a>
     <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 {% block content %}{% endblock content %}
 
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27d%20like%20to%20talk%20about%20a%20project"
+   class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+  <svg viewBox="0 0 32 32" width="30" height="30" fill="currentColor" aria-hidden="true">
+    <path d="M16.004 3C9.377 3 4 8.373 4 15c0 2.34.66 4.53 1.8 6.4L4 29l7.78-1.75A11.9 11.9 0 0 0 16 27c6.627 0 12-5.373 12-12S22.63 3 16.004 3Zm6.98 17.09c-.29.82-1.7 1.55-2.35 1.62-.6.06-1.35.09-2.18-.14-.5-.15-1.15-.36-1.98-.71-3.49-1.5-5.77-4.99-5.94-5.22-.17-.23-1.42-1.89-1.42-3.6 0-1.72.9-2.56 1.22-2.91.32-.35.69-.44.92-.44.23 0 .46 0 .66.01.21.01.5-.08.78.6.29.7.98 2.41 1.06 2.58.09.17.14.37.03.6-.11.23-.17.37-.34.57-.17.2-.35.44-.5.6-.17.17-.34.35-.15.69.2.34.87 1.44 1.87 2.34 1.29 1.15 2.37 1.51 2.71 1.68.34.17.54.14.74-.08.2-.23.86-1 1.09-1.34.23-.34.46-.28.77-.17.31.11 1.98.94 2.32 1.11.34.17.57.26.65.4.09.15.09.85-.2 1.67Z"/>
+  </svg>
+</a>
+
 <!-- FOOTER -->
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="nav-logo">Black<em>Code</em>Labs</a>
+        <a href="{% url "home" %}" class="nav-logo">Black<em>Code</em>Labs</a>
         <p>Elite software engineering for the digital age. We build systems that power tomorrow's most ambitious businesses.</p>
       </div>
       <div class="footer-col">
@@ -59,22 +116,28 @@
         <ul>
           <li><a href="{% url "home" %}">Home</a></li>
           <li><a href="{% url "solutions" %}">Solutions</a></li>
+          <li><a href="{% url "portfolio" %}">Portfolio</a></li>
           <li><a href="{% url "pricing" %}">Pricing</a></li>
+          <li><a href="{% url "blog:list" %}">Blog</a></li>
           <li><a href="{% url "affiliate" %}">Affiliate</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Contact</h5>
+        <h5>Tools</h5>
+        <ul>
+          <li><a href="{% url "qr_generator" %}">QR Code Generator</a></li>
+        </ul>
+        <h5 style="margin-top:1.5rem;">Contact</h5>
         <ul>
           <li><a href="{% url "contact" %}">Get in Touch</a></li>
           <li><a href="mailto:ceoblackcodelabs@gmail.com">ceoblackcodelabs@gmail.com</a></li>
-          <li><a href="">Client Portal</a></li>
-          <li><a href="">Register</a></li>
+          <li><a href="{% url "accounts:login" %}">Client Portal</a></li>
+          <li><a href="{% url "accounts:register" %}">Register</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 <em>BlackCodeLabs</em>. All rights reserved.</p>
+      <p>© 2026 <em>BlackCodeLabs</em>. All rights reserved.</p>
       <p>Built with precision by <em>BlackCodeLabs</em> engineers.</p>
     </div>
   </div>

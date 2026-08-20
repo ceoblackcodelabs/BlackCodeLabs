@@ -1,5 +1,25 @@
 {% extends "base.html" %}
-{% block title %}{{ post.title }} — Scholar Voice{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block meta_description %}{{ post.excerpt }}{% endblock %}
+{% block canonical_url %}{{ SITE_URL }}{% url 'blog:detail' post.slug %}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_description_inner %}{{ post.excerpt }}{% endblock %}
+{% block og_image %}{{ post.cover }}{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{{ post.excerpt|escapejs }}",
+  "image": "{{ post.cover }}",
+  "datePublished": "{{ post.published_at|date:'c' }}",
+  "author": { "@type": "Person", "name": "{{ post.author.get_full_name|default:post.author.username|escapejs }}" },
+  "publisher": { "@type": "Organization", "name": "BlackCodeLabs" }
+}
+</script>
+{% endblock %}
 {% block content %}
 <section class="container article-layout">
   <!-- Main Content -->

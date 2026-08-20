@@ -673,6 +673,173 @@ class CourseEnrollment(models.Model):
         super().save(*args, **kwargs)
 
 
+class PricingPlan(models.Model):
+    """A plan shown on the /pricing page. Fully admin-editable so the page
+    never needs a code change to update copy, price or features."""
+
+    name = models.CharField(max_length=60, help_text="e.g. Starter, Premium, Enterprise")
+    slug = models.SlugField(max_length=70, unique=True, blank=True)
+    tagline = models.CharField(max_length=200, help_text="One line describing who this plan is for")
+
+    monthly_price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True,
+        help_text="Leave blank for a 'Let's Talk' / custom-quote plan"
+    )
+    annual_price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True,
+        help_text="Price per month when billed annually. Leave blank to auto-calc at 20% off."
+    )
+    currency_symbol = models.CharField(max_length=4, default="$")
+    custom_price_label = models.CharField(
+        max_length=40, blank=True, default="",
+        help_text="Shown instead of a number, e.g. \"Let's Talk\" (for the Enterprise/custom plan)"
+    )
+
+    is_featured = models.BooleanField(default=False, help_text="Highlights this plan as 'Most Popular'")
+    featured_badge_text = models.CharField(max_length=40, default="Most Popular")
+    eyebrow_text = models.CharField(
+        max_length=40, blank=True, default="",
+        help_text="Small label above the plan name, e.g. 'Enterprise'"
+    )
+
+    cta_text = models.CharField(max_length=60, default="Get Started")
+    cta_url_name = models.CharField(
+        max_length=100, blank=True, default="contact",
+        help_text="A named URL to reverse (e.g. 'contact'). Falls back to cta_external_url if it can't be resolved."
+    )
+    cta_external_url = models.CharField(max_length=300, blank=True, default="")
+
+    display_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        verbose_name = "Pricing Plan"
+        verbose_name_plural = "Pricing Plans"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        if self.monthly_price and not self.annual_price:
+            # default annual discount of 20%, rounded to whole currency unit
+            self.annual_price = (self.monthly_price * Decimal("0.8")).quantize(Decimal("1"))
+        super().save(*args, **kwargs)
+
+    def annual_savings(self):
+        if self.monthly_price and self.annual_price:
+            return (self.monthly_price - self.annual_price) * 12
+        return None
+
+    def get_cta_url(self):
+        if self.cta_url_name:
+            try:
+                return reverse(self.cta_url_name)
+            except Exception:
+                pass
+        return self.cta_external_url or "#"
+
+
+class PricingFeature(models.Model):
+    plan = models.ForeignKey(PricingPlan, on_delete=models.CASCADE, related_name="features")
+    text = models.CharField(max_length=200)
+    is_included = models.BooleanField(default=True, help_text="Unchecked shows a dimmed ✗ row")
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        verbose_name = "Pricing Feature"
+        verbose_name_plural = "Pricing Features"
+
+    def __str__(self):
+        return f"{self.plan.name}: {self.text}"
+
+
+class PricingFAQ(models.Model):
+    question = models.CharField(max_length=200)
+    answer = models.TextField()
+    display_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        verbose_name = "Pricing FAQ"
+        verbose_name_plural = "Pricing FAQs"
+
+    def __str__(self):
+        return self.question
+
+
+class PortfolioProject(models.Model):
+    """A case study / completed project shown on the /portfolio page."""
+
+    CATEGORY_CHOICES = [
+        ("web", "Web Development"),
+        ("mobile", "Mobile App"),
+        ("api", "API / Backend"),
+        ("ai", "AI & Automation"),
+        ("ecommerce", "E-Commerce"),
+        ("branding", "Branding & Design"),
+        ("other", "Other"),
+    ]
+
+    title = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=170, unique=True, blank=True)
+    client_name = models.CharField(max_length=150, blank=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="web")
+    summary = models.CharField(max_length=280, help_text="Short summary shown on the grid card")
+    description = models.TextField(blank=True, help_text="Longer case-study copy")
+    technologies = models.CharField(
+        max_length=300, blank=True,
+        help_text="Comma-separated, e.g. Django, React Native, PostgreSQL"
+    )
+
+    cover_image = models.ImageField(upload_to="portfolio/", blank=True, null=True)
+    cover_image_url = models.URLField(blank=True, help_text="Optional fallback image if no file is uploaded")
+
+    project_url = models.URLField(blank=True, help_text="Live site / app store link")
+    completed_year = models.PositiveIntegerField(blank=True, null=True)
+
+    is_featured = models.BooleanField(default=False)
+    display_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["display_order", "-completed_year", "-created_at"]
+        verbose_name = "Portfolio Project"
+        verbose_name_plural = "Portfolio Projects"
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.title)[:160] or "project"
+            slug, i = base, 2
+            while PortfolioProject.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("portfolio_detail", kwargs={"slug": self.slug})
+
+    def cover(self):
+        if self.cover_image:
+            return self.cover_image.url
+        return self.cover_image_url or "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80"
+
+    def tech_list(self):
+        return [t.strip() for t in self.technologies.split(",") if t.strip()]
+
+
 class CourseStat(models.Model):
     """Model for storing course statistics."""
     id = models.BigAutoField(primary_key=True)

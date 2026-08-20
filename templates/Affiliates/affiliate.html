@@ -864,7 +864,7 @@ footer {
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="tel" placeholder="+1 555..."/>
+              <input type="tel" id="reg-phone" placeholder="+1 555..."/>
             </div>
             <div class="form-group">
               <label>Website or Profile URL *</label>
@@ -872,18 +872,17 @@ footer {
             </div>
             <div class="form-group">
               <label>Monthly Audience Size</label>
-              <select>
+              <select id="reg-audience">
                 <option value="">Select range...</option>
-                <option>Under 1,000</option>
-                <option>1,000 – 10,000</option>
-                <option>10,000 – 50,000</option>
-                <option>50,000 – 200,000</option>
-                <option>200,000+</option>
+                <option value="under_1k">Under 1,000</option>
+                <option value="1k_10k">1,000 – 10,000</option>
+                <option value="10k_50k">10,000 – 50,000</option>
+                <option value="50k_plus">50,000+</option>
               </select>
             </div>
             <div class="form-group full">
               <label>Primary Promotion Channels</label>
-              <div class="channel-pills">
+              <div class="channel-pills" id="reg-channels">
                 <span class="ch-pill" onclick="this.classList.toggle('on')">Blog / Website</span>
                 <span class="ch-pill" onclick="this.classList.toggle('on')">YouTube</span>
                 <span class="ch-pill" onclick="this.classList.toggle('on')">Instagram</span>
@@ -897,9 +896,11 @@ footer {
             </div>
             <div class="form-group full">
               <label>How will you promote BlackCodeLabs?</label>
-              <textarea placeholder="Briefly describe your promotion strategy — content type, audience, approach..."></textarea>
+              <textarea id="reg-strategy" placeholder="Briefly describe your promotion strategy — content type, audience, approach..."></textarea>
             </div>
           </div>
+
+          <p id="reg-error" style="display:none;color:var(--accent);font-size:.8rem;margin:.5rem 0 0;"></p>
 
           <div class="terms-row">
             <div class="custom-check" id="termsCheck" onclick="this.classList.toggle('checked');this.textContent=this.classList.contains('checked')?'✓':''"></div>
@@ -921,7 +922,7 @@ footer {
           <code>BCL-XXXX-XXXX</code>
           <button class="copy-btn">Your link is on its way</button>
         </div>
-        <a href="index.html" class="btn btn-outline" style="margin-top:1rem;display:inline-flex">Back to Home</a>
+        <a href="{% url "home" %}" class="btn btn-outline" style="margin-top:1rem;display:inline-flex">Back to Home</a>
       </div>
 
     </div>
@@ -930,7 +931,7 @@ footer {
 
 {% endblock content %}
 
-<script src="shared.js"></script>
+{% block extra_js %}
 <script>
 /* ── 3D HERO ── */
 (function () {
@@ -963,13 +964,13 @@ footer {
   pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   pGeo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
   scene.add(new THREE.Points(pGeo,
-    new THREE.PointsMaterial({ size: .22, vertexColors: true, transparent: true, opacity: .6 })
+    new THREE.PointsMaterial({ size: .24, vertexColors: true, transparent: true, opacity: .75 })
   ));
 
   /* Rotating wire ring */
   const rGeo  = new THREE.TorusGeometry(16, .45, 10, 100);
   const rMesh = new THREE.Mesh(rGeo,
-    new THREE.MeshBasicMaterial({ color: 0x8a1010, wireframe: true, transparent: true, opacity: .045 })
+    new THREE.MeshBasicMaterial({ color: 0xc0392b, wireframe: true, transparent: true, opacity: .4 })
   );
   rMesh.rotation.x = 1.15;
   scene.add(rMesh);
@@ -977,7 +978,7 @@ footer {
   /* Floating icosahedron */
   const iGeo  = new THREE.IcosahedronGeometry(7, 1);
   const iMesh = new THREE.Mesh(iGeo,
-    new THREE.MeshBasicMaterial({ color: 0xc0392b, wireframe: true, transparent: true, opacity: .065 })
+    new THREE.MeshBasicMaterial({ color: 0xe74c3c, wireframe: true, transparent: true, opacity: .45 })
   );
   iMesh.position.set(-18, 5, -6);
   scene.add(iMesh);
@@ -985,7 +986,7 @@ footer {
   /* Second smaller one */
   const i2Geo  = new THREE.OctahedronGeometry(4, 0);
   const i2Mesh = new THREE.Mesh(i2Geo,
-    new THREE.MeshBasicMaterial({ color: 0xe74c3c, wireframe: true, transparent: true, opacity: .055 })
+    new THREE.MeshBasicMaterial({ color: 0xe74c3c, wireframe: true, transparent: true, opacity: .5 })
   );
   i2Mesh.position.set(20, -6, -3);
   scene.add(i2Mesh);
@@ -1018,11 +1019,24 @@ footer {
 })();
 
 /* ── REGISTER ── */
+function getCookie(name) {
+  const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return v ? v.pop() : '';
+}
+
 function registerAffiliate() {
-  const fname  = document.getElementById('reg-fname').value.trim();
-  const email  = document.getElementById('reg-email').value.trim();
-  const url    = document.getElementById('reg-url').value.trim();
-  const agreed = document.getElementById('termsCheck').classList.contains('checked');
+  const fname   = document.getElementById('reg-fname').value.trim();
+  const lname   = document.getElementById('reg-lname').value.trim();
+  const email   = document.getElementById('reg-email').value.trim();
+  const phone   = document.getElementById('reg-phone').value.trim();
+  const url     = document.getElementById('reg-url').value.trim();
+  const audience= document.getElementById('reg-audience').value;
+  const strategy= document.getElementById('reg-strategy').value.trim();
+  const agreed  = document.getElementById('termsCheck').classList.contains('checked');
+  const errorEl = document.getElementById('reg-error');
+  const channels = Array.from(document.querySelectorAll('#reg-channels .ch-pill.on')).map(el => el.textContent.trim()).join(', ');
+
+  errorEl.style.display = 'none';
 
   if (!fname || !email || !url) {
     const btn = document.querySelector('.reg-submit');
@@ -1030,6 +1044,8 @@ function registerAffiliate() {
     setTimeout(() => btn.style.transform = 'translateX(6px)', 80);
     setTimeout(() => btn.style.transform = 'translateX(-4px)', 160);
     setTimeout(() => btn.style.transform = 'none', 240);
+    errorEl.textContent = 'Please fill in your name, email and website/profile URL.';
+    errorEl.style.display = 'block';
     return;
   }
 
@@ -1038,18 +1054,51 @@ function registerAffiliate() {
     check.style.borderColor = 'var(--accent)';
     check.style.boxShadow   = '0 0 0 3px rgba(192,57,43,.15)';
     setTimeout(() => { check.style.borderColor = ''; check.style.boxShadow = ''; }, 2000);
+    errorEl.textContent = 'Please agree to the Affiliate Terms & Conditions.';
+    errorEl.style.display = 'block';
     return;
   }
 
   const btn = document.querySelector('.reg-submit');
+  const originalText = btn.innerHTML;
   btn.textContent = 'Submitting application…';
   btn.disabled    = true;
 
-  setTimeout(() => {
-    document.getElementById('reg-form-state').style.display = 'none';
-    document.getElementById('reg-success').style.display    = 'block';
-    document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 1200);
+  fetch("{% url 'affiliate:apply' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken'),
+    },
+    body: JSON.stringify({
+      full_name: `${fname} ${lname}`.trim(),
+      email: email,
+      phone: phone,
+      website_or_social: url,
+      audience_size: audience,
+      promotion_channels: channels,
+      strategy: strategy,
+    }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('reg-form-state').style.display = 'none';
+      document.getElementById('reg-success').style.display    = 'block';
+      document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+      errorEl.textContent = data.error || 'Something went wrong. Please try again.';
+      errorEl.style.display = 'block';
+    }
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+    errorEl.textContent = 'Network error — please check your connection and try again.';
+    errorEl.style.display = 'block';
+  });
 }
 
 /* Smooth scroll for hero link */
@@ -1062,5 +1111,6 @@ document.querySelector('a[href="#register"]').addEventListener('click', e => {
   document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
 });
 </script>
+{% endblock extra_js %}
 </body>
 </html>
