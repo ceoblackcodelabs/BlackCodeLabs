@@ -2,7 +2,9 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import (
     TechServices, DataCounter,
-    ClientReview, ContactInquiry, Solution
+    ClientReview, ContactInquiry, Solution,
+    PricingPlan, PricingFeature, PricingFAQ,
+    PortfolioProject,
 )
 from django.utils import timezone
 from django.utils.safestring import mark_safe
@@ -209,3 +211,36 @@ class SolutionAdmin(admin.ModelAdmin):
         return super().get_queryset(request).order_by('display_order', 'title')
 
 
+
+# ---------------------------------------------------------------------------
+# PRICING
+# ---------------------------------------------------------------------------
+class PricingFeatureInline(admin.TabularInline):
+    model = PricingFeature
+    extra = 1
+
+
+@admin.register(PricingPlan)
+class PricingPlanAdmin(admin.ModelAdmin):
+    list_display = ('name', 'monthly_price', 'annual_price', 'is_featured', 'is_active', 'display_order')
+    list_editable = ('is_featured', 'is_active', 'display_order')
+    prepopulated_fields = {'slug': ('name',)}
+    inlines = [PricingFeatureInline]
+
+
+@admin.register(PricingFAQ)
+class PricingFAQAdmin(admin.ModelAdmin):
+    list_display = ('question', 'display_order', 'is_active')
+    list_editable = ('display_order', 'is_active')
+
+
+# ---------------------------------------------------------------------------
+# PORTFOLIO
+# ---------------------------------------------------------------------------
+@admin.register(PortfolioProject)
+class PortfolioProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'client_name', 'completed_year', 'is_featured', 'is_active', 'display_order')
+    list_editable = ('is_featured', 'is_active', 'display_order')
+    list_filter = ('category', 'is_active', 'is_featured')
+    search_fields = ('title', 'client_name', 'summary')
+    prepopulated_fields = {'slug': ('title',)}

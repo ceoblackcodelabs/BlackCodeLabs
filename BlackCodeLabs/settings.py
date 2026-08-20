@@ -21,12 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mwn&bi$bd60hc5xg#vs_l@qgxy^6^l=)*%g!$=hcj89cm*4an1'
+# Overridable via a SECRET_KEY environment variable / .env entry — set a real
+# random production value before going live (this fallback is dev-only).
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-mwn&bi$bd60hc5xg#vs_l@qgxy^6^l=)*%g!$=hcj89cm*4an1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["https://blackcodelab.com", "blackcodelab.com", "www.blackcodelab.com", "http://www.blackcodelab.com", "http://blackcodelab.com", "https://www.blackcodelab.com", "127.0.0.1", '10.5.5.208']
+ALLOWED_HOSTS = ["https://blackcodelab.com", "blackcodelab.com", "www.blackcodelab.com", "http://www.blackcodelab.com", "http://blackcodelab.com", "https://www.blackcodelab.com", "127.0.0.1", '10.5.5.208', '*']
 
 
 # Application definition
@@ -38,9 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'Home',
     'Users',
-    # 'SalesPro.apps.SalesproConfig',
     'Pitchs.apps.PitchsConfig',
 
     # Allauth apps
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'Blogs',
     'BCL',
+    'Affiliate',
 ]
 
 SITE_ID = 1
@@ -94,6 +97,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Home.context_processors.site_meta',
             ],
         },
     },
@@ -153,9 +157,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'Home' / 'static',
-    BASE_DIR / 'SalesPro' / 'static',
     BASE_DIR / 'BCL' / 'static',
-    BASE_DIR / 'media',
 ]
 
 MEDIA_URL = '/media/'
@@ -203,7 +205,27 @@ DEFAULT_FROM_EMAIL = 'noreply@blackcodelabs.com'
 CONTACT_NOTIFICATION_EMAIL = 'sales@blackcodelabs.com'
 
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://blackcodelabs.com']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://blackcodelabs.com', 'https://www.blackcodelabs.com']
+
+# ---------------------------------------------------------------------------
+# SEO / SITE IDENTITY
+# NOTE: ALLOWED_HOSTS above lists "blackcodelab.com" (no "s") in a few entries
+# while emails/CSRF use "blackcodelabs.com". Confirm the real domain and make
+# ALLOWED_HOSTS consistent before going live — canonical URLs, the sitemap and
+# structured data below all use SITE_DOMAIN.
+SITE_DOMAIN = config('SITE_DOMAIN', default='blackcodelabs.com')
+SITE_URL = config('SITE_URL', default=f'https://{SITE_DOMAIN}')
+SITE_NAME = 'BlackCodeLabs'
+
+# Paste the verification codes/meta tags Google Search Console and Bing
+# Webmaster Tools give you when you add the property — they render
+# automatically in the <head> once set.
+GOOGLE_SITE_VERIFICATION = config('GOOGLE_SITE_VERIFICATION', default='')
+BING_SITE_VERIFICATION = config('BING_SITE_VERIFICATION', default='')
+
+# Number (with country code, no + or spaces) the floating WhatsApp button
+# opens a chat with.
+WHATSAPP_NUMBER = config('WHATSAPP_NUMBER', default='254731209601')
 
 # For production, uncomment and configure the following:
 # EMAIL_BACKEND = config('EMAIL_BACKEND')

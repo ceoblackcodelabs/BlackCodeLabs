@@ -4,13 +4,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}Loopsta Blog{% endblock %}</title>
-<meta name="description" content="Official institutional blog — graduation, scholarships, campus life and announcements.">
+<title>{% block title %}Loopsta Blog{% endblock %} — BlackCodeLabs</title>
+<meta name="description" content="{% block meta_description %}Insights, updates and stories from the BlackCodeLabs team — engineering, product and industry deep-dives.{% endblock %}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{% block canonical_url %}{{ SITE_URL }}{{ request.path }}{% endblock %}"/>
+
+<meta property="og:type" content="{% block og_type %}website{% endblock %}"/>
+<meta property="og:site_name" content="BlackCodeLabs Blog"/>
+<meta property="og:title" content="{% block og_title %}Loopsta Blog — BlackCodeLabs{% endblock %}"/>
+<meta property="og:description" content="{% block og_description %}{% block og_description_inner %}Insights, updates and stories from the BlackCodeLabs team.{% endblock %}{% endblock %}"/>
+<meta property="og:url" content="{{ SITE_URL }}{{ request.path }}"/>
+<meta property="og:image" content="{% block og_image %}{{ SITE_URL }}{% static 'assets/images/logo.png' %}{% endblock %}"/>
+<meta name="twitter:card" content="summary_large_image"/>
+
+<link rel="icon" type="image/x-icon" href="{% static 'assets/images/favicon.ico' %}"/>
+<link rel="apple-touch-icon" href="{% static 'assets/images/favicon/apple-touch-icon.png' %}"/>
 <meta name="theme-color" content="#0f1e3d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% block structured_data %}{% endblock %}
 {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -35,6 +49,7 @@
     </button>
 
     <nav class="nav-links" id="main-nav" aria-label="Main navigation">
+      <a href="{% url 'home' %}">← BlackCodeLabs</a>
       <a href="{% url 'blog:list' %}">Home</a>
       <a href="{% url 'blog:about' %}">About</a>
       <a href="{% url 'blog:contact' %}">Contact</a>

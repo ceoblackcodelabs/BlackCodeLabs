@@ -5,7 +5,9 @@ from django.db.models import Q, Count, Avg
 from django.core.paginator import Paginator
 from .models import (
     TechServices, DataCounter,
-    ClientReview, Solution
+    ClientReview, Solution,
+    PricingPlan, PricingFAQ,
+    PortfolioProject,
 )
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.serializers.json import DjangoJSONEncoder
@@ -53,6 +55,51 @@ class GamesPageView(TemplateView):
 
 class Pricing(TemplateView):
     template_name = "Home/pricing.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plans'] = PricingPlan.objects.filter(is_active=True).prefetch_related('features')
+        context['faqs'] = PricingFAQ.objects.filter(is_active=True)
+        return context
+
+
+class PortfolioPageView(ListView):
+    model = PortfolioProject
+    template_name = "Home/portfolio.html"
+    context_object_name = "projects"
+    paginate_by = 9
+
+    def get_queryset(self):
+        qs = PortfolioProject.objects.filter(is_active=True)
+        category = self.request.GET.get('category')
+        if category and category != 'all':
+            qs = qs.filter(category=category)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = PortfolioProject.CATEGORY_CHOICES
+        context['active_category'] = self.request.GET.get('category', 'all')
+        context['featured_projects'] = PortfolioProject.objects.filter(is_active=True, is_featured=True)[:3]
+        return context
+
+
+class PortfolioDetailView(DetailView):
+    model = PortfolioProject
+    template_name = "Home/portfolio_detail.html"
+    context_object_name = "project"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+
+    def get_queryset(self):
+        return PortfolioProject.objects.filter(is_active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['related_projects'] = PortfolioProject.objects.filter(
+            is_active=True, category=self.object.category
+        ).exclude(pk=self.object.pk)[:3]
+        return context
 
 
 @csrf_protect
@@ -279,5 +326,101 @@ class SolutionDetailView(DetailView):
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-class AffiliateView(TemplateView):
-    template_name = "Affiliates/affiliate.html"
+# ---------------------------------------------------------------------------
+# QR CODE GENERATOR
+# ---------------------------------------------------------------------------
+class QRGeneratorPageView(TemplateView):
+    """Public page with a form to turn any URL/text into a downloadable QR code."""
+    template_name = "Home/qr_generator.html"
+
+
+def qr_code_image(request):
+    """Generates a PNG QR code on the fly for ?data=<text or url> and streams it back.
+    No text/url is stored — this is a stateless generator anyone can hit."""
+    import io
+    import qrcode
+    from qrcode.image.styledpil import StyledPilImage
+    from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
+    from qrcode.image.styles.colormasks import SolidFillColorMask
+    from django.http import HttpResponse
+
+    data = request.GET.get('data', '').strip()
+    if not data:
+        return HttpResponseBadRequest("Missing 'data' parameter")
+    if len(data) > 2000:
+        return HttpResponseBadRequest("Data too long")
+
+    try:
+        size = int(request.GET.get('size', 10))
+        size = max(4, min(size, 20))
+    except (TypeError, ValueError):
+        size = 10
+
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=size,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    try:
+        img = qr.make_image(
+            image_factory=StyledPilImage,
+            module_drawer=RoundedModuleDrawer(),
+            color_mask=SolidFillColorMask(front_color=(192, 57, 43), back_color=(255, 255, 255)),
+        )
+    except Exception:
+        # Fallback to a plain black/white code if the styled renderer isn't available
+        img = qr.make_image(fill_color="#c0392b", back_color="white")
+
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
+
+    response = HttpResponse(buffer.getvalue(), content_type="image/png")
+    download = request.GET.get('download')
+    if download:
+        response['Content-Disposition'] = 'attachment; filename="qrcode.png"'
+    response['Cache-Control'] = 'no-store'
+    return response
+
+
+# ---------------------------------------------------------------------------
+# ROBOTS.TXT
+# ---------------------------------------------------------------------------
+def robots_txt(request):
+    from django.http import HttpResponse
+    site_url = getattr(settings, 'SITE_URL', f"https://{request.get_host()}")
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin/",
+        "Disallow: /accounts/",
+        f"Sitemap: {site_url}/sitemap.xml",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+# ---------------------------------------------------------------------------
+# CUSTOM ERROR HANDLERS (registered as handler400/403/404/500 in urls.py)
+# ---------------------------------------------------------------------------
+def error_400(request, exception=None):
+    from django.shortcuts import render
+    return render(request, "errors/400.html", status=400)
+
+
+def error_403(request, exception=None):
+    from django.shortcuts import render
+    return render(request, "errors/403.html", status=403)
+
+
+def error_404(request, exception=None):
+    from django.shortcuts import render
+    return render(request, "errors/404.html", status=404)
+
+
+def error_500(request):
+    from django.shortcuts import render
+    return render(request, "errors/500.html", status=500)
