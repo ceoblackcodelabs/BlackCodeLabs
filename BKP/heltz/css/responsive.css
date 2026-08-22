@@ -1,0 +1,245 @@
+/* ============================================================
+   RESPONSIVE — Heltz Driving Academy
+   Breakpoints: 1180 (small laptop), 980 (tablet), 720 (large mobile),
+   460 (small mobile)
+   ============================================================ */
+
+/* ---------- 1180px : tighten desktop grids ---------- */
+@media (max-width: 1180px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .branches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.2fr 1fr 1fr;
+  }
+
+  .footer-col:last-child {
+    grid-column: span 3;
+  }
+}
+
+/* ---------- 980px : switch to mobile nav, stack major grids ---------- */
+@media (max-width: 980px) {
+  .main-nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: inline-flex;
+  }
+
+  .header-cta .btn-outline {
+    display: none;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-media {
+    order: -1;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-card:nth-child(2) {
+    border-right: none;
+  }
+
+  .stat-card {
+    border-bottom: 1px solid rgba(246, 244, 238, 0.12);
+  }
+
+  .stat-card:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .steps-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-col:first-child {
+    grid-column: span 2;
+  }
+
+  .footer-col:last-child {
+    grid-column: span 1;
+  }
+
+  .price-tables-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ---------- 720px : large mobile ---------- */
+@media (max-width: 720px) {
+  .topbar-info span:nth-child(1) {
+    display: none;
+  }
+
+  .hero {
+    height: 92vh;
+    min-height: 560px;
+  }
+
+  .hero-controls {
+    left: clamp(1.25rem, 4vw, 2.5rem);
+    justify-content: space-between;
+    width: calc(100% - clamp(2.5rem, 8vw, 5rem));
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .branches-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 150px;
+  }
+
+  .gallery-item.wide {
+    grid-column: span 2;
+  }
+
+  .gallery-item.tall {
+    grid-row: span 1;
+  }
+
+  .cta-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .steps-row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-col:first-child,
+  .footer-col:last-child {
+    grid-column: span 1;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .about-quick-stats {
+    gap: 1.6rem;
+  }
+
+  .form-card,
+  .payment-method-card {
+    padding: 1.5rem;
+  }
+
+  .cta-banner .hero-cta-row,
+  .cta-banner div:last-child {
+    width: 100%;
+  }
+}
+
+/* ---------- 460px : small mobile ---------- */
+@media (max-width: 460px) {
+  .btn {
+    padding: 0.85rem 1.3rem;
+    font-size: 0.78rem;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .brand-text .name {
+    font-size: 1.25rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 130px;
+    gap: 0.6rem;
+  }
+
+  .hero-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .wa-float {
+    width: 50px;
+    height: 50px;
+    bottom: 1.1rem;
+    right: 1.1rem;
+  }
+
+  .drawer-panel {
+    width: 100vw;
+    padding: 1.25rem 1.25rem 2rem;
+  }
+
+  .about-badge {
+    left: 0.8rem;
+    bottom: -1rem;
+    padding: 0.9rem 1.1rem;
+    max-width: 170px;
+  }
+
+  .price-table th,
+  .price-table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.86rem;
+  }
+}
