@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import Q, Count, Avg
 from django.core.paginator import Paginator
+from django.core.cache import cache
 from .models import (
     TechServices, DataCounter,
     ClientReview, Solution,
@@ -29,25 +30,39 @@ from django.utils.decorators import method_decorator
 
 logger = logging.getLogger(__name__)
 
-class HomePageView(ListView):
+# Cache timeout for rarely-changing marketing content (tech services, pricing,
+# reviews, portfolio, etc). Saved to cache under a fixed key so repeat page
+# views skip the database entirely until the timeout expires or the admin
+# edits the underlying data (see Home/signals.py for cache-busting on save).
+CONTENT_CACHE_TTL = 60 * 15  # 15 minutes
+
+
+class HomePageView(TemplateView):
     template_name = "Home/index.html"
-    model = TechServices
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tech_services'] = TechServices.objects.all()
-        data_counter = DataCounter.objects.filter(is_active=True).first()
-        if not data_counter:
-            # Create a default counter if none exists
-            data_counter = DataCounter.objects.create(
-                projects_delivered=1247,
-                systems_automated=892,
-                happy_clients=765,
-                returning_clients=423,
-                is_active=True
-            )
-        context['data_counters'] = data_counter
-        context["client_reviews"] = ClientReview.objects.all()[:6]
+
+        cached = cache.get("home_page_context")
+        if cached is None:
+            data_counter = DataCounter.objects.filter(is_active=True).first()
+            if not data_counter:
+                # Create a default counter if none exists
+                data_counter = DataCounter.objects.create(
+                    projects_delivered=1247,
+                    systems_automated=892,
+                    happy_clients=765,
+                    returning_clients=423,
+                    is_active=True
+                )
+            cached = {
+                "tech_services": list(TechServices.objects.all()),
+                "data_counters": data_counter,
+                "client_reviews": list(ClientReview.objects.all()[:6]),
+            }
+            cache.set("home_page_context", cached, CONTENT_CACHE_TTL)
+
+        context.update(cached)
         return context
 
 class GamesPageView(TemplateView):
@@ -58,8 +73,14 @@ class Pricing(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['plans'] = PricingPlan.objects.filter(is_active=True).prefetch_related('features')
-        context['faqs'] = PricingFAQ.objects.filter(is_active=True)
+        cached = cache.get("pricing_page_context")
+        if cached is None:
+            cached = {
+                "plans": list(PricingPlan.objects.filter(is_active=True).prefetch_related('features')),
+                "faqs": list(PricingFAQ.objects.filter(is_active=True)),
+            }
+            cache.set("pricing_page_context", cached, CONTENT_CACHE_TTL)
+        context.update(cached)
         return context
 
 
@@ -80,7 +101,11 @@ class PortfolioPageView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = PortfolioProject.CATEGORY_CHOICES
         context['active_category'] = self.request.GET.get('category', 'all')
-        context['featured_projects'] = PortfolioProject.objects.filter(is_active=True, is_featured=True)[:3]
+        featured = cache.get("portfolio_featured_projects")
+        if featured is None:
+            featured = list(PortfolioProject.objects.filter(is_active=True, is_featured=True)[:3])
+            cache.set("portfolio_featured_projects", featured, CONTENT_CACHE_TTL)
+        context['featured_projects'] = featured
         return context
 
 

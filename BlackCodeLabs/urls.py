@@ -27,7 +27,6 @@ urlpatterns = [
     path('devAdmin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('projects/', include('Pitchs.urls')),
-    path("BCL/", include("BCL.urls")),
     path("Blogs/", include("Blogs.urls")),
     path("affiliate/", include(("Affiliate.urls", "affiliate"), namespace="affiliate")),
     path('robots.txt', Home_views.robots_txt, name='robots_txt'),

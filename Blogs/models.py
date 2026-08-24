@@ -41,6 +41,10 @@ class Post(models.Model):
 
     class Meta:
         ordering = ["-published_at"]
+        indexes = [
+            models.Index(fields=['status', '-published_at']),
+            models.Index(fields=['status', 'featured']),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.slug:

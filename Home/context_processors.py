@@ -12,4 +12,8 @@ def site_meta(request):
         "GOOGLE_SITE_VERIFICATION": settings.GOOGLE_SITE_VERIFICATION,
         "BING_SITE_VERIFICATION": settings.BING_SITE_VERIFICATION,
         "WHATSAPP_NUMBER": settings.WHATSAPP_NUMBER,
+        "SOCIAL_TWITTER": settings.SOCIAL_TWITTER,
+        "SOCIAL_LINKEDIN": settings.SOCIAL_LINKEDIN,
+        "SOCIAL_GITHUB": settings.SOCIAL_GITHUB,
+        "SOCIAL_INSTAGRAM": settings.SOCIAL_INSTAGRAM,
     }

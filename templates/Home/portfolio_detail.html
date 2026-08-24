@@ -29,6 +29,7 @@
 .pd-cat{font-family:var(--font-m);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .pd-hero h1{font-family:var(--font-d);font-size:clamp(2rem,6vw,3.2rem);font-weight:900;line-height:1.08;margin:.8rem 0 1rem}
 .pd-meta-row{display:flex;gap:1.6rem;flex-wrap:wrap;font-family:var(--font-m);font-size:.75rem;color:var(--text2);margin-bottom:1.5rem}
+.pd-visit-btn{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1.8rem}
 .pd-meta-row strong{color:var(--text)}
 .pd-cover{max-width:1100px;margin:0 auto;padding:0 5vw 2.5rem}
 .pd-cover img{width:100%;border-radius:10px;border:1px solid var(--border)}
@@ -53,8 +54,13 @@
   <div class="pd-meta-row">
     {% if project.client_name %}<span><strong>Client:</strong> {{ project.client_name }}</span>{% endif %}
     {% if project.completed_year %}<span><strong>Year:</strong> {{ project.completed_year }}</span>{% endif %}
-    {% if project.project_url %}<span><a href="{{ project.project_url }}" target="_blank" rel="noopener" style="color:var(--accent)">Visit Live Project →</a></span>{% endif %}
   </div>
+  {% if project.project_url %}
+  <a href="{{ project.project_url }}" target="_blank" rel="noopener" class="btn btn-red pd-visit-btn">
+    Visit Live Project
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>
+  {% endif %}
 </div>
 
 <div class="pd-cover">

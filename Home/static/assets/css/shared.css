@@ -370,6 +370,14 @@ footer {
 }
 .footer-brand { grid-column: 1 / -1; }
 .footer-brand p { font-size: 0.83rem; color: var(--text2); line-height: 1.7; margin-top: 0.8rem; max-width: 280px; }
+.footer-socials { display: flex; gap: 0.7rem; margin-top: 1.3rem; }
+.footer-socials a {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text2); transition: all 0.25s;
+}
+.footer-socials a:hover { border-color: rgba(192,57,43,0.45); color: var(--accent-h); background: var(--accent-g); }
 .footer-col h5 { font-family: var(--font-d); font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
 .footer-col ul a { font-size: 0.8rem; color: var(--text2); text-decoration: none; transition: color 0.3s; }
