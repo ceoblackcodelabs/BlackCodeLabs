@@ -1,0 +1,43 @@
+{% extends "Home/base.html" %}
+{% load static %}
+
+{% block title %}Create Account{% endblock title %}
+{% block meta_robots %}noindex, nofollow{% endblock meta_robots %}
+
+{% block injectcss %}
+<style>
+.auth-wrap{min-height:80svh;display:flex;align-items:center;justify-content:center;padding:calc(var(--nav-h) + 2rem) 5vw 3rem}
+.auth-card{width:100%;max-width:460px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:clamp(1.8rem,5vw,2.6rem)}
+.auth-card h1{font-family:var(--font-d);font-size:1.8rem;font-weight:900;margin-bottom:.5rem}
+.auth-card .muted{color:var(--text2);font-size:.85rem;margin-bottom:1.6rem}
+.form-row{margin-bottom:1.1rem}
+.form-row .label{display:block;font-family:var(--font-m);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem}
+.input{width:100%;padding:.85rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.88rem;font-family:var(--font-b)}
+.input:focus{outline:none;border-color:var(--accent)}
+.field-error{color:var(--accent-h);font-size:.75rem;margin-top:.4rem}
+.small{font-size:.75rem;color:var(--text3);margin-top:.4rem}
+.center{text-align:center}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card reveal">
+    <h1>Join BlackCodeLabs</h1>
+    <p class="muted">Create a free account to comment, like and stay updated.</p>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-row">
+          <label class="label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<div class="small">{{ field.help_text|safe }}</div>{% endif %}
+          {% if field.errors %}<div class="field-error">{{ field.errors|join:" " }}</div>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-red btn-full" type="submit">Create Account</button>
+    </form>
+    <p class="muted center small" style="margin-top:1.2rem">Already have an account? <a href="{% url 'accounts:login' %}" style="color:var(--accent)">Sign in</a></p>
+  </div>
+</div>
+{% endblock %}

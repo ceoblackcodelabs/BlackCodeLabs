@@ -395,6 +395,9 @@ class Solution(models.Model):
         ordering = ['display_order', 'title']
         verbose_name = "Technology Solution"
         verbose_name_plural = "Technology Solutions"
+        indexes = [
+            models.Index(fields=['is_active', 'display_order']),
+        ]
 
     def __str__(self):
         return self.title
@@ -718,6 +721,9 @@ class PricingPlan(models.Model):
         ordering = ["display_order", "id"]
         verbose_name = "Pricing Plan"
         verbose_name_plural = "Pricing Plans"
+        indexes = [
+            models.Index(fields=['is_active', 'display_order']),
+        ]
 
     def __str__(self):
         return self.name
@@ -814,6 +820,10 @@ class PortfolioProject(models.Model):
         ordering = ["display_order", "-completed_year", "-created_at"]
         verbose_name = "Portfolio Project"
         verbose_name_plural = "Portfolio Projects"
+        indexes = [
+            models.Index(fields=['is_active', 'category']),
+            models.Index(fields=['is_active', 'is_featured']),
+        ]
 
     def __str__(self):
         return self.title

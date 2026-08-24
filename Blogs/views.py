@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.db.models import Q, Count
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
@@ -8,6 +9,18 @@ from django.views.generic import ListView, DetailView, CreateView, View, Templat
 
 from .models import Post, Category, Comment
 from .forms import CommentForm, ContactForm
+
+BLOG_CACHE_TTL = 60 * 15  # 15 minutes
+
+
+def get_cached_categories():
+    """Category list with post counts — identical on every list/detail page,
+    so we hit the DB once per cache window instead of on every request."""
+    categories = cache.get("blog_categories_with_counts")
+    if categories is None:
+        categories = list(Category.objects.annotate(post_count=Count("posts")))
+        cache.set("blog_categories_with_counts", categories, BLOG_CACHE_TTL)
+    return categories
 
 
 class PostListView(ListView):
@@ -28,9 +41,20 @@ class PostListView(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["featured"] = Post.objects.filter(status="published", featured=True).first()
+        published = Post.objects.filter(status="published")
+        ctx["featured"] = published.filter(featured=True).first()
         ctx["active_category"] = self.request.GET.get("category", "all")
         ctx["query"] = self.request.GET.get("q", "")
+        ctx["all_categories"] = get_cached_categories()
+        stats = cache.get("blog_list_stats")
+        if stats is None:
+            stats = {
+                "total_posts": published.count(),
+                "total_authors": published.values("author").distinct().count(),
+                "total_categories": Category.objects.count(),
+            }
+            cache.set("blog_list_stats", stats, BLOG_CACHE_TTL)
+        ctx.update(stats)
         return ctx
 
 
@@ -48,14 +72,10 @@ class PostDetailView(DetailView):
         ctx["comments"] = self.object.comments.filter(parent__isnull=True).select_related("author").prefetch_related("replies__author")
         ctx["related"] = Post.objects.filter(status="published").exclude(pk=self.object.pk)[:3]
         ctx["liked"] = self.request.user.is_authenticated and self.object.likes.filter(pk=self.request.user.pk).exists()
-        context = {
-        # Sidebar data
-        'author_post_count': Post.objects.count(),
-        'author_comment_count': Comment.objects.count(),
-        'popular_posts': Post.objects.filter(status='published')[:5],
-        'all_categories': Category.objects.annotate(post_count=Count('posts')),
-        }
-        ctx.update(context)
+        ctx["author_post_count"] = Post.objects.filter(author=self.object.author, status="published").count()
+        ctx["author_comment_count"] = Comment.objects.filter(author=self.object.author).count()
+        ctx["popular_posts"] = Post.objects.filter(status="published").exclude(pk=self.object.pk)[:5]
+        ctx["all_categories"] = get_cached_categories()
         return ctx
 
 

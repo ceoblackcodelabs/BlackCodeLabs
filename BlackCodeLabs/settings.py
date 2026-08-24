@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
-    'Home',
+    'Home.apps.HomeConfig',
     'Users',
     'Pitchs.apps.PitchsConfig',
 
@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'Blogs',
-    'BCL',
     'Affiliate',
 ]
 
@@ -74,6 +73,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,7 +81,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -157,13 +156,53 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'Home' / 'static',
-    BASE_DIR / 'BCL' / 'static',
 ]
 
-MEDIA_URL = '/media/'
+# WhiteNoise: serve static files with hashed, cache-busted filenames, gzip +
+# brotli pre-compression, and far-future Cache-Control headers. This is one
+# of the single biggest wins for perceived load speed — repeat visits (and
+# every asset after the first) get served straight from the browser cache.
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year — safe because filenames are hashed
 
+MEDIA_URL = '/media/'
 import os
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ---------------------------------------------------------------------------
+# CACHING
+# Uses a fast on-disk cache by default (works out of the box, survives across
+# gunicorn/uwsgi worker processes — unlike LocMemCache). Set REDIS_URL in
+# your environment to switch to Redis with zero code changes if you add one
+# later (pip install django-redis).
+# ---------------------------------------------------------------------------
+REDIS_URL = config('REDIS_URL', default='')
+if REDIS_URL:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": REDIS_URL,
+            "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
+            "TIMEOUT": 300,
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "LOCATION": str(BASE_DIR / "django_cache"),
+            "TIMEOUT": 300,
+            "OPTIONS": {"MAX_ENTRIES": 1000},
+        }
+    }
+CACHE_MIDDLEWARE_SECONDS = 300
 
 # LOGGING CONFIGURATION
 LOGGING = {
@@ -223,9 +262,18 @@ SITE_NAME = 'BlackCodeLabs'
 GOOGLE_SITE_VERIFICATION = config('GOOGLE_SITE_VERIFICATION', default='')
 BING_SITE_VERIFICATION = config('BING_SITE_VERIFICATION', default='')
 
+# Social links shown as icons in the footer. Leave any of these blank in your
+# environment to hide that icon — set real URLs before launch.
 # Number (with country code, no + or spaces) the floating WhatsApp button
 # opens a chat with.
 WHATSAPP_NUMBER = config('WHATSAPP_NUMBER', default='254731209601')
+
+# Social links shown as icons in the footer. Leave any of these blank in your
+# environment to hide that icon — set real URLs before launch.
+SOCIAL_TWITTER = config('SOCIAL_TWITTER', default='https://twitter.com/blackcodelabs')
+SOCIAL_LINKEDIN = config('SOCIAL_LINKEDIN', default='https://linkedin.com/company/blackcodelabs')
+SOCIAL_GITHUB = config('SOCIAL_GITHUB', default='https://github.com/blackcodelabs')
+SOCIAL_INSTAGRAM = config('SOCIAL_INSTAGRAM', default='')
 
 # For production, uncomment and configure the following:
 # EMAIL_BACKEND = config('EMAIL_BACKEND')
