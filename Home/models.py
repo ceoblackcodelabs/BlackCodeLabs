@@ -85,6 +85,9 @@ class ClientReview(models.Model):
         verbose_name = "Client Review"
         verbose_name_plural = "Client Reviews"
         ordering = ['-is_featured', '-display_order', '-created_at']
+        indexes = [
+            models.Index(fields=['-is_featured', '-display_order', '-created_at']),
+        ]
 
     def save(self, *args, **kwargs):
         # Check if picture exists and is being updated
@@ -198,6 +201,10 @@ class ContactInquiry(models.Model):
         verbose_name = "Contact Inquiry"
         verbose_name_plural = "Contact Inquiries"
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['-created_at']),
+            models.Index(fields=['status', '-created_at']),
+        ]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.subject}"
@@ -403,7 +410,7 @@ class Solution(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('solutions_detail', kwargs={'slug': self.slug})
+        return reverse('solution_detail', kwargs={'slug': self.slug})
 
     def get_features_list(self):
         """Convert features text field to list."""

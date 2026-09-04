@@ -31,9 +31,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!h || h.startsWith('#') || h.startsWith('mailto') || h.startsWith('tel') || a.target === '_blank') return;
     a.addEventListener('click', e => { e.preventDefault(); navigateTo(a.href); });
   });
-  window.addEventListener('load', () => {
+
+  /* Fix: blank/black page on browser Back or Forward.
+     When you click away, we add body.leaving, which the CSS animates
+     forwards to a fully opaque #page-veil (see shared.css: `animation:
+     veilIn 0.42s ... forwards`) right before window.location.href changes.
+     Modern browsers often restore the PREVIOUS page from the in-memory
+     back/forward cache (bfcache) on Back/Forward instead of reloading it —
+     which means `DOMContentLoaded` and `load` never fire again, so the
+     `leaving` class (and its opaque veil) is still sitting on <body> and is
+     never removed. That's the black screen until a manual refresh forces a
+     real reload.
+     `pageshow` fires in both cases: on a normal/fresh load AND whenever a
+     page is restored from bfcache (`event.persisted === true`). Using it
+     instead of `load` guarantees the veil is always cleared and the
+     entrance animation always replays, however the page was reached. */
+  window.addEventListener('pageshow', () => {
+    document.body.classList.remove('leaving');
     document.body.classList.add('entering');
     setTimeout(() => document.body.classList.remove('entering'), 550);
+  });
+
+  /* Belt-and-braces: if the browser is about to stash this page in the
+     bfcache (pagehide with persisted=true), make sure it isn't stashed
+     mid-transition with the veil still fading in. */
+  window.addEventListener('pagehide', (e) => {
+    if (e.persisted) {
+      document.body.classList.remove('leaving');
+    }
   });
 
   /* ── SCROLL REVEAL ── */
