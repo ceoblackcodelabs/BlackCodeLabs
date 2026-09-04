@@ -543,7 +543,7 @@ class SocialsPageView(TemplateView):
         impact_numbers = [
             {"count": 9, "suffix": "", "label": "Core Services", "desc": "From full-stack development to CCTV installation — one person, many disciplines."},
             {"count": 100, "suffix": "%", "label": "Hands-On", "desc": "Every project built, secured and shipped personally — no outsourcing shortcuts."},
-            {"count": 1, "suffix": "", "label": "One-Person Team", "desc": "A single point of contact from first call to final delivery."},
+            {"count": 1, "suffix": "", "label": "Global Team", "desc": "A single point of contact from first call to final delivery."},
             {"count": 24, "suffix": "/7", "label": "Automation Mindset", "desc": "Always looking for the repetitive task worth scripting away."},
         ]
 
