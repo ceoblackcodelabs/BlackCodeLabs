@@ -112,6 +112,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        # Keep DB connections open between requests instead of reconnecting
+        # every time (huge win once you move to Postgres/MySQL; harmless
+        # no-op on SQLite today).
+        'CONN_MAX_AGE': 60,
     }
 }
 
@@ -205,12 +209,34 @@ else:
 CACHE_MIDDLEWARE_SECONDS = 300
 
 # LOGGING CONFIGURATION
+LOGS_DIR = BASE_DIR / 'logs'
+os.makedirs(LOGS_DIR, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} [{levelname}] {name}: {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+        },
+        # Dedicated rotating log file for the Telegram contact-form
+        # notifier. Keep this separate from the general console log so you
+        # can tail one file (logs/telegram.log) to see exactly whether a
+        # message reached Telegram, or why it failed, without digging
+        # through unrelated Django/request noise.
+        'telegram_file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': str(LOGS_DIR / 'telegram.log'),
+            'maxBytes': 1024 * 1024 * 2,  # 2 MB per file
+            'backupCount': 5,
+            'formatter': 'verbose',
+            'level': 'DEBUG',
         },
     },
     'root': {
@@ -226,6 +252,11 @@ LOGGING = {
         'Home': {  # Your app name
             'handlers': ['console'],
             'level': 'DEBUG',  # Set to DEBUG for more details
+            'propagate': False,
+        },
+        'telegram': {
+            'handlers': ['console', 'telegram_file'],
+            'level': 'DEBUG',
             'propagate': False,
         },
     },
@@ -245,6 +276,25 @@ CONTACT_NOTIFICATION_EMAIL = 'sales@blackcodelabs.com'
 
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://blackcodelabs.com', 'https://www.blackcodelabs.com']
+
+# ---------------------------------------------------------------------------
+# TELEGRAM NOTIFICATIONS
+# Since there's no monitored email inbox, every contact-form submission is
+# pushed straight to a Telegram chat so it can be seen immediately.
+#
+# Setup:
+#   1. Message @BotFather on Telegram -> /newbot -> copy the bot token.
+#   2. Message your new bot once (anything), then visit:
+#        https://api.telegram.org/bot<TOKEN>/getUpdates
+#      and copy the "chat":{"id": ...} value -> that's your TELEGRAM_CHAT_ID.
+#   3. Put both values in your .env file (never commit real values):
+#        TELEGRAM_BOT_TOKEN=123456:ABC-your-real-token
+#        TELEGRAM_CHAT_ID=123456789
+# If either is left blank, notifications are silently skipped (and logged)
+# instead of breaking the contact form.
+# ---------------------------------------------------------------------------
+TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN', default='')
+TELEGRAM_CHAT_ID = config('TELEGRAM_CHAT_ID', default='')
 
 # ---------------------------------------------------------------------------
 # SEO / SITE IDENTITY

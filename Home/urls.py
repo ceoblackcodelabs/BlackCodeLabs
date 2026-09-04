@@ -13,6 +13,7 @@ urlpatterns = [
     path('portfolio/', views.PortfolioPageView.as_view(), name='portfolio'),
     path('portfolio/<slug:slug>/', views.PortfolioDetailView.as_view(), name='portfolio_detail'),
     path('games/', views.GamesPageView.as_view(), name='games'),
+    path('socials/', views.SocialsPageView.as_view(), name='socials'),
     path('contact/', views.contact_view, name='contact'),
     path("affiliates/", AffiliateView.as_view(), name="affiliate"),
 

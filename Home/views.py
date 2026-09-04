@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.db.models import Q, Count, Avg
 from django.core.paginator import Paginator
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from .models import (
     TechServices, DataCounter,
     ClientReview, Solution,
@@ -14,6 +16,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import csrf_exempt
 from .forms import ContactForm
+from .telegram_notify import notify_new_contact_inquiry
 import json
 from django.views.generic.edit import FormView
 from django.core.mail import send_mail
@@ -37,6 +40,17 @@ logger = logging.getLogger(__name__)
 CONTENT_CACHE_TTL = 60 * 15  # 15 minutes
 
 
+# Full-response cache for pages that render the same HTML for every visitor
+# (no per-user content, no CSRF-bearing forms). This skips the DB query +
+# template render entirely for the ~5 minutes the cache is warm, on top of
+# the low-level `cache.get/set` calls already used inside get_context_data
+# — the two work together: this is what makes repeat homepage/portfolio/
+# pricing hits nearly instant. Never applied to contact_view (its form
+# embeds a per-session CSRF token that must stay fresh).
+PAGE_CACHE_SECONDS = 60 * 5  # 5 minutes
+
+
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class HomePageView(TemplateView):
     template_name = "Home/index.html"
 
@@ -65,9 +79,11 @@ class HomePageView(TemplateView):
         context.update(cached)
         return context
 
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class GamesPageView(TemplateView):
     template_name = "Home/games.html"
 
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class Pricing(TemplateView):
     template_name = "Home/pricing.html"
 
@@ -84,6 +100,7 @@ class Pricing(TemplateView):
         return context
 
 
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class PortfolioPageView(ListView):
     model = PortfolioProject
     template_name = "Home/portfolio.html"
@@ -109,6 +126,7 @@ class PortfolioPageView(ListView):
         return context
 
 
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class PortfolioDetailView(DetailView):
     model = PortfolioProject
     template_name = "Home/portfolio_detail.html"
@@ -168,6 +186,15 @@ def contact_view(request):
                     send_auto_response(inquiry)
                 except Exception as e:
                     logger.warning(f"Email sending failed: {e}")
+
+                # Push an instant Telegram alert. This runs on a background
+                # thread (see Home/telegram_notify.py) so a slow or
+                # unreachable Telegram API can NEVER delay the response the
+                # client sees below — they still get immediate feedback,
+                # while the notification lands on Telegram a moment later.
+                # Any failure is caught and written to logs/telegram.log,
+                # never raised here.
+                notify_new_contact_inquiry(inquiry)
 
                 # Success message
                 messages.success(
@@ -331,6 +358,7 @@ def send_auto_response(inquiry):
 
 
 
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class SolutionsPageView(ListView):
     model = Solution
     template_name = 'Home/solutions.html'
@@ -344,9 +372,10 @@ class SolutionsPageView(ListView):
         # Add any additional context if needed
         return context
 
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class SolutionDetailView(DetailView):
     model = Solution
-    template_name = 'solutions_detail.html'
+    template_name = 'Home/solutions_detail.html'
     context_object_name = 'solution'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
@@ -354,6 +383,7 @@ class SolutionDetailView(DetailView):
 # ---------------------------------------------------------------------------
 # QR CODE GENERATOR
 # ---------------------------------------------------------------------------
+@method_decorator(cache_page(PAGE_CACHE_SECONDS), name='dispatch')
 class QRGeneratorPageView(TemplateView):
     """Public page with a form to turn any URL/text into a downloadable QR code."""
     template_name = "Home/qr_generator.html"
@@ -449,3 +479,101 @@ def error_404(request, exception=None):
 def error_500(request):
     from django.shortcuts import render
     return render(request, "errors/500.html", status=500)
+
+
+# ---------------------------------------------------------------------------
+# /socials/ — Black Sheep (Odhiambo Churchill) personal portfolio page.
+# Everything below is a plain Python list/dict so the page content can be
+# edited in one place without touching the template. Update these as real
+# products, partners, testimonials and numbers become available.
+# ---------------------------------------------------------------------------
+class SocialsPageView(TemplateView):
+    template_name = "Home/socials.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Single source of truth for every social link on the page (floating
+        # button overlay, footer, contact section, community pills). Add a
+        # Google Reviews link, a new platform, etc. — it will show up
+        # everywhere automatically.
+        socials = [
+            {"name": "Instagram", "abbr": "IG", "url": "https://instagram.com/b74ck5h33p"},
+            {"name": "TikTok", "abbr": "TT", "url": "https://tiktok.com/@blackcodelab5"},
+            {"name": "YouTube", "abbr": "YT", "url": "https://youtube.com/@Blackcodelab5"},
+            {"name": "Facebook", "abbr": "FB", "url": "https://facebook.com/b74ck5h33p"},
+            {"name": "LinkedIn", "abbr": "LI", "url": "https://linkedin.com/in/odhiambo-churchill"},
+            {"name": "GitHub", "abbr": "GH", "url": "https://github.com/ceoblackcodelabs"},
+            {"name": "WhatsApp", "abbr": "WA", "url": "https://wa.me/254799804185"},
+            {"name": "Google Reviews", "abbr": "★", "url": "https://g.page/r/CVeAWbmwdPZoEBI/review"},
+        ]
+
+        services = [
+            {"num": "01", "title": "Full-Stack Development", "desc": "Building complete web and mobile products end-to-end — Django and React Native backends, polished production-ready interfaces."},
+            {"num": "02", "title": "Penetration Testing", "desc": "Probing systems and applications for vulnerabilities before attackers do, with clear, actionable security reports."},
+            {"num": "03", "title": "Entrepreneurship", "desc": "Spotting opportunity, building ventures from the ground up, and owning the outcome."},
+            {"num": "04", "title": "Events Management", "desc": "Planning and coordinating events end-to-end, from concept to flawless execution on the day."},
+            {"num": "05", "title": "Philanthropy", "desc": "Giving back through community-focused initiatives and support for causes that matter."},
+            {"num": "06", "title": "Brand Building", "desc": "Shaping identity, voice, and presence for people and businesses who want to stand out from the herd."},
+            {"num": "07", "title": "Social Media Management", "desc": "Growing and managing social presence with content, strategy, and consistency."},
+            {"num": "08", "title": "Automation", "desc": "Designing scripts and systems that remove repetitive work and let people and businesses run leaner."},
+            {"num": "09", "title": "CCTV Installation", "desc": "Planning and installing surveillance systems that keep homes and businesses secure."},
+        ]
+
+        # Rotating hero tagline — cycles through these under the "BLACK SHEEP" title.
+        hero_taglines = [
+            "Full-Stack Development.",
+            "Penetration Testing.",
+            "Automation & Systems.",
+            "Brand Building.",
+            "Different, By Design.",
+        ]
+
+        # Stats marquee under the hero. Swap in real figures once you're tracking them.
+        stats = [
+            {"num": "09", "label": "Core Services"},
+            {"num": "01", "label": "One-Person Team"},
+            {"num": "100%", "label": "Hands-On"},
+            {"num": "24/7", "label": "Automation Mindset"},
+            {"num": "Nairobi", "label": "Based In"},
+        ]
+
+        # "My Impact" counters. Kept modest/true by default — replace with
+        # real project/client counts as you start tracking them.
+        impact_numbers = [
+            {"count": 9, "suffix": "", "label": "Core Services", "desc": "From full-stack development to CCTV installation — one person, many disciplines."},
+            {"count": 100, "suffix": "%", "label": "Hands-On", "desc": "Every project built, secured and shipped personally — no outsourcing shortcuts."},
+            {"count": 1, "suffix": "", "label": "One-Person Team", "desc": "A single point of contact from first call to final delivery."},
+            {"count": 24, "suffix": "/7", "label": "Automation Mindset", "desc": "Always looking for the repetitive task worth scripting away."},
+        ]
+
+        # Leave empty until real products are ready to sell — the merch
+        # section shows a friendly placeholder automatically when this is empty.
+        merch_products = []
+        # Example of how to add one later:
+        # merch_products = [{"name": "Black Sheep Tee", "price": "KSh 1,500", "image": "", "badge": "New"}]
+
+        # Leave empty until you have real partner/collab logos — placeholder
+        # cells are shown automatically when this is empty.
+        collab_partners = []
+
+        # Placeholder testimonials — replace with real client quotes as you collect them.
+        testimonials = [
+            {"text": "Black Sheep rebuilt our platform from the ground up and tightened up security we didn't even know was weak. Fast, thorough, and easy to work with.", "name": "Client Name", "role": "Founder, Company"},
+            {"text": "Automated a process that used to eat half our week. It just runs now — exactly what we needed.", "name": "Client Name", "role": "Operations Lead, Company"},
+            {"text": "Sharp technical work paired with real brand thinking. Rare combination.", "name": "Client Name", "role": "Marketing Lead, Company"},
+        ]
+
+        context.update({
+            "socials": socials,
+            "services": services,
+            "hero_taglines": hero_taglines,
+            "hero_taglines_json": json.dumps(hero_taglines),
+            "stats": stats,
+            "impact_numbers": impact_numbers,
+            "merch_products": merch_products,
+            "collab_partners": collab_partners,
+            "testimonials": testimonials,
+            "total_reach": 0,
+        })
+        return context

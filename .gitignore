@@ -1,0 +1,14 @@
+.env
+/django_cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+/migrations
+/staticfiles
+client_secret_1042068405779-7s7otqu31pev62bp1ln938l0487tm0tu.apps.googleusercontent.com.json
+z.html
+qr_code.png
+./*.png
+/logs
+/media
