@@ -14,6 +14,7 @@ import os
 from django.utils.text import slugify
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+from utils.upload_validators import validate_image_10mb
 
 class TechServices(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -811,7 +812,7 @@ class PortfolioProject(models.Model):
         help_text="Comma-separated, e.g. Django, React Native, PostgreSQL"
     )
 
-    cover_image = models.ImageField(upload_to="portfolio/", blank=True, null=True)
+    cover_image = models.ImageField(upload_to="portfolio/", blank=True, null=True, validators=[validate_image_10mb])
     cover_image_url = models.URLField(blank=True, help_text="Optional fallback image if no file is uploaded")
 
     project_url = models.URLField(blank=True, help_text="Live site / app store link")
