@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.utils import timezone
 
+from utils.upload_validators import validate_image_10mb
+
 
 class Category(models.Model):
     name = models.CharField(max_length=60, unique=True)
@@ -30,7 +32,7 @@ class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts")
     excerpt = models.CharField(max_length=320, help_text="Short summary shown on cards")
     body = models.TextField(help_text="Full post content (HTML allowed)")
-    image = models.ImageField(upload_to="posts/", blank=True, null=True)
+    image = models.ImageField(upload_to="posts/", blank=True, null=True, validators=[validate_image_10mb])
     image_url = models.URLField(blank=True, help_text="Optional fallback image URL")
     featured = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="published")

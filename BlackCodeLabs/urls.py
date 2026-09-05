@@ -14,10 +14,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import re
+
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.conf import settings
-from django.conf.urls.static import static
+from django.views.static import serve as serve_static_file
 from django.contrib.sitemaps.views import sitemap
 
 from Home import views as Home_views
@@ -33,7 +35,28 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('', include('Home.urls')),
     path('auth/', include('Users.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+# Serve MEDIA_ROOT (user uploads: portfolio covers, blog images, client
+# pictures, etc.) directly through Django.
+#
+# NOTE: django.conf.urls.static.static() is deliberately NOT used here.
+# It contains a hard-coded check that registers NO url pattern at all
+# whenever settings.DEBUG is False — regardless of any condition you wrap
+# around the call. That's what was silently 404-ing every /media/ URL in
+# production while working fine on localhost (DEBUG=True there).
+#
+# Wiring django.views.static.serve directly, gated by our own explicit
+# flag, avoids that trap and makes the behavior obvious/toggleable.
+if settings.SERVE_MEDIA_VIA_DJANGO:
+    _media_url_path = settings.MEDIA_URL.lstrip("/")
+    urlpatterns += [
+        re_path(
+            r"^%s(?P<path>.*)$" % re.escape(_media_url_path),
+            serve_static_file,
+            {"document_root": settings.MEDIA_ROOT},
+        ),
+    ]
 
 handler400 = 'Home.views.error_400'
 handler403 = 'Home.views.error_403'

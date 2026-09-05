@@ -73,9 +73,9 @@ SOCIALACCOUNT_PROVIDERS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # must sit right after security
     'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -179,6 +179,24 @@ WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year — safe because filenames are
 MEDIA_URL = '/media/'
 import os
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Serve MEDIA_ROOT (uploaded portfolio/blog/review images) through Django
+# itself, regardless of DEBUG. This is what was previously missing in
+# production — see the big comment above the equivalent block in urls.py.
+# Set False only once your web server / nginx / a CDN is confirmed to serve
+# MEDIA_ROOT directly — more efficient at scale, but uploads 404 again if
+# you flip this off before that's actually in place.
+SERVE_MEDIA_VIA_DJANGO = config('SERVE_MEDIA_VIA_DJANGO', default=True, cast=bool)
+
+# ---------------------------------------------------------------------------
+# UPLOAD SIZE CEILINGS
+# Django rejects the request outright at this layer BEFORE any per-field
+# validator (e.g. validate_image_size on ClientReview.client_picture) ever
+# gets a chance to run and show a friendly error. Keep this at or above the
+# largest per-field validator limit anywhere in the project.
+# ---------------------------------------------------------------------------
+FILE_UPLOAD_MAX_MEMORY_SIZE = 64 * 1024 * 1024   # 64MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 64 * 1024 * 1024   # 64MB
 
 # ---------------------------------------------------------------------------
 # CACHING
