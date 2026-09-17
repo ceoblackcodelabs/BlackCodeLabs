@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2Hame Partner Program</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #1F2937;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    padding: 14mm 16mm;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ---------- shared bits ---------- */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4mm;
+  }
+  .brand-icon {
+    width: 30px;
+    height: 30px;
+    background: #2563EB;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: Georgia, serif;
+  }
+  .brand-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0F172A;
+    letter-spacing: -0.02em;
+  }
+  .brand-name span { color: #2563EB; }
+
+  h1 { font-size: 27px; line-height: 1.18; margin: 0 0 3mm; color: #0F172A; font-weight: 800; letter-spacing: -0.01em; }
+  h1 em { font-style: normal; color: #2563EB; }
+  h2 { font-size: 14px; margin: 0 0 3mm; color: #0F172A; font-weight: 800; }
+  p { font-size: 10.3px; line-height: 1.55; color: #4B5563; margin: 0 0 3mm; }
+  .lede { font-size: 11.5px; line-height: 1.6; color: #374151; margin-bottom: 5mm; }
+
+  /* ---------- PAGE 1 ---------- */
+  .intro-msg {
+    background: #F8FAFC;
+    border-left: 3px solid #2563EB;
+    border-radius: 0 8px 8px 0;
+    padding: 4mm 5mm;
+    margin-bottom: 6mm;
+  }
+  .intro-msg p { font-size: 10.8px; color: #334155; margin: 0; }
+  .intro-msg p + p { margin-top: 2mm; }
+
+  .price-row {
+    display: flex;
+    gap: 5mm;
+    margin: 5mm 0 6mm;
+  }
+  .price-card {
+    flex: 1;
+    border-radius: 10px;
+    padding: 5mm;
+    text-align: center;
+  }
+  .price-card.them {
+    background: #FEF2F2;
+    border: 1px solid #FEE2E2;
+  }
+  .price-card.us {
+    background: #EFF6FF;
+    border: 2px solid #2563EB;
+    position: relative;
+  }
+  .price-card .tag {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94A3B8;
+    margin-bottom: 2mm;
+  }
+  .price-card.us .tag { color: #2563EB; }
+  .price-card .amount {
+    font-size: 22px;
+    font-weight: 800;
+    color: #DC2626;
+    line-height: 1;
+  }
+  .price-card.us .amount { color: #2563EB; }
+  .price-card .amount small { font-size: 10px; font-weight: 600; color: #94A3B8; }
+  .price-card .desc { font-size: 8.6px; color: #64748B; margin-top: 2mm; }
+  .badge-save {
+    position: absolute;
+    top: -3mm;
+    right: -2mm;
+    background: #16A34A;
+    color: #fff;
+    font-size: 7.5px;
+    font-weight: 700;
+    padding: 1.5mm 3mm;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(22,163,74,0.35);
+  }
+
+  .benefits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5mm 6mm;
+    margin-bottom: 6mm;
+  }
+  .benefit {
+    display: flex;
+    gap: 3mm;
+  }
+  .benefit .dot {
+    flex-shrink: 0;
+    width: 6.5mm;
+    height: 6.5mm;
+    border-radius: 50%;
+    background: #EFF6FF;
+    color: #2563EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 800;
+  }
+  .benefit strong { display: block; font-size: 9.8px; color: #0F172A; margin-bottom: 0.6mm; }
+  .benefit p { font-size: 8.8px; margin: 0; color: #64748B; line-height: 1.45; }
+
+  .stats-strip {
+    display: flex;
+    justify-content: space-between;
+    background: #0F172A;
+    border-radius: 10px;
+    padding: 5mm 6mm;
+    margin: 6mm 0 5mm;
+  }
+  .stats-strip .stat { text-align: center; flex: 1; }
+  .stats-strip .stat .num { font-size: 15px; font-weight: 800; color: #fff; }
+  .stats-strip .stat .lbl { font-size: 7.6px; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.8mm; }
+  .stats-strip .stat + .stat { border-left: 1px solid rgba(255,255,255,0.12); }
+
+  .mini-steps { display: flex; gap: 4mm; margin-bottom: 6mm; }
+  .mini-steps .mstep { flex: 1; display: flex; align-items: center; gap: 2.5mm; }
+  .mini-steps .mstep .n { width: 6mm; height: 6mm; line-height: 6mm; text-align: center; border-radius: 50%; background: #EFF6FF; color: #2563EB; font-size: 8.5px; font-weight: 800; flex-shrink: 0; }
+  .mini-steps .mstep span.t { font-size: 8.6px; color: #475569; font-weight: 600; }
+
+  .trust-row {
+    display: flex;
+    justify-content: center;
+    gap: 10mm;
+    padding: 4mm 0;
+    border-top: 1px solid #E2E8F0;
+    border-bottom: 1px solid #E2E8F0;
+    margin-top: 6mm;
+  }
+  .trust-row .t-item { font-size: 8.8px; color: #475569; font-weight: 600; }
+
+  .footer-cta {
+    position: absolute;
+    bottom: 14mm;
+    left: 16mm;
+    right: 16mm;
+    background: #0F172A;
+    border-radius: 10px;
+    padding: 5mm 6mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .footer-cta strong { font-size: 11px; display: block; margin-bottom: 1mm; }
+  .footer-cta span { font-size: 8.6px; color: #94A3B8; }
+  .footer-cta .contact { text-align: right; font-size: 9px; color: #fff; }
+  .footer-cta .contact div { margin-bottom: 0.8mm; }
+
+  /* ---------- PAGE 2 ---------- */
+  .steps {
+    display: flex;
+    gap: 4mm;
+    margin-bottom: 7mm;
+  }
+  .step {
+    flex: 1;
+    text-align: center;
+    padding: 4mm 2.5mm;
+    background: #F8FAFC;
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+  }
+  .step .num {
+    width: 7mm; height: 7mm;
+    line-height: 7mm;
+    border-radius: 50%;
+    background: #2563EB;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    margin: 0 auto 2mm;
+  }
+  .step strong { display: block; font-size: 9px; color: #0F172A; margin-bottom: 1mm; }
+  .step p { font-size: 8px; margin: 0; color: #64748B; line-height: 1.4; }
+
+  .mock-wrap {
+    background: #0F172A;
+    border-radius: 12px;
+    padding: 5mm;
+    margin-bottom: 7mm;
+  }
+  .mock-chrome {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 3mm;
+    padding-left: 1mm;
+  }
+  .mock-chrome span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); }
+
+  .chart-wrap {
+    margin-bottom: 7mm;
+  }
+  .bar-row { display: flex; align-items: center; gap: 4mm; margin-bottom: 3mm; }
+  .bar-label { width: 46mm; font-size: 9px; color: #334155; font-weight: 600; text-align: right; }
+  .bar-track { flex: 1; height: 8mm; background: #F1F5F9; border-radius: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 5px; display: flex; align-items: center; padding-left: 3mm; color: #fff; font-size: 9px; font-weight: 700; }
+  .bar-fill.red { background: linear-gradient(90deg,#F87171,#DC2626); }
+  .bar-fill.blue { background: linear-gradient(90deg,#60A5FA,#2563EB); }
+
+  .quote {
+    text-align: center;
+    padding: 5mm;
+    background: #EFF6FF;
+    border-radius: 10px;
+    margin-bottom: 7mm;
+  }
+  .quote p { font-size: 11px; color: #1E3A8A; font-style: italic; margin: 0; }
+
+  .final-cta {
+    text-align: center;
+    background: #0F172A;
+    border-radius: 12px;
+    padding: 6mm;
+    color: #fff;
+  }
+  .final-cta h2 { color: #fff; font-size: 15px; margin-bottom: 2mm; }
+  .final-cta p { color: #CBD5E1; font-size: 9.5px; margin-bottom: 3mm; }
+  .final-cta .contacts { font-size: 10px; font-weight: 700; color: #fff; }
+  .final-cta .contacts span { color: #60A5FA; }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="brand">
+    <div class="brand-icon">2H</div>
+    <div class="brand-name">2Hame <span>Partner Program</span></div>
+  </div>
+
+  <h1>Your Own Property Website — <em>Without Building One</em></h1>
+
+  <div class="intro-msg">
+    <p><strong>Hi, this is 2Hame 👋</strong></p>
+    <p>We help real estate agents and property owners in Kenya get their own branded online presence — without the cost, time, or hassle of building a website from scratch. Here's exactly what you get.</p>
+  </div>
+
+  <div class="price-row">
+    <div class="price-card them">
+      <div class="tag">A Custom Website</div>
+      <div class="amount">KES 40,000<small>–50,000+</small></div>
+      <div class="desc">Design, hosting, domain, SEO from zero, and someone to maintain it</div>
+    </div>
+    <div class="price-card us">
+      <span class="badge-save">Save ~90%</span>
+      <div class="tag">2Hame Mini Website</div>
+      <div class="amount">KES 5,000</div>
+      <div class="desc">Live in minutes, fully managed, already getting traffic</div>
+    </div>
+  </div>
+
+  <h2>What You Get</h2>
+  <div class="benefits">
+    <div class="benefit">
+      <div class="dot">1</div>
+      <div><strong>Your Own Mini Website</strong><p>A public profile at 2hame.com/agents/yourname — your name, photo, and brand, live in minutes.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="dot">2</div>
+      <div><strong>Zero Double Work</strong><p>Every property you list on 2Hame shows up on your portfolio automatically. List once, it's everywhere.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="dot">3</div>
+      <div><strong>No SEO or Traffic Worries</strong><p>2Hame already ranks and already has visitors searching daily — you don't start from zero.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="dot">4</div>
+      <div><strong>Instant Credibility</strong><p>A verified badge and a professional design tells buyers and tenants you're the real deal.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="dot">5</div>
+      <div><strong>No Tech Headaches</strong><p>No coding, no hosting bills, no "the website is down" calls. We run it, you just list.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="dot">6</div>
+      <div><strong>Reach Active Buyers</strong><p>Thousands of people are already searching 2Hame for their next home — your listings are right there.</p></div>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat"><div class="num">12,500+</div><div class="lbl">Properties Listed</div></div>
+    <div class="stat"><div class="num">8,200+</div><div class="lbl">Active Home-Seekers</div></div>
+    <div class="stat"><div class="num">2,300+</div><div class="lbl">Property Owners</div></div>
+    <div class="stat"><div class="num">47</div><div class="lbl">Towns Across Kenya</div></div>
+  </div>
+
+  <div class="mini-steps">
+    <div class="mstep"><div class="n">1</div><span class="t">Sign up &amp; pay KES 5,000</span></div>
+    <div class="mstep"><div class="n">2</div><span class="t">Get verified in &lt;24 hrs</span></div>
+    <div class="mstep"><div class="n">3</div><span class="t">List &amp; go live automatically</span></div>
+  </div>
+
+  <div class="footer-cta">
+    <div>
+      <strong>Ready to get your mini website?</strong>
+      <span>It only takes a few minutes to get set up.</span>
+    </div>
+    <div class="contact">
+      <div>📞 [Your Phone / WhatsApp]</div>
+      <div>✉️ [Your Email]</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <div class="brand">
+    <div class="brand-icon">2H</div>
+    <div class="brand-name">2Hame <span>Partner Program</span></div>
+  </div>
+  <h1 style="font-size:20px;">How It Works</h1>
+  <p class="lede">From "yes" to a live website — in four simple steps.</p>
+
+  <div class="steps">
+    <div class="step"><div class="num">1</div><strong>Sign Up</strong><p>Create your 2Hame account and pay the one-time KES 5,000 partner fee.</p></div>
+    <div class="step"><div class="num">2</div><strong>Get Verified</strong><p>We confirm your details — usually done in under 24 hours.</p></div>
+    <div class="step"><div class="num">3</div><strong>List Properties</strong><p>Add your properties on 2Hame the normal way, for free.</p></div>
+    <div class="step"><div class="num">4</div><strong>Go Live</strong><p>Your mini website updates automatically with every listing.</p></div>
+  </div>
+
+  <h2>What Your Mini Website Looks Like</h2>
+  <div class="mock-wrap">
+    <div class="mock-chrome"><span></span><span></span><span></span></div>
+    <svg viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" width="100%">
+      <rect x="0" y="0" width="400" height="190" rx="6" fill="#111827"/>
+      <circle cx="34" cy="34" r="16" fill="#2563EB"/>
+      <text x="34" y="39" font-size="12" fill="#fff" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700">JM</text>
+      <rect x="58" y="24" width="90" height="8" rx="3" fill="rgba(255,255,255,0.85)"/>
+      <rect x="58" y="38" width="60" height="6" rx="3" fill="rgba(255,255,255,0.35)"/>
+      <rect x="330" y="22" width="52" height="20" rx="10" fill="#22C55E" opacity="0.9"/>
+      <text x="356" y="35" font-size="8" fill="#052e16" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700">VERIFIED</text>
+
+      <rect x="20" y="62" width="110" height="80" rx="6" fill="rgba(255,255,255,0.06)"/>
+      <rect x="20" y="62" width="110" height="48" rx="6" fill="#334155"/>
+      <rect x="28" y="118" width="70" height="7" rx="3" fill="rgba(255,255,255,0.8)"/>
+      <rect x="28" y="130" width="45" height="6" rx="3" fill="#22C55E"/>
+
+      <rect x="145" y="62" width="110" height="80" rx="6" fill="rgba(255,255,255,0.06)"/>
+      <rect x="145" y="62" width="110" height="48" rx="6" fill="#3b4a63"/>
+      <rect x="153" y="118" width="70" height="7" rx="3" fill="rgba(255,255,255,0.8)"/>
+      <rect x="153" y="130" width="45" height="6" rx="3" fill="#22C55E"/>
+
+      <rect x="270" y="62" width="110" height="80" rx="6" fill="rgba(255,255,255,0.06)"/>
+      <rect x="270" y="62" width="110" height="48" rx="6" fill="#475569"/>
+      <rect x="278" y="118" width="70" height="7" rx="3" fill="rgba(255,255,255,0.8)"/>
+      <rect x="278" y="130" width="45" height="6" rx="3" fill="#22C55E"/>
+
+      <rect x="20" y="156" width="360" height="20" rx="10" fill="#2563EB"/>
+      <text x="200" y="170" font-size="9" fill="#fff" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700">2hame.com/agents/yourname</text>
+    </svg>
+  </div>
+
+  <h2>The Real Cost Comparison</h2>
+  <div class="chart-wrap">
+    <div class="bar-row">
+      <div class="bar-label">Build Your Own Site</div>
+      <div class="bar-track"><div class="bar-fill red" style="width:100%;">KES 40,000 – 50,000+</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">2Hame Mini Website</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:12%;">5,000</div></div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>"You don't have to start from scratch — your portfolio, your credibility, and your traffic are already waiting for you on 2Hame."</p>
+  </div>
+
+  <div class="final-cta">
+    <h2>Let's Get You Online</h2>
+    <p>Reply to this message or reach out below to get your mini website set up this week.</p>
+    <div class="contacts">📞 [Your Phone / WhatsApp]  &nbsp;•&nbsp;  ✉️ [Your Email]  &nbsp;•&nbsp;  <span>2hame.com</span></div>
+  </div>
+</div>
+
+</body>
+</html>
