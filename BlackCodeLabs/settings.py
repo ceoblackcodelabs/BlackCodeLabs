@@ -320,7 +320,7 @@ TELEGRAM_CHAT_ID = config('TELEGRAM_CHAT_ID', default='')
 # while emails/CSRF use "blackcodelabs.com". Confirm the real domain and make
 # ALLOWED_HOSTS consistent before going live — canonical URLs, the sitemap and
 # structured data below all use SITE_DOMAIN.
-SITE_DOMAIN = config('SITE_DOMAIN', default='blackcodelabs.com')
+SITE_DOMAIN = config('SITE_DOMAIN', default='blackcodelab.com')
 SITE_URL = config('SITE_URL', default=f'https://{SITE_DOMAIN}')
 SITE_NAME = 'BlackCodeLabs'
 
