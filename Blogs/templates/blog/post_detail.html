@@ -2,12 +2,15 @@
 {% load static %}
 
 {% block title %}{{ post.title }}{% endblock title %}
+{% block title_suffix %} | BlackCodeLabs{% endblock title_suffix %}
 {% block meta_description %}{{ post.excerpt }}{% endblock meta_description %}
 {% block canonical_url %}{{ SITE_URL }}{% url 'blog:detail' post.slug %}{% endblock canonical_url %}
 {% block og_type %}article{% endblock og_type %}
 {% block og_title %}{{ post.title }}{% endblock og_title %}
 {% block og_description_inner %}{{ post.excerpt }}{% endblock og_description_inner %}
-{% block og_image %}{{ post.cover }}{% endblock og_image %}
+{% block og_image %}{% with c=post.cover %}{% if c|slice:":4" == "http" %}{{ c }}{% else %}{{ SITE_URL }}{{ c }}{% endif %}{% endwith %}{% endblock og_image %}
+{% block og_image_secure %}{% with c=post.cover %}{% if c|slice:":4" == "http" %}{{ c }}{% else %}{{ SITE_URL }}{{ c }}{% endif %}{% endwith %}{% endblock og_image_secure %}
+{% block twitter_image %}{% with c=post.cover %}{% if c|slice:":4" == "http" %}{{ c }}{% else %}{{ SITE_URL }}{{ c }}{% endif %}{% endwith %}{% endblock twitter_image %}
 {% block nav_blog_active %}active{% endblock %}
 
 {% block structured_data %}

@@ -5,27 +5,43 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>{% block title %}BlackCodeLabs{% endblock title %}{% block title_suffix %} — We Build Digital Empires{% endblock title_suffix %}</title>
 
-<meta name="description" content="{% block meta_description %}BlackCodeLabs engineers elite web apps, mobile apps, APIs and automation for ambitious businesses. Custom software development, from MVP to enterprise scale.{% endblock meta_description %}"/>
-<meta name="keywords" content="{% block meta_keywords %}software development Kenya, web development, mobile app development, Django developers, custom software agency, BlackCodeLabs{% endblock meta_keywords %}"/>
-<meta name="robots" content="{% block meta_robots %}index, follow{% endblock meta_robots %}"/>
+<meta name="description" content="{% block meta_description %}BlackCodeLabs is a Nairobi software development company building custom web apps, mobile apps, APIs, M-Pesa integrations and automation for Kenyan businesses. Fixed project pricing in KES. Get a free consultation.{% endblock meta_description %}"/>
+<meta name="keywords" content="{% block meta_keywords %}software development company Kenya, web development Nairobi, mobile app developers Kenya, custom software Kenya, M-Pesa integration, Django developers Kenya, React Native developers Kenya, tech consultants Kenya, BlackCodeLabs{% endblock meta_keywords %}"/>
+<meta name="robots" content="{% block meta_robots %}index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1{% endblock meta_robots %}"/>
 <meta name="author" content="BlackCodeLabs"/>
+<meta name="publisher" content="BlackCodeLabs"/>
+<meta name="geo.region" content="KE-110"/>
+<meta name="geo.placename" content="Nairobi"/>
+<meta name="geo.position" content="-1.2921;36.8219"/>
+<meta name="ICBM" content="-1.2921, 36.8219"/>
 <link rel="canonical" href="{% block canonical_url %}{{ SITE_URL }}{{ request.path }}{% endblock canonical_url %}"/>
+<link rel="alternate" hreflang="en-ke" href="{{ SITE_URL }}{{ request.path }}"/>
+<link rel="alternate" hreflang="x-default" href="{{ SITE_URL }}{{ request.path }}"/>
 
-<!-- Open Graph -->
+<!-- Open Graph (1200x630 JPEG, ~70 KB) -->
 <meta property="og:type" content="{% block og_type %}website{% endblock og_type %}"/>
 <meta property="og:site_name" content="{{ SITE_NAME }}"/>
+<meta property="og:locale" content="en_KE"/>
 <meta property="og:title" content="{% block og_title %}BlackCodeLabs — We Build Digital Empires{% endblock og_title %}"/>
-<meta property="og:description" content="{% block og_description %}{% block og_description_inner %}Elite software engineering: web apps, mobile apps, APIs and automation built to scale.{% endblock og_description_inner %}{% endblock og_description %}"/>
-<meta property="og:url" content="{{ SITE_URL }}{{ request.path }}"/>
-<meta property="og:image" content="{% block og_image %}{{ SITE_URL }}{% static 'assets/images/logo.png' %}{% endblock og_image %}"/>
+<meta property="og:description" content="{% block og_description %}{% block og_description_inner %}Custom web platforms, mobile apps and APIs for Kenyan businesses, built on Django and React Native. Fixed project pricing in KES.{% endblock og_description_inner %}{% endblock og_description %}"/>
+<meta property="og:url" content="{% block og_url %}{{ SITE_URL }}{{ request.path }}{% endblock og_url %}"/>
+<meta property="og:image" content="{% block og_image %}{{ SITE_URL }}{% static 'assets/images/og-image.jpg' %}{% endblock og_image %}"/>
+<meta property="og:image:secure_url" content="{% block og_image_secure %}{{ SITE_URL }}{% static 'assets/images/og-image.jpg' %}{% endblock og_image_secure %}"/>
+<meta property="og:image:type" content="image/jpeg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="BlackCodeLabs: We build digital empires. Custom software development agency in Kenya."/>
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@blackcodelabs"/>
+<meta name="twitter:creator" content="@blackcodelabs"/>
 <meta name="twitter:title" content="{% block twitter_title %}BlackCodeLabs — We Build Digital Empires{% endblock twitter_title %}"/>
-<meta name="twitter:description" content="{% block twitter_description %}Elite software engineering: web apps, mobile apps, APIs and automation built to scale.{% endblock twitter_description %}"/>
-<meta name="twitter:image" content="{% block twitter_image %}{{ SITE_URL }}{% static 'assets/images/logo.png' %}{% endblock twitter_image %}"/>
+<meta name="twitter:description" content="{% block twitter_description %}Custom web platforms, mobile apps and APIs for Kenyan businesses, built on Django and React Native. Fixed project pricing in KES.{% endblock twitter_description %}"/>
+<meta name="twitter:image" content="{% block twitter_image %}{{ SITE_URL }}{% static 'assets/images/og-image.jpg' %}{% endblock twitter_image %}"/>
+<meta name="twitter:image:alt" content="BlackCodeLabs: We build digital empires."/>
 
-{% if GOOGLE_SITE_VERIFICATION %}<meta name="google-site-verification" content="{{ GOOGLE_SITE_VERIFICATION }}"/>{% endif %}
+<meta name="google-site-verification" content="NycENfIPhgJBRgvMy8fIdnqIB68QMchhUZe4pRlAM9o" />
 {% if BING_SITE_VERIFICATION %}<meta name="msvalidate.01" content="{{ BING_SITE_VERIFICATION }}"/>{% endif %}
 
 <!-- Favicon -->
@@ -44,13 +60,31 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "BlackCodeLabs",
-  "url": "{{ SITE_URL }}",
-  "logo": "{{ SITE_URL }}{% static 'assets/images/logo.png' %}",
-  "email": "ceoblackcodelabs@gmail.com",
-  "description": "Elite software engineering agency building web apps, mobile apps, APIs and automation.",
-  "sameAs": []
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "{{ SITE_URL }}/#organization",
+      "name": "BlackCodeLabs",
+      "alternateName": "BlackCodeLabs Kenya",
+      "url": "{{ SITE_URL }}/",
+      "logo": {"@type": "ImageObject", "url": "{{ SITE_URL }}{% static 'assets/images/logo.png' %}"},
+      "image": "{{ SITE_URL }}{% static 'assets/images/og-image.jpg' %}",
+      "email": "ceoblackcodelabs@gmail.com",
+      "telephone": "+{{ WHATSAPP_NUMBER }}",
+      "description": "Custom software development agency in Kenya building web apps, mobile apps, APIs and automation with Django and React Native.",
+      "address": {"@type": "PostalAddress", "addressLocality": "Nairobi", "addressCountry": "KE"},
+      "contactPoint": {"@type": "ContactPoint", "telephone": "+{{ WHATSAPP_NUMBER }}", "contactType": "sales", "areaServed": "KE", "availableLanguage": ["English", "Swahili"]},
+      "sameAs": [{% if SOCIAL_TWITTER %}"{{ SOCIAL_TWITTER }}"{% endif %}{% if SOCIAL_LINKEDIN %}{% if SOCIAL_TWITTER %},{% endif %}"{{ SOCIAL_LINKEDIN }}"{% endif %}{% if SOCIAL_GITHUB %}{% if SOCIAL_TWITTER or SOCIAL_LINKEDIN %},{% endif %}"{{ SOCIAL_GITHUB }}"{% endif %}{% if SOCIAL_INSTAGRAM %},"{{ SOCIAL_INSTAGRAM }}"{% endif %}]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ SITE_URL }}/#website",
+      "url": "{{ SITE_URL }}/",
+      "name": "BlackCodeLabs",
+      "inLanguage": "en-KE",
+      "publisher": {"@id": "{{ SITE_URL }}/#organization"}
+    }
+  ]
 }
 </script>
 {% block structured_data %}{% endblock structured_data %}

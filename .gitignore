@@ -12,3 +12,6 @@ qr_code.png
 ./*.png
 /logs
 /media
+# local databases
+db.sqlite3
+*.sqlite3

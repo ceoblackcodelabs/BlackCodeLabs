@@ -222,7 +222,7 @@ class PricingFeatureInline(admin.TabularInline):
 
 @admin.register(PricingPlan)
 class PricingPlanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'monthly_price', 'annual_price', 'is_featured', 'is_active', 'display_order')
+    list_display = ('name', 'project_price', 'maintenance_monthly', 'is_featured', 'is_active', 'display_order')
     list_editable = ('is_featured', 'is_active', 'display_order')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [PricingFeatureInline]

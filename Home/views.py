@@ -95,6 +95,7 @@ class Pricing(TemplateView):
                 "plans": list(PricingPlan.objects.filter(is_active=True).prefetch_related('features')),
                 "faqs": list(PricingFAQ.objects.filter(is_active=True)),
             }
+            cached["priced_plans"] = [p for p in cached["plans"] if p.project_price]
             cache.set("pricing_page_context", cached, CONTENT_CACHE_TTL)
         context.update(cached)
         return context
@@ -451,9 +452,13 @@ def robots_txt(request):
     lines = [
         "User-agent: *",
         "Allow: /",
-        "Disallow: /admin/",
+        "Disallow: /devAdmin/",
         "Disallow: /accounts/",
+        "Disallow: /auth/",
+        "Disallow: /qr-code/image/",
+        "",
         f"Sitemap: {site_url}/sitemap.xml",
+        "",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 

@@ -1,13 +1,13 @@
 {% extends 'Home/base.html' %}
 {% load static %}
 
-{% block title %}BlackCodeLabs{% endblock title %}
-{% block title_suffix %} — Custom Software Development Agency (Web, Mobile &amp; API Engineering){% endblock title_suffix %}
-{% block meta_description %}BlackCodeLabs is a custom software development agency building production-grade web platforms, mobile apps, and APIs with Django and React Native. Trusted by startups and growing businesses across Africa and beyond. Get a free consultation.{% endblock meta_description %}
-{% block meta_keywords %}custom software development agency, software development company Kenya, Django development agency, React Native app development, API development company, web application development, mobile app developers Nairobi, BlackCodeLabs{% endblock meta_keywords %}
-{% block og_title %}BlackCodeLabs — Custom Software Development Agency{% endblock og_title %}
+{% block title %}Software Development Company in Kenya | Web, Mobile &amp; API | BlackCodeLabs{% endblock title %}
+{% block title_suffix %}{% endblock title_suffix %}
+{% block meta_description %}BlackCodeLabs is a Nairobi software development company building custom websites, web apps, mobile apps, APIs and M-Pesa integrations with Django and React Native. Transparent KES pricing. Free consultation.{% endblock meta_description %}
+{% block meta_keywords %}software development company Kenya, best software company in Kenya, web development Nairobi, mobile app developers Kenya, custom software development Kenya, M-Pesa integration developers, Django development agency, React Native developers Kenya, tech consultant Kenya, IT consultants Nairobi, BlackCodeLabs{% endblock meta_keywords %}
+{% block og_title %}BlackCodeLabs — We Build Digital Empires | Software Company in Kenya{% endblock og_title %}
 {% block og_description_inner %}We design and engineer custom web platforms, mobile apps, and APIs — built to scale, secure by default, and shipped fast.{% endblock og_description_inner %}
-{% block twitter_title %}BlackCodeLabs — Custom Software Development Agency{% endblock twitter_title %}
+{% block twitter_title %}BlackCodeLabs — We Build Digital Empires | Software Company in Kenya{% endblock twitter_title %}
 {% block twitter_description %}We design and engineer custom web platforms, mobile apps, and APIs — built to scale, secure by default, and shipped fast.{% endblock twitter_description %}
 
 {% block structured_data %}
@@ -15,13 +15,28 @@
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
+  "@id": "{{ SITE_URL }}/#service",
   "name": "BlackCodeLabs",
-  "url": "{{ SITE_URL }}",
-  "image": "{{ SITE_URL }}{% static 'assets/images/logo.png' %}",
-  "description": "Custom software development agency specialising in web platforms, mobile apps, APIs, and automation, built with Django and React Native.",
-  "priceRange": "$$",
-  "areaServed": "Worldwide",
-  "serviceType": ["Web Development", "Mobile App Development", "API Development", "Software Automation", "SEO Optimisation"]
+  "url": "{{ SITE_URL }}/",
+  "image": "{{ SITE_URL }}{% static 'assets/images/og-image.jpg' %}",
+  "description": "Custom software development agency in Kenya specialising in web platforms, mobile apps, APIs, M-Pesa integrations and automation, built with Django and React Native.",
+  "priceRange": "KES 35,000 - KES 1,500,000+",
+  "currenciesAccepted": "KES",
+  "paymentAccepted": "M-Pesa, Bank Transfer, Card",
+  "address": {"@type": "PostalAddress", "addressLocality": "Nairobi", "addressCountry": "KE"},
+  "areaServed": [{"@type": "Country", "name": "Kenya"}, {"@type": "Place", "name": "East Africa"}],
+  "knowsAbout": ["Web Development", "Mobile App Development", "API Development", "M-Pesa Integration", "Django", "React Native", "Software Consulting"],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Software Development Services",
+    "itemListElement": [
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website & Web App Development"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Mobile App Development (iOS & Android)"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "API & Backend Engineering"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "M-Pesa & Payment Integration"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Technology Consulting"}}
+    ]
+  }
 }
 </script>
 {% endblock structured_data %}

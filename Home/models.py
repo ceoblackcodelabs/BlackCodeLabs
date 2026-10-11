@@ -692,15 +692,23 @@ class PricingPlan(models.Model):
     slug = models.SlugField(max_length=70, unique=True, blank=True)
     tagline = models.CharField(max_length=200, help_text="One line describing who this plan is for")
 
-    monthly_price = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True,
-        help_text="Leave blank for a 'Let's Talk' / custom-quote plan"
+    project_price = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True, blank=True,
+        help_text="One-time project price ('starting from'). Leave blank for a 'Let's Talk' / custom-quote plan"
     )
-    annual_price = models.DecimalField(
+    maintenance_monthly = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True,
-        help_text="Price per month when billed annually. Leave blank to auto-calc at 20% off."
+        help_text="Optional monthly maintenance / care plan price. Blank hides the maintenance line."
     )
-    currency_symbol = models.CharField(max_length=4, default="$")
+    maintenance_note = models.CharField(
+        max_length=200, blank=True, default="",
+        help_text="What the monthly maintenance covers, e.g. 'Hosting, backups, security updates, 2 hrs of changes'"
+    )
+    delivery_time = models.CharField(
+        max_length=60, blank=True, default="",
+        help_text="Typical delivery time, e.g. '2-3 weeks'"
+    )
+    currency_symbol = models.CharField(max_length=4, default="KES")
     custom_price_label = models.CharField(
         max_length=40, blank=True, default="",
         help_text="Shown instead of a number, e.g. \"Let's Talk\" (for the Enterprise/custom plan)"
@@ -739,15 +747,7 @@ class PricingPlan(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
-        if self.monthly_price and not self.annual_price:
-            # default annual discount of 20%, rounded to whole currency unit
-            self.annual_price = (self.monthly_price * Decimal("0.8")).quantize(Decimal("1"))
         super().save(*args, **kwargs)
-
-    def annual_savings(self):
-        if self.monthly_price and self.annual_price:
-            return (self.monthly_price - self.annual_price) * 12
-        return None
 
     def get_cta_url(self):
         if self.cta_url_name:

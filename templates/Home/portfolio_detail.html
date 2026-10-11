@@ -7,7 +7,9 @@
 {% block og_type %}article{% endblock og_type %}
 {% block og_title %}{{ project.title }} | BlackCodeLabs Portfolio{% endblock og_title %}
 {% block og_description_inner %}{{ project.summary }}{% endblock og_description_inner %}
-{% block og_image %}{{ project.cover }}{% endblock og_image %}
+{% block og_image %}{% with c=project.cover %}{% if c|slice:":4" == "http" %}{{ c }}{% else %}{{ SITE_URL }}{{ c }}{% endif %}{% endwith %}{% endblock og_image %}
+{% block og_image_secure %}{% with c=project.cover %}{% if c|slice:":4" == "http" %}{{ c }}{% else %}{{ SITE_URL }}{{ c }}{% endif %}{% endwith %}{% endblock og_image_secure %}
+{% block twitter_image %}{% with c=project.cover %}{% if c|slice:":4" == "http" %}{{ c }}{% else %}{{ SITE_URL }}{{ c }}{% endif %}{% endwith %}{% endblock twitter_image %}
 {% block nav_portfolio_active %}active{% endblock %}
 
 {% block structured_data %}
