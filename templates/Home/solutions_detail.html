@@ -41,6 +41,8 @@
 .sd-feat li{display:flex;gap:.7rem;font-size:.88rem;color:var(--text2);line-height:1.5}
 .sd-feat li::before{content:'✓';color:var(--accent);flex-shrink:0}
 .sd-actions{display:flex;flex-direction:column;gap:.8rem;margin-top:1.8rem}
+.btn-wa{background:#25d366;color:#04210f;border:1px solid #25d366}
+.btn-wa:hover{background:#1ebe5b;color:#04210f}
 .sd-related{max-width:1100px;margin:0 auto;padding:0 5vw clamp(3rem,7vw,5rem)}
 .sd-related h2{font-family:var(--font-d);font-size:1.5rem;margin-bottom:1.2rem}
 .sd-rel-grid{display:grid;grid-template-columns:1fr;gap:1rem}
@@ -48,7 +50,7 @@
 .sd-rel:hover{border-color:rgba(192,57,43,.35);transform:translateY(-3px)}
 .sd-rel b{display:block;font-family:var(--font-d);font-size:1.02rem;margin:.3rem 0 .4rem}
 .sd-rel span{font-size:.78rem;color:var(--text2);line-height:1.6}
-@media(min-width:760px){.sd-body{grid-template-columns:1.2fr 1fr}.sd-actions{flex-direction:row}.sd-rel-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:760px){.sd-body{grid-template-columns:1.2fr 1fr}.sd-actions{flex-direction:row;flex-wrap:wrap}.sd-rel-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 {% endblock %}
 
@@ -67,6 +69,7 @@
     <div class="sd-actions">
       <a href="{{ solution.cta_link|default:'/contact/' }}" class="btn btn-red btn-lg">{{ solution.cta_text }} →</a>
       <a href="{% url 'pricing' %}" class="btn btn-outline btn-lg">See Pricing</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27m%20interested%20in%20{{ solution.title|urlencode }}." class="btn btn-wa btn-lg" target="_blank" rel="noopener">Chat on WhatsApp</a>
     </div>
   </div>
   <div class="sd-card reveal">

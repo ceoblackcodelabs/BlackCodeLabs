@@ -37,6 +37,10 @@
 .sol-features li::before{content:'—';color:var(--accent);flex-shrink:0;font-family:var(--font-m);font-size:.72rem;margin-top:.15rem}
 .sol-cta-link{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--accent);text-decoration:none;font-family:var(--font-m);letter-spacing:.07em;border-bottom:1px solid rgba(192,57,43,.25);padding-bottom:.1rem;transition:gap .3s,border-color .3s}
 .sol-cta-link:hover{gap:.8rem;border-color:var(--accent)}
+.sol-wa{margin-left:1.4rem;color:#25d366;border-color:rgba(37,211,102,.3)}
+.sol-wa:hover{border-color:#25d366}
+.btn-wa{background:#25d366;color:#04210f;border:1px solid #25d366}
+.btn-wa:hover{background:#1ebe5b;color:#04210f}
 
 /* VISUAL CARD */
 .sol-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .3s}
@@ -141,6 +145,7 @@
         <li>Ongoing maintenance and performance tuning</li>
       </ul>
       <a href="{% url "contact" %}" class="sol-cta-link">Start a project →</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27m%20interested%20in%20software%20development." class="sol-cta-link sol-wa" target="_blank" rel="noopener">WhatsApp us →</a>
     </div>
     <div class="sol-card reveal" data-delay="150">
       <div class="sol-card-head"><div class="sol-card-icon">⚡</div><div><h4>Core Stack</h4><span>Languages &amp; infrastructure</span></div></div>
@@ -169,6 +174,7 @@
         <li>Third-party integrations — Stripe, Twilio, Firebase &amp; more</li>
       </ul>
       <a href="{% url "contact" %}" class="sol-cta-link">Build an API →</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27m%20interested%20in%20API%20development." class="sol-cta-link sol-wa" target="_blank" rel="noopener">WhatsApp us →</a>
     </div>
   </div>
 </div>
@@ -189,6 +195,7 @@
         <li>Monthly dashboards and competitor tracking</li>
       </ul>
       <a href="{% url "contact" %}" class="sol-cta-link">Boost my rankings →</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27m%20interested%20in%20SEO." class="sol-cta-link sol-wa" target="_blank" rel="noopener">WhatsApp us →</a>
     </div>
     <div class="sol-card reveal" data-delay="150">
       <div class="sol-card-head"><div class="sol-card-icon">📈</div><div><h4>SEO Performance</h4><span>Real results from real campaigns</span></div></div>
@@ -217,6 +224,7 @@
         <li>GDPR and ISO 27001 compliance advisory</li>
       </ul>
       <a href="{% url "contact" %}" class="sol-cta-link">Run a security audit →</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27m%20interested%20in%20a%20security%20audit." class="sol-cta-link sol-wa" target="_blank" rel="noopener">WhatsApp us →</a>
     </div>
   </div>
 </div>
@@ -237,6 +245,7 @@
         <li>Push notifications, in-app purchases, offline-first</li>
       </ul>
       <a href="{% url "contact" %}" class="sol-cta-link">Build my app →</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27m%20interested%20in%20a%20mobile%20app." class="sol-cta-link sol-wa" target="_blank" rel="noopener">WhatsApp us →</a>
     </div>
     <div class="sol-card reveal" data-delay="150">
       <div class="sol-card-head"><div class="sol-card-icon">📱</div><div><h4>Mobile Stack</h4><span>Frameworks &amp; platforms</span></div></div>
@@ -265,6 +274,7 @@
         <li>WCAG accessibility and Core Web Vitals compliance</li>
       </ul>
       <a href="{% url "contact" %}" class="sol-cta-link">Start a web project →</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27m%20interested%20in%20a%20web%20project." class="sol-cta-link sol-wa" target="_blank" rel="noopener">WhatsApp us →</a>
     </div>
   </div>
 </div>
@@ -327,6 +337,7 @@
     <div class="cta-btns">
       <a href="{% url "contact" %}" class="btn btn-red btn-lg">Start Your Project →</a>
       <a href="{% url "pricing" %}" class="btn btn-outline btn-lg">View Pricing</a>
+      <a href="https://wa.me/{{ WHATSAPP_NUMBER }}?text=Hi%20BlackCodeLabs%2C%20I%27d%20like%20to%20talk%20about%20a%20project." class="btn btn-wa btn-lg" target="_blank" rel="noopener">Chat on WhatsApp</a>
     </div>
   </div>
 </section>
