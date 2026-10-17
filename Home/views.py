@@ -381,6 +381,15 @@ class SolutionDetailView(DetailView):
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
+    def get_queryset(self):
+        # Hidden (is_active=False) solutions must not be reachable by URL.
+        return Solution.objects.filter(is_active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['related'] = Solution.objects.filter(is_active=True).exclude(pk=self.object.pk)[:3]
+        return context
+
 # ---------------------------------------------------------------------------
 # QR CODE GENERATOR
 # ---------------------------------------------------------------------------
@@ -455,6 +464,7 @@ def robots_txt(request):
         "Disallow: /devAdmin/",
         "Disallow: /accounts/",
         "Disallow: /auth/",
+        "Disallow: /api/",
         "Disallow: /qr-code/image/",
         "",
         f"Sitemap: {site_url}/sitemap.xml",

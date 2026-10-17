@@ -351,3 +351,9 @@ SOCIAL_INSTAGRAM = config('SOCIAL_INSTAGRAM', default='')
 # EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 # DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+
+# ---------------------------------------------------------------------------
+# CONTENT API (/api/v1/) — manage Services and Solutions without the admin.
+# Disabled unless API_TOKEN is set in the environment. Use a long random value:
+#   python -c "import secrets; print(secrets.token_urlsafe(48))"
+API_TOKEN = config('API_TOKEN', default='')

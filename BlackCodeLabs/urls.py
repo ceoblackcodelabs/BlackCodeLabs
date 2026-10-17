@@ -22,6 +22,7 @@ from django.conf import settings
 from django.views.static import serve as serve_static_file
 from django.contrib.sitemaps.views import sitemap
 
+from Home import api as Home_api
 from Home import views as Home_views
 from Home.sitemaps import sitemaps
 
@@ -31,6 +32,10 @@ urlpatterns = [
     path('projects/', include('Pitchs.urls')),
     path("Blogs/", include("Blogs.urls")),
     path("affiliate/", include(("Affiliate.urls", "affiliate"), namespace="affiliate")),
+    path('api/v1/services/', Home_api.services_collection, name='api_services'),
+    path('api/v1/services/<int:pk>/', Home_api.service_item, name='api_service_item'),
+    path('api/v1/solutions/', Home_api.solutions_collection, name='api_solutions'),
+    path('api/v1/solutions/<slug:slug>/', Home_api.solution_item, name='api_solution_item'),
     path('robots.txt', Home_views.robots_txt, name='robots_txt'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('', include('Home.urls')),

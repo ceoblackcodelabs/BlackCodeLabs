@@ -1,0 +1,106 @@
+{
+  "services": [
+    {
+      "name": "CCTV Installation & Surveillance",
+      "icon": "<i class=\"fas fa-video\"></i>",
+      "description": "Professional CCTV design, supply and installation for homes, offices, shops and estates: HD and IP cameras, night vision, DVR/NVR recording and live viewing from your phone, backed by a site survey and after-install support."
+    },
+    {
+      "name": "Access Control & Biometrics",
+      "icon": "<i class=\"fas fa-id-card\"></i>",
+      "description": "Fingerprint, face and card-based access control, electric door locks, intercoms, time-and-attendance and visitor management that secure your premises and log every entry."
+    },
+    {
+      "name": "Graphic & Brand Design",
+      "icon": "<i class=\"fas fa-palette\"></i>",
+      "description": "Logos, brand identity, social media creatives, posters, brochures, packaging and UI/UX design that make your business look as professional as it works."
+    },
+    {
+      "name": "IT Support & Tech Hardware",
+      "icon": "<i class=\"fas fa-headset\"></i>",
+      "description": "Networking and structured cabling, Wi-Fi, POS systems, computers, printers and everyday IT support, so all the technology in your business just works."
+    }
+  ],
+  "solutions": [
+    {
+      "slug": "cctv-surveillance",
+      "title": "CCTV & Surveillance Systems",
+      "short_description": "Design, supply and installation of CCTV for homes, offices, shops and estates, with remote viewing on your phone.",
+      "detailed_description": "We survey your site, recommend the right cameras and recorder for your budget, and install everything neatly with proper cabling, power and storage. You get live and recorded footage from anywhere, plus maintenance and support after installation. Suitable for homes, shops, offices, schools, warehouses and estates across Kenya.",
+      "icon_class": "fa-video",
+      "z_index": 0,
+      "features": [
+        "Free site survey and layout plan",
+        "HD and IP cameras with night vision",
+        "DVR/NVR recording with secure storage",
+        "Live viewing on mobile and PC",
+        "Neat cabling, power backup and weatherproofing",
+        "Maintenance and after-install support"
+      ],
+      "cta_text": "Get a Free Site Survey",
+      "cta_link": "/contact/",
+      "display_order": 9,
+      "is_active": true
+    },
+    {
+      "slug": "access-control",
+      "title": "Access Control & Biometrics",
+      "short_description": "Fingerprint, face and card access, door locks and attendance tracking that control and record who enters.",
+      "detailed_description": "Control who can enter which door, and when. We install biometric and card readers, electric locks, intercoms and gate integrations, then connect them to software that records entries and staff attendance. Ideal for offices, apartments, schools, clinics and industrial sites.",
+      "icon_class": "fa-id-card",
+      "z_index": 1,
+      "features": [
+        "Fingerprint, face and RFID card readers",
+        "Electric door locks and gate integration",
+        "Time and attendance reports",
+        "Visitor management and intercoms",
+        "Integration with CCTV and alarms",
+        "User and permission management"
+      ],
+      "cta_text": "Request a Quote",
+      "cta_link": "/contact/",
+      "display_order": 10,
+      "is_active": true
+    },
+    {
+      "slug": "graphic-design",
+      "title": "Graphic & Brand Design",
+      "short_description": "Logos, branding, social media creatives, print and UI/UX design that make your business stand out.",
+      "detailed_description": "From a first logo to a complete brand system, we design the visuals your customers see everywhere: social media, print, packaging, websites and apps. Because our designers work alongside our developers, your brand looks consistent from business card to mobile app.",
+      "icon_class": "fa-palette",
+      "z_index": 0,
+      "features": [
+        "Logo design and brand identity",
+        "Social media creatives and campaigns",
+        "Posters, flyers, brochures and company profiles",
+        "Packaging and label design",
+        "UI/UX design for websites and apps",
+        "Editable source files delivered to you"
+      ],
+      "cta_text": "Start a Design Project",
+      "cta_link": "/contact/",
+      "display_order": 11,
+      "is_active": true
+    },
+    {
+      "slug": "it-support",
+      "title": "IT Support & Tech Hardware",
+      "short_description": "Networking, Wi-Fi, POS, computers and printers, installed and supported by one tech team.",
+      "detailed_description": "We set up and look after the technology your business runs on: office networks and structured cabling, Wi-Fi coverage, point-of-sale systems, computers, printers and more. One team to call when something needs fixing, upgrading or installing.",
+      "icon_class": "fa-headset",
+      "z_index": 1,
+      "features": [
+        "Office networking and structured cabling",
+        "Wi-Fi design and installation",
+        "POS systems for shops and restaurants",
+        "Computer, printer and hardware supply",
+        "Setup, repair and upgrades",
+        "On-site and remote support"
+      ],
+      "cta_text": "Talk to Our Team",
+      "cta_link": "/contact/",
+      "display_order": 12,
+      "is_active": true
+    }
+  ]
+}

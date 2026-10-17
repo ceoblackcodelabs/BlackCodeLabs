@@ -367,6 +367,10 @@ class Solution(models.Model):
         ('fa-server', 'Server'),
         ('fa-network-wired', 'Network'),
         ('fa-graduation-cap', 'Graduation Cap'),
+        ('fa-video', 'Video / CCTV'),
+        ('fa-id-card', 'Access Control'),
+        ('fa-palette', 'Design'),
+        ('fa-headset', 'IT Support'),
     ]
 
     # Slug/id for URL identification
@@ -412,6 +416,17 @@ class Solution(models.Model):
 
     def get_absolute_url(self):
         return reverse('solution_detail', kwargs={'slug': self.slug})
+
+    ICON_EMOJI = {
+        'fa-code': '💻', 'fa-robot': '🤖', 'fa-database': '🗄️', 'fa-comments': '💬',
+        'fa-shield-alt': '🛡️', 'fa-server': '🖥️', 'fa-network-wired': '🔌',
+        'fa-graduation-cap': '🎓', 'fa-video': '🎥', 'fa-id-card': '🪪',
+        'fa-palette': '🎨', 'fa-headset': '🎧',
+    }
+
+    def icon_emoji(self):
+        """The site doesn't load Font Awesome, so cards use an emoji for the icon."""
+        return self.ICON_EMOJI.get(self.icon_class, '⚡')
 
     def get_features_list(self):
         """Convert features text field to list."""
