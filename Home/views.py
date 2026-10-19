@@ -465,6 +465,7 @@ def robots_txt(request):
         "Disallow: /accounts/",
         "Disallow: /auth/",
         "Disallow: /api/",
+        "Disallow: /studio/",
         "Disallow: /qr-code/image/",
         "",
         f"Sitemap: {site_url}/sitemap.xml",

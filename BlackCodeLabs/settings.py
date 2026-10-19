@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
+    'django.contrib.humanize',
     'Home.apps.HomeConfig',
     'Users',
     'Pitchs.apps.PitchsConfig',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'Blogs',
     'Affiliate',
+    'Studio',
 ]
 
 SITE_ID = 1
@@ -357,3 +359,12 @@ SOCIAL_INSTAGRAM = config('SOCIAL_INSTAGRAM', default='')
 # Disabled unless API_TOKEN is set in the environment. Use a long random value:
 #   python -c "import secrets; print(secrets.token_urlsafe(48))"
 API_TOKEN = config('API_TOKEN', default='')
+
+# ---------------------------------------------------------------------------
+# STUDIO (staff dashboard + PDF documents). These appear on every generated
+# document; override any of them in .env.
+DOC_PHONE = config('DOC_PHONE', default='0799 804 185')
+DOC_EMAIL = config('DOC_EMAIL', default='info@blackcodelab.com')
+DOC_WEBSITE = config('DOC_WEBSITE', default='blackcodelab.com')
+DOC_CITY = config('DOC_CITY', default='Nairobi, Kenya')
+DOC_SIGNATORY = config('DOC_SIGNATORY', default='Odhiambo Churchill')

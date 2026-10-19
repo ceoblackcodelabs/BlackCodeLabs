@@ -1,0 +1,87 @@
+{% extends 'studio/base.html' %}
+{% load static humanize %}
+{% block title %}Overview{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div><h1>Overview</h1><p>How the business and your documents are doing.</p></div>
+  <div class="row">
+    <form method="get" class="row">
+      <label class="muted" for="range">Period</label>
+      <select class="select select-inline" id="range" name="range" onchange="this.form.submit()">
+        {% for r in ranges %}<option value="{{ r }}" {% if r == range %}selected{% endif %}>Last {{ r }} days</option>{% endfor %}
+      </select>
+    </form>
+    <a class="btn btn-primary" href="{% url 'studio:document_new' %}">+ New document</a>
+  </div>
+</div>
+
+<section class="kpis" aria-label="Key figures">
+  <div class="kpi"><div class="l">Documents created</div><div class="v">{{ stats.docs }}</div><div class="d">{{ stats.docs_all }} all time</div></div>
+  <div class="kpi"><div class="l">Total value quoted</div><div class="v"><span class="cur">KES</span>{{ stats.value|floatformat:0|intcomma }}</div><div class="d">proposals, quotes &amp; invoices</div></div>
+  <div class="kpi"><div class="l">Accepted / paid</div><div class="v"><span class="cur">KES</span>{{ stats.won|floatformat:0|intcomma }}</div><div class="d">won in this period</div></div>
+  <div class="kpi"><div class="l">Still open</div><div class="v"><span class="cur">KES</span>{{ stats.open|floatformat:0|intcomma }}</div><div class="d">drafts and sent, awaiting reply</div></div>
+  <div class="kpi"><div class="l">Website inquiries</div><div class="v">{{ stats.inquiries }}</div><div class="d">{{ stats.new_inquiries }} still marked new</div></div>
+</section>
+
+<section class="charts">
+  <article class="card c-wide">
+    <div class="chart-head"><div><h2>Documents created per month</h2><div class="sub">By document type</div></div></div>
+    <div class="legend" id="lg-month"></div>
+    <div class="chart-box"><canvas id="ch-month" role="img" aria-label="Stacked bars of documents created per month by type"></canvas></div>
+    <details class="tv"><summary>View as table</summary><div class="table-wrap" id="tv-month"></div></details>
+  </article>
+  <article class="card c-narrow">
+    <div class="chart-head"><div><h2>Value by status</h2><div class="sub">KES, last {{ range }} days</div></div></div>
+    <div class="chart-box"><canvas id="ch-status" role="img" aria-label="Bar chart of document value by status"></canvas></div>
+    <details class="tv"><summary>View as table</summary><div class="table-wrap" id="tv-status"></div></details>
+  </article>
+  <article class="card c-full">
+    <div class="chart-head"><div><h2>Website inquiries per day</h2><div class="sub">Contact form submissions, last {{ range }} days</div></div></div>
+    <div class="chart-box" style="height:210px"><canvas id="ch-inq" role="img" aria-label="Line chart of contact form inquiries per day"></canvas></div>
+    <details class="tv"><summary>View as table</summary><div class="table-wrap" id="tv-inq" style="max-height:260px;overflow:auto"></div></details>
+  </article>
+</section>
+
+<section class="two">
+  <article class="card">
+    <div class="chart-head"><h2>Recent documents</h2><a class="btn btn-sm" href="{% url 'studio:document_list' %}">View all</a></div>
+    {% if recent_docs %}
+    <div class="table-wrap"><table>
+      <thead><tr><th>Reference</th><th>Client</th><th>Status</th><th class="num">Value</th></tr></thead>
+      <tbody>{% for d in recent_docs %}
+        <tr><td><a class="ref" href="{% url 'studio:document_detail' d.pk %}">{{ d.reference }}</a></td>
+            <td>{{ d.client_name|default:"—" }}</td>
+            <td><span class="badge {{ d.status }}">{{ d.get_status_display }}</span></td>
+            <td class="num">{% if d.amount %}{{ d.currency }} {{ d.amount|floatformat:0|intcomma }}{% else %}—{% endif %}</td></tr>
+      {% endfor %}</tbody></table></div>
+    {% else %}<div class="empty">No documents yet.<br><a class="btn btn-primary btn-sm" style="margin-top:.8rem" href="{% url 'studio:document_new' %}">Create your first</a></div>{% endif %}
+  </article>
+  <div class="stack">
+    <article class="card">
+      <h2>Latest inquiries</h2>
+      {% for i in recent_inquiries %}
+      <div style="padding:.55rem 0;border-bottom:1px solid var(--border)">
+        <div class="row" style="justify-content:space-between"><b>{{ i.first_name }} {{ i.last_name }}</b><span class="badge {{ i.status }}">{{ i.get_status_display }}</span></div>
+        <div class="muted" style="font-size:.82rem">{{ i.subject|truncatechars:48 }} · {{ i.created_at|timesince }} ago</div>
+      </div>
+      {% empty %}<div class="empty">No inquiries yet.</div>{% endfor %}
+    </article>
+    <article class="card">
+      <h2>Live on the website</h2>
+      <div class="mini-stats">
+        <div><b>{{ stats.solutions }}</b><span>solutions</span></div>
+        <div><b>{{ stats.services }}</b><span>services</span></div>
+        <div><b>{{ stats.projects }}</b><span>projects</span></div>
+        {% if stats.posts is not None %}<div><b>{{ stats.posts }}</b><span>blog posts</span></div>{% endif %}
+      </div>
+    </article>
+  </div>
+</section>
+{{ charts|json_script:"chart-data" }}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="{% static 'studio/charts.js' %}"></script>
+{% endblock %}

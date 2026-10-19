@@ -32,6 +32,7 @@ urlpatterns = [
     path('projects/', include('Pitchs.urls')),
     path("Blogs/", include("Blogs.urls")),
     path("affiliate/", include(("Affiliate.urls", "affiliate"), namespace="affiliate")),
+    path('studio/', include('Studio.urls')),
     path('api/v1/services/', Home_api.services_collection, name='api_services'),
     path('api/v1/services/<int:pk>/', Home_api.service_item, name='api_service_item'),
     path('api/v1/solutions/', Home_api.solutions_collection, name='api_solutions'),

@@ -1,0 +1,51 @@
+{% extends 'studio/base.html' %}
+{% load humanize %}
+{% block title %}Documents{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Documents</h1><p>Every document you have generated. Each one is stored here, so you can download it again any time.</p></div>
+  <a class="btn btn-primary" href="{% url 'studio:document_new' %}{% if typ %}?type={{ typ }}{% endif %}">+ New document</a>
+</div>
+<form class="filters" method="get">
+  <input class="input" type="search" name="q" value="{{ q }}" placeholder="Search client, title or reference"/>
+  <select class="select" name="type" onchange="this.form.submit()">
+    <option value="">All types</option>{% for k, l in types %}<option value="{{ k }}" {% if k == typ %}selected{% endif %}>{{ l }}</option>{% endfor %}
+  </select>
+  <select class="select" name="status" onchange="this.form.submit()">
+    <option value="">Any status</option>{% for k, l in statuses %}<option value="{{ k }}" {% if k == status %}selected{% endif %}>{{ l }}</option>{% endfor %}
+  </select>
+  <button class="btn" type="submit">Search</button>
+</form>
+<div class="card" style="padding:.4rem">
+{% if page.object_list %}
+<div class="table-wrap"><table>
+  <thead><tr><th>Reference</th><th>Type</th><th>Client</th><th>Status</th><th class="num">Value</th><th>Created</th><th></th></tr></thead>
+  <tbody>{% for d in page %}
+    <tr>
+      <td><a class="ref" href="{% url 'studio:document_detail' d.pk %}">{{ d.reference }}</a>{% if d.revision > 1 %} <span class="muted" title="Revision">v{{ d.revision }}</span>{% endif %}</td>
+      <td><span class="chip">{{ d.type_label }}</span></td>
+      <td>{{ d.client_name|default:"—" }}<div class="muted" style="font-size:.8rem">{{ d.title|truncatechars:60 }}</div></td>
+      <td>
+        <form method="post" action="{% url 'studio:document_status' d.pk %}">{% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}"/>
+          <select class="select select-inline" name="status" onchange="this.form.submit()" aria-label="Status for {{ d.reference }}" style="padding:.25rem 1.8rem .25rem .5rem;font-size:.82rem">
+            {% for k, l in statuses %}<option value="{{ k }}" {% if k == d.status %}selected{% endif %}>{{ l }}</option>{% endfor %}
+          </select>
+        </form>
+      </td>
+      <td class="num">{% if d.amount %}{{ d.currency }} {{ d.amount|floatformat:0|intcomma }}{% else %}—{% endif %}</td>
+      <td class="muted" style="white-space:nowrap">{{ d.created_at|date:"d M Y" }}</td>
+      <td><div class="actions">
+        <a class="btn btn-sm" href="{% url 'studio:document_pdf' d.pk %}?download=1">Download</a>
+        <a class="btn btn-sm" href="{% url 'studio:document_edit' d.pk %}">Edit</a>
+      </div></td>
+    </tr>{% endfor %}
+  </tbody></table></div>
+{% else %}<div class="empty">No documents match.{% if q or typ or status %} <a href="{% url 'studio:document_list' %}" style="text-decoration:underline">Clear filters</a>{% endif %}</div>{% endif %}
+</div>
+{% if page.paginator.num_pages > 1 %}
+<div class="pager"><span>Page {{ page.number }} of {{ page.paginator.num_pages }} · {{ page.paginator.count }} documents</span>
+  <span class="row">{% if page.has_previous %}<a class="btn btn-sm" href="?{{ keep }}{% if keep %}&{% endif %}page={{ page.previous_page_number }}">← Previous</a>{% endif %}
+  {% if page.has_next %}<a class="btn btn-sm" href="?{{ keep }}{% if keep %}&{% endif %}page={{ page.next_page_number }}">Next →</a>{% endif %}</span></div>
+{% endif %}
+{% endblock %}

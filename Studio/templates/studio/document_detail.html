@@ -1,0 +1,34 @@
+{% extends 'studio/base.html' %}
+{% load humanize %}
+{% block title %}{{ doc.reference }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>{{ doc.client_name|default:doc.title }}</h1><p><span class="ref">{{ doc.reference }}</span> · {{ doctype.label|default:doc.doc_type }}</p></div>
+  <div class="row">
+    <a class="btn btn-primary" href="{% url 'studio:document_pdf' doc.pk %}?download=1">Download PDF</a>
+    <a class="btn" href="{% url 'studio:document_edit' doc.pk %}">Edit</a>
+    <a class="btn" href="{% url 'studio:document_pdf' doc.pk %}" target="_blank" rel="noopener">Open ↗</a>
+  </div>
+</div>
+<div class="detail">
+  <iframe class="preview" src="{% url 'studio:document_pdf' doc.pk %}#view=FitH" title="PDF preview of {{ doc.reference }}"></iframe>
+  <p class="preview-note" style="grid-column:1/-1;margin-top:-.4rem">Preview not showing (some phones and browsers can’t display PDFs inline)? Use <b>Open</b> or <b>Download PDF</b> above.</p>
+  <aside class="stack">
+    <div class="card"><dl class="facts">
+      <div><dt>Status</dt><dd>
+        <form method="post" action="{% url 'studio:document_status' doc.pk %}" class="row">{% csrf_token %}
+          <select class="select" name="status" onchange="this.form.submit()" aria-label="Status">{% for k, l in statuses %}<option value="{{ k }}" {% if k == doc.status %}selected{% endif %}>{{ l }}</option>{% endfor %}</select>
+        </form></dd></div>
+      <div><dt>{{ doctype.amount_label|default:"Value" }}</dt><dd style="font-size:1.3rem;font-weight:700">{% if doc.amount %}{{ doc.currency }} {{ doc.amount|floatformat:2|intcomma }}{% else %}—{% endif %}</dd></div>
+      <div><dt>Title</dt><dd>{{ doc.title }}</dd></div>
+      <div><dt>Created</dt><dd>{{ doc.created_at|date:"d M Y, H:i" }}{% if doc.created_by %} by {{ doc.created_by.get_username }}{% endif %}</dd></div>
+      <div><dt>Last regenerated</dt><dd>{{ doc.updated_at|date:"d M Y, H:i" }} · revision {{ doc.revision }}</dd></div>
+    </dl></div>
+    <form method="post" action="{% url 'studio:document_duplicate' doc.pk %}">{% csrf_token %}
+      <button class="btn" style="width:100%" type="submit">Duplicate as new document</button></form>
+    <form method="post" action="{% url 'studio:document_delete' doc.pk %}" onsubmit="return confirm('Delete {{ doc.reference }} permanently? The stored PDF will be lost.')">{% csrf_token %}
+      <button class="btn btn-danger" style="width:100%" type="submit">Delete</button></form>
+    <a class="btn" href="{% url 'studio:document_list' %}">← All documents</a>
+  </aside>
+</div>
+{% endblock %}

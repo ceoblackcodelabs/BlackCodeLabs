@@ -1,0 +1,55 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>{% block title %}Studio{% endblock %} · BlackCodeLabs Studio</title>
+<link rel="icon" href="{% static 'assets/images/favicon.ico' %}"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{% static 'studio/studio.css' %}"/>
+{% block head %}{% endblock %}
+</head>
+<body>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<div class="app">
+  <aside class="sidebar" aria-label="Studio navigation">
+    <div class="brand">
+      <img src="{% static 'assets/images/logo.png' %}" alt=""/>
+      <div><b>BlackCodeLabs</b><small>Studio</small></div>
+    </div>
+    <nav class="nav">
+      <a href="{% url 'studio:dashboard' %}" class="{% if nav.active == 'overview' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</a>
+
+      <div class="nav-label">Documents</div>
+      <a href="{% url 'studio:document_new' %}" class="{% if nav.active|slice:':4' == 'new-' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>New document</a>
+      <a href="{% url 'studio:document_list' %}" class="{% if nav.active == 'docs' %}active{% endif %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>All documents</a>
+      {% for key, label in nav.doc_types %}
+      <a class="sub {% if nav.active == 'docs-'|add:key %}active{% endif %}" href="{% url 'studio:document_list' %}?type={{ key }}">{{ label }}s</a>
+      {% endfor %}
+
+      <div class="nav-label">Website</div>
+      {% for label, url in nav.site_links %}<a class="sub" href="{{ url }}">{{ label }}</a>{% endfor %}
+    </nav>
+    <div class="side-foot">
+      <div class="who">Signed in as <b>{{ request.user.get_username }}</b></div>
+      <a href="/" target="_blank" rel="noopener">View website ↗</a>
+      {% if nav.admin_url %}<a href="{% url 'admin:index' %}">Django admin</a>{% endif %}
+      <a href="{% url 'account_logout' %}">Sign out</a>
+    </div>
+  </aside>
+  <div>
+    <div class="topbar"><button onclick="document.body.classList.add('nav-open')" aria-label="Open menu">☰</button><b>Studio</b></div>
+    <main class="main">
+      {% if messages %}<div class="msgs">{% for m in messages %}<div class="msg {{ m.tags }}">{{ m }}</div>{% endfor %}</div>{% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

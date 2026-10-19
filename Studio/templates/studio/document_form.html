@@ -1,0 +1,37 @@
+{% extends 'studio/base.html' %}
+{% load static %}
+{% block title %}{% if doc %}Edit {{ doc.reference }}{% else %}New document{% endif %}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>{% if doc %}Edit {{ doctype.label|lower }}{% else %}New document{% endif %}</h1>
+  <p>{% if doc %}<span class="ref">{{ doc.reference }}</span> · saving regenerates the PDF and keeps the same reference.{% else %}Choose the document type, fill in the form, and the PDF is generated and stored for you.{% endif %}</p></div>
+</div>
+
+<div class="type-pick">
+  <label for="type-select">Document type</label>
+  <div class="type-row">
+    <select class="select" id="type-select" {% if doc %}disabled{% endif %}>
+      {% for key, label, desc in types %}<option value="{{ key }}" {% if key == doctype.key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <span class="muted">{{ doctype.description }}</span>
+    <span style="flex:1"></span>
+    <button class="btn btn-sm" type="button" id="btn-sample" hidden>Fill with example</button>
+    <button class="btn btn-sm" type="button" id="btn-reset">Reset form</button>
+  </div>
+</div>
+
+<div class="banner" id="banner" role="alert"></div>
+<form id="doc-form" novalidate onsubmit="return false">
+  <div class="form-sections" id="form-root"></div>
+  <div class="formbar">
+    <button class="btn btn-primary" type="submit" id="btn-save">{% if doc %}Save &amp; regenerate PDF{% else %}Generate PDF{% endif %}</button>
+    <a class="btn" href="{% if doc %}{% url 'studio:document_detail' doc.pk %}{% else %}{% url 'studio:document_list' %}{% endif %}">Cancel</a>
+    <span class="muted" id="save-note"></span>
+  </div>
+</form>
+{{ config|json_script:"form-config" }}
+{% endblock %}
+{% block scripts %}
+<script>window.STUDIO_CSRF = "{{ csrf_token }}";</script>
+<script src="{% static 'studio/form.js' %}"></script>
+{% endblock %}
