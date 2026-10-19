@@ -187,3 +187,27 @@ class StudioTests(TestCase):
     def test_pdf_is_not_stored_under_public_media(self):
         self.save("invoice")
         self.assertFalse(hasattr(GeneratedDocument._meta.get_field("pdf"), "upload_to"))
+
+
+@override_settings(STORAGES=STATIC_PLAIN, ALLOWED_HOSTS=["*"])
+class LoginRedirectTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        U = get_user_model()
+        U.objects.create_user("boss", password="pw-12345-x", is_staff=True)
+        U.objects.create_user("visitor", password="pw-12345-x")
+
+    def login(self, user, next_=""):
+        url = reverse("accounts:login") + (f"?next={next_}" if next_ else "")
+        return self.client.post(url, {"username": user, "password": "pw-12345-x", "next": next_})
+
+    def test_staff_without_next_go_to_studio(self):
+        self.assertEqual(self.login("boss")["Location"], reverse("studio:dashboard"))
+
+    def test_regular_user_goes_to_blog(self):
+        self.assertEqual(self.login("visitor")["Location"], reverse("blog:list"))
+
+    def test_next_is_honoured_but_only_for_local_urls(self):
+        self.assertEqual(self.login("visitor", "/pricing/")["Location"], "/pricing/")
+        self.client.logout()
+        self.assertEqual(self.login("visitor", "https://evil.example/")["Location"], reverse("blog:list"))

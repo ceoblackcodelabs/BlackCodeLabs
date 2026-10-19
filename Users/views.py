@@ -26,7 +26,13 @@ class SVLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        """Redirect to blog list after successful login"""
+        """Honour ?next= (checked for safety by Django), else staff go to the Studio, everyone else to the blog."""
+        next_url = self.get_redirect_url()
+        if next_url:
+            return next_url
+        user = self.request.user
+        if user.is_authenticated and user.is_staff:
+            return reverse_lazy("studio:dashboard")
         return reverse_lazy("blog:list")
 
     def form_valid(self, form):
