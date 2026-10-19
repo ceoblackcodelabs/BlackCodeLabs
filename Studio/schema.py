@@ -203,6 +203,10 @@ class DocType:
     def amount(self, data):
         return None
 
+    def validate(self, data):
+        """Cross-field checks that a single field can't express. Return {field_path: message}."""
+        return {}
+
     def title(self, data):
         return self.label
 

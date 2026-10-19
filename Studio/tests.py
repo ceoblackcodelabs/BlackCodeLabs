@@ -211,3 +211,71 @@ class LoginRedirectTests(TestCase):
         self.assertEqual(self.login("visitor", "/pricing/")["Location"], "/pricing/")
         self.client.logout()
         self.assertEqual(self.login("visitor", "https://evil.example/")["Location"], reverse("blog:list"))
+
+
+@override_settings(STORAGES=STATIC_PLAIN, ALLOWED_HOSTS=["*"])
+class ServiceAgreementTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.staff = get_user_model().objects.create_user("boss", password="x", is_staff=True)
+
+    def setUp(self):
+        self.client.force_login(self.staff)
+        self.t = doctypes.get("contract")
+
+    def post(self, data):
+        return self.client.post(reverse("studio:document_save"), json.dumps({"type": "contract", "data": data}),
+                                content_type="application/json")
+
+    def render(self, **changes):
+        data, errors = clean_document(self.t.sections, dict(self.t.sample(), **changes))
+        self.assertFalse(errors, dict(errors))
+        self.assertFalse(self.t.validate(data))
+        return text_of(self.t.render(data, {"brand": brand(), "reference": "BCL-AGR-2610-01", "currency": "KES"}))
+
+    def test_sample_is_saved_with_price_scope_timeline_and_payment(self):
+        r = self.post(self.t.sample())
+        self.assertEqual(r.status_code, 200, r.content)
+        doc = GeneratedDocument.objects.get()
+        self.assertRegex(doc.reference, r"^BCL-AGR-\d{4}-01$")
+        self.assertEqual((doc.amount, doc.client_name), (Decimal("165000.00"), "Mwangi & Daughters Ltd"))
+        txt = text_of(doc.pdf)
+        for must in ("Online store", "165,000.00", "82,500.00", "6 weeks from receipt of the deposit", "M-Pesa Paybill",
+                     "Grace Mwangi, Managing Director", "Odhiambo Churchill, Director"):
+            self.assertIn(must, txt)
+
+    def test_payment_percentages_must_total_100(self):
+        bad = dict(self.t.sample(), payment_schedule=[{"label": "Deposit", "percent": "50", "due": "Now"}, {"label": "Rest", "percent": "40", "due": "Later"}])
+        r = self.post(bad)
+        self.assertEqual(r.status_code, 422)
+        self.assertIn("100%", r.json()["errors"]["payment_schedule"])
+        self.assertEqual(GeneratedDocument.objects.count(), 0)
+
+    def test_breakdown_must_match_price_and_dates_must_be_in_order(self):
+        r = self.post(dict(self.t.sample(), total_price="170000"))
+        self.assertIn("price_breakdown", r.json()["errors"])
+        r = self.post(dict(self.t.sample(), start_date="2026-12-01", completion_date="2026-11-01"))
+        self.assertIn("completion_date", r.json()["errors"])
+
+    def test_instalments_always_add_up_to_the_total_even_with_awkward_percentages_and_vat(self):
+        from .doctypes.contract import money_of, schedule
+        d = {"total_price": "100000", "vat_rate": "16", "payment_schedule": [
+            {"label": "A", "percent": "33.33", "due": ""}, {"label": "B", "percent": "33.33", "due": ""}, {"label": "C", "percent": "33.34", "due": ""}]}
+        price, vat, payable = money_of(d)
+        self.assertEqual((price, vat, payable), (Decimal("100000.00"), Decimal("16000.00"), Decimal("116000.00")))
+        self.assertEqual(sum(a for _, a in schedule(d)), payable)
+
+    def test_clauses_use_the_form_parameters_and_extra_clauses_are_numbered(self):
+        txt = self.render(revision_rounds="4", support_days="60", termination_days="30", governing_law="Kenya", city="Mombasa",
+                          extra_clauses=[{"heading": "Exclusivity", "text": "No competing work for 30 days."}])
+        for must in ("includes 4 rounds of revisions", "For 60 days after delivery", "giving 30 days' written notice", "sitting in Mombasa",
+                     "Exclusivity", "No competing work for 30 days."):
+            self.assertIn(must, txt)
+        self.assertRegex(txt, r"15\s+Exclusivity")
+        self.assertRegex(txt, r"16\s+General")  # the extra clause pushes General from 15 to 16
+
+    def test_vat_and_witness_lines_appear_when_asked(self):
+        txt = self.render(vat_rate="16", include_witness="Yes")
+        self.assertIn("VAT", txt)
+        self.assertIn("191,400.00", txt)  # 165,000 + 16%
+        self.assertIn("WITNESS FOR THE CLIENT", txt)

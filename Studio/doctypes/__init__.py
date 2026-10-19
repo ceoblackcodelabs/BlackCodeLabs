@@ -1,8 +1,9 @@
 """Registry of document types. To add one: subclass DocType, then add it to _TYPES."""
 from .billing import Invoice, Quotation
+from .contract import ServiceAgreement
 from .proposal import WebsiteManagementProposal
 
-_TYPES = [WebsiteManagementProposal(), Quotation(), Invoice()]
+_TYPES = [WebsiteManagementProposal(), ServiceAgreement(), Quotation(), Invoice()]
 REGISTRY = {t.key: t for t in _TYPES}
 
 

@@ -174,6 +174,8 @@ def document_save(request):
     except (ValueError, UnicodeDecodeError):
         return JsonResponse({"ok": False, "error": "Bad request"}, status=400)
     data, errors = clean_document(t.sections, body["data"])
+    if not errors:
+        errors = t.validate(data)
     if errors:
         return JsonResponse({"ok": False, "errors": errors}, status=422)
     doc = None

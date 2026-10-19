@@ -108,6 +108,8 @@ def styles():
     S["step_n"] = _style("step_n", fontName="Poppins-Bold", fontSize=16, leading=20, textColor=GREEN)
     S["sig_l"] = _style("sig_l", fontSize=7.6, leading=10, textColor=MUTED)
     S["sig_v"] = _style("sig_v", fontSize=9.5, leading=12, textColor=INK)
+    S["clause"] = _style("clause", fontName="Poppins-SemiBold", fontSize=11.5, leading=15, textColor=INK)
+    S["sub"] = _style("sub", leftIndent=28, bulletIndent=0, spaceAfter=5, leading=14.2, fontSize=9.6)
     S["stamp"] = _style("stamp", fontName="Poppins-Bold", fontSize=11, leading=14, textColor=GREEN, alignment=TA_RIGHT)
     return S
 
@@ -420,7 +422,7 @@ def fee_box(S, label, amount_text, sub, includes):
     return t
 
 
-def signature_block(S, left_title, right_title, right_name="", heading="Acceptance"):
+def signature_block(S, left_title, right_title, right_name="", heading="Acceptance", left_name=""):
     def col(title, name):
         items = [Paragraph(esc(title.upper()), ParagraphStyle("st", parent=S["small_b"], fontSize=8, leading=11)), Spacer(1, 16)]
         for label, value in (("Name", name), ("Signature", ""), ("Date", "")):
@@ -429,6 +431,22 @@ def signature_block(S, left_title, right_title, right_name="", heading="Acceptan
                                       ("TOPPADDING", (0, 0), (-1, -1), 8), ("BOTTOMPADDING", (0, 0), (-1, -1), 2)]))
             items += [line, Paragraph(label, S["sig_l"]), Spacer(1, 10)]
         return items
-    t = Table([[col(left_title, ""), col(right_title, right_name)]], colWidths=[CW * 0.5, CW * 0.5])
+    t = Table([[col(left_title, left_name), col(right_title, right_name)]], colWidths=[CW * 0.5, CW * 0.5])
     t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0)]))
     return KeepTogether([Paragraph(esc(heading), S["h3"]), t])
+
+
+def clause_heading(S, num, title):
+    """'7   Revisions and changes': green number, bold title, hairline underneath."""
+    t = Table([[Paragraph(f'<font color="#1C8F6E">{esc(num)}</font>', S["clause"]), Paragraph(esc(title), S["clause"])]],
+              colWidths=[28, CW - 28])
+    t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "BOTTOM"), ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                           ("RIGHTPADDING", (0, 0), (-1, -1), 0), ("TOPPADDING", (0, 0), (-1, -1), 0),
+                           ("BOTTOMPADDING", (0, 0), (-1, -1), 4), ("LINEBELOW", (0, 0), (-1, -1), 0.6, LINE)]))
+    t.keepWithNext = True
+    return t
+
+
+def subclauses(S, num, texts):
+    """Numbered sub-paragraphs: 7.1, 7.2 ... (hanging indent)."""
+    return [Paragraph(rich(t), S["sub"], bulletText=f"{num}.{i}") for i, t in enumerate([t for t in texts if t], 1)]
