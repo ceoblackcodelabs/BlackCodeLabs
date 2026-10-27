@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday, Beautiful Soul</title>
+
+  <!-- Google Fonts for romantic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome for romantic icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blush: {
+              50: '#fff5f7',
+              100: '#ffe4e1',
+              200: '#f8c8dc',
+              300: '#fdabb2',
+              400: '#f48fb1',
+              500: '#ec407a',
+              900: '#4a1525',
+            }
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'serif'],
+            script: ['Great Vibes', 'cursive'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom CSS for smooth behavior & ambient particle effects */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background-color: #1a0b12;
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Fixed full screen background structure */
+    #bg-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    #bg-image {
+      width: 100%;
+      object-fit: cover;
+      object-position: center top;
+      height: 135%;
+      margin-top: -34vh; /* lift the photo so her face sits higher, clear of the pink fade */
+      transition: filter 0.5s ease;
+      filter: brightness(0.85) contrast(1.05);
+    }
+
+    /* Gradient overlay for readability and blush vibe */
+    .blush-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(26, 11, 18, 0.55) 0%,
+        rgba(248, 200, 220, 0.35) 40%,
+        rgba(253, 171, 178, 0.45) 70%,
+        rgba(26, 11, 18, 0.85) 100%
+      );
+      mix-blend-mode: multiply;
+    }
+
+    /* Additional vignette layer for readability */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 30%, rgba(20, 5, 12, 0.6) 100%);
+    }
+
+    /* Scrollable container setup */
+    .scroll-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    /* Scroll section styling */
+    .story-section {
+      height: 100vh;
+      width: 100%;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    /* Card styling with glassmorphism */
+    .glass-card {
+      background: rgba(255, 245, 247, 0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(74, 21, 37, 0.37);
+      border-radius: 1.5rem;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+    }
+
+    /* Dynamic fade-in on enter, fade-out halfway up viewport */
+    .story-section.active .glass-card {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .glass-card > :is(h1, h2, h3, p, span, button) {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    .story-section.active .glass-card > :is(h1, h2, h3, p, span, button) {
+      animation: riseText 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .story-section.active .glass-card > :nth-child(2) { animation-delay: 0.1s; }
+    .story-section.active .glass-card > :nth-child(3) { animation-delay: 0.22s; }
+    .story-section.active .glass-card > :nth-child(4) { animation-delay: 0.34s; }
+    .story-section.active .glass-card > :nth-child(5) { animation-delay: 0.46s; }
+    .story-section.active .glass-card > :nth-child(6) { animation-delay: 0.58s; }
+
+    @keyframes riseText {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .glass-card > :is(h1, h2, h3, p, span, button) {
+        opacity: 1;
+        transform: none;
+        animation: none !important;
+      }
+    }
+
+    /* Heart touch particle styling */
+    .touch-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+      animation: floatAndFade 1.2s ease-out forwards;
+      color: #fdabb2;
+      filter: drop-shadow(0 0 6px rgba(248, 200, 220, 0.8));
+    }
+
+    @keyframes floatAndFade {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+      }
+      50% {
+        opacity: 0.9;
+        transform: translate(-50%, -90px) scale(1.3) rotate(15deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -140px) scale(1) rotate(-10deg);
+      }
+    }
+
+    /* Ambient background floating particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,228,225,0.8) 0%, rgba(253,171,178,0) 70%);
+      border-radius: 50%;
+      animation: ambientFloat infinite linear;
+      z-index: 2;
+    }
+
+    @keyframes ambientFloat {
+      0% {
+        transform: translateY(105vh) scale(0.8);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.6;
+      }
+      80% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Hide scrollbar for clean aesthetic */
+    .scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+    .scroll-container {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Pulse animation for scroll hint */
+    @keyframes bounceGentle {
+      0%, 100% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(8px); opacity: 1; }
+    }
+    .bounce-scroll {
+      animation: bounceGentle 2s infinite;
+    }
+
+    /* Auto-scrolling credits style: no card background, text drifts up from below */
+    .scroll-container { scroll-snap-type: none; scroll-behavior: auto; }
+    .scroll-container::before, .scroll-container::after { content: ""; display: block; height: 100vh; }
+    .story-section { height: auto; min-height: 0; scroll-snap-align: none; padding: 3.5rem 1.5rem; }
+    .glass-card {
+      background: none; border: none; box-shadow: none;
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      opacity: 1; transform: none; text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+    }
+    .glass-card > :is(h1, h2, h3, p, span, button) { opacity: 1; transform: none; animation: none !important; }
+    .bounce-scroll { display: none; }
+    /* Evenly aligned (justified) paragraphs */
+    .story-section .glass-card p { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; }
+    /* Photo on top, lower half melts into blush pink; text scrolls inside that pink zone and fades where it ends */
+    #bg-wrapper::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(248,200,214,0) 0%, rgba(248,200,214,0) 38%,
+        rgba(248,200,214,0.85) 55%, #f8c8d6 66%, #f4b6c9 100%);
+    }
+    .scroll-container {
+      position: fixed; left: 0; right: 0; top: 52vh; height: 48vh;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 88%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 88%, transparent 100%);
+    }
+    .scroll-container::before { height: 36vh; }
+    .scroll-container::after { height: 48vh; }
+    .story-section { padding: 0.75rem 1.5rem; }
+    .story-section .glass-card { text-shadow: none; padding: 0.5rem 1.75rem; }
+    .story-section .glass-card :is(h1, h2, h3) { color: #7a1f3d; }
+    .story-section .glass-card :is(p, span) { color: #4a1525; }
+    .story-section .glass-card i { color: #b83265; }
+    .story-section .glass-card > div { background: rgba(255,255,255,0.35); border-color: rgba(184,50,101,0.35); }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Layer -->
+  <div id="bg-wrapper">
+    <!-- Default aesthetic placeholder photo (boy can change this live) -->
+    <img id="bg-image" src="photo.jpg" alt="Her Photo" />
+    <div class="blush-overlay"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- Ambient Floating Heart/Sparkle Particles Layer -->
+  <div id="particle-container" class="fixed inset-0 pointer-events-none z-1"></div>
+
+  <!-- Top Fixed Controls Header -->
+  <header class="fixed top-0 left-0 right-0 z-40 p-4 flex justify-between items-center bg-gradient-to-b from-black/50 to-transparent">
+    <!-- Music Toggle -->
+    <button id="music-btn" class="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform" aria-label="Toggle Audio">
+      <i id="music-icon" class="fa-solid fa-music text-blush-200 text-sm"></i>
+    </button>
+
+    <div class="text-center">
+      <span class="font-script text-2xl text-blush-200 drop-shadow">Happy Birthday</span>
+    </div>
+
+    <!-- Background Photo Customizer Trigger -->
+    <button id="photo-config-btn" class="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform" aria-label="Upload Her Photo">
+      <i class="fa-solid fa-camera text-blush-200 text-sm"></i>
+    </button>
+  </header>
+
+  <!-- Photo Config Modal / Popover -->
+  <div id="photo-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-6 hidden">
+    <div class="bg-blush-900/90 border border-blush-300/30 rounded-2xl p-6 w-full max-w-sm text-center shadow-2xl">
+      <h3 class="font-serif text-2xl text-blush-100 mb-2">Set Her Photo</h3>
+      <p class="text-xs text-white/70 mb-5">Upload her picture or paste an image link to personalize this page for her.</p>
+
+      <div class="space-y-4 mb-6">
+        <div>
+          <label class="block text-left text-xs text-blush-200 mb-1">Upload Photo from Phone</label>
+          <input type="file" id="file-input" accept="image/*" class="w-full text-xs text-white/80 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-medium file:bg-blush-400 file:text-white hover:file:bg-blush-500 cursor-pointer bg-white/10 rounded-lg p-1" />
+        </div>
+
+        <div class="text-xs text-white/40 font-semibold">— OR —</div>
+
+        <div>
+          <label class="block text-left text-xs text-blush-200 mb-1">Image Web Link (URL)</label>
+          <input type="url" id="url-input" placeholder="https://..." class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-xs text-white placeholder-white/30 focus:outline-none focus:border-blush-300" />
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button id="cancel-photo-btn" class="flex-1 py-2 text-xs rounded-xl bg-white/10 text-white font-medium">Close</button>
+        <button id="apply-photo-btn" class="flex-1 py-2 text-xs rounded-xl bg-gradient-to-r from-blush-400 to-blush-500 text-white font-semibold shadow-lg">Save Photo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Scrolling Story Sections (Mobile First Narrative) -->
+  <main id="scroll-wrapper" class="scroll-container">
+
+    <!-- SECTION 1: Welcome & Birthday Wish -->
+    <section class="story-section active" id="sec-1">
+      <div class="glass-card p-7 text-center max-w-sm w-full">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blush-300/20 border border-blush-200/40 flex items-center justify-center">
+          <i class="fa-solid fa-heart text-blush-200 text-lg"></i>
+        </div>
+        <span class="text-xs tracking-widest uppercase text-blush-200 font-semibold mb-2 block">For The Most Beautiful Soul</span>
+        <h1 class="font-script text-5xl text-blush-100 mb-4 leading-tight">Happy Birthday</h1>
+        <p class="text-sm leading-relaxed text-white/90 font-light mb-4">
+          Today is all about you. Before anything else, I want you to know how special you are—not only in how you look, but in the calm and warmth you bring to any room just by being in it.
+        </p>
+        <p class="font-serif italic text-base text-blush-200">
+          "Your smile is my favorite kind of peace."
+        </p>
+      </div>
+      <div class="absolute bottom-8 left-0 right-0 text-center bounce-scroll">
+        <span class="text-xs text-blush-200/80 tracking-wide font-light">Scroll slowly down</span>
+        <i class="fa-solid fa-chevron-down block text-xs text-blush-200/70 mt-1"></i>
+      </div>
+    </section>
+
+    <!-- SECTION 2: The Observation (Seeing Her True Strength & Fragility) -->
+    <section class="story-section" id="sec-2">
+      <div class="glass-card p-7 text-center max-w-sm w-full">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blush-300/20 border border-blush-200/40 flex items-center justify-center">
+          <i class="fa-solid fa-eye text-blush-200 text-lg"></i>
+        </div>
+        <h2 class="font-serif text-3xl text-blush-100 mb-3 font-normal">About My Silence</h2>
+        <p class="text-sm leading-relaxed text-white/90 font-light mb-4">
+          I know there are times I go quiet, and it may leave you wondering where I stand. I'm sorry if it ever felt like mixed signals. It was never my heart pulling away.
+        </p>
+        <p class="text-sm leading-relaxed text-white/90 font-light">
+          The truth is simple: I really do love talking to you. Even on the days my words don't come, you are still on my mind.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 3: You Don't Have to be Perfect -->
+    <section class="story-section" id="sec-3">
+      <div class="glass-card p-7 text-center max-w-sm w-full">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blush-300/20 border border-blush-200/40 flex items-center justify-center">
+          <i class="fa-solid fa-feather-pointed text-blush-200 text-lg"></i>
+        </div>
+        <h2 class="font-serif text-3xl text-blush-100 mb-3 font-normal">Be Gentle With Yourself</h2>
+        <p class="text-sm leading-relaxed text-white/90 font-light mb-4">
+          I know you try so hard to make everything just right, and some days it feels like things aren't going your way.
+        </p>
+        <p class="text-sm leading-relaxed text-white/90 font-light italic font-serif text-blush-200">
+          You don't have to be perfect for the world, or for me. You are already enough, exactly as you are.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Safe Haven & No Pressure -->
+    <section class="story-section" id="sec-4">
+      <div class="glass-card p-7 text-center max-w-sm w-full">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blush-300/20 border border-blush-200/40 flex items-center justify-center">
+          <i class="fa-solid fa-hands-holding-child text-blush-200 text-lg"></i>
+        </div>
+        <h2 class="font-serif text-3xl text-blush-100 mb-3 font-normal">No Pressure, Ever</h2>
+        <p class="text-sm leading-relaxed text-white/90 font-light mb-4">
+          Opening up can feel scary when you're afraid of being judged. Here, there is no pressure at all. Take all the time you need.
+        </p>
+        <p class="text-sm leading-relaxed text-white/90 font-light">
+          I'm not asking for labels or expectations. I just want to be near you, in your happiest moments and in your quietest ones.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 5: Precious Moments -->
+    <section class="story-section" id="sec-5">
+      <div class="glass-card p-7 text-center max-w-sm w-full">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blush-300/20 border border-blush-200/40 flex items-center justify-center">
+          <i class="fa-solid fa-infinity text-blush-200 text-lg"></i>
+        </div>
+        <h2 class="font-serif text-3xl text-blush-100 mb-3 font-normal">Every Moment Counts</h2>
+        <p class="text-sm leading-relaxed text-white/90 font-light mb-4">
+          Every conversation with you is my favorite part of the day. Even the small moments mean so much to me.
+        </p>
+        <p class="text-sm leading-relaxed text-white/90 font-light font-serif italic text-blush-200">
+          "I'm here for you—quietly, patiently, and always."
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 6: Closing & Final Surprise Trigger -->
+    <section class="story-section" id="sec-6">
+      <div class="glass-card p-7 text-center max-w-sm w-full">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blush-300/20 border border-blush-200/40 flex items-center justify-center">
+          <i class="fa-solid fa-cake-candles text-blush-200 text-lg"></i>
+        </div>
+        <h2 class="font-script text-4xl text-blush-100 mb-3">Happy Birthday, Beautiful</h2>
+        <p class="text-sm leading-relaxed text-white/90 font-light mb-6">
+          May today bring your heart the peace, rest and comfort it deserves.
+        </p>
+
+        <p class="text-sm leading-relaxed font-light mb-3">
+          When you have a quiet moment, please listen to this song. It says what I feel better than I can.
+        </p>
+        <a href="https://youtu.be/n9dKp7rZCrU?list=RDn9dKp7rZCrU" target="_blank" rel="noopener"
+           class="block w-full py-3 px-6 mb-4 rounded-xl border border-blush-300/60 bg-white/30 text-sm font-semibold text-center no-underline" style="color:#7a1f3d">
+          <i class="fa-solid fa-headphones mr-2"></i>Listen to this for me
+        </a>
+
+        <!-- Surprise Note Button -->
+        <button id="surprise-btn" class="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-blush-300 via-blush-400 to-blush-500 text-blush-900 font-semibold text-sm shadow-xl transform active:scale-95 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-envelope-open-text text-base"></i>
+          <span>A Little Note Just For You...</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FINAL SURPRISE MODAL -->
+  <div id="surprise-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-5 hidden transition-opacity duration-500 opacity-0">
+    <div class="bg-gradient-to-b from-blush-900/90 to-black/95 border border-blush-300/40 rounded-3xl p-7 w-full max-w-sm text-center shadow-2xl relative overflow-hidden">
+      <!-- Glow effect -->
+      <div class="absolute -top-12 -left-12 w-32 h-32 bg-blush-300/20 rounded-full blur-2xl"></div>
+      <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-blush-500/20 rounded-full blur-2xl"></div>
+
+      <div class="relative z-10">
+        <span class="text-4xl block mb-2">🌸✨</span>
+        <h3 class="font-script text-4xl text-blush-200 mb-4">My Promise To You</h3>
+
+        <div class="text-left space-y-3 text-xs leading-relaxed text-white/90 font-light mb-6 border-y border-white/10 py-4 max-h-60 overflow-y-auto">
+          <p>
+            You never have to pretend to have it all together around me. If you want to talk, I'm listening. If you'd rather sit in silence, I'll sit right beside you.
+          </p>
+          <p>
+            Things may feel heavy right now, but you don't have to carry them alone. I'm not asking for anything except your company, whenever you feel ready to share it.
+          </p>
+          <p class="text-blush-200 font-serif italic text-sm text-center pt-2">
+            You are cared for and appreciated more than words can say. Happy Birthday. ❤️
+          </p>
+        </div>
+
+        <button id="close-surprise-btn" class="w-full py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-medium text-xs border border-white/30 transition-colors">
+          Keep This In My Heart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- Auto-scroll from below (pauses while the user touches/scrolls) ---
+      const scroller = document.getElementById('scroll-wrapper');
+      let pos = 0, paused = false, resumeTimer = null;
+      const speed = 0.3; // px per frame
+      const pause = () => {
+        paused = true;
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => { pos = scroller.scrollTop; paused = false; }, 2500);
+      };
+      ['touchstart', 'wheel', 'mousedown'].forEach(ev => scroller.addEventListener(ev, pause, { passive: true }));
+      const tick = () => {
+        if (!paused) {
+          pos += speed;
+          scroller.scrollTop = pos;
+          if (scroller.scrollTop < pos - 1) { // reached the end: start over
+            pos = 0;
+            scroller.scrollTop = 0;
+          }
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+
+      // --- 1. Ambient Background Particle Generator ---
+      const particleContainer = document.getElementById('particle-container');
+      const createParticles = () => {
+        const particleCount = 18;
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+
+          const size = Math.random() * 14 + 6; // 6px to 20px
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.left = `${Math.random() * 100}vw`;
+
+          const duration = Math.random() * 12 + 10; // 10s to 22s
+          const delay = Math.random() * 10;
+          particle.style.animationDuration = `${duration}s`;
+          particle.style.animationDelay = `${delay}s`;
+
+          particleContainer.appendChild(particle);
+        }
+      };
+      createParticles();
+
+      // --- 2. Scroll Intersection Observer for Text Card Fading ---
+      const sections = document.querySelectorAll('.story-section');
+      const observerOptions = {
+        root: document.getElementById('scroll-wrapper'),
+        threshold: 0.55 // Triggers when section is halfway in photo view
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          } else {
+            entry.target.classList.remove('active');
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+
+      // --- 3. Interactive Touch Heart Ripple Effect ---
+      const heartIcons = ['fa-heart', 'fa-sparkles', 'fa-heart-pulse'];
+      window.addEventListener('click', (e) => {
+        // Prevent ripple if clicking modal or buttons directly
+        if (e.target.closest('button') || e.target.closest('#photo-modal') || e.target.closest('#surprise-modal')) {
+          return;
+        }
+
+        const heart = document.createElement('i');
+        const randomIcon = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+        heart.className = `fa-solid ${randomIcon} touch-heart text-xl`;
+        heart.style.left = `${e.clientX}px`;
+        heart.style.top = `${e.clientY}px`;
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1200);
+      });
+
+      // --- 4. Synthesized Ambient Audio (Web Audio API - Healing Flute) ---
+      let audioCtx = null;
+      let isPlaying = false;
+      let intervalId = null; // melody timer
+      let master = null;
+
+      // Healing flute: A=432Hz tuning, D major pentatonic, slow breathy phrases over a soft drone
+      const A4 = 432;
+      const hz = (semi) => A4 * Math.pow(2, semi / 12); // semitones from A4
+      const scale = [-7, -5, -3, 0, 2, 5, 7, 9, 12].map(hz); // D4 E4 F#4 A4 B4 D5 E5 F#5 A5
+
+      const buildEngine = () => {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        master = audioCtx.createGain();
+        master.gain.value = 0;
+        // Airy echo for a spacious, temple-like feel
+        const delay = audioCtx.createDelay(2);
+        delay.delayTime.value = 0.55;
+        const fb = audioCtx.createGain();
+        fb.gain.value = 0.42;
+        const wet = audioCtx.createGain();
+        wet.gain.value = 0.45;
+        const tone = audioCtx.createBiquadFilter();
+        tone.type = 'lowpass';
+        tone.frequency.value = 2800;
+        master.connect(audioCtx.destination);
+        master.connect(delay);
+        delay.connect(tone); tone.connect(fb); fb.connect(delay);
+        tone.connect(wet); wet.connect(audioCtx.destination);
+
+        // Warm drone (D3 + A3) that slowly breathes
+        [hz(-19), hz(-12)].forEach((f, i) => {
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          const lfo = audioCtx.createOscillator();
+          const lg = audioCtx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
+          g.gain.value = 0.05;
+          lfo.frequency.value = 0.08 + i * 0.04;
+          lg.gain.value = 0.025;
+          lfo.connect(lg); lg.connect(g.gain);
+          o.connect(g); g.connect(master);
+          o.start(); lfo.start();
+        });
+      };
+
+      const noiseBuffer = () => {
+        const len = audioCtx.sampleRate * 2;
+        const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        return buf;
+      };
+
+      const fluteNote = (freq, dur) => {
+        const t = audioCtx.currentTime;
+        const g = audioCtx.createGain();
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.16, t + 0.35);          // soft breath attack
+        g.gain.setValueAtTime(0.16, t + dur - 0.2);
+        g.gain.linearRampToValueAtTime(0, t + dur + 0.7);        // gentle release
+        g.connect(master);
+
+        // Body: sine fundamental + faint 2nd/3rd harmonics
+        [[1, 1], [2, 0.18], [3, 0.05]].forEach(([mult, amp]) => {
+          const o = audioCtx.createOscillator();
+          const og = audioCtx.createGain();
+          o.type = 'sine';
+          o.frequency.value = freq * mult;
+          og.gain.value = amp;
+          // Vibrato that fades in after the note starts
+          const vib = audioCtx.createOscillator();
+          const vg = audioCtx.createGain();
+          vib.frequency.value = 5 + Math.random();
+          vg.gain.setValueAtTime(0, t);
+          vg.gain.linearRampToValueAtTime(freq * mult * 0.006, t + 0.9);
+          vib.connect(vg); vg.connect(o.frequency);
+          o.connect(og); og.connect(g);
+          o.start(t); vib.start(t);
+          o.stop(t + dur + 0.8); vib.stop(t + dur + 0.8);
+        });
+
+        // Breath noise
+        const n = audioCtx.createBufferSource();
+        n.buffer = noiseBuffer();
+        const bp = audioCtx.createBiquadFilter();
+        bp.type = 'bandpass'; bp.frequency.value = freq * 2; bp.Q.value = 2;
+        const ng = audioCtx.createGain();
+        ng.gain.value = 0.35;
+        n.connect(bp); bp.connect(ng); ng.connect(g);
+        n.start(t); n.stop(t + dur + 0.8);
+      };
+
+      let noteIdx = 3;
+      const nextPhrase = () => {
+        if (!isPlaying) return;
+        // Wander by small steps so the melody feels like a calm, singing line
+        noteIdx = Math.max(0, Math.min(scale.length - 1, noteIdx + Math.floor(Math.random() * 5) - 2));
+        const dur = 1.6 + Math.random() * 2.2;
+        fluteNote(scale[noteIdx], dur);
+        const rest = Math.random() < 0.3 ? 1.5 : 0.2;
+        intervalId = setTimeout(nextPhrase, (dur + rest) * 1000);
+      };
+
+      const playSoftAmbientNotes = () => {
+        if (!audioCtx) buildEngine();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        master.gain.cancelScheduledValues(audioCtx.currentTime);
+        master.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 2);
+        nextPhrase();
+      };
+
+      const musicBtn = document.getElementById('music-btn');
+      const musicIcon = document.getElementById('music-icon');
+
+      musicBtn.addEventListener('click', () => {
+        if (!isPlaying) {
+          isPlaying = true;
+          musicIcon.className = 'fa-solid fa-volume-high text-blush-200 text-sm animate-pulse';
+          playSoftAmbientNotes();
+        } else {
+          isPlaying = false;
+          if (intervalId) clearTimeout(intervalId);
+          if (master) {
+            master.gain.cancelScheduledValues(audioCtx.currentTime);
+            master.gain.setValueAtTime(master.gain.value, audioCtx.currentTime);
+            master.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
+          }
+          musicIcon.className = 'fa-solid fa-music text-blush-200 text-sm';
+        }
+      });
+
+      // --- 5. Photo Customizer Modal & File Uploader ---
+      const photoConfigBtn = document.getElementById('photo-config-btn');
+      const photoModal = document.getElementById('photo-modal');
+      const cancelPhotoBtn = document.getElementById('cancel-photo-btn');
+      const applyPhotoBtn = document.getElementById('apply-photo-btn');
+      const fileInput = document.getElementById('file-input');
+      const urlInput = document.getElementById('url-input');
+      const bgImage = document.getElementById('bg-image');
+
+      photoConfigBtn.addEventListener('click', () => {
+        photoModal.classList.remove('hidden');
+      });
+
+      cancelPhotoBtn.addEventListener('click', () => {
+        photoModal.classList.add('hidden');
+      });
+
+      applyPhotoBtn.addEventListener('click', () => {
+        // Priority to file input
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            bgImage.src = e.target.result;
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+        } else if (urlInput.value.trim() !== '') {
+          bgImage.src = urlInput.value.trim();
+        }
+
+        photoModal.classList.add('hidden');
+      });
+
+      // --- 6. Birthday Surprise Modal & Heart Shower ---
+      const surpriseBtn = document.getElementById('surprise-btn');
+      const surpriseModal = document.getElementById('surprise-modal');
+      const closeSurpriseBtn = document.getElementById('close-surprise-btn');
+
+      const triggerHeartShower = () => {
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            const heart = document.createElement('i');
+            heart.className = 'fa-solid fa-heart touch-heart text-2xl text-blush-200';
+            heart.style.left = `${Math.random() * 90 + 5}vw`;
+            heart.style.top = `${Math.random() * 40 + 50}vh`;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1400);
+          }, i * 80);
+        }
+      };
+
+      surpriseBtn.addEventListener('click', () => {
+        surpriseModal.classList.remove('hidden');
+        setTimeout(() => {
+          surpriseModal.classList.remove('opacity-0');
+        }, 10);
+        triggerHeartShower();
+      });
+
+      closeSurpriseBtn.addEventListener('click', () => {
+        surpriseModal.classList.add('opacity-0');
+        setTimeout(() => {
+          surpriseModal.classList.add('hidden');
+        }, 500);
+      });
+
+    });
+  </script>
+</body>
+</html>
