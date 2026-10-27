@@ -201,7 +201,8 @@
 
     /* Ambient background floating particles */
     .particle {
-      position: fixed;
+      position: absolute;
+      top: 0;
       pointer-events: none;
       background: radial-gradient(circle, rgba(255,228,225,0.8) 0%, rgba(253,171,178,0) 70%);
       border-radius: 50%;
@@ -276,6 +277,16 @@
     .story-section .glass-card :is(p, span) { color: #4a1525; }
     .story-section .glass-card i { color: #b83265; }
     .story-section .glass-card > div { background: rgba(255,255,255,0.35); border-color: rgba(184,50,101,0.35); }
+    /* Bigger screens: keep the same phone-shaped column, centred */
+    @media (min-width: 600px) {
+      html, body { background: #120610; }
+      #bg-wrapper, .scroll-container, #particle-container, body > header {
+        width: 430px !important; max-width: 100%;
+        left: 50% !important; right: auto !important;
+        transform: translateX(-50%);
+      }
+      #bg-wrapper { box-shadow: 0 0 60px rgba(0,0,0,0.6); }
+    }
   </style>
 </head>
 
@@ -521,7 +532,7 @@
           const size = Math.random() * 14 + 6; // 6px to 20px
           particle.style.width = `${size}px`;
           particle.style.height = `${size}px`;
-          particle.style.left = `${Math.random() * 100}vw`;
+          particle.style.left = `${Math.random() * 100}%`;
 
           const duration = Math.random() * 12 + 10; // 10s to 22s
           const delay = Math.random() * 10;
