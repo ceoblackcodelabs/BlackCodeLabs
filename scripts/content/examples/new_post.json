@@ -1,0 +1,29 @@
+{
+  "posts": [
+    {
+      "slug": "example-post-slug",
+      "title": "Your post title here",
+      "excerpt": "One or two sentences shown on the blog cards and in Google (max 320 characters).",
+      "category": "Web Development",
+      "status": "draft",
+      "read_minutes": 5,
+      "featured": false,
+      "body_file": "new_post.html"
+    }
+  ],
+  "portfolio": [
+    {
+      "slug": "example-project",
+      "title": "Example Project",
+      "client_name": "Client Ltd",
+      "category": "web",
+      "summary": "One line shown on the portfolio grid card (max 280 characters).",
+      "description": "<p>The longer case study. Basic HTML such as paragraphs, lists and links is allowed.</p>",
+      "technologies": ["Django", "PostgreSQL", "M-Pesa Daraja"],
+      "project_url": "https://example.com",
+      "completed_year": 2026,
+      "is_featured": false,
+      "is_active": false
+    }
+  ]
+}

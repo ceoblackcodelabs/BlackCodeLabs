@@ -16,14 +16,33 @@ Base:   /api/v1/
     PUT    /api/v1/solutions/<slug>/      replace   (PATCH = partial update)
     DELETE /api/v1/solutions/<slug>/      delete
 
-Saves go through the ORM, so the existing signals clear the home / solutions caches.
+    GET    /api/v1/posts/                 list blog posts (add ?all=1 to include drafts)
+    POST   /api/v1/posts/                 create, or update if `slug` exists (upsert)
+    GET    /api/v1/posts/<slug>/          read one
+    PUT    /api/v1/posts/<slug>/          replace   (PATCH = partial update)
+    DELETE /api/v1/posts/<slug>/          delete
+
+    GET    /api/v1/portfolio/             list portfolio projects (add ?all=1 to include hidden)
+    POST   /api/v1/portfolio/             create, or update if `slug` exists (upsert)
+    GET    /api/v1/portfolio/<slug>/      read one
+    PUT    /api/v1/portfolio/<slug>/      replace   (PATCH = partial update)
+    DELETE /api/v1/portfolio/<slug>/      delete
+
+Posts and portfolio projects accept an optional base64 image (see POST_IMAGE_FIELD / PORTFOLIO_IMAGE_FIELD).
+Saves go through the ORM, so the existing signals clear the relevant caches.
 """
+import base64
+import binascii
 import hmac
+import io
 import json
 import re
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.files.base import ContentFile
 from django.http import JsonResponse
+from django.utils.dateparse import parse_datetime
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -254,3 +273,292 @@ def solution_item(request, slug):
         setattr(obj, k, v)
     obj.save()
     return _json(_solution_out(obj))
+
+
+# ------------------------------------------------------------------ shared: images + HTML safety
+MAX_IMAGE_BYTES = 8 * 1024 * 1024
+IMAGE_FORMATS = {"JPEG": "jpg", "PNG": "png", "WEBP": "webp"}
+URL_RE = re.compile(r"^https?://[^\s]{1,490}$")
+_BAD_HTML = re.compile(r"<\s*(script|iframe|object|embed|style|link|meta|form|base)\b|\bon\w+\s*=|javascript\s*:", re.I)
+
+
+def _safe_html(value, field):
+    """A guard, not a sanitiser: refuses markup that can run code if the content is ever rendered unescaped."""
+    if _BAD_HTML.search(value):
+        raise ApiError("Validation failed", 422, {field: "Script, iframe, form or inline event handlers are not allowed"})
+    return value
+
+
+def _image_file(b64, field, name):
+    """Decode a base64 (or data: URI) image, verify it really is a JPEG/PNG/WebP, return a ContentFile."""
+    from PIL import Image, UnidentifiedImageError
+    if not isinstance(b64, str):
+        raise ApiError("Validation failed", 422, {field: "Must be a base64 string"})
+    if b64.startswith("data:"):
+        b64 = b64.split(",", 1)[-1]
+    try:
+        raw = base64.b64decode(b64, validate=True)
+    except (binascii.Error, ValueError):
+        raise ApiError("Validation failed", 422, {field: "Not valid base64"})
+    if not raw or len(raw) > MAX_IMAGE_BYTES:
+        raise ApiError("Validation failed", 422, {field: f"Image must be between 1 byte and {MAX_IMAGE_BYTES // 1024 // 1024} MB"})
+    try:
+        img = Image.open(io.BytesIO(raw))
+        fmt = img.format
+        img.verify()
+        if img.width * img.height > 40_000_000:
+            raise ValueError
+    except (UnidentifiedImageError, ValueError, OSError, Image.DecompressionBombError):
+        raise ApiError("Validation failed", 422, {field: "Not a valid image"})
+    if fmt not in IMAGE_FORMATS:
+        raise ApiError("Validation failed", 422, {field: "Use a JPEG, PNG or WebP image"})
+    return ContentFile(raw, name=f"{name}.{IMAGE_FORMATS[fmt]}")
+
+
+def _int_field(data, field, errors, lo, hi):
+    if field not in data:
+        return None
+    v = data[field]
+    if isinstance(v, bool) or not isinstance(v, int) or not lo <= v <= hi:
+        errors[field] = f"Must be a whole number from {lo} to {hi}"
+        return None
+    return v
+
+
+def _flag(data, field, errors):
+    if field not in data:
+        return None
+    if not isinstance(data[field], bool):
+        errors[field] = "Must be true or false"
+        return None
+    return data[field]
+
+
+def _split(data, text_spec, extra_keys, partial, preprocess=None):
+    """Validate the text fields with _clean, reject unknown keys, return (text_fields, raw_data)."""
+    if preprocess:
+        data = preprocess(data)
+    unknown = set(data) - set(text_spec) - set(extra_keys)
+    if unknown:
+        raise ApiError("Unknown field(s): " + ", ".join(sorted(unknown)))
+    return _clean({k: v for k, v in data.items() if k in text_spec}, text_spec, partial), data
+
+
+def _upsert(model, slug, defaults, apply):
+    obj = model.objects.filter(slug=slug).first()
+    created = obj is None
+    if created:
+        obj = model(slug=slug)
+    apply(obj, defaults)
+    obj.save()
+    return obj, created
+
+
+# ------------------------------------------------------------------ blog posts
+POST_SPEC = {
+    "slug": (False, 240, re.compile(r"^[-a-z0-9_]+$"), "Lowercase letters, numbers, - and _ only"),
+    "title": (True, 220, None, ""),
+    "excerpt": (True, 320, None, ""),
+    "body": (True, 100000, None, ""),
+    "category": (False, 60, None, ""),
+    "author": (False, 150, None, ""),
+    "image_url": (False, 500, URL_RE, "Must be an http(s) URL"),
+    "status": (False, 10, re.compile(r"^(draft|published)$"), "Must be draft or published"),
+    "published_at": (False, 40, None, ""),
+}
+POST_EXTRAS = ("featured", "read_minutes", "image_base64")
+
+
+def _post_out(p):
+    return {"slug": p.slug, "title": p.title, "excerpt": p.excerpt, "body": p.body, "status": p.status,
+            "category": p.category.name if p.category else None, "author": p.author.get_username(),
+            "featured": p.featured, "read_minutes": p.read_minutes, "image_url": p.image_url,
+            "image": p.image.url if p.image else None, "published_at": p.published_at.isoformat(),
+            "url": p.get_absolute_url(), "created_at": p.created_at.isoformat()}
+
+
+def _post_fields(data, partial):
+    fields, raw = _split(data, POST_SPEC, POST_EXTRAS, partial)
+    errors, extra = {}, {}
+    for name, val in (("featured", _flag(raw, "featured", errors)), ("read_minutes", _int_field(raw, "read_minutes", errors, 1, 180))):
+        if name in raw and val is not None:
+            extra[name] = val
+    if "body" in fields:
+        _safe_html(fields["body"], "body")
+    if fields.get("published_at"):
+        dt = parse_datetime(fields["published_at"])
+        if not dt:
+            errors["published_at"] = "Use an ISO date-time, e.g. 2026-11-02T09:00:00+03:00"
+        else:
+            from django.utils import timezone
+            fields["published_at"] = dt if timezone.is_aware(dt) else timezone.make_aware(dt)
+    elif "published_at" in fields:
+        del fields["published_at"]
+    if errors:
+        raise ApiError("Validation failed", 422, errors)
+    fields.update(extra)
+    return fields, raw.get("image_base64")
+
+
+def _resolve_author(name):
+    User = get_user_model()
+    user = User.objects.filter(**{User.USERNAME_FIELD: name}).first() if name else User.objects.filter(is_superuser=True).order_by("pk").first()
+    if not user:
+        raise ApiError("Validation failed", 422, {"author": "No such user" if name else "No superuser exists to publish as; pass `author`"})
+    return user
+
+
+def _apply_post(post, fields, image_b64=None, creating=False):
+    from Blogs.models import Category
+    cat = fields.pop("category", None)
+    author = fields.pop("author", None)
+    for k, v in fields.items():
+        setattr(post, k, v)
+    if cat:
+        post.category = Category.objects.get_or_create(name=cat)[0]
+    if creating or author:
+        post.author = _resolve_author(author)
+    if image_b64:
+        if post.image:
+            post.image.delete(save=False)
+        f = _image_file(image_b64, "image_base64", post.slug)
+        post.image.save(f.name, f, save=False)
+
+
+@api_view
+@require_http_methods(["GET", "POST"])
+def posts_collection(request):
+    from Blogs.models import Post
+    if request.method == "GET":
+        qs = Post.objects.select_related("category", "author")
+        if not request.GET.get("all"):
+            qs = qs.filter(status="published")
+        return _json({"results": [_post_out(p) for p in qs]})
+    fields, img = _post_fields(_body(request), partial=False)
+    slug = fields.pop("slug", "") or slugify(fields["title"])[:200]
+    if not slug:
+        raise ApiError("Validation failed", 422, {"slug": "Could not make a slug from the title; pass `slug`"})
+    existing = Post.objects.filter(slug=slug).first()
+    post = existing or Post(slug=slug)
+    _apply_post(post, fields, img, creating=existing is None)
+    post.save()
+    return _json(_post_out(post), 200 if existing else 201)
+
+
+@api_view
+@require_http_methods(["GET", "PUT", "PATCH", "DELETE"])
+def post_item(request, slug):
+    from Blogs.models import Post
+    post = Post.objects.select_related("category", "author").filter(slug=slug).first()
+    if not post:
+        raise ApiError("Post not found", 404)
+    if request.method == "GET":
+        return _json(_post_out(post))
+    if request.method == "DELETE":
+        if post.image:
+            post.image.delete(save=False)
+        post.delete()
+        return _json({"deleted": slug})
+    fields, img = _post_fields(_body(request), partial=request.method == "PATCH")
+    if fields.pop("slug", slug) != slug:
+        raise ApiError("Validation failed", 422, {"slug": "Slug cannot be changed"})
+    _apply_post(post, fields, img)
+    post.save()
+    return _json(_post_out(post))
+
+
+# ------------------------------------------------------------------ portfolio
+PORTFOLIO_CATEGORIES = ["web", "mobile", "api", "ai", "ecommerce", "branding", "other"]
+PORTFOLIO_SPEC = {
+    "slug": (False, 170, re.compile(r"^[-a-z0-9_]+$"), "Lowercase letters, numbers, - and _ only"),
+    "title": (True, 150, None, ""),
+    "summary": (True, 280, None, ""),
+    "description": (False, 20000, None, ""),
+    "client_name": (False, 150, None, ""),
+    "category": (False, 20, re.compile("^(" + "|".join(PORTFOLIO_CATEGORIES) + ")$"), "Use one of: " + ", ".join(PORTFOLIO_CATEGORIES)),
+    "technologies": (False, 300, None, ""),
+    "cover_image_url": (False, 500, URL_RE, "Must be an http(s) URL"),
+    "project_url": (False, 500, URL_RE, "Must be an http(s) URL"),
+}
+PORTFOLIO_EXTRAS = ("completed_year", "is_featured", "display_order", "is_active", "cover_image_base64")
+
+
+def _portfolio_out(p):
+    return {"slug": p.slug, "title": p.title, "summary": p.summary, "description": p.description,
+            "client_name": p.client_name, "category": p.category, "technologies": p.tech_list(),
+            "cover_image_url": p.cover_image_url, "cover_image": p.cover_image.url if p.cover_image else None,
+            "project_url": p.project_url, "completed_year": p.completed_year, "is_featured": p.is_featured,
+            "display_order": p.display_order, "is_active": p.is_active, "url": p.get_absolute_url(),
+            "created_at": p.created_at.isoformat()}
+
+
+def _portfolio_fields(data, partial):
+    def prep(d):
+        d = dict(d)
+        if isinstance(d.get("technologies"), list):
+            if not all(isinstance(t, str) for t in d["technologies"]):
+                raise ApiError("Validation failed", 422, {"technologies": "Must be a list of strings"})
+            d["technologies"] = ", ".join(t.strip() for t in d["technologies"] if t.strip())
+        return d
+    fields, raw = _split(data, PORTFOLIO_SPEC, PORTFOLIO_EXTRAS, partial, preprocess=prep)
+    errors = {}
+    for name, val in (("completed_year", _int_field(raw, "completed_year", errors, 1990, 2100)),
+                      ("display_order", _int_field(raw, "display_order", errors, 0, 100000)),
+                      ("is_featured", _flag(raw, "is_featured", errors)), ("is_active", _flag(raw, "is_active", errors))):
+        if name in raw and val is not None:
+            fields[name] = val
+    if "description" in fields:
+        _safe_html(fields["description"], "description")
+    if errors:
+        raise ApiError("Validation failed", 422, errors)
+    return fields, raw.get("cover_image_base64")
+
+
+def _apply_portfolio(obj, fields, image_b64=None):
+    for k, v in fields.items():
+        setattr(obj, k, v)
+    if image_b64:
+        if obj.cover_image:
+            obj.cover_image.delete(save=False)
+        f = _image_file(image_b64, "cover_image_base64", obj.slug)
+        obj.cover_image.save(f.name, f, save=False)
+
+
+@api_view
+@require_http_methods(["GET", "POST"])
+def portfolio_collection(request):
+    from .models import PortfolioProject
+    if request.method == "GET":
+        qs = PortfolioProject.objects.all() if request.GET.get("all") else PortfolioProject.objects.filter(is_active=True)
+        return _json({"results": [_portfolio_out(p) for p in qs]})
+    fields, img = _portfolio_fields(_body(request), partial=False)
+    slug = fields.pop("slug", "") or slugify(fields["title"])[:160]
+    if not slug:
+        raise ApiError("Validation failed", 422, {"slug": "Could not make a slug from the title; pass `slug`"})
+    existing = PortfolioProject.objects.filter(slug=slug).first()
+    obj = existing or PortfolioProject(slug=slug)
+    _apply_portfolio(obj, fields, img)
+    obj.save()
+    return _json(_portfolio_out(obj), 200 if existing else 201)
+
+
+@api_view
+@require_http_methods(["GET", "PUT", "PATCH", "DELETE"])
+def portfolio_item(request, slug):
+    from .models import PortfolioProject
+    obj = PortfolioProject.objects.filter(slug=slug).first()
+    if not obj:
+        raise ApiError("Project not found", 404)
+    if request.method == "GET":
+        return _json(_portfolio_out(obj))
+    if request.method == "DELETE":
+        if obj.cover_image:
+            obj.cover_image.delete(save=False)
+        obj.delete()
+        return _json({"deleted": slug})
+    fields, img = _portfolio_fields(_body(request), partial=request.method == "PATCH")
+    if fields.pop("slug", slug) != slug:
+        raise ApiError("Validation failed", 422, {"slug": "Slug cannot be changed"})
+    _apply_portfolio(obj, fields, img)
+    obj.save()
+    return _json(_portfolio_out(obj))
