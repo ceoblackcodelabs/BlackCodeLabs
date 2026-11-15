@@ -228,6 +228,7 @@ def footer(R):
 </div>
 <div class="f-strip" aria-label="Photos from our journeys">%(strip)s</div>
 <div class="f-bot"><span>\u00A9 %(yr)s <b>Pocket of Paradise</b>. All rights reserved.</span><span class="f-legal"><a href="%(tm)s">Terms &amp; Conditions</a><a href="%(pv)s">Privacy Policy</a><a href="%(fq)s">FAQs</a></span></div>
+<div class="f-credit">Powered by <a href="https://blackcodelab.com" target="_blank" rel="noopener">BlackCodeLabs</a></div>
 </div><div class="f-mark" aria-hidden="true">Pocket of Paradise</div></footer>''' % dict(
         home=u(R, ''), R=R, soc=soc, strip=strip, arrow=ic('arrow'),
         dest=''.join(lk('destinations/%s/' % d['id'], d['name']) for d in D['destinations']),

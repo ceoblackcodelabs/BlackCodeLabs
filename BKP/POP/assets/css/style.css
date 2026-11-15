@@ -714,3 +714,7 @@ footer .socials a .icon{width:17px;height:17px}
   .wa-fab,#top{bottom:18px}
   body.has-mbar .wa-fab,body.has-mbar #top{bottom:78px}
 }
+
+.f-credit{text-align:center;padding:0 0 26px;font-size:.82rem;color:#8f8372}
+.f-credit a{color:var(--gold2);font-weight:700;border-bottom:1px solid rgba(239,199,101,.35);transition:color .2s,border-color .2s}
+.f-credit a:hover{color:#fff;border-color:var(--gold2)}
